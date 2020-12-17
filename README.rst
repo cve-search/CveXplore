@@ -1,2 +1,2 @@
-CveExplore
+CveXplore
 ==========
