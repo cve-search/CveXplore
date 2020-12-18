@@ -43,6 +43,10 @@ Package is hosted on pypi, so just run:
 
 Usage
 -----
+
+Instantiation
+*************
+
 CveXplore can be instantiated with different parameters, depending to which data source you're going to connect to.
 If no parameters are given it is assumed that you're going to connect to a mongodb database running on localhost with
 default port and security settings (Cve Search default parameters).
