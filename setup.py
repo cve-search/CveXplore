@@ -1,5 +1,6 @@
 import os
 
+from pkg_resources import parse_requirements
 from setuptools import setup, find_packages
 
 from CveXplore.version import VERSION
@@ -36,5 +37,5 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
-    install_requires=["setuptools", "pymongo",],
+    install_reqs=parse_requirements('requirements.txt')
 )
