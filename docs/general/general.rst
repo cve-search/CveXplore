@@ -1,12 +1,6 @@
-Getting Started
-===============
-
-The CveXplore project is....
-
-
 Dependencies
 ------------
 
-ff
+For normal operations CveXplore has the following dependencies:
 
-- mongodb
+.. literalinclude:: ../../requirements.txt

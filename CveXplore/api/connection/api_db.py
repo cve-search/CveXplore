@@ -26,7 +26,9 @@ class ApiDatabaseSource(object):
 
         :param address: Tuple with host ip/name and port
         :type address: tuple
-        :param api_path: Generic to connect to api resources, defaults to 'None'
+        :param api_path: The api_path parameter needs to be provided if the API runs on a non-root path.
+                         So if the API is reachable at: https://localhost/api, this parameter needs to be set to 'api'.
+                         So it is needed to connect to api resources, defaults to 'None'
         :type api_path: str
         :param proxies: If you need to use a proxy, you can configure individual requests with the proxies argument
                         to any request method
@@ -91,7 +93,9 @@ class ApiDatabaseCollection(object):
         :type address: tuple
         :param collname: Collection name
         :type collname: str
-        :param api_path: Generic to connect to api resources, defaults to 'None'
+        :param api_path: The api_path parameter needs to be provided if the API runs on a non-root path.
+                         So if the API is reachable at: https://localhost/api, this parameter needs to be set to 'api'.
+                         So it is needed to connect to api resources, defaults to 'None'
         :type api_path: str
         :param proxies: If you need to use a proxy, you can configure individual requests with the proxies argument
                         to any request method
