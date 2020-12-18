@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Dependencies &mdash; CveXplore  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/CveExplore_icon.png"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dependencies" href="general/general.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home" alt="Documentation Home"> CveXplore
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">General documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="general/general.html">Dependencies</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Package documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="package/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package/common.html">Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package/database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package/objects.html">Objects</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">CveXplore</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Dependencies</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <img alt="_images/CveExplore_logo.png" src="_images/CveExplore_logo.png" />
+<a class="reference external image-reference" href="https://GitHub.com/cve-search/CveXplore/releases/"><img alt="https://img.shields.io/github/release/cve-search/CveXplore.svg" src="https://img.shields.io/github/release/cve-search/CveXplore.svg" /></a>
+<a class="reference external image-reference" href="https://www.gnu.org/licenses/gpl-3.0"><img alt="https://img.shields.io/badge/License-GPLv3-blue.svg" src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a>
+<a class="reference external image-reference" href="https://GitHub.com/cve-search/CveXplore"><img alt="https://badgen.net/badge/Github/repo/green?icon=github" src="https://badgen.net/badge/Github/repo/green?icon=github" /></a>
+<p>The CveXplore package aims to provide an object related way to interact with the data collected or hosted by a
+cve-search instance. It provides an ambiguous way to interact either to the cve-search mongodb or to the cve-search API.
+All the data provided by this interaction is converted into objects before being returned. And thus providing a way to
+interact with objects rather then with raw data.</p>
+<div class="section" id="dependencies">
+<h1>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h1>
+<p>As stated you will need to have one of two things; in order to fully use this package you need access to:</p>
+<ul class="simple">
+<li><p>A cve-search mongodb instance</p></li>
+</ul>
+<p>OR</p>
+<ul class="simple">
+<li><p>A cve-search API instance</p></li>
+</ul>
+<p>Both of them can be easily created on a physical machine or via a docker instance of cve-search;
+please check <a class="reference external" href="https://github.com/cve-search/cve-search">cve-search</a> or
+<a class="reference external" href="https://github.com/cve-search/CVE-Search-Docker">CVE-Search-Docker</a> for further details.</p>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Package is hosted on pypi, so just run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install CveXplorer
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<p>CveXplore can be instantiated with different parameters, depending to which data source you’re going to connect to.
+If no parameters are given it is assumed that you’re going to connect to a mongodb database running on localhost with
+default port and security settings (Cve Search default parameters).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span><span class="o">.</span><span class="n">version</span>
+<span class="go">&#39;0.1.2&#39;</span>
+</pre></div>
+</div>
+<p>To let CveXplore connect to an mongodb with specific parameters:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">(</span><span class="n">mongodb_connection_details</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;192.168.1.1&quot;</span><span class="p">,</span> <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">27017</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span><span class="o">.</span><span class="n">version</span>
+<span class="go">&#39;0.1.2&#39;</span>
+</pre></div>
+</div>
+<p>And to let CveXplore talk to an Cve Search API:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">(</span><span class="n">api_connection_details</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;mylocal.cve-search.int&quot;</span><span class="p">,</span> <span class="mi">443</span><span class="p">),</span> <span class="s2">&quot;api_path&quot;</span><span class="p">:</span> <span class="s2">&quot;api&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span><span class="o">.</span><span class="n">version</span>
+<span class="go">&#39;0.1.2&#39;</span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">General documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="general/general.html">Dependencies</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Package documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="package/core.html">Core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="package/core.html#main">Main</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="package/common.html">Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package/database.html">Database</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="package/database.html#module-CveXplore.database.connection.mongo_db">Database connection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package/database.html#module-CveXplore.database.helpers.cvesearch_mongo_database">Database helpers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="package/api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="package/api.html#module-CveXplore.api.connection.api_db">API connection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package/api.html#module-CveXplore.api.helpers.cve_search_api">API helpers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="package/objects.html">Objects</a></li>
+</ul>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="general/general.html" class="btn btn-neutral float-right" title="Dependencies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Paul Tikken
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

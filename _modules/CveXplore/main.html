@@ -1,0 +1,515 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>CveXplore.main &mdash; CveXplore  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/CveExplore_icon.png"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> CveXplore
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">General documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general/general.html">Dependencies</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Package documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../package/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../package/common.html">Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../package/database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../package/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../package/objects.html">Objects</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CveXplore</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>CveXplore.main</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for CveXplore.main</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Main</span>
+<span class="sd">====</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">DESCENDING</span>
+
+<span class="kn">from</span> <span class="nn">CveXplore.api.connection.api_db</span> <span class="kn">import</span> <span class="n">ApiDatabaseSource</span>
+<span class="kn">from</span> <span class="nn">CveXplore.common.db_mapping</span> <span class="kn">import</span> <span class="n">database_mapping</span>
+<span class="kn">from</span> <span class="nn">CveXplore.database.connection.mongo_db</span> <span class="kn">import</span> <span class="n">MongoDBConnection</span>
+<span class="kn">from</span> <span class="nn">CveXplore.errors</span> <span class="kn">import</span> <span class="n">DatabaseIllegalCollection</span>
+<span class="kn">from</span> <span class="nn">version</span> <span class="kn">import</span> <span class="n">VERSION</span>
+
+
+<div class="viewcode-block" id="CveXplore"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore">[docs]</a><span class="k">class</span> <span class="nc">CveXplore</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main class for CveXplore package</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CveXplore.__init__"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mongodb_connection_details</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_connection_details</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new instance of CveXplore</span>
+
+<span class="sd">        :param mongodb_connection_details: Provide the connection details needed to establish a connection to a mongodb</span>
+<span class="sd">                                           instance. The connection details should be in line with pymongo&#39;s</span>
+<span class="sd">                                           documentation.</span>
+<span class="sd">        :type mongodb_connection_details: dict</span>
+<span class="sd">        :param api_connection_details: Provide the connection details needed to establish a connection to a cve-search</span>
+<span class="sd">                                       API provider. The cve-search API provider should allow access to the &#39;query&#39; POST</span>
+<span class="sd">                                       endpoint; all other API endpoints are not needed for CveXplore to function. For</span>
+<span class="sd">                                       the connection details supported please check the :ref:`API connection &lt;api&gt;`</span>
+<span class="sd">                                       documentation.</span>
+<span class="sd">        :type api_connection_details: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__version</span> <span class="o">=</span> <span class="n">VERSION</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">api_connection_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">mongodb_connection_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;CveXplore can be used to connect to either a cve-search database OR a cve-search api, not both!&quot;</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">api_connection_details</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">mongodb_connection_details</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># by default assume we are talking to a database</span>
+            <span class="n">mongodb_connection_details</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MONGODB_CON_DETAILS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">mongodb_connection_details</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datasource</span> <span class="o">=</span> <span class="n">MongoDBConnection</span><span class="p">(</span><span class="o">**</span><span class="n">mongodb_connection_details</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">mongodb_connection_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MONGODB_CON_DETAILS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">mongodb_connection_details</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datasource</span> <span class="o">=</span> <span class="n">MongoDBConnection</span><span class="p">(</span><span class="o">**</span><span class="n">mongodb_connection_details</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">api_connection_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">api_connection_details</span><span class="p">[</span><span class="s2">&quot;user_agent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;CveXplore:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;API_CON_DETAILS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">api_connection_details</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datasource</span> <span class="o">=</span> <span class="n">ApiDatabaseSource</span><span class="p">(</span><span class="o">**</span><span class="n">api_connection_details</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_mapping</span> <span class="o">=</span> <span class="n">database_mapping</span>
+
+        <span class="kn">from</span> <span class="nn">CveXplore.database.helpers.generic_db</span> <span class="kn">import</span> <span class="n">GenericDatabaseFactory</span>
+        <span class="kn">from</span> <span class="nn">CveXplore.database.helpers.specific_db</span> <span class="kn">import</span> <span class="n">CvesDatabaseFunctions</span>
+
+        <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_mapping</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">each</span> <span class="o">!=</span> <span class="s2">&quot;cves&quot;</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="p">,</span> <span class="n">each</span><span class="p">,</span> <span class="n">GenericDatabaseFactory</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="n">each</span><span class="p">,),</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="p">,</span> <span class="n">each</span><span class="p">,</span> <span class="n">CvesDatabaseFunctions</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="n">each</span><span class="p">,),</span>
+                <span class="p">)</span></div>
+
+<div class="viewcode-block" id="CveXplore.get_single_store_entry"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.get_single_store_entry">[docs]</a>    <span class="k">def</span> <span class="nf">get_single_store_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">,</span> <span class="n">dict_filter</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to perform a query on a *single* collection in the mongodb and return a *single* result.</span>
+
+<span class="sd">        :param entry_type: Which specific store are you querying? Choices are:</span>
+<span class="sd">                           - capec;</span>
+<span class="sd">                           - cpe;</span>
+<span class="sd">                           - cwe;</span>
+<span class="sd">                           - via4;</span>
+<span class="sd">                           - cves;</span>
+<span class="sd">        :type entry_type: str</span>
+<span class="sd">        :param dict_filter: Dictionary representing a filter according to pymongo documentation</span>
+<span class="sd">        :type dict_filter: dict</span>
+<span class="sd">        :return: Objectified result from the query</span>
+<span class="sd">        :rtype: object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">entry_type</span> <span class="o">=</span> <span class="n">entry_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">entry_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_mapping</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DatabaseIllegalCollection</span><span class="p">(</span>
+                <span class="s2">&quot;Illegal collection requested: only </span><span class="si">{}</span><span class="s2"> are allowed!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">database_mapping</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="s2">&quot;store_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry_type</span><span class="p">))</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
+            <span class="n">dict_filter</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="CveXplore.get_single_store_entries"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.get_single_store_entries">[docs]</a>    <span class="k">def</span> <span class="nf">get_single_store_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to perform a query on a *single* collection in the mongodb and return all of the results.</span>
+
+<span class="sd">        :param query: Tuple which contains the entry_type and the dict_filter in a tuple.</span>
+<span class="sd">                      Choices for entry_type:</span>
+<span class="sd">                      - capec;</span>
+<span class="sd">                      - cpe;</span>
+<span class="sd">                      - cwe;</span>
+<span class="sd">                      - via4;</span>
+<span class="sd">                      - cves;</span>
+<span class="sd">                      dict_filter is a dictionary representing a filter according to pymongo documentation.</span>
+<span class="sd">                      example:</span>
+<span class="sd">                      get_single_store_entries((&quot;CWE&quot;, {&quot;id&quot;: &quot;78&quot;}))</span>
+<span class="sd">        :type query: tuple</span>
+<span class="sd">        :param limit: Limit the amount of returned results, defaults to 10</span>
+<span class="sd">        :type limit: int</span>
+<span class="sd">        :return: list with queried results</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Wrong parameter type, received: </span><span class="si">{}</span><span class="s2"> expected: tuple&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Query parameter does not consist of the expected amount of variables, expected: 2 received: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">entry_type</span><span class="p">,</span> <span class="n">dict_filter</span> <span class="o">=</span> <span class="n">query</span>
+
+        <span class="n">entry_type</span> <span class="o">=</span> <span class="n">entry_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">entry_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_mapping</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DatabaseIllegalCollection</span><span class="p">(</span>
+                <span class="s2">&quot;Illegal collection requested: only </span><span class="si">{}</span><span class="s2"> are allowed!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">database_mapping</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="s2">&quot;store_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry_type</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">dict_filter</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CveXplore.get_multi_store_entries"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.get_multi_store_entries">[docs]</a>    <span class="k">def</span> <span class="nf">get_multi_store_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">queries</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to perform *multiple* queries on *a single* or *multiple* collections in the mongodb and return the</span>
+<span class="sd">        results.</span>
+
+<span class="sd">        :param queries: A list of tuples which contains the entry_type and the dict_filter.</span>
+<span class="sd">                        Choices for entry_type:</span>
+<span class="sd">                        - capec;</span>
+<span class="sd">                        - cpe;</span>
+<span class="sd">                        - cwe;</span>
+<span class="sd">                        - via4;</span>
+<span class="sd">                        - cves;</span>
+<span class="sd">                        dict_filter is a dictionary representing a filter according to pymongo documentation.</span>
+<span class="sd">                        example:</span>
+<span class="sd">                        get_multi_store_entries([(&quot;CWE&quot;, {&quot;id&quot;: &quot;78&quot;}), (&quot;cves&quot;, {&quot;id&quot;: &quot;CVE-2009-0018&quot;})])</span>
+<span class="sd">        :type queries: list</span>
+<span class="sd">        :return: Queried results in a single list</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span>
+            <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_single_store_entries</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">),</span> <span class="o">*</span><span class="n">queries</span>
+        <span class="p">)</span>
+
+        <span class="n">joined_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">result_list</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+
+            <span class="n">joined_list</span> <span class="o">+=</span> <span class="n">result_list</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">joined_list</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CveXplore.cves_for_cpe"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.cves_for_cpe">[docs]</a>    <span class="k">def</span> <span class="nf">cves_for_cpe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpe_string</span><span class="p">,</span> <span class="n">vuln_prod_search</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method for retrieving Cves that match a single CPE string. By default the search will be made matching</span>
+<span class="sd">        the configuration fields of the cves documents.</span>
+
+<span class="sd">        :param cpe_string: CPE string: e.g. ``cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*``</span>
+<span class="sd">        :type cpe_string: str</span>
+<span class="sd">        :param vuln_prod_search: Search for matching products instead of configurations</span>
+<span class="sd">        :type vuln_prod_search: bool</span>
+<span class="sd">        :return: List with Cves</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cpe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_single_store_entry</span><span class="p">(</span><span class="s2">&quot;cpe&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;cpe_2_2&quot;</span><span class="p">:</span> <span class="n">cpe_string</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="n">cpe</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cpe</span><span class="o">.</span><span class="n">iter_cves_matching_cpe</span><span class="p">(</span><span class="n">vuln_prod_search</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cpe</span></div>
+
+<div class="viewcode-block" id="CveXplore.cve_by_id"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.cve_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">cve_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cve_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to retrieve a single CVE from the database by it&#39;s CVE ID number</span>
+
+<span class="sd">        :param cve_id: String representing the CVE id; e.g. CVE-2020-0001</span>
+<span class="sd">        :type cve_id: str</span>
+<span class="sd">        :return: CVE object</span>
+<span class="sd">        :rtype: Cves</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_single_store_entry</span><span class="p">(</span><span class="s2">&quot;cves&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">cve_id</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="CveXplore.capec_by_cwe_id"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.capec_by_cwe_id">[docs]</a>    <span class="k">def</span> <span class="nf">capec_by_cwe_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwe_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to retrieve capecs related to a specific CWE ID</span>
+
+<span class="sd">        :param cwe_id: String representing the CWE id; e.g. &#39;15&#39;</span>
+<span class="sd">        :type cwe_id:</span>
+<span class="sd">        :return: List with Capecs</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">cwe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_single_store_entry</span><span class="p">(</span><span class="s2">&quot;cwe&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">cwe_id</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="n">cwe</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwe</span><span class="o">.</span><span class="n">iter_related_capecs</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cwe</span></div>
+
+<div class="viewcode-block" id="CveXplore.last_cves"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.last_cves">[docs]</a>    <span class="k">def</span> <span class="nf">last_cves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to retrieve the last entered / changed cves. By default limited to 10.</span>
+
+<span class="sd">        :return: List with Cves</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="s2">&quot;store_cves&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">find</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;Modified&quot;</span><span class="p">,</span> <span class="n">DESCENDING</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">get_db_content_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Property returning the stats from the database. Stats consist of the time last modified and the document count</span>
+<span class="sd">        per cvedb store in the database.</span>
+
+<span class="sd">        :return: Statistics</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">stats</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="n">ApiDatabaseSource</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="s2">&quot;store_info&quot;</span><span class="p">):</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">store_info</span><span class="o">.</span><span class="n">find</span><span class="p">({})</span>
+                <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                    <span class="n">each</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">)</span>
+                    <span class="n">db</span> <span class="o">=</span> <span class="n">each</span><span class="p">[</span><span class="s2">&quot;db&quot;</span><span class="p">]</span>
+                    <span class="n">each</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;db&quot;</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="s2">&quot;sources&quot;</span> <span class="ow">in</span> <span class="n">each</span><span class="p">:</span>
+                        <span class="n">each</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;sources&quot;</span><span class="p">)</span>
+                        <span class="n">each</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;searchables&quot;</span><span class="p">)</span>
+
+                    <span class="n">each</span><span class="p">[</span><span class="s2">&quot;last-modified&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">each</span><span class="p">[</span><span class="s2">&quot;last-modified&quot;</span><span class="p">])</span>
+                    <span class="n">each</span><span class="p">[</span><span class="s2">&quot;document count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="s2">&quot;store_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+                    <span class="n">stats</span><span class="p">[</span><span class="n">db</span><span class="p">]</span> <span class="o">=</span> <span class="n">each</span>
+
+                    <span class="k">for</span> <span class="n">mgmtlist</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;mgmt_blacklist&quot;</span><span class="p">,</span> <span class="s2">&quot;mgmt_whitelist&quot;</span><span class="p">]:</span>
+                        <span class="n">stats</span><span class="p">[</span><span class="n">mgmtlist</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="s2">&quot;document count&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="s2">&quot;store_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mgmtlist</span><span class="p">)</span>
+                            <span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+                        <span class="p">}</span>
+
+                <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;Database info could not be retrieved&quot;</span>
+
+        <span class="k">return</span> <span class="s2">&quot;Using api endpoint: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Property returning current version &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__version</span>
+
+<div class="viewcode-block" id="CveXplore.__repr__"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CveXplore:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Paul Tikken
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

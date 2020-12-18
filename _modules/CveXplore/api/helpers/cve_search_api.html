@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>CveXplore.api.helpers.cve_search_api &mdash; CveXplore  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/CveExplore_icon.png"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home" alt="Documentation Home"> CveXplore
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">General documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../general/general.html">Dependencies</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Package documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/common.html">Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/objects.html">Objects</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CveXplore</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>CveXplore.api.helpers.cve_search_api</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for CveXplore.api.helpers.cve_search_api</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Cve Search API</span>
+<span class="sd">==============</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pymongo</span>
+
+<span class="kn">from</span> <span class="nn">CveXplore.common.generic_api</span> <span class="kn">import</span> <span class="n">GenericApi</span>
+
+
+<div class="viewcode-block" id="CveSearchApi"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi">[docs]</a><span class="k">class</span> <span class="nc">CveSearchApi</span><span class="p">(</span><span class="n">GenericApi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The CveSearchApi handles the different arguments in order to perform a query to a specific Cve Search api endpoint.</span>
+<span class="sd">    It mimics the pymongo cursor&#39;s behaviour to provide an ambiguous way to talk to either an API or a mongodb.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CveSearchApi.__init__"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_collection</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new CveSearchApi object.</span>
+
+<span class="sd">        :param db_collection: ApiDatabaseCollection object</span>
+<span class="sd">        :type db_collection: ApiDatabaseCollection</span>
+<span class="sd">        :param filter: Filter to be used when querying data</span>
+<span class="sd">        :type filter: dict</span>
+<span class="sd">        :param limit: Limit value</span>
+<span class="sd">        :type limit: int</span>
+<span class="sd">        :param skip: Skip value</span>
+<span class="sd">        :type skip: int</span>
+<span class="sd">        :param sort: Sort value</span>
+<span class="sd">        :type sort: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">address</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">db_collection</span><span class="o">.</span><span class="n">address</span><span class="p">),</span>
+            <span class="n">api_path</span><span class="o">=</span><span class="n">db_collection</span><span class="o">.</span><span class="n">api_path</span><span class="p">,</span>
+            <span class="n">proxies</span><span class="o">=</span><span class="n">db_collection</span><span class="o">.</span><span class="n">proxies</span><span class="p">,</span>
+            <span class="n">protocol</span><span class="o">=</span><span class="n">db_collection</span><span class="o">.</span><span class="n">protocol</span><span class="p">,</span>
+            <span class="n">user_agent</span><span class="o">=</span><span class="n">db_collection</span><span class="o">.</span><span class="n">user_agent</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">CveXplore.common.db_obj_mapping</span> <span class="kn">import</span> <span class="n">database_objects_mapping</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_objects_mapping</span> <span class="o">=</span> <span class="n">database_objects_mapping</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_collection</span> <span class="o">=</span> <span class="n">db_collection</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">collname</span> <span class="o">=</span> <span class="n">db_collection</span><span class="o">.</span><span class="n">collname</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">filter</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;retrieve&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">collname</span><span class="p">,</span> <span class="s2">&quot;dict_filter&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__empty</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__limit</span> <span class="o">=</span> <span class="n">limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__skip</span> <span class="o">=</span> <span class="n">skip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sort</span> <span class="o">=</span> <span class="n">sort</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="CveSearchApi.__repr__"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;return a string representation of the obj GenericApi&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;&lt;CveSearchApi:(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db_collection</span><span class="o">.</span><span class="n">address</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_collection</span><span class="o">.</span><span class="n">address</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="CveSearchApi.query"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Endpoint for free query to cve search data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="s2">&quot;/query&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span> <span class="o">=</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="CveSearchApi.limit"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.limit">[docs]</a>    <span class="k">def</span> <span class="nf">limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to limit the amount of returned data</span>
+
+<span class="sd">        :param value: Limit</span>
+<span class="sd">        :type value: int</span>
+<span class="sd">        :return: CveSearchApi object</span>
+<span class="sd">        :rtype: CveSearchApi</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;limit must be an integer&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__limit</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__data</span><span class="p">[</span><span class="s2">&quot;limit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__limit</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="CveSearchApi.skip"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.skip">[docs]</a>    <span class="k">def</span> <span class="nf">skip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to skip the given amount of records before returning the data</span>
+
+<span class="sd">        :param value: Skip</span>
+<span class="sd">        :type value: int</span>
+<span class="sd">        :return: CveSearchApi object</span>
+<span class="sd">        :rtype: CveSearchApi</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;skip must be an integer&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__skip</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__data</span><span class="p">[</span><span class="s2">&quot;skip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__skip</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="CveSearchApi.sort"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.sort">[docs]</a>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to sort the returned data</span>
+
+<span class="sd">        :param field: Field to sort on</span>
+<span class="sd">        :type field: str</span>
+<span class="sd">        :param direction: The direction to sort in; e.g. pymongo.DESCENDING</span>
+<span class="sd">        :type direction: int</span>
+<span class="sd">        :return: CveSearchApi object</span>
+<span class="sd">        :rtype: CveSearchApi</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">DESCENDING</span><span class="p">:</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;DESC&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;ASC&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sort</span> <span class="o">=</span> <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__data</span><span class="p">[</span><span class="s2">&quot;sort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sort</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__data</span><span class="p">[</span><span class="s2">&quot;sort_dir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sort</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="CveSearchApi.__iter__"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.__iter__">[docs]</a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Make this class an iterator &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="CveSearchApi.next"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Iterate to the results and return database objects &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__empty</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_objects_mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">collname</span><span class="p">](</span>
+                    <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">StopIteration</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="c1"># We&#39;ve received a Response object</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span></div>
+
+    <span class="fm">__next__</span> <span class="o">=</span> <span class="nb">next</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Paul Tikken
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
