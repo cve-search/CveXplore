@@ -2,7 +2,6 @@
 API connection
 ==============
 """
-import re
 
 from CveXplore.api.helpers.cve_search_api import CveSearchApi
 from CveXplore.common.db_mapping import database_mapping
@@ -105,6 +104,7 @@ class ApiDatabaseCollection(object):
         :param user_agent: User agent to use when connecting; defaults to CveXplore:<<version>>
         :type user_agent: str
         """
+
         self.address = address
         self.api_path = api_path
         self.proxies = proxies
