@@ -1,9 +1,8 @@
 import os
 
-from pkg_resources import parse_requirements
 from setuptools import setup, find_packages
 
-from CveXplore.version import VERSION
+from version import VERSION
 
 # The directory containing this file
 HERE = os.path.abspath(os.path.dirname(__file__))
@@ -37,5 +36,5 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
-    install_reqs=parse_requirements('requirements.txt')
+    install_requires=["setuptools", "pymongo", "requests"],
 )

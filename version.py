@@ -28,7 +28,7 @@ def _version_from_git_describe():
     '2.3.2.dev346'
 
     """
-    if not os.path.isdir(os.path.join(os.path.dirname(_PKG_DIR), ".git")):  # noqa: E501
+    if not os.path.isdir(os.path.join(_PKG_DIR, ".git")):  # noqa: E501
         raise ValueError("not in git repo")
 
     process = subprocess.Popen(
@@ -54,7 +54,7 @@ def _version_from_git_describe():
 
 
 def _version():
-    version_file = os.path.join(_PKG_DIR, "VERSION")
+    version_file = os.path.join(_PKG_DIR, "CveXplore/VERSION")
     try:
         tag = _version_from_git_describe()
         # successfully read the tag from git, write it in VERSION for
