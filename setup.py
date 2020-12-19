@@ -9,7 +9,7 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 
 # The text of the README file
 with open(os.path.join(HERE, "README.rst")) as fid:
-    README = fid.read()
+    README = fid.read().split("##INCLUDE_MARKER##")[1]
 
 setup(
     name="CveXplore",
