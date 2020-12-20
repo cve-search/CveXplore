@@ -23,6 +23,10 @@ setup(
     author="Paul Tikken",
     author_email="paul.tikken@gmail.com",
     home_page="https://github.com/cve-search/CveXplore",
+    project_urls={
+        "Documentation": "https://cve-search.github.io/CveXplore/",
+        "Issues": "https://github.com/cve-search/CveXplore/issues",
+    },
     description="Package for interacting with cve-search ",
     long_description=README,
     long_description_content_type="text/x-rst",

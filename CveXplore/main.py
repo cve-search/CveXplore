@@ -75,7 +75,7 @@ class CveXplore(object):
 
     def get_single_store_entry(self, entry_type, dict_filter={}):
         """
-        Method to perform a query on a *single* collection in the mongodb and return a *single* result.
+        Method to perform a query on a *single* collection in the data source and return a *single* result.
 
         :param entry_type: Which specific store are you querying? Choices are:
                            - capec;
@@ -107,7 +107,7 @@ class CveXplore(object):
 
     def get_single_store_entries(self, query, limit=10):
         """
-        Method to perform a query on a *single* collection in the mongodb and return all of the results.
+        Method to perform a query on a *single* collection in the data source and return all of the results.
 
         :param query: Tuple which contains the entry_type and the dict_filter in a tuple.
                       Choices for entry_type:
@@ -158,7 +158,7 @@ class CveXplore(object):
 
     def get_multi_store_entries(self, *queries, limit=10):
         """
-        Method to perform *multiple* queries on *a single* or *multiple* collections in the mongodb and return the
+        Method to perform *multiple* queries on *a single* or *multiple* collections in the data source and return the
         results.
 
         :param queries: A list of tuples which contains the entry_type and the dict_filter.
