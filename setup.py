@@ -11,6 +11,9 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(HERE, "README.rst")) as fid:
     README = fid.read().split("##INCLUDE_MARKER##")[1]
 
+with open(os.path.join(HERE, "requirements.txt")) as fid:
+    REQS = fid.read().splitlines()
+
 setup(
     name="CveXplore",
     version=VERSION,
@@ -28,7 +31,6 @@ setup(
     classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
@@ -36,5 +38,5 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
-    install_requires=["setuptools", "pymongo", "requests"],
+    install_requires=REQS,
 )
