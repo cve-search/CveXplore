@@ -271,7 +271,7 @@ per cvedb store in the database.</p>
 <dl class="py method">
 <dt id="CveXplore.main.CveXplore.get_multi_store_entries">
 <code class="sig-name descname">get_multi_store_entries</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">queries</span></em>, <em class="sig-param"><span class="n">limit</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.get_multi_store_entries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CveXplore.main.CveXplore.get_multi_store_entries" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to perform <em>multiple</em> queries on <em>a single</em> or <em>multiple</em> collections in the mongodb and return the
+<dd><p>Method to perform <em>multiple</em> queries on <em>a single</em> or <em>multiple</em> collections in the data source and return the
 results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -298,7 +298,7 @@ get_multi_store_entries([(“CWE”, {“id”: “78”}), (“cves”, {“id�
 <dl class="py method">
 <dt id="CveXplore.main.CveXplore.get_single_store_entries">
 <code class="sig-name descname">get_single_store_entries</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">query</span></em>, <em class="sig-param"><span class="n">limit</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.get_single_store_entries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CveXplore.main.CveXplore.get_single_store_entries" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to perform a query on a <em>single</em> collection in the mongodb and return all of the results.</p>
+<dd><p>Method to perform a query on a <em>single</em> collection in the data source and return all of the results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -327,7 +327,7 @@ get_single_store_entries((“CWE”, {“id”: “78”}))</p></li>
 <dl class="py method">
 <dt id="CveXplore.main.CveXplore.get_single_store_entry">
 <code class="sig-name descname">get_single_store_entry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entry_type</span></em>, <em class="sig-param"><span class="n">dict_filter</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.get_single_store_entry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#CveXplore.main.CveXplore.get_single_store_entry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to perform a query on a <em>single</em> collection in the mongodb and return a <em>single</em> result.</p>
+<dd><p>Method to perform a query on a <em>single</em> collection in the data source and return a <em>single</em> result.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

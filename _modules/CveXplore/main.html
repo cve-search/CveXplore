@@ -234,7 +234,7 @@
 
 <div class="viewcode-block" id="CveXplore.get_single_store_entry"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.get_single_store_entry">[docs]</a>    <span class="k">def</span> <span class="nf">get_single_store_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">,</span> <span class="n">dict_filter</span><span class="o">=</span><span class="p">{}):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method to perform a query on a *single* collection in the mongodb and return a *single* result.</span>
+<span class="sd">        Method to perform a query on a *single* collection in the data source and return a *single* result.</span>
 
 <span class="sd">        :param entry_type: Which specific store are you querying? Choices are:</span>
 <span class="sd">                           - capec;</span>
@@ -266,7 +266,7 @@
 
 <div class="viewcode-block" id="CveXplore.get_single_store_entries"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.get_single_store_entries">[docs]</a>    <span class="k">def</span> <span class="nf">get_single_store_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method to perform a query on a *single* collection in the mongodb and return all of the results.</span>
+<span class="sd">        Method to perform a query on a *single* collection in the data source and return all of the results.</span>
 
 <span class="sd">        :param query: Tuple which contains the entry_type and the dict_filter in a tuple.</span>
 <span class="sd">                      Choices for entry_type:</span>
@@ -317,7 +317,7 @@
 
 <div class="viewcode-block" id="CveXplore.get_multi_store_entries"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.get_multi_store_entries">[docs]</a>    <span class="k">def</span> <span class="nf">get_multi_store_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">queries</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method to perform *multiple* queries on *a single* or *multiple* collections in the mongodb and return the</span>
+<span class="sd">        Method to perform *multiple* queries on *a single* or *multiple* collections in the data source and return the</span>
 <span class="sd">        results.</span>
 
 <span class="sd">        :param queries: A list of tuples which contains the entry_type and the dict_filter.</span>

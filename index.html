@@ -188,6 +188,10 @@ please check <a class="reference external" href="https://github.com/cve-search/c
 </pre></div>
 </div>
 </div>
+<div class="section" id="documentation">
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
+<p>Check <a class="reference external" href="https://cve-search.github.io/CveXplore/">github pages documentation</a></p>
+</div>
 <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="instantiation">
@@ -213,6 +217,108 @@ default port and security settings (Cve Search default parameters).</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">(</span><span class="n">api_connection_details</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;mylocal.cve-search.int&quot;</span><span class="p">,</span> <span class="mi">443</span><span class="p">),</span> <span class="s2">&quot;api_path&quot;</span><span class="p">:</span> <span class="s2">&quot;api&quot;</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span><span class="o">.</span><span class="n">version</span>
 <span class="go">&#39;0.1.2&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="query-for-data">
+<h2>Query for data<a class="headerlink" href="#query-for-data" title="Permalink to this headline">¶</a></h2>
+<p>CveXplore supports multiple methods to query for data.</p>
+<p>The queries are limited to the following collections:</p>
+<ul class="simple">
+<li><p>capec;</p></li>
+<li><p>cpe;</p></li>
+<li><p>cwe;</p></li>
+<li><p>via4;</p></li>
+<li><p>cves;</p></li>
+</ul>
+</div>
+<div class="section" id="free-format-query">
+<h2>Free format query<a class="headerlink" href="#free-format-query" title="Permalink to this headline">¶</a></h2>
+<p>Besides this restriction the queries can be free format on given parameters (returning a direct object or a
+list of objects); to get a ‘capec’ with the id of 1 you could use:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">get_single_store_entry</span><span class="p">(</span><span class="s2">&quot;capec&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span>
+<span class="go">&lt;&lt; Capec:1 &gt;&gt;</span>
+</pre></div>
+</div>
+<p>The above example is perfect when you would expect a single result from your query; if a query to a single collection
+could yield multiple results you better use:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">get_single_store_entries</span><span class="p">((</span><span class="s2">&quot;cves&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;cvss&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$eq&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">}}))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span>
+<span class="go">[&lt;&lt; Cves:CVE-2011-0387 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2015-1935 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2014-3053 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2010-4031 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2016-1338 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2013-3633 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2017-14444 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2017-14446 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2017-14445 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2016-2354 &gt;&gt;]</span>
+</pre></div>
+</div>
+<p>This type of query has a default limit of 10; which can be altered to a higher number if needed or disabled by setting
+the limit to 0:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">get_single_store_entries</span><span class="p">((</span><span class="s2">&quot;cves&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;cvss&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$eq&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">}}),</span> <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">32</span>
+</pre></div>
+</div>
+<p>If you need to query multiple collections at once you could use:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">get_multi_store_entries</span><span class="p">([(</span><span class="s2">&quot;CWE&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;78&quot;</span><span class="p">}),</span> <span class="p">(</span><span class="s2">&quot;cves&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;CVE-2009-0018&quot;</span><span class="p">})])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span>
+<span class="go">[&lt;&lt; Cwe:78 &gt;&gt;, &lt;&lt; Cves:CVE-2009-0018 &gt;&gt;]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="collection-specific-query">
+<h2>Collection specific query<a class="headerlink" href="#collection-specific-query" title="Permalink to this headline">¶</a></h2>
+<p>By using the collection specific attributes you can drill down to a specific field to query (returning an iterator to
+iterate over the requested results):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">capec</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">each</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">&lt;&lt; Capec:1 &gt;&gt;</span>
+</pre></div>
+</div>
+<p>If you would limit (or sort / skip) the returned results you could append additional commands to your original query:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">cves</span><span class="o">.</span><span class="n">cvss</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+<span class="go">32</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">cves</span><span class="o">.</span><span class="n">cvss</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+<span class="go">10</span>
+</pre></div>
+</div>
+<p>If you would like to sort the results:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">cves</span><span class="o">.</span><span class="n">cvss</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">DESCENDING</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">[&lt;&lt; Cves:CVE-2020-5735 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2020-13122 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2018-2926 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2018-17022 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2017-3807 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2017-17223 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2017-16347 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2017-16346 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2017-16345 &gt;&gt;,</span>
+<span class="go">&lt;&lt; Cves:CVE-2017-16344 &gt;&gt;]</span>
 </pre></div>
 </div>
 <div class="toctree-wrapper compound">
