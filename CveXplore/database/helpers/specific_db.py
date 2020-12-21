@@ -17,6 +17,16 @@ class CvesDatabaseFunctions(GenericDatabaseFactory):
         super().__init__(collection)
 
     def get_cves_for_vendor(self, vendor, limit=0):
+        """
+        Function to return cves based on a given vendor. By default to result is sorted descending on th cvss field.
+
+        :param vendor: A vendor to search for; e.g. microsoft
+        :type vendor: str
+        :param limit: Limit the amount of returned results
+        :type limit: int
+        :return: List with cves objects
+        :rtype: list
+        """
 
         return list(
             self._datasource_collection_connection.find({"vendors": vendor})
