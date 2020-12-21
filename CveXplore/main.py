@@ -16,6 +16,7 @@ from CveXplore.errors import DatabaseIllegalCollection
 from version import VERSION
 
 
+
 class CveXplore(object):
     """
     Main class for CveXplore package
