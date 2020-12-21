@@ -13,6 +13,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@master
+      - name: Commits to file
+        run: |
+          echo "In this release:" > ./commits.log
+          echo "" >> ./commits.log
+          git log $(git describe --tags --abbrev=0)..HEAD --no-merges --oneline >> ./commits.log
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -21,6 +26,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
+          body_path: ./commits.log
           draft: false
           prerelease: false
   deploy:
