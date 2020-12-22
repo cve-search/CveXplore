@@ -27,7 +27,7 @@ setup(
         "Documentation": "https://cve-search.github.io/CveXplore/",
         "Issues": "https://github.com/cve-search/CveXplore/issues",
     },
-    description="Package for interacting with cve-search ",
+    description="Package for interacting with cve-search",
     long_description=README,
     long_description_content_type="text/x-rst",
     package_data={"CveXplore": ["LICENSE", "VERSION"]},

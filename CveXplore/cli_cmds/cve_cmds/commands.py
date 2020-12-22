@@ -7,13 +7,16 @@ from CveXplore.cli_cmds.mutex_options.mutex import Mutex
 
 
 @click.group(
-    "single_collection",
-    invoke_without_command=True,
-    help="Perform queries on a single collection",
+    "cve", invoke_without_command=True, help="Query for cve specific data",
 )
-@click.option("-c", "--collection", required=True, help="Collection to query")
-@click.option("-f", "--field", required=True, help="Field to query")
-@click.option("-v", "--value", required=True, help="Value to query")
+@click.pass_context
+def cve_cmd(ctx):
+    pass
+
+
+@cve_cmd.group(
+    "last", invoke_without_command=True, help="Query the last N amount of cve entries",
+)
 @click.option("-l", "--limit", default=10, help="Query limit")
 @click.option(
     "--pretty",
@@ -32,10 +35,8 @@ from CveXplore.cli_cmds.mutex_options.mutex import Mutex
     not_required_if=["pretty"],
 )
 @click.pass_context
-def single_collection_cmd(ctx, collection, field, value, limit, pretty, output):
-    ret_list = ctx.obj["data_source"].get_single_store_entries(
-        (collection, {field: value}), limit=limit
-    )
+def last_cmd(ctx, limit, pretty, output):
+    ret_list = ctx.obj["data_source"].last_cves(limit=limit)
 
     result = [result.to_dict() for result in ret_list]
 
@@ -48,9 +49,7 @@ def single_collection_cmd(ctx, collection, field, value, limit, pretty, output):
             ctx.obj["RESULT"] = result
 
 
-@single_collection_cmd.command(
-    "less", help="Lets you scroll through the returned results"
-)
+@last_cmd.command("less", help="Lets you scroll through the returned results")
 @click.pass_context
 def less_cmd(ctx):
     click.echo_via_pager(ctx.obj["RESULT"])
