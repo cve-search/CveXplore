@@ -13,7 +13,13 @@ from CveXplore.api.connection.api_db import ApiDatabaseSource
 from CveXplore.common.db_mapping import database_mapping
 from CveXplore.database.connection.mongo_db import MongoDBConnection
 from CveXplore.errors import DatabaseIllegalCollection
-from version import VERSION
+try:
+    from version import VERSION
+except ModuleNotFoundError:
+    _PKG_DIR = os.path.dirname(__file__)
+    version_file = os.path.join(_PKG_DIR, "VERSION")
+    with open(version_file, "r") as fdsec:
+        VERSION = fdsec.read()
 
 
 class CveXplore(object):

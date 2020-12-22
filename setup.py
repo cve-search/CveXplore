@@ -32,6 +32,10 @@ setup(
     long_description_content_type="text/x-rst",
     package_data={"CveXplore": ["LICENSE", "VERSION"]},
     include_package_data=True,
+    entry_points='''
+            [console_scripts]
+            cvexplore=CveXplore.cli:main
+        ''',
     classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Programming Language :: Python :: 3",
