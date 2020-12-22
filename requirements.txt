@@ -1,4 +1,4 @@
 pymongo==3.11.2
 requests==2.25.1
-setuptools==51.1.0.post20201221
+setuptools==51.1.0
 click==8.0.0a1

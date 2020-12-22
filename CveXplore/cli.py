@@ -5,6 +5,7 @@ from CveXplore.main import CveXplore
 
 
 @click.group()
+@click.option('--version', help='Show the current version and exit')
 @click.pass_context
 def main(ctx):
     ctx.obj = CveXplore()
