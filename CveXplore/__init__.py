@@ -1,4 +1,5 @@
 from CveXplore.main import CveXplore
+
 try:
     from version import _version
 
