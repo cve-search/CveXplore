@@ -41,7 +41,8 @@ class MongoDBConnection(object):
 
         if host == "dummy":
             from mongoengine import connect
-            self.client = connect('mydb')
+
+            self.client = connect("mydb")
         else:
             self.client = MongoClient(host, port, connect=False, **kwargs)
 
