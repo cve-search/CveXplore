@@ -4,4 +4,4 @@ setuptools==56.0.0
 click==8.0.0a1
 colorama==0.4.4
 dicttoxml==1.7.4
-pandas==1.2.3
+pandas==1.2.4
