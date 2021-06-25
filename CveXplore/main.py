@@ -13,6 +13,7 @@ from CveXplore.api.connection.api_db import ApiDatabaseSource
 from CveXplore.common.db_mapping import database_mapping
 from CveXplore.database.connection.mongo_db import MongoDBConnection
 from CveXplore.errors import DatabaseIllegalCollection
+from CveXplore.lib.main_updater import MainUpdater
 
 try:
     from version import VERSION
@@ -57,9 +58,11 @@ class CveXplore(object):
             mongodb_connection_details = {}
             os.environ["MONGODB_CON_DETAILS"] = json.dumps(mongodb_connection_details)
             self.datasource = MongoDBConnection(**mongodb_connection_details)
+            self.db_updater = MainUpdater()
         elif mongodb_connection_details is not None:
             os.environ["MONGODB_CON_DETAILS"] = json.dumps(mongodb_connection_details)
             self.datasource = MongoDBConnection(**mongodb_connection_details)
+            self.db_updater = MainUpdater()
         elif api_connection_details is not None:
             api_connection_details["user_agent"] = "CveXplore:{}".format(self.version)
             os.environ["API_CON_DETAILS"] = json.dumps(api_connection_details)
@@ -207,6 +210,11 @@ class CveXplore(object):
         :return: List with Cves
         :rtype: list
         """
+
+        e = cpe_string.split(":")
+        for x in range(0, 13 - len(e)):
+            cpe_string += ":*"
+
         cpe = self.get_single_store_entry("cpe", {"cpe_2_2": cpe_string})
 
         if cpe is not None:
@@ -259,7 +267,6 @@ class CveXplore(object):
 
         return list(results)
 
-    @property
     def get_db_content_stats(self):
         """
         Property returning the stats from the database. Stats consist of the time last modified and the document count
