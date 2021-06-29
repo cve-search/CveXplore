@@ -6,16 +6,14 @@ from CveXplore.cli_cmds.cli_utils.utils import printer
 from CveXplore.cli_cmds.mutex_options.mutex import Mutex
 
 
-@click.group(
-    "cve", invoke_without_command=True, help="Query for cve specific data",
-)
+@click.group("cve", invoke_without_command=True, help="Query for cve specific data")
 @click.pass_context
 def cve_cmd(ctx):
     pass
 
 
 @cve_cmd.group(
-    "last", invoke_without_command=True, help="Query the last N amount of cve entries",
+    "last", invoke_without_command=True, help="Query the last N amount of cve entries"
 )
 @click.option("-l", "--limit", default=10, help="Query limit")
 @click.option(
@@ -30,7 +28,7 @@ def cve_cmd(ctx):
     "--output",
     default="json",
     help="Set the desired output format",
-    type=click.Choice(["json", "csv", "xml", "html"], case_sensitive=False,),
+    type=click.Choice(["json", "csv", "xml", "html"], case_sensitive=False),
     cls=Mutex,
     not_required_if=["pretty"],
 )

@@ -24,7 +24,7 @@ from urllib3 import Retry
 
 from .Config import Configuration
 from .LogHandler import UpdateHandler
-from .redis_q import WorkerQueue
+from .worker_q import WorkerQueue
 from CveXplore.database.connection.mongo_db import MongoDBConnection
 
 thread_local = threading.local()
@@ -334,7 +334,9 @@ class DownloadHandler(ABC):
         return self.database.list_collection_names()
 
     def setColInfo(self, collection, field, data):
-        self.database[collection].update({"db": collection}, {"$set": {field: data}}, upsert=True)
+        self.database[collection].update(
+            {"db": collection}, {"$set": {field: data}}, upsert=True
+        )
 
     def getCPEVersionInformation(self, query):
         return self.sanitize(self.database["cpe"].find_one(query))
@@ -353,7 +355,9 @@ class DownloadHandler(ABC):
         return x
 
     def setColUpdate(self, collection, date):
-        self.database["info"].update({"db": collection}, {"$set": {"last-modified": date}}, upsert=True)
+        self.database["info"].update(
+            {"db": collection}, {"$set": {"last-modified": date}}, upsert=True
+        )
 
     @abstractmethod
     def process_item(self, **kwargs):

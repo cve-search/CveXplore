@@ -27,7 +27,7 @@ from CveXplore.cli_cmds.mutex_options.mutex import Mutex
     "--output",
     default="json",
     help="Set the desired output format",
-    type=click.Choice(["json", "csv", "xml", "html"], case_sensitive=False,),
+    type=click.Choice(["json", "csv", "xml", "html"], case_sensitive=False),
     cls=Mutex,
     not_required_if=["pretty"],
 )

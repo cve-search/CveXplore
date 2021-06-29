@@ -1,10 +1,6 @@
 import datetime
 import os
 import re
-import urllib.parse
-
-import pymongo
-import redis
 
 runPath = os.path.dirname(os.path.realpath(__file__))
 

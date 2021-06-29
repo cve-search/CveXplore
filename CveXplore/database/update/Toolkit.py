@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-#
-# Toolkit for functions between scripts
-#
-# Software is free software released under the "GNU Affero General Public License v3.0"
-#
-# Copyright (c) 2014-2018  Pieter-Jan Moreels - pieterjan.moreels@gmail.com
-
 import re
 
 import dateutil.parser

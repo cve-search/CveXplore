@@ -75,13 +75,9 @@ class CveXplore(object):
 
         for each in self.database_mapping:
             if each != "cves":
-                setattr(
-                    self, each, GenericDatabaseFactory(collection=each,),
-                )
+                setattr(self, each, GenericDatabaseFactory(collection=each))
             else:
-                setattr(
-                    self, each, CvesDatabaseFunctions(collection=each,),
-                )
+                setattr(self, each, CvesDatabaseFunctions(collection=each))
 
     def get_single_store_entry(self, entry_type, dict_filter={}):
         """

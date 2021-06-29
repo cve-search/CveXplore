@@ -38,16 +38,12 @@ class Cves(DatasourceConnection):
                         {"related_weakness": {"$in": [cwe_id]}}
                     )
 
-                    setattr(
-                        self, "capec", list(capecs),
-                    )
+                    setattr(self, "capec", list(capecs))
 
         via4s = self._datasource_connection.store_via4.find_one({"id": self.id})
 
         if via4s is not None:
-            setattr(
-                self, "via4_references", via4s,
-            )
+            setattr(self, "via4_references", via4s)
 
     def iter_vuln_configurations(self):
         """
