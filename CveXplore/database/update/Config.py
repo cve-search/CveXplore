@@ -23,7 +23,7 @@ class Configuration(object):
 
     LOGGING_MAX_FILE_SIZE = os.getenv("LOGGING_MAX_FILE_SIZE", "100MB")
     LOGGING_BACKLOG = os.getenv("LOGGING_BACKLOG", 5)
-    LOGGING_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "./log/update_populate.log")
+    LOGGING_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "./update_populate.log")
 
     @classmethod
     def getCVEStartYear(cls):
