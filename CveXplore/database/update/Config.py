@@ -29,17 +29,6 @@ class Configuration(object):
     LOGGING_BACKLOG = os.getenv("LOGGING_BACKLOG", 5)
     LOGGING_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "./log/update_populate.log")
 
-    MONGO_HOST = os.getenv("MONGO_HOST", "localhost")
-    MONGO_PORT = os.getenv("MONGO_PORT", 27017)
-    MONGO_DB = os.getenv("MONGO_DB", "cvexdb")
-    MONGO_USER = os.getenv("MONGO_USER", "")
-    MONGO_PASS = os.getenv("MONGO_PASS", "")
-
-    REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-    REDIS_PORT = os.getenv("REDIS_PORT", 6379)
-    REDIS_PASS = os.getenv("REDIS_PASS", None)
-    REDIS_Q = os.getenv("REDIS_Q", 9)
-
     @classmethod
     def getCVEStartYear(cls):
         next_year = datetime.datetime.now().year + 1
@@ -62,7 +51,7 @@ class Configuration(object):
 
     @classmethod
     def toPath(cls, path):
-        return path if os.path.isabs(path) else os.path.join(runPath, "..", path)
+        return path if os.path.isabs(path) else os.path.join(runPath, "../..", path)
 
     @classmethod
     def getUpdateLogFile(cls):
@@ -84,40 +73,3 @@ class Configuration(object):
     @classmethod
     def getBacklog(cls):
         return cls.LOGGING_BACKLOG
-
-    @classmethod
-    def getMongoConnection(cls):
-        mongoHost = cls.MONGO_HOST
-        mongoPort = cls.MONGO_PORT
-        mongoDB = cls.MONGO_DB
-        mongoUsername = urllib.parse.quote(cls.MONGO_USER)
-        mongoPassword = urllib.parse.quote(cls.MONGO_PASS)
-        if mongoUsername and mongoPassword:
-            mongoURI = "mongodb://{username}:{password}@{host}:{port}/{db}".format(
-                username=mongoUsername,
-                password=mongoPassword,
-                host=mongoHost,
-                port=mongoPort,
-                db=mongoDB,
-            )
-        else:
-            mongoURI = "mongodb://{host}:{port}/{db}".format(
-                host=mongoHost, port=mongoPort, db=mongoDB
-            )
-        connect = pymongo.MongoClient(mongoURI, connect=False)
-        return connect[mongoDB]
-
-    @classmethod
-    def getRedisQConnection(cls):
-        redisHost = cls.REDIS_HOST
-        redisPort = cls.REDIS_PORT
-        redisDB = cls.REDIS_Q
-        redisPass = cls.REDIS_PASS
-        return redis.Redis(
-            host=redisHost,
-            port=redisPort,
-            db=redisDB,
-            password=redisPass,
-            charset="utf-8",
-            decode_responses=True,
-        )

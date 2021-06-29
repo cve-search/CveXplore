@@ -1,7 +1,7 @@
 import datetime
 import gzip
+import json
 import logging
-import multiprocessing as mp
 import os
 import sys
 import tempfile
@@ -14,18 +14,18 @@ from io import BytesIO
 from itertools import islice
 from shutil import copy
 
+import pymongo
 import requests
 from dateutil.parser import parse as parse_datetime
 from pymongo.errors import BulkWriteError
 from requests.adapters import HTTPAdapter
-from tqdm import tqdm
 from tqdm.contrib.concurrent import thread_map
 from urllib3 import Retry
 
-from .DatabaseLayer import getInfo, setColUpdate
-from .LogHandler import UpdateHandler
-from .redis_q import RedisQueue, CveXploreQueue
 from .Config import Configuration
+from .LogHandler import UpdateHandler
+from .redis_q import WorkerQueue
+from CveXplore.database.connection.mongo_db import MongoDBConnection
 
 thread_local = threading.local()
 logging.setLoggerClass(UpdateHandler)
@@ -46,9 +46,9 @@ class DownloadHandler(ABC):
 
         self.prefix = prefix
 
-        self.queue = RedisQueue(name=self.feed_type)
+        self.queue = WorkerQueue(name=self.feed_type)
 
-        self.file_queue = RedisQueue(name=f"{self.feed_type}:files")
+        self.file_queue = WorkerQueue(name=f"{self.feed_type}:files")
         self.file_queue.clear()
 
         self.progress_bar = None
@@ -56,6 +56,10 @@ class DownloadHandler(ABC):
         self.last_modified = None
 
         self.do_process = True
+
+        database = MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
+
+        self.database = database._dbclient
 
         self.logger = logging.getLogger("DownloadHandler")
 
@@ -98,23 +102,15 @@ class DownloadHandler(ABC):
 
         return thread_local.session
 
-    def process_downloads(self, sites, collection):
+    def process_downloads(self, sites):
         """
         Method to download and process files
 
         :param sites: List of file to download and process
         :type sites: list
-        :param collection: Mongodb Collection name
-        :type collection: str
         :return:
         :rtype:
         """
-
-        worker_size = (
-            int(os.getenv("WORKER_SIZE"))
-            if os.getenv("WORKER_SIZE")
-            else min(32, os.cpu_count() + 4)
-        )
 
         start_time = time.time()
 
@@ -123,15 +119,22 @@ class DownloadHandler(ABC):
         if self.do_process:
             thread_map(
                 self.file_to_queue,
-                self.file_queue.get_full_list(),
+                self.file_queue.getall(),
                 desc="Processing downloaded files",
             )
 
-            self._process_queue_to_db(worker_size, collection=collection)
+            chunks = []
+
+            for batch in iter(lambda: list(islice(self.queue, 10000)), []):
+                chunks.append(batch)
+
+            thread_map(
+                self._db_bulk_writer, chunks, desc="Transferring queue to database"
+            )
 
             # checking if last-modified was in the response headers and not set to default
             if "01-01-1970" != self.last_modified.strftime("%d-%m-%Y"):
-                setColUpdate(self.feed_type.lower(), self.last_modified)
+                self.setColUpdate(self.feed_type.lower(), self.last_modified)
 
         self.logger.info(
             "Duration: {}".format(timedelta(seconds=time.time() - start_time))
@@ -151,105 +154,19 @@ class DownloadHandler(ABC):
         for i in range(0, len(lst), number):
             yield lst[i : i + number]
 
-    def _handle_queue_progressbar(self, description):
-        """
-        Method for handling the progressbar during queue processing
-
-        :param description: Description for tqdm progressbar
-        :type description: str
-        """
-        max_len = self.queue.qsize()
-
-        pbar = tqdm(total=max_len, desc=description)
-        not_Done = True
-        q_len = max_len
-        dif_old = 0
-        x = 0
-
-        while not_Done:
-
-            current_q_len = self.queue.qsize()
-
-            if x % 10 == 0:
-                # log stats the first cycle and every 10th cycle thereafter
-                self.logger.debug(
-                    "Queue max_len: {}, current_q_len: {}, q_len: {}, dif_old: {}, cycle: {}".format(
-                        max_len, current_q_len, q_len, dif_old, x
-                    )
-                )
-
-            if current_q_len != 0:
-
-                if current_q_len != q_len:
-                    q_len = current_q_len
-                    dif = max_len - q_len
-
-                    pbar.update(int(dif - dif_old))
-
-                    dif_old = dif
-            else:
-                pbar.update(int(max_len - dif_old))
-                not_Done = False
-
-            x += 1
-            time.sleep(5)
-
-        self.logger.debug(
-            "Queue max_len: {}, q_len: {}, dif_old: {}, cycles: {}".format(
-                max_len, q_len, dif_old, x
-            )
-        )
-
-        pbar.close()
-
-    def _process_queue_to_db(self, max_workers, collection):
-        """
-        Method to write the queued database transactions into the database given a Queue reference and Collection name
-
-        :param max_workers: Max amount of worker processes to use; defaults to min(32, os.cpu_count() + 4)
-        :type max_workers: int
-        :param collection: Mongodb Collection name
-        :type collection: str
-        """
-
-        pbar = mp.Process(
-            target=self._handle_queue_progressbar,
-            args=("Transferring queue to database",),
-        )
-
-        processes = [
-            mp.Process(target=self._db_bulk_writer, args=(collection,))
-            for _ in range(max_workers)
-        ]
-        for proc in processes:
-            proc.start()
-            # Put triggers in the Queue to tell the workers to exit their for-loop
-            self.queue.put(self._end)
-
-        pbar.start()
-
-        for proc in processes:
-            proc.join()
-
-        pbar.join()
-
-    def _db_bulk_writer(self, collection, threshold=1000):
+    def _db_bulk_writer(self, batch):
         """
         Method to act as worker for writing queued entries into the database
 
-        :param collection: Mongodb Collection name
-        :type collection: str
-        :param threshold: Batch size threshold; defaults to 1000
-        :type threshold: int
+        :param batch: Batch entry
+        :type batch: list
         """
-        database = self.config.getMongoConnection()
 
-        for batch in iter(lambda: list(islice(self.queue, threshold)), []):
-            try:
-                database[collection].bulk_write(batch, ordered=False)
-            except BulkWriteError as err:
-                self.logger.debug("Error during bulk write: {}".format(err))
-                pass
+        try:
+            self.database[self.feed_type.lower()].bulk_write(batch, ordered=False)
+        except BulkWriteError as err:
+            self.logger.debug("Error during bulk write: {}".format(err))
+            pass
 
     def store_file(self, response_content, content_type, url):
         """
@@ -366,7 +283,7 @@ class DownloadHandler(ABC):
                         )
                     )
 
-                    i = getInfo(self.feed_type.lower())
+                    i = self.getInfo(self.feed_type.lower())
 
                     if i is not None:
                         if self.last_modified == i["last-modified"]:
@@ -375,7 +292,7 @@ class DownloadHandler(ABC):
                                     self.feed_type
                                 )
                             )
-                            self.file_queue.get_full_list()
+                            self.file_queue.getall()
                             self.do_process = False
                     if self.do_process:
                         content_type = response.headers["content-type"]
@@ -409,6 +326,34 @@ class DownloadHandler(ABC):
                     )
                 )
                 self.do_process = False
+
+    def dropCollection(self, col):
+        return self.database[col].drop()
+
+    def getTableNames(self):
+        return self.database.list_collection_names()
+
+    def setColInfo(self, collection, field, data):
+        self.database[collection].update({"db": collection}, {"$set": {field: data}}, upsert=True)
+
+    def getCPEVersionInformation(self, query):
+        return self.sanitize(self.database["cpe"].find_one(query))
+
+    def getInfo(self, collection):
+        return self.sanitize(self.database["info"].find_one({"db": collection}))
+
+    def sanitize(self, x):
+        if type(x) == pymongo.cursor.Cursor:
+            x = list(x)
+        if type(x) == list:
+            for y in x:
+                self.sanitize(y)
+        if x and "_id" in x:
+            x.pop("_id")
+        return x
+
+    def setColUpdate(self, collection, date):
+        self.database["info"].update({"db": collection}, {"$set": {"last-modified": date}}, upsert=True)
 
     @abstractmethod
     def process_item(self, **kwargs):

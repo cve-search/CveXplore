@@ -1,4 +1,4 @@
-from CveXplore.update.Sources_process import (
+from CveXplore.database.update.Sources_process import (
     CPEDownloads,
     CVEDownloads,
     CWEDownloads,
@@ -9,7 +9,9 @@ from CveXplore.update.Sources_process import (
 
 
 class MainUpdater(object):
-    def __init__(self, repopulate=False):
+    def __init__(self, datasource, repopulate=False):
+
+        self.datasource = datasource
 
         self.repopulate = repopulate
 
@@ -33,6 +35,8 @@ class MainUpdater(object):
             indexer = post["updater"]()
             indexer.create_indexes()
 
+        self.datasource.set_handlers_for_collections()
+
     def populate(self):
 
         for source in self.sources:
@@ -42,3 +46,5 @@ class MainUpdater(object):
         for post in self.posts:
             indexer = post["updater"]()
             indexer.create_indexes()
+
+        self.datasource.set_handlers_for_collections()

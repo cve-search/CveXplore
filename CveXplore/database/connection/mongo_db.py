@@ -8,7 +8,7 @@ from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
 
 from CveXplore.database.helpers.cvesearch_mongo_database import CveSearchCollection
-from CveXplore.errors import DatabaseEmptyException, DatabaseConnectionException
+from CveXplore.errors import DatabaseConnectionException
 
 
 class MongoDBConnection(object):
@@ -37,19 +37,14 @@ class MongoDBConnection(object):
         """
 
         self.client = None
-        self.__dbclient = None
+        self._dbclient = None
 
-        if host == "dummy":
-            from mongoengine import connect
+        self.client = MongoClient(host, port, connect=False, **kwargs)
 
-            self.client = connect("mydb")
-        else:
-            self.client = MongoClient(host, port, connect=False, **kwargs)
-
-        self.__dbclient = self.client[database]
+        self._dbclient = self.client[database]
 
         try:
-            collections = self.__dbclient.list_collection_names()
+            collections = self._dbclient.list_collection_names()
         except ServerSelectionTimeoutError as err:
             raise DatabaseConnectionException(
                 "Connection to the database failed: {}".format(err)
@@ -59,27 +54,29 @@ class MongoDBConnection(object):
             for each in collections:
                 self.__setattr__(
                     "store_{}".format(each),
-                    CveSearchCollection(database=self.__dbclient, name=each),
+                    CveSearchCollection(database=self._dbclient, name=each),
                 )
-        else:
-            raise DatabaseEmptyException(
-                "No collection found in the database named: {}".format(
-                    self.__dbclient.name
-                )
-            )
 
         atexit.register(self.disconnect)
 
-    @property
     def get_collections_details(self):
 
-        for each in self.__dbclient.list_collections():
+        for each in self._dbclient.list_collections():
             yield each
+
+    def set_handlers_for_collections(self):
+        for each in self._dbclient.list_collection_names():
+            if not hasattr(self, each):
+                setattr(
+                    self,
+                    "store_{}".format(each),
+                    CveSearchCollection(database=self._dbclient, name=each),
+                )
 
     @property
     def get_collection_names(self):
 
-        return self.__dbclient.list_collection_names()
+        return self._dbclient.list_collection_names()
 
     def disconnect(self):
         """
@@ -94,4 +91,4 @@ class MongoDBConnection(object):
 
     def __repr__(self):
         """ String representation of object """
-        return "<< MongoDBConnection:{} >>".format(self.__dbclient.name)
+        return "<< MongoDBConnection:{} >>".format(self._dbclient.name)

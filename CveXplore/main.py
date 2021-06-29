@@ -13,7 +13,7 @@ from CveXplore.api.connection.api_db import ApiDatabaseSource
 from CveXplore.common.db_mapping import database_mapping
 from CveXplore.database.connection.mongo_db import MongoDBConnection
 from CveXplore.errors import DatabaseIllegalCollection
-from CveXplore.update.main_updater import MainUpdater
+from CveXplore.database.update.main_updater import MainUpdater
 
 try:
     from version import VERSION
@@ -58,11 +58,11 @@ class CveXplore(object):
             mongodb_connection_details = {}
             os.environ["MONGODB_CON_DETAILS"] = json.dumps(mongodb_connection_details)
             self.datasource = MongoDBConnection(**mongodb_connection_details)
-            self.db_updater = MainUpdater()
+            self.database = MainUpdater(datasource=self.datasource)
         elif mongodb_connection_details is not None:
             os.environ["MONGODB_CON_DETAILS"] = json.dumps(mongodb_connection_details)
             self.datasource = MongoDBConnection(**mongodb_connection_details)
-            self.db_updater = MainUpdater()
+            self.database = MainUpdater(datasource=self.datasource)
         elif api_connection_details is not None:
             api_connection_details["user_agent"] = "CveXplore:{}".format(self.version)
             os.environ["API_CON_DETAILS"] = json.dumps(api_connection_details)

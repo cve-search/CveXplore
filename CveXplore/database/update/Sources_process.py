@@ -2,29 +2,23 @@ import datetime
 import hashlib
 import json
 import logging
+import os
 import shutil
 from collections import namedtuple
 from xml.sax import make_parser
 
+import pymongo
 from dateutil.parser import parse as parse_datetime
 from pymongo import TEXT, ASCENDING
 
 from .Config import Configuration
-from .DatabaseLayer import (
-    getTableNames,
-    dropCollection,
-    getCPEVersionInformation,
-    setColInfo,
-    getInfo,
-    ensureIndex,
-)
 from .JSONFileHandler import JSONFileHandler
 from .Toolkit import generate_title
 from .XMLFileHandler import XMLFileHandler
 from .content_handlers import CapecHandler, CWEHandler
 from .db_action import DatabaseAction
+from CveXplore.database.connection.mongo_db import MongoDBConnection
 
-# init parts of the file names to enable looped file download
 file_prefix = "nvdcve-1.1-"
 file_suffix = ".json.gz"
 file_mod = "modified"
@@ -111,10 +105,10 @@ class CPEDownloads(JSONFileHandler):
         self.logger.info("CPE database update started")
 
         # if collection is non-existent; assume it's not an update
-        if self.feed_type.lower() not in getTableNames():
+        if self.feed_type.lower() not in self.getTableNames():
             self.is_update = False
 
-        self.process_downloads([self.feed_url], collection=self.feed_type.lower())
+        self.process_downloads([self.feed_url])
 
         self.logger.info("Finished CPE database update")
 
@@ -125,13 +119,13 @@ class CPEDownloads(JSONFileHandler):
 
         self.queue.clear()
 
-        dropCollection(self.feed_type.lower())
+        self.dropCollection(self.feed_type.lower())
 
         DatabaseIndexer().create_indexes(collection="cpe")
 
         self.is_update = False
 
-        self.process_downloads([self.feed_url], collection=self.feed_type.lower())
+        self.process_downloads([self.feed_url])
 
         self.logger.info("Finished CPE database population")
 
@@ -317,7 +311,7 @@ class CVEDownloads(JSONFileHandler):
                                     cpeuri["cpe23Uri"].encode("utf-8")
                                     + version_info.encode("utf-8")
                                 ).hexdigest()
-                                cpe_info = getCPEVersionInformation(query)
+                                cpe_info = self.getCPEVersionInformation(query)
                                 if cpe_info:
                                     if cpe_info["cpe_name"]:
                                         for vulnerable_version in cpe_info["cpe_name"]:
@@ -430,7 +424,7 @@ class CVEDownloads(JSONFileHandler):
                                             cpeuri["cpe23Uri"].encode("utf-8")
                                             + version_info.encode("utf-8")
                                         ).hexdigest()
-                                        cpe_info = getCPEVersionInformation(query)
+                                        cpe_info = self.getCPEVersionInformation(query)
                                         if cpe_info:
                                             if cpe_info["cpe_name"]:
                                                 for vulnerable_version in cpe_info[
@@ -596,12 +590,11 @@ class CVEDownloads(JSONFileHandler):
         self.logger.info("CVE database update started")
 
         # if collection is non-existent; assume it's not an update
-        if "cves" not in getTableNames():
+        if "cves" not in self.getTableNames():
             self.is_update = False
 
         self.process_downloads(
-            [self.feed_url + self.modfile, self.feed_url + self.recfile],
-            collection=self.feed_type.lower(),
+            [self.feed_url + self.modfile, self.feed_url + self.recfile]
         )
 
         self.logger.info("Finished CVE database update")
@@ -623,7 +616,7 @@ class CVEDownloads(JSONFileHandler):
 
         self.queue.clear()
 
-        dropCollection("cves")
+        self.dropCollection("cves")
 
         DatabaseIndexer().create_indexes(collection="cves")
 
@@ -632,7 +625,7 @@ class CVEDownloads(JSONFileHandler):
 
             urls.append(self.feed_url + getfile)
 
-        self.process_downloads(urls, collection=self.feed_type.lower())
+        self.process_downloads(urls)
 
         self.logger.info("Finished CVE database population")
 
@@ -666,8 +659,8 @@ class VIADownloads(JSONFileHandler):
         with open(filename, "rb") as input_file:
             data = json.loads(input_file.read().decode("utf-8"))
 
-            setColInfo("via4", "sources", data["metadata"]["sources"])
-            setColInfo("via4", "searchables", data["metadata"]["searchables"])
+            self.setColInfo("via4", "sources", data["metadata"]["sources"])
+            self.setColInfo("via4", "searchables", data["metadata"]["searchables"])
 
             self.logger.debug("Processed metadata from file: {}".format(filename))
 
@@ -702,10 +695,10 @@ class VIADownloads(JSONFileHandler):
         self.logger.info("VIA4 database update started")
 
         # if collection is non-existent; assume it's not an update
-        if self.feed_type.lower() not in getTableNames():
+        if self.feed_type.lower() not in self.getTableNames():
             self.is_update = False
 
-        self.process_downloads([self.feed_url], collection=self.feed_type.lower())
+        self.process_downloads([self.feed_url])
 
         self.logger.info("Finished VIA4 database update")
 
@@ -755,10 +748,10 @@ class CAPECDownloads(XMLFileHandler):
         self.logger.info("CAPEC database update started")
 
         # if collection is non-existent; assume it's not an update
-        if self.feed_type.lower() not in getTableNames():
+        if self.feed_type.lower() not in self.getTableNames():
             self.is_update = False
 
-        self.process_downloads([self.feed_url], collection=self.feed_type.lower())
+        self.process_downloads([self.feed_url])
 
         self.logger.info("Finished CAPEC database update")
 
@@ -812,10 +805,10 @@ class CWEDownloads(XMLFileHandler):
         self.logger.info("CWE database update started")
 
         # if collection is non-existent; assume it's not an update
-        if self.feed_type.lower() not in getTableNames():
+        if self.feed_type.lower() not in self.getTableNames():
             self.is_update = False
 
-        self.process_downloads([self.feed_url], collection=self.feed_type.lower())
+        self.process_downloads([self.feed_url])
 
         self.logger.info("Finished CWE database update")
 
@@ -833,6 +826,9 @@ MongoAddIndex = namedtuple("MongoAddIndex", "index name weights")
 
 class DatabaseIndexer(object):
     def __init__(self):
+
+        database = MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
+        self.database = database._dbclient
 
         self.indexes = {
             "cpe": [
@@ -936,6 +932,19 @@ class DatabaseIndexer(object):
 
         self.logger = logging.getLogger("DatabaseIndexer")
 
+    def getInfo(self, collection):
+        return self.sanitize(self.database["info"].find_one({"db": collection}))
+
+    def sanitize(self, x):
+        if type(x) == pymongo.cursor.Cursor:
+            x = list(x)
+        if type(x) == list:
+            for y in x:
+                self.sanitize(y)
+        if x and "_id" in x:
+            x.pop("_id")
+        return x
+
     def create_indexes(self, collection=None):
 
         if collection is not None:
@@ -986,7 +995,7 @@ class DatabaseIndexer(object):
             yield each
 
     def get_via4_indexes(self):
-        via4 = getInfo("via4")
+        via4 = self.getInfo("via4")
         result = []
         if via4:
             for index in via4.get("searchables", []):
@@ -995,7 +1004,7 @@ class DatabaseIndexer(object):
 
     def setIndex(self, col, field, **kwargs):
         try:
-            ensureIndex(col, field, **kwargs)
+            self.database[col].create_index(field, **kwargs)
             self.logger.info("Success to create index %s on %s" % (field, col))
         except Exception as e:
             self.logger.error("Failed to create index %s on %s: %s" % (col, field, e))
