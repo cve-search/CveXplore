@@ -174,7 +174,7 @@
 <span class="kn">from</span> <span class="nn">pymongo.errors</span> <span class="kn">import</span> <span class="n">ServerSelectionTimeoutError</span>
 
 <span class="kn">from</span> <span class="nn">CveXplore.database.helpers.cvesearch_mongo_database</span> <span class="kn">import</span> <span class="n">CveSearchCollection</span>
-<span class="kn">from</span> <span class="nn">CveXplore.errors</span> <span class="kn">import</span> <span class="n">DatabaseEmptyException</span><span class="p">,</span> <span class="n">DatabaseConnectionException</span>
+<span class="kn">from</span> <span class="nn">CveXplore.errors</span> <span class="kn">import</span> <span class="n">DatabaseConnectionException</span>
 
 
 <div class="viewcode-block" id="MongoDBConnection"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection">[docs]</a><span class="k">class</span> <span class="nc">MongoDBConnection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -203,19 +203,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__dbclient</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">if</span> <span class="n">host</span> <span class="o">==</span> <span class="s2">&quot;dummy&quot;</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">mongoengine</span> <span class="kn">import</span> <span class="n">connect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">connect</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mydb&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">connect</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">__dbclient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">[</span><span class="n">database</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">[</span><span class="n">database</span><span class="p">]</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">collections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dbclient</span><span class="o">.</span><span class="n">list_collection_names</span><span class="p">()</span>
+            <span class="n">collections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span><span class="o">.</span><span class="n">list_collection_names</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">ServerSelectionTimeoutError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">DatabaseConnectionException</span><span class="p">(</span>
                 <span class="s2">&quot;Connection to the database failed: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
@@ -225,27 +220,29 @@
             <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">collections</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
                     <span class="s2">&quot;store_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">each</span><span class="p">),</span>
-                    <span class="n">CveSearchCollection</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__dbclient</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="p">),</span>
+                    <span class="n">CveSearchCollection</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="p">),</span>
                 <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">DatabaseEmptyException</span><span class="p">(</span>
-                <span class="s2">&quot;No collection found in the database named: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">__dbclient</span><span class="o">.</span><span class="n">name</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
 
         <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">)</span></div>
 
-    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">get_collections_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dbclient</span><span class="o">.</span><span class="n">list_collections</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span><span class="o">.</span><span class="n">list_collections</span><span class="p">():</span>
             <span class="k">yield</span> <span class="n">each</span>
+
+    <span class="k">def</span> <span class="nf">set_handlers_for_collections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span><span class="o">.</span><span class="n">list_collection_names</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">each</span><span class="p">):</span>
+                <span class="nb">setattr</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="p">,</span>
+                    <span class="s2">&quot;store_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">each</span><span class="p">),</span>
+                    <span class="n">CveSearchCollection</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="p">),</span>
+                <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">get_collection_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dbclient</span><span class="o">.</span><span class="n">list_collection_names</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span><span class="o">.</span><span class="n">list_collection_names</span><span class="p">()</span>
 
 <div class="viewcode-block" id="MongoDBConnection.disconnect"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -260,7 +257,7 @@
 
 <div class="viewcode-block" id="MongoDBConnection.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; MongoDBConnection:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dbclient</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; MongoDBConnection:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
