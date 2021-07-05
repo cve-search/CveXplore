@@ -16,6 +16,12 @@
 
 The CveXplore package aims to provide an object related way to interact with the data collected or hosted by a
 cve-search instance. It provides an ambiguous way to interact either to the cve-search mongodb or to the cve-search API.
+
+From version 0.2.5 onwards CveXplore has the possibility to populate and update the database without the need of any of
+the cve-search binaries and thus providing the same functionality as cve-search but without the GUI components.
+
+A click command line functionality is being build but for now still in progress...
+
 All the data provided by this interaction is converted into objects before being returned. And thus providing a way to
 interact with objects rather then with raw data.
 
@@ -47,6 +53,25 @@ Check `github pages documentation <https://cve-search.github.io/CveXplore/>`_
 
 Usage
 -----
+
+Local Database populate / update
+********************************
+
+As of version 0.2.5 CveXplore can populate and update a local mongodb instance from either the command line:
+
+.. code-block:: bash
+
+   # cvexplore database populate
+   # cvexplore database update
+
+Or via the the CveXplore object:
+
+.. code-block:: python
+
+   >>> from CveXplore import CveXplore
+   >>> cvx = CveXplore()
+   >>> cvx.database.populate()
+   >>> cvx.database.update()
 
 Instantiation
 *************
