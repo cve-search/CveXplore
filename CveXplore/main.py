@@ -5,11 +5,13 @@ Main
 import functools
 import json
 import os
+import re
 from collections import defaultdict
 
 from pymongo import DESCENDING
 
 from CveXplore.api.connection.api_db import ApiDatabaseSource
+from CveXplore.common.cpe_converters import from2to3CPE
 from CveXplore.common.db_mapping import database_mapping
 from CveXplore.database.connection.mongo_db import MongoDBConnection
 from CveXplore.errors import DatabaseIllegalCollection
@@ -194,29 +196,38 @@ class CveXplore(object):
 
         return list(joined_list)
 
-    def cves_for_cpe(self, cpe_string, vuln_prod_search=False):
+    def cves_for_cpe(self, cpe_string):
         """
         Method for retrieving Cves that match a single CPE string. By default the search will be made matching
         the configuration fields of the cves documents.
 
         :param cpe_string: CPE string: e.g. ``cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*``
         :type cpe_string: str
-        :param vuln_prod_search: Search for matching products instead of configurations
-        :type vuln_prod_search: bool
         :return: List with Cves
         :rtype: list
         """
 
-        e = cpe_string.split(":")
-        for x in range(0, 13 - len(e)):
-            cpe_string += ":*"
+        # format to cpe2.3
+        cpe_string = from2to3CPE(cpe_string)
 
-        cpe = self.get_single_store_entry("cpe", {"cpe_2_2": cpe_string})
+        if cpe_string.startswith("cpe"):
+            # strict search with term starting with cpe; e.g: cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*
 
-        if cpe is not None:
-            return list(cpe.iter_cves_matching_cpe(vuln_prod_search))
+            remove_trailing_regex_stars = r"(?:\:|\:\:|\:\*)+$"
+
+            cpe_regex = re.escape(re.sub(remove_trailing_regex_stars, "", cpe_string))
+
+            cpe_regex_string = r"^{}:".format(cpe_regex)
         else:
-            return cpe
+            # more general search on same field; e.g. microsoft:windows_7
+            cpe_regex_string = "{}".format(re.escape(cpe_string))
+
+        cves = self.get_single_store_entries(
+            ("cves", {"vulnerable_configuration": {"$regex": cpe_regex_string}}),
+            limit=0,
+        )
+
+        return cves
 
     def cve_by_id(self, cve_id):
         """
