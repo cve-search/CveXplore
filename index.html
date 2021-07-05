@@ -171,8 +171,11 @@
 <a class="reference external image-reference" href="https://www.gnu.org/licenses/gpl-3.0"><img alt="https://img.shields.io/badge/License-GPLv3-blue.svg" src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a>
 <a class="reference external image-reference" href="https://GitHub.com/cve-search/CveXplore"><img alt="https://badgen.net/badge/Github/repo/green?icon=github" src="https://badgen.net/badge/Github/repo/green?icon=github" /></a>
 <p>The CveXplore package aims to provide an object related way to interact with the data collected or hosted by a
-cve-search instance. It provides an ambiguous way to interact either to the cve-search mongodb or to the cve-search API.
-All the data provided by this interaction is converted into objects before being returned. And thus providing a way to
+cve-search instance. It provides an ambiguous way to interact either to the cve-search mongodb or to the cve-search API.</p>
+<p>From version 0.2.5 onwards CveXplore has the possibility to populate and update the database without the need of any of
+the cve-search binaries and thus providing the same functionality as cve-search but without the GUI components.</p>
+<p>A click command line functionality is being build but for now still in progress…</p>
+<p>All the data provided by this interaction is converted into objects before being returned. And thus providing a way to
 interact with objects rather then with raw data.</p>
 <div class="section" id="dependencies">
 <h1>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h1>
@@ -201,6 +204,21 @@ please check <a class="reference external" href="https://github.com/cve-search/c
 </div>
 <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="local-database-populate-update">
+<h2>Local Database populate / update<a class="headerlink" href="#local-database-populate-update" title="Permalink to this headline">¶</a></h2>
+<p>As of version 0.2.5 CveXplore can populate and update a local mongodb instance from either the command line:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># cvexplore database populate</span>
+<span class="c1"># cvexplore database update</span>
+</pre></div>
+</div>
+<p>Or via the the CveXplore object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">populate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="instantiation">
 <h2>Instantiation<a class="headerlink" href="#instantiation" title="Permalink to this headline">¶</a></h2>
 <p>CveXplore can be instantiated with different parameters, depending to which data source you’re going to connect to.
