@@ -119,9 +119,11 @@ class CPEDownloads(JSONFileHandler):
 
         self.queue.clear()
 
+        self.delColInfo(self.feed_type.lower())
+
         self.dropCollection(self.feed_type.lower())
 
-        DatabaseIndexer().create_indexes(collection="cpe")
+        DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
 
         self.is_update = False
 
@@ -616,9 +618,11 @@ class CVEDownloads(JSONFileHandler):
 
         self.queue.clear()
 
-        self.dropCollection("cves")
+        self.delColInfo(self.feed_type.lower())
 
-        DatabaseIndexer().create_indexes(collection="cves")
+        self.dropCollection(self.feed_type.lower())
+
+        DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
 
         for x in self.get_cve_year_range():
             getfile = file_prefix + str(x) + file_suffix
@@ -707,6 +711,11 @@ class VIADownloads(JSONFileHandler):
     def populate(self, **kwargs):
         self.is_update = False
         self.queue.clear()
+
+        self.delColInfo(self.feed_type.lower())
+
+        self.dropCollection(self.feed_type.lower())
+
         return self.update()
 
 
@@ -760,6 +769,11 @@ class CAPECDownloads(XMLFileHandler):
     def populate(self, **kwargs):
         self.is_update = False
         self.queue.clear()
+
+        self.delColInfo(self.feed_type.lower())
+
+        self.dropCollection(self.feed_type.lower())
+
         return self.update()
 
 
@@ -817,6 +831,11 @@ class CWEDownloads(XMLFileHandler):
     def populate(self, **kwargs):
         self.is_update = False
         self.queue.clear()
+
+        self.delColInfo(self.feed_type.lower())
+
+        self.dropCollection(self.feed_type.lower())
+
         return self.update()
 
 

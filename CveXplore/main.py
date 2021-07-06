@@ -15,7 +15,7 @@ from CveXplore.common.cpe_converters import from2to3CPE
 from CveXplore.common.db_mapping import database_mapping
 from CveXplore.database.connection.mongo_db import MongoDBConnection
 from CveXplore.errors import DatabaseIllegalCollection
-from CveXplore.database.update.main_updater import MainUpdater
+from CveXplore.database.maintenance.main_updater import MainUpdater
 
 try:
     from version import VERSION

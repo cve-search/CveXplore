@@ -1,4 +1,4 @@
-from CveXplore.database.update.Sources_process import (
+from CveXplore.database.maintenance.Sources_process import (
     CPEDownloads,
     CVEDownloads,
     CWEDownloads,

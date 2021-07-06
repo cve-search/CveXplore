@@ -338,6 +338,9 @@ class DownloadHandler(ABC):
             {"db": collection}, {"$set": {field: data}}, upsert=True
         )
 
+    def delColInfo(self, collection):
+        self.database[collection].remove({"db": collection})
+
     def getCPEVersionInformation(self, query):
         return self.sanitize(self.database["cpe"].find_one(query))
 
