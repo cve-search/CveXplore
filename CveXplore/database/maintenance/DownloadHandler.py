@@ -339,7 +339,7 @@ class DownloadHandler(ABC):
         )
 
     def delColInfo(self, collection):
-        self.database[collection].remove({"db": collection})
+        self.database["info"].remove({"db": collection})
 
     def getCPEVersionInformation(self, query):
         return self.sanitize(self.database["cpe"].find_one(query))
