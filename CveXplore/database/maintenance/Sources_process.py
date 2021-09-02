@@ -839,8 +839,8 @@ class CWEDownloads(XMLFileHandler):
         return self.update()
 
 
-MongoUniqueIndex = namedtuple("MongoUniqueIndex", "index name unique weights")
-MongoAddIndex = namedtuple("MongoAddIndex", "index name weights")
+MongoUniqueIndex = namedtuple("MongoUniqueIndex", "index name unique")
+MongoAddIndex = namedtuple("MongoAddIndex", "index name")
 
 
 class DatabaseIndexer(object):
@@ -855,15 +855,13 @@ class DatabaseIndexer(object):
                     index=[("id", ASCENDING)],
                     name="id",
                     unique=True,
-                    weights={"id": 10},
                 ),
                 MongoAddIndex(
-                    index=[("vendor", ASCENDING)], name="vendor", weights={"vendor": 5}
+                    index=[("vendor", ASCENDING)], name="vendor"
                 ),
                 MongoAddIndex(
                     index=[("product", ASCENDING)],
                     name="product",
-                    weights={"product": 3},
                 ),
             ],
             "cpeother": [
@@ -871,80 +869,69 @@ class DatabaseIndexer(object):
                     index=[("id", ASCENDING)],
                     name="id",
                     unique=True,
-                    weights={"id": 10},
                 )
             ],
             "cves": [
-                MongoAddIndex(index=[("id", ASCENDING)], name="id", weights={"id": 10}),
+                MongoAddIndex(index=[("id", ASCENDING)], name="id"),
                 MongoAddIndex(
                     index=[("vulnerable_configuration", ASCENDING)],
                     name="vulnerable_configuration",
-                    weights={"vulnerable_configuration": 3},
                 ),
                 MongoAddIndex(
                     index=[("vulnerable_product", ASCENDING)],
                     name="vulnerable_product",
-                    weights={"vulnerable_product": 3},
                 ),
                 MongoAddIndex(
                     index=[("Modified", ASCENDING)],
                     name="Modified",
-                    weights={"Modified": 3},
                 ),
                 MongoAddIndex(
                     index=[("Published", ASCENDING)],
                     name="Published",
-                    weights={"Published": 3},
                 ),
                 MongoAddIndex(
                     index=[("last-modified", ASCENDING)],
                     name="last-modified",
-                    weights={"last-modified": 3},
                 ),
                 MongoAddIndex(
-                    index=[("cvss", ASCENDING)], name="cvss", weights={"cvss": 5}
+                    index=[("cvss", ASCENDING)], name="cvss"
                 ),
                 MongoAddIndex(
-                    index=[("cvss3", ASCENDING)], name="cvss3", weights={"cvss3": 5}
+                    index=[("cvss3", ASCENDING)], name="cvss3"
                 ),
                 MongoAddIndex(
-                    index=[("summary", TEXT)], name="summary", weights={"summary": 5}
+                    index=[("summary", TEXT)], name="summary"
                 ),
                 MongoAddIndex(
                     index=[("vendors", ASCENDING)],
                     name="vendors",
-                    weights={"vendors": 5},
                 ),
                 MongoAddIndex(
                     index=[("products", ASCENDING)],
                     name="products",
-                    weights={"products": 5},
                 ),
                 MongoAddIndex(
                     index=[("vulnerable_product_stems", ASCENDING)],
                     name="vulnerable_product_stems",
-                    weights={"vulnerable_product_stems": 5},
                 ),
                 MongoAddIndex(
                     index=[("vulnerable_configuration_stems", ASCENDING)],
                     name="vulnerable_configuration_stems",
-                    weights={"vulnerable_configuration_stems": 5},
                 ),
             ],
             "via4": [
-                MongoAddIndex(index=[("id", ASCENDING)], name="id", weights={"id": 10})
+                MongoAddIndex(index=[("id", ASCENDING)], name="id")
             ],
             "mgmt_whitelist": [
-                MongoAddIndex(index=[("id", ASCENDING)], name="id", weights={"id": 10})
+                MongoAddIndex(index=[("id", ASCENDING)], name="id")
             ],
             "mgmt_blacklist": [
-                MongoAddIndex(index=[("id", ASCENDING)], name="id", weights={"id": 10})
+                MongoAddIndex(index=[("id", ASCENDING)], name="id")
             ],
             "capec": [
                 MongoAddIndex(
                     index=[("related_weakness", ASCENDING)],
                     name="related_weakness",
-                    weights={"related_weakness": 10},
                 )
             ],
         }
@@ -975,11 +962,10 @@ class DatabaseIndexer(object):
                             each.index,
                             name=each.name,
                             unique=each.unique,
-                            weights=each.weights,
                         )
                     elif isinstance(each, MongoAddIndex):
                         self.setIndex(
-                            collection, each.index, name=each.name, weights=each.weights
+                            collection, each.index, name=each.name
                         )
             except KeyError:
                 # no specific index given, continue
@@ -1002,11 +988,10 @@ class DatabaseIndexer(object):
                             each.index,
                             name=each.name,
                             unique=each.unique,
-                            weights=each.weights,
                         )
                     elif isinstance(each, MongoAddIndex):
                         self.setIndex(
-                            collection, each.index, name=each.name, weights=each.weights
+                            collection, each.index, name=each.name
                         )
 
     def iter_indexes(self):

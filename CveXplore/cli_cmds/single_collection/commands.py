@@ -34,7 +34,7 @@ from CveXplore.cli_cmds.mutex_options.mutex import Mutex
 @click.pass_context
 def single_collection_cmd(ctx, collection, field, value, limit, pretty, output):
     ret_list = ctx.obj["data_source"].get_single_store_entries(
-        (collection, {field: value}), limit=limit
+        (collection, {field: value.upper()}), limit=limit
     )
 
     result = [result.to_dict() for result in ret_list]
