@@ -37,14 +37,12 @@ class MainUpdater(object):
 
         self.datasource.set_handlers_for_collections()
 
-    def populate(self):
+    def initialize(self):
 
-        for source in self.sources:
-            populator = source["updater"]()
-            populator.populate()
+        cpe_pop = CPEDownloads()
+        cpe_pop.populate()
 
-        for post in self.posts:
-            indexer = post["updater"]()
-            indexer.create_indexes()
+        cve_pop = CVEDownloads()
+        cve_pop.populate()
 
-        self.datasource.set_handlers_for_collections()
+        self.update()

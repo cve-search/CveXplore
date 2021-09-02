@@ -15,7 +15,7 @@ def update_cmd(ctx):
     ctx.obj["data_source"].database.update()
 
 
-@db_cmd.group("populate", invoke_without_command=True, help="Populate the database")
+@db_cmd.group("initialize", invoke_without_command=True, help="Initialize the database")
 @click.pass_context
-def populate_cmd(ctx):
-    ctx.obj["data_source"].database.populate()
+def initialize_cmd(ctx):
+    ctx.obj["data_source"].database.initialize()
