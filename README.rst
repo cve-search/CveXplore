@@ -61,7 +61,7 @@ As of version 0.2.5 CveXplore can populate and update a local mongodb instance f
 
 .. code-block:: bash
 
-   # cvexplore database populate
+   # cvexplore database initialize
    # cvexplore database update
 
 Or via the the CveXplore object:
