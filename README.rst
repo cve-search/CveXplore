@@ -45,7 +45,7 @@ Package is hosted on pypi, so just run:
 
 .. code-block:: bash
 
-   pip install CveXplorer
+   pip install CveXplore
 
 Documentation
 -------------
