@@ -234,7 +234,7 @@
 <span class="sd">        Endpoint for free query to cve search data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="s2">&quot;/query&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__data</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__data</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span> <span class="o">=</span> <span class="kc">None</span>
