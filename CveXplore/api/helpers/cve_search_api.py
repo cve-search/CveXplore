@@ -68,7 +68,7 @@ class CveSearchApi(GenericApi):
         Endpoint for free query to cve search data
         """
 
-        results = self.call(method="POST", resource="/query", data=self.__data)
+        results = self.call(method="POST", resource="query", data=self.__data)
 
         if isinstance(results, str):
             self.data_queue = None
