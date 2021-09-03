@@ -2,7 +2,13 @@ import os
 
 from setuptools import setup, find_packages
 
-from version import VERSION
+try:
+    from version import VERSION
+except ModuleNotFoundError:
+    _PKG_DIR = os.path.dirname(__file__)
+    version_file = os.path.join(_PKG_DIR, "CveXplore", "VERSION")
+    with open(version_file, "r") as fdsec:
+        VERSION = fdsec.read()
 
 # The directory containing this file
 HERE = os.path.abspath(os.path.dirname(__file__))
