@@ -64,6 +64,8 @@ As of version 0.2.5 CveXplore can populate and update a local mongodb instance f
    # cvexplore database initialize
    # cvexplore database update
 
+Check the `CLI Documentation <https://cve-search.github.io/CveXplore/cli/cli.html>`_ for more information.
+
 Or via the the CveXplore object:
 
 .. code-block:: python
