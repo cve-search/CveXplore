@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>CveXplore.database.maintenance.Config &mdash; CveXplore  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/CveExplore_icon.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> CveXplore
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">General documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../general/general.html">Dependencies</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/common.html">Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/objects.html">Objects</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli/cli.html">General</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CveXplore</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>CveXplore.database.maintenance.Config</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for CveXplore.database.maintenance.Config</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Configuration</span>
+<span class="sd">=============</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">runPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Configuration"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Config.Configuration">[docs]</a><span class="k">class</span> <span class="nc">Configuration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class holding the configuration</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CVE_START_YEAR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CVE_START_YEAR&quot;</span><span class="p">,</span> <span class="mi">2002</span><span class="p">)</span>
+
+    <span class="n">SOURCES</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span>
+        <span class="s2">&quot;SOURCES&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;cve&quot;</span><span class="p">:</span> <span class="s2">&quot;https://nvd.nist.gov/feeds/json/cve/1.1/&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cpe&quot;</span><span class="p">:</span> <span class="s2">&quot;https://nvd.nist.gov/feeds/json/cpematch/1.0/nvdcpematch-1.0.json.zip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cwe&quot;</span><span class="p">:</span> <span class="s2">&quot;https://cwe.mitre.org/data/xml/cwec_v4.4.xml.zip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;capec&quot;</span><span class="p">:</span> <span class="s2">&quot;https://capec.mitre.org/data/xml/capec_v3.4.xml&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;via4&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.cve-search.org/feeds/via4.json&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="n">HTTP_PROXY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;HTTP_PROXY&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">LOGGING_MAX_FILE_SIZE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;LOGGING_MAX_FILE_SIZE&quot;</span><span class="p">,</span> <span class="s2">&quot;100MB&quot;</span><span class="p">)</span>
+    <span class="n">LOGGING_BACKLOG</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;LOGGING_BACKLOG&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">LOGGING_FILE_NAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;LOGGING_FILE_NAME&quot;</span><span class="p">,</span> <span class="s2">&quot;./update_populate.log&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getCVEStartYear</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="n">next_year</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">start_year</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">CVE_START_YEAR</span>
+        <span class="k">if</span> <span class="n">start_year</span> <span class="o">&lt;</span> <span class="bp">cls</span><span class="o">.</span><span class="n">CVE_START_YEAR</span> <span class="ow">or</span> <span class="n">start_year</span> <span class="o">&gt;</span> <span class="n">next_year</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;The year </span><span class="si">%i</span><span class="s2"> is not a valid year.</span><span class="se">\n</span><span class="s2">default year </span><span class="si">%i</span><span class="s2"> will be used.&quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="n">start_year</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">default</span><span class="p">[</span><span class="s2">&quot;CVEStartYear&quot;</span><span class="p">])</span>
+            <span class="p">)</span>
+            <span class="n">start_year</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">default</span><span class="p">[</span><span class="s2">&quot;CVEStartYear&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">start_year</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getProxy</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">HTTP_PROXY</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getFeedURL</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">SOURCES</span><span class="p">[</span><span class="n">source</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">toPath</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">path</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">runPath</span><span class="p">,</span> <span class="s2">&quot;../..&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getUpdateLogFile</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">toPath</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">LOGGING_FILE_NAME</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getMaxLogSize</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LOGGING_MAX_FILE_SIZE</span>
+        <span class="n">split</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;\d+|\D+&quot;</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+        <span class="n">multipliers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;KB&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span> <span class="s2">&quot;MB&quot;</span><span class="p">:</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">,</span> <span class="s2">&quot;GB&quot;</span><span class="p">:</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">}</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">base</span> <span class="o">*</span> <span class="n">multipliers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span>
+        <span class="c1"># if size is not a correctly defined set it to 100MB</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getBacklog</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LOGGING_BACKLOG</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Paul Tikken.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

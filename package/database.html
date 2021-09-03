@@ -108,6 +108,16 @@
 <li class="toctree-l3"><a class="reference internal" href="#mongodb-specific">Mongodb specific</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#module-CveXplore.database.maintenance.main_updater">Database Maintenance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#main-updater">Main Updater</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download-handler">Download Handler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-handlers">File Handlers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#xml-content-handlers">XML Content Handlers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source-processing-classes">Source processing classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#log-handler">Log Handler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
@@ -472,6 +482,580 @@ the raw data from the mongodb database.</p>
 <dd><p>Advance the cursor and return CveXplore objects</p>
 </dd></dl>
 
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-CveXplore.database.maintenance.main_updater">
+<span id="database-maintenance"></span><h2>Database Maintenance<a class="headerlink" href="#module-CveXplore.database.maintenance.main_updater" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="main-updater">
+<h3>Main Updater<a class="headerlink" href="#main-updater" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.main_updater.MainUpdater">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.main_updater.</span></span><span class="sig-name descname"><span class="pre">MainUpdater</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datasource</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/main_updater.html#MainUpdater"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.main_updater.MainUpdater" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The MainUpdater class is the main class for performing database maintenaince tasks</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.main_updater.MainUpdater.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datasource</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/main_updater.html#MainUpdater.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.main_updater.MainUpdater.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Init a new MainUpdater class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>datasource</strong> (<a class="reference internal" href="#CveXplore.database.connection.mongo_db.MongoDBConnection" title="CveXplore.database.connection.mongo_db.MongoDBConnection"><em>MongoDBConnection</em></a>) – Datasource to update</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.main_updater.MainUpdater.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/main_updater.html#MainUpdater.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.main_updater.MainUpdater.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to initialize a new (fresh) instance of a cvedb database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.main_updater.MainUpdater.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/main_updater.html#MainUpdater.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.main_updater.MainUpdater.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method used for updating the database</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-CveXplore.database.maintenance.DownloadHandler"></span><div class="section" id="download-handler">
+<h3>Download Handler<a class="headerlink" href="#download-handler" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.DownloadHandler.DownloadHandler">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.DownloadHandler.</span></span><span class="sig-name descname"><span class="pre">DownloadHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feed_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/DownloadHandler.html#DownloadHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>DownloadHandler is the base class for all downloads and subsequent processing of the downloaded content.
+Each download script has a derived class which handles specifics for that type of content / download.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.DownloadHandler.DownloadHandler.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feed_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/DownloadHandler.html#DownloadHandler.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.DownloadHandler.DownloadHandler.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/DownloadHandler.html#DownloadHandler.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>return string representation of object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.DownloadHandler.DownloadHandler.chunk_list">
+<span class="sig-name descname"><span class="pre">chunk_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/DownloadHandler.html#DownloadHandler.chunk_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.chunk_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yield successive n-sized chunks from lst.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lst</strong> (<em>list</em>) – List to be chunked</p></li>
+<li><p><strong>number</strong> (<em>int</em>) – Chunk size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Chunked list</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.DownloadHandler.DownloadHandler.get_session">
+<span class="sig-name descname"><span class="pre">get_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">retries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backoff_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_forcelist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(429,</span> <span class="pre">500,</span> <span class="pre">502,</span> <span class="pre">503,</span> <span class="pre">504)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/DownloadHandler.html#DownloadHandler.get_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.get_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for returning a session object per every requesting thread</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.DownloadHandler.DownloadHandler.process_downloads">
+<span class="sig-name descname"><span class="pre">process_downloads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sites</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/DownloadHandler.html#DownloadHandler.process_downloads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.process_downloads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to download and process files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sites</strong> (<em>list</em>) – List of file to download and process</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.DownloadHandler.DownloadHandler.store_file">
+<span class="sig-name descname"><span class="pre">store_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response_content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/DownloadHandler.html#DownloadHandler.store_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.store_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to store the download based on the headers content type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response_content</strong> (<em>bytes</em>) – Response content</p></li>
+<li><p><strong>content_type</strong> (<em>str</em>) – Content type; e.g. ‘application/zip’</p></li>
+<li><p><strong>url</strong> (<em>str</em>) – Download url</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A working directory and a filename</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str and str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-CveXplore.database.maintenance.file_handlers"></span><div class="section" id="file-handlers">
+<h3>File Handlers<a class="headerlink" href="#file-handlers" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.file_handlers.JSONFileHandler">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.file_handlers.</span></span><span class="sig-name descname"><span class="pre">JSONFileHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feed_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/file_handlers.html#JSONFileHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler" title="CveXplore.database.maintenance.DownloadHandler.DownloadHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.DownloadHandler.DownloadHandler</span></code></a></p>
+<p>This class handles all JSON related download processing and functions as a base class for specific JSON sources
+processing and downloading</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.file_handlers.JSONFileHandler.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feed_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/file_handlers.html#JSONFileHandler.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.file_handlers.JSONFileHandler.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/file_handlers.html#JSONFileHandler.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>return string representation of object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.file_handlers.JSONFileHandler.file_to_queue">
+<span class="sig-name descname"><span class="pre">file_to_queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_tuple</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/file_handlers.html#JSONFileHandler.file_to_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler.file_to_queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method responsible for transferring file contents to the worker queue for further processing and inserting them
+into the database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_tuple</strong> (<em>tuple</em>) – A tuple containing the working dir for processing and the filename of the file to process</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.file_handlers.XMLFileHandler">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.file_handlers.</span></span><span class="sig-name descname"><span class="pre">XMLFileHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feed_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/file_handlers.html#XMLFileHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler" title="CveXplore.database.maintenance.DownloadHandler.DownloadHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.DownloadHandler.DownloadHandler</span></code></a></p>
+<p>This class handles all XML related download processing and functions as a base class for specific XML sources
+processing and downloading</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.file_handlers.XMLFileHandler.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feed_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/file_handlers.html#XMLFileHandler.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.file_handlers.XMLFileHandler.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/file_handlers.html#XMLFileHandler.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>return string representation of object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.file_handlers.XMLFileHandler.process_item">
+<span class="sig-name descname"><span class="pre">process_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/file_handlers.html#XMLFileHandler.process_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler.process_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method responsible for putting items into the worker queue as database actions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>dict</em>) – Item processed from XML source and parsed into a dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-CveXplore.database.maintenance.content_handlers"></span><div class="section" id="xml-content-handlers">
+<h3>XML Content Handlers<a class="headerlink" href="#xml-content-handlers" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CWEHandler">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.content_handlers.</span></span><span class="sig-name descname"><span class="pre">CWEHandler</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/content_handlers.html#CWEHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.content_handlers.CWEHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">xml.sax.handler.ContentHandler</span></code></p>
+<p>Class handling the CWE XML parsing</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CWEHandler.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/content_handlers.html#CWEHandler.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.content_handlers.CWEHandler.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CWEHandler.characters">
+<span class="sig-name descname"><span class="pre">characters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/content_handlers.html#CWEHandler.characters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.content_handlers.CWEHandler.characters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive notification of character data.</p>
+<p>The Parser will call this method to report each chunk of
+character data. SAX parsers may return all contiguous
+character data in a single chunk, or they may split it into
+several chunks; however, all of the characters in any single
+event must come from the same external entity so that the
+Locator provides useful information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CWEHandler.endElement">
+<span class="sig-name descname"><span class="pre">endElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/content_handlers.html#CWEHandler.endElement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.content_handlers.CWEHandler.endElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signals the end of an element in non-namespace mode.</p>
+<p>The name parameter contains the name of the element type, just
+as with the startElement event.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CWEHandler.startElement">
+<span class="sig-name descname"><span class="pre">startElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/content_handlers.html#CWEHandler.startElement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.content_handlers.CWEHandler.startElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signals the start of an element in non-namespace mode.</p>
+<p>The name parameter contains the raw XML 1.0 name of the
+element type as a string and the attrs parameter holds an
+instance of the Attributes class containing the attributes of
+the element.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CapecHandler">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.content_handlers.</span></span><span class="sig-name descname"><span class="pre">CapecHandler</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/content_handlers.html#CapecHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.content_handlers.CapecHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">xml.sax.handler.ContentHandler</span></code></p>
+<p>Class handling the CAPEC XML parsing</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CapecHandler.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/content_handlers.html#CapecHandler.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.content_handlers.CapecHandler.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CapecHandler.characters">
+<span class="sig-name descname"><span class="pre">characters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/content_handlers.html#CapecHandler.characters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.content_handlers.CapecHandler.characters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive notification of character data.</p>
+<p>The Parser will call this method to report each chunk of
+character data. SAX parsers may return all contiguous
+character data in a single chunk, or they may split it into
+several chunks; however, all of the characters in any single
+event must come from the same external entity so that the
+Locator provides useful information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CapecHandler.endElement">
+<span class="sig-name descname"><span class="pre">endElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/content_handlers.html#CapecHandler.endElement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.content_handlers.CapecHandler.endElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signals the end of an element in non-namespace mode.</p>
+<p>The name parameter contains the name of the element type, just
+as with the startElement event.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CapecHandler.startElement">
+<span class="sig-name descname"><span class="pre">startElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/content_handlers.html#CapecHandler.startElement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.content_handlers.CapecHandler.startElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signals the start of an element in non-namespace mode.</p>
+<p>The name parameter contains the raw XML 1.0 name of the
+element type as a string and the attrs parameter holds an
+instance of the Attributes class containing the attributes of
+the element.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-CveXplore.database.maintenance.Sources_process"></span><div class="section" id="source-processing-classes">
+<h3>Source processing classes<a class="headerlink" href="#source-processing-classes" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CAPECDownloads">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">CAPECDownloads</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CAPECDownloads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CAPECDownloads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler" title="CveXplore.database.maintenance.file_handlers.XMLFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.file_handlers.XMLFileHandler</span></code></a></p>
+<p>Class processing CAPEC source files</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CAPECDownloads.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CAPECDownloads.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CAPECDownloads.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CPEDownloads">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">CPEDownloads</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CPEDownloads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CPEDownloads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler" title="CveXplore.database.maintenance.file_handlers.JSONFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.file_handlers.JSONFileHandler</span></code></a></p>
+<p>Class processing CPE source files</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CPEDownloads.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CPEDownloads.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CPEDownloads.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CVEDownloads">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">CVEDownloads</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CVEDownloads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CVEDownloads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler" title="CveXplore.database.maintenance.file_handlers.JSONFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.file_handlers.JSONFileHandler</span></code></a></p>
+<p>Class processing CVE source files</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CVEDownloads.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CVEDownloads.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CVEDownloads.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CVEDownloads.get_cve_year_range">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">get_cve_year_range</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CVEDownloads.get_cve_year_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CVEDownloads.get_cve_year_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to fetch the years where we need cve’s for</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CWEDownloads">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">CWEDownloads</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CWEDownloads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CWEDownloads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler" title="CveXplore.database.maintenance.file_handlers.XMLFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.file_handlers.XMLFileHandler</span></code></a></p>
+<p>Class processing CWE source files</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CWEDownloads.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CWEDownloads.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CWEDownloads.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.DatabaseIndexer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">DatabaseIndexer</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#DatabaseIndexer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.DatabaseIndexer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class processing the Mongodb indexes</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.DatabaseIndexer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#DatabaseIndexer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.DatabaseIndexer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.MongoAddIndex">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">MongoAddIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.MongoAddIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.MongoAddIndex.__getnewargs__">
+<span class="sig-name descname"><span class="pre">__getnewargs__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.MongoAddIndex.__getnewargs__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self as a plain tuple.  Used by copy and pickle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.MongoAddIndex.__new__">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.MongoAddIndex.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.MongoAddIndex.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.MongoAddIndex.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a nicely formatted representation string</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.MongoAddIndex.index">
+<span class="sig-name descname"><span class="pre">index</span></span><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.MongoAddIndex.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.MongoAddIndex.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.MongoAddIndex.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.MongoUniqueIndex">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">MongoUniqueIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.__getnewargs__">
+<span class="sig-name descname"><span class="pre">__getnewargs__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.__getnewargs__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self as a plain tuple.  Used by copy and pickle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.__new__">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a nicely formatted representation string</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.index">
+<span class="sig-name descname"><span class="pre">index</span></span><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.unique">
+<span class="sig-name descname"><span class="pre">unique</span></span><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.unique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.VIADownloads">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">VIADownloads</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#VIADownloads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.VIADownloads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler" title="CveXplore.database.maintenance.file_handlers.JSONFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.file_handlers.JSONFileHandler</span></code></a></p>
+<p>Class processing VIA4 source files</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.VIADownloads.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#VIADownloads.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.VIADownloads.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.VIADownloads.file_to_queue">
+<span class="sig-name descname"><span class="pre">file_to_queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_tuple</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#VIADownloads.file_to_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.VIADownloads.file_to_queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method responsible for transferring file contents to the worker queue for further processing and inserting them
+into the database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_tuple</strong> (<em>tuple</em>) – A tuple containing the working dir for processing and the filename of the file to process</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-CveXplore.database.maintenance.LogHandler"></span><div class="section" id="log-handler">
+<h3>Log Handler<a class="headerlink" href="#log-handler" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.HelperLogger">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.LogHandler.</span></span><span class="sig-name descname"><span class="pre">HelperLogger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#HelperLogger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.HelperLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Logger</span></code></p>
+<p>The HelperLogger is used by the application / gui as their logging class and <em>extends</em> the default python
+logger.logging class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.HelperLogger.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#HelperLogger.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.HelperLogger.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the logger with a name and an optional level.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.HelperLogger.critical">
+<span class="sig-name descname"><span class="pre">critical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#HelperLogger.critical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.HelperLogger.critical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log ‘msg % args’ with severity ‘CRITICAL’ and color <em>RED</em>.</p>
+<p>Store logged message to the database for dashboard alerting.</p>
+<p>To pass exception information, use the keyword argument exc_info with a true value, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; logger.critical(“Houston, we have a hell of a problem”)
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>msg</strong> (<em>str</em>) – Message to log</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.HelperLogger.debug">
+<span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#HelperLogger.debug"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.HelperLogger.debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log ‘msg % args’ with severity ‘DEBUG’ and color <a href="#id2"><span class="problematic" id="id3">*</span></a>MAGENTA.</p>
+<p>To pass exception information, use the keyword argument exc_info with a true value, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; logger.debug(“Houston, we have a thorny problem”)
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>msg</strong> (<em>str</em>) – Message to log</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.HelperLogger.error">
+<span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#HelperLogger.error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.HelperLogger.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log ‘msg % args’ with severity ‘ERROR’ and color <em>RED</em>.</p>
+<p>Store logged message to the database for dashboard alerting.</p>
+<p>To pass exception information, use the keyword argument exc_info with a true value, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; logger.error(“Houston, we have a major problem”)
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>msg</strong> (<em>str</em>) – Message to log</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.HelperLogger.info">
+<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#HelperLogger.info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.HelperLogger.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log ‘msg % args’ with severity ‘INFO’ and color <em>WHITE</em>.</p>
+<p>To pass exception information, use the keyword argument exc_info with a true value, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; logger.info(“Houston, we have an interesting problem”)
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>msg</strong> (<em>str</em>) – Message to log</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.HelperLogger.warning">
+<span class="sig-name descname"><span class="pre">warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#HelperLogger.warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.HelperLogger.warning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log ‘msg % args’ with severity ‘WARNING’ and color <em>YELLOW</em>.</p>
+<p>To pass exception information, use the keyword argument exc_info with a true value, e.g.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; logger.warning(“Houston, we have a bit of a problem”)
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>msg</strong> (<em>str</em>) – Message to log</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.HostnameFilter">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.LogHandler.</span></span><span class="sig-name descname"><span class="pre">HostnameFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#HostnameFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.HostnameFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Filter</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.HostnameFilter.filter">
+<span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#HostnameFilter.filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.HostnameFilter.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine if the specified record is to be logged.</p>
+<p>Returns True if the record should be logged, or False otherwise.
+If deemed appropriate, the record may be modified in-place.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.UpdateHandler">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.LogHandler.</span></span><span class="sig-name descname"><span class="pre">UpdateHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#UpdateHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.UpdateHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.HelperLogger" title="CveXplore.database.maintenance.LogHandler.HelperLogger"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.LogHandler.HelperLogger</span></code></a></p>
+<p>The UpdateHandler is used by the update process to provide written and visual feedback to the initiator of database
+management tasks.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.UpdateHandler.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#UpdateHandler.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.UpdateHandler.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the logger with a name and an optional level.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-CveXplore.database.maintenance.Config"></span><div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.maintenance.Config.Configuration">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Config.</span></span><span class="sig-name descname"><span class="pre">Configuration</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Config.html#Configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Config.Configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class holding the configuration</p>
 </dd></dl>
 
 </div>

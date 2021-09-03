@@ -1,0 +1,1257 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>CveXplore.database.maintenance.Sources_process &mdash; CveXplore  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/CveExplore_icon.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> CveXplore
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">General documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../general/general.html">Dependencies</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/common.html">Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/objects.html">Objects</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli/cli.html">General</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CveXplore</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>CveXplore.database.maintenance.Sources_process</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for CveXplore.database.maintenance.Sources_process</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Source processing classes</span>
+<span class="sd">=========================</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">xml.sax</span> <span class="kn">import</span> <span class="n">make_parser</span>
+
+<span class="kn">import</span> <span class="nn">pymongo</span>
+<span class="kn">from</span> <span class="nn">dateutil.parser</span> <span class="kn">import</span> <span class="n">parse</span> <span class="k">as</span> <span class="n">parse_datetime</span>
+<span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">TEXT</span><span class="p">,</span> <span class="n">ASCENDING</span>
+
+<span class="kn">from</span> <span class="nn">.Config</span> <span class="kn">import</span> <span class="n">Configuration</span>
+<span class="kn">from</span> <span class="nn">.Toolkit</span> <span class="kn">import</span> <span class="n">generate_title</span>
+<span class="kn">from</span> <span class="nn">.content_handlers</span> <span class="kn">import</span> <span class="n">CapecHandler</span><span class="p">,</span> <span class="n">CWEHandler</span>
+<span class="kn">from</span> <span class="nn">.db_action</span> <span class="kn">import</span> <span class="n">DatabaseAction</span>
+<span class="kn">from</span> <span class="nn">CveXplore.database.connection.mongo_db</span> <span class="kn">import</span> <span class="n">MongoDBConnection</span>
+<span class="kn">from</span> <span class="nn">.file_handlers</span> <span class="kn">import</span> <span class="n">XMLFileHandler</span><span class="p">,</span> <span class="n">JSONFileHandler</span>
+
+<span class="n">file_prefix</span> <span class="o">=</span> <span class="s2">&quot;nvdcve-1.1-&quot;</span>
+<span class="n">file_suffix</span> <span class="o">=</span> <span class="s2">&quot;.json.gz&quot;</span>
+<span class="n">file_mod</span> <span class="o">=</span> <span class="s2">&quot;modified&quot;</span>
+<span class="n">file_rec</span> <span class="o">=</span> <span class="s2">&quot;recent&quot;</span>
+
+<span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="n">year</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="c1"># default config</span>
+<span class="n">defaultvalue</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cwe&quot;</span><span class="p">:</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">}</span>
+
+<span class="n">cveStartYear</span> <span class="o">=</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">getCVEStartYear</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="CPEDownloads"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.CPEDownloads">[docs]</a><span class="k">class</span> <span class="nc">CPEDownloads</span><span class="p">(</span><span class="n">JSONFileHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class processing CPE source files</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CPEDownloads.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.CPEDownloads.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span> <span class="o">=</span> <span class="s2">&quot;CPE&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;matches.item&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">feed_url</span> <span class="o">=</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">getFeedURL</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;CPEDownloads&quot;</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">process_cpe_item</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;cpe23Uri&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">cpe</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">generate_title</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;cpe_2_2&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;cpe_name&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cpe_name&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;vendor&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">3</span><span class="p">],</span>
+            <span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">4</span><span class="p">],</span>
+        <span class="p">}</span>
+
+        <span class="n">version_info</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;versionStartExcluding&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+            <span class="n">cpe</span><span class="p">[</span><span class="s2">&quot;versionStartExcluding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;versionStartExcluding&quot;</span><span class="p">]</span>
+            <span class="n">version_info</span> <span class="o">+=</span> <span class="n">cpe</span><span class="p">[</span><span class="s2">&quot;versionStartExcluding&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_VSE&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;versionStartIncluding&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+            <span class="n">cpe</span><span class="p">[</span><span class="s2">&quot;versionStartIncluding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;versionStartIncluding&quot;</span><span class="p">]</span>
+            <span class="n">version_info</span> <span class="o">+=</span> <span class="n">cpe</span><span class="p">[</span><span class="s2">&quot;versionStartIncluding&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_VSI&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;versionEndExcluding&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+            <span class="n">cpe</span><span class="p">[</span><span class="s2">&quot;versionEndExcluding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;versionEndExcluding&quot;</span><span class="p">]</span>
+            <span class="n">version_info</span> <span class="o">+=</span> <span class="n">cpe</span><span class="p">[</span><span class="s2">&quot;versionEndExcluding&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_VEE&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;versionEndIncluding&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+            <span class="n">cpe</span><span class="p">[</span><span class="s2">&quot;versionEndIncluding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;versionEndIncluding&quot;</span><span class="p">]</span>
+            <span class="n">version_info</span> <span class="o">+=</span> <span class="n">cpe</span><span class="p">[</span><span class="s2">&quot;versionEndIncluding&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_VEI&quot;</span>
+
+        <span class="n">sha1_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span>
+            <span class="n">cpe</span><span class="p">[</span><span class="s2">&quot;cpe_2_2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">version_info</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+        <span class="n">cpe</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sha1_hash</span>
+
+        <span class="k">return</span> <span class="n">cpe</span>
+
+    <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="n">cpe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_cpe_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cpe</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+                    <span class="n">DatabaseAction</span><span class="p">(</span>
+                        <span class="n">action</span><span class="o">=</span><span class="n">DatabaseAction</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">UpdateOne</span><span class="p">,</span>
+                        <span class="n">collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                        <span class="n">doc</span><span class="o">=</span><span class="n">cpe</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+                    <span class="n">DatabaseAction</span><span class="p">(</span>
+                        <span class="n">action</span><span class="o">=</span><span class="n">DatabaseAction</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">InsertOne</span><span class="p">,</span>
+                        <span class="n">collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                        <span class="n">doc</span><span class="o">=</span><span class="n">cpe</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CPE database update started&quot;</span><span class="p">)</span>
+
+        <span class="c1"># if collection is non-existent; assume it&#39;s not an update</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTableNames</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_downloads</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_url</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished CPE database update&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span>
+
+    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CPE Database population started&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">delColInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropCollection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="n">DatabaseIndexer</span><span class="p">()</span><span class="o">.</span><span class="n">create_indexes</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_downloads</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_url</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished CPE database population&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span></div>
+
+
+<div class="viewcode-block" id="CVEDownloads"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.CVEDownloads">[docs]</a><span class="k">class</span> <span class="nc">CVEDownloads</span><span class="p">(</span><span class="n">JSONFileHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class processing CVE source files</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CVEDownloads.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.CVEDownloads.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span> <span class="o">=</span> <span class="s2">&quot;CVES&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;CVE_Items.item&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">feed_url</span> <span class="o">=</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">getFeedURL</span><span class="p">(</span><span class="s2">&quot;cve&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modfile</span> <span class="o">=</span> <span class="n">file_prefix</span> <span class="o">+</span> <span class="n">file_mod</span> <span class="o">+</span> <span class="n">file_suffix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recfile</span> <span class="o">=</span> <span class="n">file_prefix</span> <span class="o">+</span> <span class="n">file_rec</span> <span class="o">+</span> <span class="n">file_suffix</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;CVEDownloads&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CVEDownloads.get_cve_year_range"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.CVEDownloads.get_cve_year_range">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_cve_year_range</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to fetch the years where we need cve&#39;s for</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">a_year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cveStartYear</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">a_year</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_cpe_info</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">):</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">version_info</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;versionStartExcluding&quot;</span> <span class="ow">in</span> <span class="n">cpeuri</span><span class="p">:</span>
+            <span class="n">query</span><span class="p">[</span><span class="s2">&quot;versionStartExcluding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;versionStartExcluding&quot;</span><span class="p">]</span>
+            <span class="n">version_info</span> <span class="o">+=</span> <span class="n">query</span><span class="p">[</span><span class="s2">&quot;versionStartExcluding&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_VSE&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;versionStartIncluding&quot;</span> <span class="ow">in</span> <span class="n">cpeuri</span><span class="p">:</span>
+            <span class="n">query</span><span class="p">[</span><span class="s2">&quot;versionStartIncluding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;versionStartIncluding&quot;</span><span class="p">]</span>
+            <span class="n">version_info</span> <span class="o">+=</span> <span class="n">query</span><span class="p">[</span><span class="s2">&quot;versionStartIncluding&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_VSI&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;versionEndExcluding&quot;</span> <span class="ow">in</span> <span class="n">cpeuri</span><span class="p">:</span>
+            <span class="n">query</span><span class="p">[</span><span class="s2">&quot;versionEndExcluding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;versionEndExcluding&quot;</span><span class="p">]</span>
+            <span class="n">version_info</span> <span class="o">+=</span> <span class="n">query</span><span class="p">[</span><span class="s2">&quot;versionEndExcluding&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_VEE&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;versionEndIncluding&quot;</span> <span class="ow">in</span> <span class="n">cpeuri</span><span class="p">:</span>
+            <span class="n">query</span><span class="p">[</span><span class="s2">&quot;versionEndIncluding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;versionEndIncluding&quot;</span><span class="p">]</span>
+            <span class="n">version_info</span> <span class="o">+=</span> <span class="n">query</span><span class="p">[</span><span class="s2">&quot;versionEndIncluding&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_VEI&quot;</span>
+
+        <span class="k">return</span> <span class="n">query</span><span class="p">,</span> <span class="n">version_info</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">add_if_missing</span><span class="p">(</span><span class="n">cve</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cve</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+            <span class="n">cve</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cve</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_vendor_product</span><span class="p">(</span><span class="n">cpeUri</span><span class="p">):</span>
+        <span class="n">vendor</span> <span class="o">=</span> <span class="n">cpeUri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">product</span> <span class="o">=</span> <span class="n">cpeUri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">vendor</span><span class="p">,</span> <span class="n">product</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">stem</span><span class="p">(</span><span class="n">cpeUri</span><span class="p">):</span>
+        <span class="n">cpeArr</span> <span class="o">=</span> <span class="n">cpeUri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cpeArr</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">process_cve_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;ASSIGNER&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;CVE_data_meta&quot;</span><span class="p">]:</span>
+            <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;CVE_data_meta&quot;</span><span class="p">][</span><span class="s2">&quot;ASSIGNER&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">cve</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;CVE_data_meta&quot;</span><span class="p">][</span><span class="s2">&quot;ID&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;assigner&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;CVE_data_meta&quot;</span><span class="p">][</span><span class="s2">&quot;ASSIGNER&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;Published&quot;</span><span class="p">:</span> <span class="n">parse_datetime</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;publishedDate&quot;</span><span class="p">],</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="s2">&quot;Modified&quot;</span><span class="p">:</span> <span class="n">parse_datetime</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;lastModifiedDate&quot;</span><span class="p">],</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="s2">&quot;last-modified&quot;</span><span class="p">:</span> <span class="n">parse_datetime</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;lastModifiedDate&quot;</span><span class="p">],</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">description</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;description&quot;</span><span class="p">][</span><span class="s2">&quot;description_data&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">description</span><span class="p">[</span><span class="s2">&quot;lang&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;en&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;summary&quot;</span> <span class="ow">in</span> <span class="n">cve</span><span class="p">:</span>
+                    <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">description</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;impact&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+            <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;access&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="s2">&quot;baseMetricV3&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">]:</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;availability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV3&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssV3&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;availabilityImpact&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;confidentiality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV3&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssV3&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;confidentialityImpact&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;integrity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV3&quot;</span><span class="p">][</span><span class="s2">&quot;cvssV3&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;integrityImpact&quot;</span>
+                <span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;attackvector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV3&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssV3&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;attackVector&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;attackcomplexity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;baseMetricV3&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;cvssV3&quot;</span><span class="p">][</span><span class="s2">&quot;attackComplexity&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;privilegesrequired&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;baseMetricV3&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;cvssV3&quot;</span><span class="p">][</span><span class="s2">&quot;privilegesRequired&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;userinteraction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;baseMetricV3&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;cvssV3&quot;</span><span class="p">][</span><span class="s2">&quot;userInteraction&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;scope&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV3&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssV3&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;scope&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV3&quot;</span><span class="p">][</span><span class="s2">&quot;cvssV3&quot;</span><span class="p">][</span><span class="s2">&quot;baseScore&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3-vector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV3&quot;</span><span class="p">][</span><span class="s2">&quot;cvssV3&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;vectorString&quot;</span>
+                <span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impactScore3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV3&quot;</span><span class="p">][</span><span class="s2">&quot;impactScore&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitabilityScore3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV3&quot;</span><span class="p">][</span><span class="s2">&quot;exploitabilityScore&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="s2">&quot;baseMetricV2&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">]:</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;access&quot;</span><span class="p">][</span><span class="s2">&quot;authentication&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV2&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssV2&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;authentication&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;access&quot;</span><span class="p">][</span><span class="s2">&quot;complexity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV2&quot;</span><span class="p">][</span><span class="s2">&quot;cvssV2&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;accessComplexity&quot;</span>
+                <span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;access&quot;</span><span class="p">][</span><span class="s2">&quot;vector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV2&quot;</span><span class="p">][</span><span class="s2">&quot;cvssV2&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;accessVector&quot;</span>
+                <span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;availability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV2&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssV2&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;availabilityImpact&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;confidentiality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV2&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssV2&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;confidentialityImpact&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;integrity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV2&quot;</span><span class="p">][</span><span class="s2">&quot;cvssV2&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;integrityImpact&quot;</span>
+                <span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV2&quot;</span><span class="p">][</span><span class="s2">&quot;cvssV2&quot;</span><span class="p">][</span><span class="s2">&quot;baseScore&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitabilityScore&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV2&quot;</span><span class="p">][</span><span class="s2">&quot;exploitabilityScore&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impactScore&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV2&quot;</span><span class="p">][</span><span class="s2">&quot;impactScore&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss-time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parse_datetime</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;lastModifiedDate&quot;</span><span class="p">],</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>  <span class="c1"># NVD JSON lacks the CVSS time which was present in the original XML format</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss-vector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;baseMetricV2&quot;</span><span class="p">][</span><span class="s2">&quot;cvssV2&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;vectorString&quot;</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;references&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">]:</span>
+            <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;references&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;references&quot;</span><span class="p">][</span><span class="s2">&quot;reference_data&quot;</span><span class="p">]:</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;references&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s2">&quot;configurations&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+            <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;vulnerable_configuration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;vulnerable_product&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;vendors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;products&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;vulnerable_product_stems&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;vulnerable_configuration_stems&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">cpe</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;configurations&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="s2">&quot;cpe_match&quot;</span> <span class="ow">in</span> <span class="n">cpe</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">cpeuri</span> <span class="ow">in</span> <span class="n">cpe</span><span class="p">[</span><span class="s2">&quot;cpe_match&quot;</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="s2">&quot;cpe23Uri&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cpeuri</span><span class="p">:</span>
+                            <span class="k">continue</span>
+                        <span class="k">if</span> <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;vulnerable&quot;</span><span class="p">]:</span>
+                            <span class="n">query</span><span class="p">,</span> <span class="n">version_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cpe_info</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">query</span> <span class="o">!=</span> <span class="p">{}:</span>
+                                <span class="n">query</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span>
+                                    <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+                                    <span class="o">+</span> <span class="n">version_info</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+                                <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                                <span class="n">cpe_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCPEVersionInformation</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">cpe_info</span><span class="p">:</span>
+                                    <span class="k">if</span> <span class="n">cpe_info</span><span class="p">[</span><span class="s2">&quot;cpe_name&quot;</span><span class="p">]:</span>
+                                        <span class="k">for</span> <span class="n">vulnerable_version</span> <span class="ow">in</span> <span class="n">cpe_info</span><span class="p">[</span><span class="s2">&quot;cpe_name&quot;</span><span class="p">]:</span>
+                                            <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                <span class="n">cve</span><span class="p">,</span>
+                                                <span class="s2">&quot;vulnerable_product&quot;</span><span class="p">,</span>
+                                                <span class="n">vulnerable_version</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">],</span>
+                                            <span class="p">)</span>
+                                            <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                <span class="n">cve</span><span class="p">,</span>
+                                                <span class="s2">&quot;vulnerable_configuration&quot;</span><span class="p">,</span>
+                                                <span class="n">vulnerable_version</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">],</span>
+                                            <span class="p">)</span>
+                                            <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                <span class="n">cve</span><span class="p">,</span>
+                                                <span class="s2">&quot;vulnerable_configuration_stems&quot;</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span>
+                                                    <span class="n">vulnerable_version</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span>
+                                                <span class="p">),</span>
+                                            <span class="p">)</span>
+                                            <span class="n">vendor</span><span class="p">,</span> <span class="n">product</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vendor_product</span><span class="p">(</span>
+                                                <span class="n">vulnerable_version</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span>
+                                            <span class="p">)</span>
+                                            <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                <span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;vendors&quot;</span><span class="p">,</span> <span class="n">vendor</span>
+                                            <span class="p">)</span>
+                                            <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                <span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="n">product</span>
+                                            <span class="p">)</span>
+                                            <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                <span class="n">cve</span><span class="p">,</span>
+                                                <span class="s2">&quot;vulnerable_product_stems&quot;</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span>
+                                                    <span class="n">vulnerable_version</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span>
+                                                <span class="p">),</span>
+                                            <span class="p">)</span>
+                                    <span class="k">else</span><span class="p">:</span>
+                                        <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                            <span class="n">cve</span><span class="p">,</span>
+                                            <span class="s2">&quot;vulnerable_product&quot;</span><span class="p">,</span>
+                                            <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">],</span>
+                                        <span class="p">)</span>
+                                        <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                            <span class="n">cve</span><span class="p">,</span>
+                                            <span class="s2">&quot;vulnerable_configuration&quot;</span><span class="p">,</span>
+                                            <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">],</span>
+                                        <span class="p">)</span>
+                                        <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                            <span class="n">cve</span><span class="p">,</span>
+                                            <span class="s2">&quot;vulnerable_configuration_stems&quot;</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]),</span>
+                                        <span class="p">)</span>
+                                        <span class="n">vendor</span><span class="p">,</span> <span class="n">product</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vendor_product</span><span class="p">(</span>
+                                            <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span>
+                                        <span class="p">)</span>
+                                        <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                            <span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;vendors&quot;</span><span class="p">,</span> <span class="n">vendor</span>
+                                        <span class="p">)</span>
+                                        <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                            <span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="n">product</span>
+                                        <span class="p">)</span>
+                                        <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                            <span class="n">cve</span><span class="p">,</span>
+                                            <span class="s2">&quot;vulnerable_product_stems&quot;</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]),</span>
+                                        <span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="c1"># If the cpe_match did not have any of the version start/end modifiers,</span>
+                                <span class="c1"># add the CPE string as it is.</span>
+                                <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                    <span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;vulnerable_product&quot;</span><span class="p">,</span> <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span>
+                                <span class="p">)</span>
+                                <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                    <span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;vulnerable_configuration&quot;</span><span class="p">,</span> <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span>
+                                <span class="p">)</span>
+                                <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                    <span class="n">cve</span><span class="p">,</span>
+                                    <span class="s2">&quot;vulnerable_configuration_stems&quot;</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]),</span>
+                                <span class="p">)</span>
+                                <span class="n">vendor</span><span class="p">,</span> <span class="n">product</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vendor_product</span><span class="p">(</span>
+                                    <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span>
+                                <span class="p">)</span>
+                                <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span><span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;vendors&quot;</span><span class="p">,</span> <span class="n">vendor</span><span class="p">)</span>
+                                <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span><span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="n">product</span><span class="p">)</span>
+                                <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                    <span class="n">cve</span><span class="p">,</span>
+                                    <span class="s2">&quot;vulnerable_product_stems&quot;</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]),</span>
+                                <span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                <span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;vulnerable_configuration&quot;</span><span class="p">,</span> <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span>
+                            <span class="p">)</span>
+                            <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                <span class="n">cve</span><span class="p">,</span>
+                                <span class="s2">&quot;vulnerable_configuration_stems&quot;</span><span class="p">,</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]),</span>
+                            <span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;children&quot;</span> <span class="ow">in</span> <span class="n">cpe</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">cpe</span><span class="p">[</span><span class="s2">&quot;children&quot;</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="s2">&quot;cpe_match&quot;</span> <span class="ow">in</span> <span class="n">child</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">cpeuri</span> <span class="ow">in</span> <span class="n">child</span><span class="p">[</span><span class="s2">&quot;cpe_match&quot;</span><span class="p">]:</span>
+                                <span class="k">if</span> <span class="s2">&quot;cpe23Uri&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cpeuri</span><span class="p">:</span>
+                                    <span class="k">continue</span>
+                                <span class="k">if</span> <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;vulnerable&quot;</span><span class="p">]:</span>
+                                    <span class="n">query</span><span class="p">,</span> <span class="n">version_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cpe_info</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">)</span>
+                                    <span class="k">if</span> <span class="n">query</span> <span class="o">!=</span> <span class="p">{}:</span>
+                                        <span class="n">query</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span>
+                                            <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+                                            <span class="o">+</span> <span class="n">version_info</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+                                        <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                                        <span class="n">cpe_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCPEVersionInformation</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                                        <span class="k">if</span> <span class="n">cpe_info</span><span class="p">:</span>
+                                            <span class="k">if</span> <span class="n">cpe_info</span><span class="p">[</span><span class="s2">&quot;cpe_name&quot;</span><span class="p">]:</span>
+                                                <span class="k">for</span> <span class="n">vulnerable_version</span> <span class="ow">in</span> <span class="n">cpe_info</span><span class="p">[</span>
+                                                    <span class="s2">&quot;cpe_name&quot;</span>
+                                                <span class="p">]:</span>
+                                                    <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                        <span class="n">cve</span><span class="p">,</span>
+                                                        <span class="s2">&quot;vulnerable_product&quot;</span><span class="p">,</span>
+                                                        <span class="n">vulnerable_version</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">],</span>
+                                                    <span class="p">)</span>
+                                                    <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                        <span class="n">cve</span><span class="p">,</span>
+                                                        <span class="s2">&quot;vulnerable_configuration&quot;</span><span class="p">,</span>
+                                                        <span class="n">vulnerable_version</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">],</span>
+                                                    <span class="p">)</span>
+                                                    <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                        <span class="n">cve</span><span class="p">,</span>
+                                                        <span class="s2">&quot;vulnerable_configuration_stems&quot;</span><span class="p">,</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span>
+                                                            <span class="n">vulnerable_version</span><span class="p">[</span>
+                                                                <span class="s2">&quot;cpe23Uri&quot;</span>
+                                                            <span class="p">]</span>
+                                                        <span class="p">),</span>
+                                                    <span class="p">)</span>
+                                                    <span class="p">(</span>
+                                                        <span class="n">vendor</span><span class="p">,</span>
+                                                        <span class="n">product</span><span class="p">,</span>
+                                                    <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vendor_product</span><span class="p">(</span>
+                                                        <span class="n">vulnerable_version</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span>
+                                                    <span class="p">)</span>
+                                                    <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                        <span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;vendors&quot;</span><span class="p">,</span> <span class="n">vendor</span>
+                                                    <span class="p">)</span>
+                                                    <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                        <span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="n">product</span>
+                                                    <span class="p">)</span>
+                                                    <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                        <span class="n">cve</span><span class="p">,</span>
+                                                        <span class="s2">&quot;vulnerable_product_stems&quot;</span><span class="p">,</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span>
+                                                            <span class="n">vulnerable_version</span><span class="p">[</span>
+                                                                <span class="s2">&quot;cpe23Uri&quot;</span>
+                                                            <span class="p">]</span>
+                                                        <span class="p">),</span>
+                                                    <span class="p">)</span>
+                                            <span class="k">else</span><span class="p">:</span>
+                                                <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                    <span class="n">cve</span><span class="p">,</span>
+                                                    <span class="s2">&quot;vulnerable_product&quot;</span><span class="p">,</span>
+                                                    <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">],</span>
+                                                <span class="p">)</span>
+                                                <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                    <span class="n">cve</span><span class="p">,</span>
+                                                    <span class="s2">&quot;vulnerable_configuration&quot;</span><span class="p">,</span>
+                                                    <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">],</span>
+                                                <span class="p">)</span>
+                                                <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                    <span class="n">cve</span><span class="p">,</span>
+                                                    <span class="s2">&quot;vulnerable_configuration_stems&quot;</span><span class="p">,</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]),</span>
+                                                <span class="p">)</span>
+                                                <span class="p">(</span>
+                                                    <span class="n">vendor</span><span class="p">,</span>
+                                                    <span class="n">product</span><span class="p">,</span>
+                                                <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vendor_product</span><span class="p">(</span>
+                                                    <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span>
+                                                <span class="p">)</span>
+                                                <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                    <span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;vendors&quot;</span><span class="p">,</span> <span class="n">vendor</span>
+                                                <span class="p">)</span>
+                                                <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                    <span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="n">product</span>
+                                                <span class="p">)</span>
+                                                <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                                    <span class="n">cve</span><span class="p">,</span>
+                                                    <span class="s2">&quot;vulnerable_product_stems&quot;</span><span class="p">,</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]),</span>
+                                                <span class="p">)</span>
+                                    <span class="k">else</span><span class="p">:</span>
+                                        <span class="c1"># If the cpe_match did not have any of the version start/end modifiers,</span>
+                                        <span class="c1"># add the CPE string as it is.</span>
+                                        <span class="k">if</span> <span class="s2">&quot;cpe23Uri&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cpeuri</span><span class="p">:</span>
+                                            <span class="k">continue</span>
+                                        <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                            <span class="n">cve</span><span class="p">,</span>
+                                            <span class="s2">&quot;vulnerable_product&quot;</span><span class="p">,</span>
+                                            <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">],</span>
+                                        <span class="p">)</span>
+                                        <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                            <span class="n">cve</span><span class="p">,</span>
+                                            <span class="s2">&quot;vulnerable_configuration&quot;</span><span class="p">,</span>
+                                            <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">],</span>
+                                        <span class="p">)</span>
+                                        <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                            <span class="n">cve</span><span class="p">,</span>
+                                            <span class="s2">&quot;vulnerable_configuration_stems&quot;</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]),</span>
+                                        <span class="p">)</span>
+                                        <span class="n">vendor</span><span class="p">,</span> <span class="n">product</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vendor_product</span><span class="p">(</span>
+                                            <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]</span>
+                                        <span class="p">)</span>
+                                        <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                            <span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;vendors&quot;</span><span class="p">,</span> <span class="n">vendor</span>
+                                        <span class="p">)</span>
+                                        <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                            <span class="n">cve</span><span class="p">,</span> <span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="n">product</span>
+                                        <span class="p">)</span>
+                                        <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                            <span class="n">cve</span><span class="p">,</span>
+                                            <span class="s2">&quot;vulnerable_product_stems&quot;</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]),</span>
+                                        <span class="p">)</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="k">if</span> <span class="s2">&quot;cpe23Uri&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cpeuri</span><span class="p">:</span>
+                                        <span class="k">continue</span>
+                                    <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                        <span class="n">cve</span><span class="p">,</span>
+                                        <span class="s2">&quot;vulnerable_configuration&quot;</span><span class="p">,</span>
+                                        <span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">],</span>
+                                    <span class="p">)</span>
+                                    <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_if_missing</span><span class="p">(</span>
+                                        <span class="n">cve</span><span class="p">,</span>
+                                        <span class="s2">&quot;vulnerable_configuration_stems&quot;</span><span class="p">,</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;cpe23Uri&quot;</span><span class="p">]),</span>
+                                    <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;problemtype&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">problem</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;problemtype&quot;</span><span class="p">][</span><span class="s2">&quot;problemtype_data&quot;</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">cwe</span> <span class="ow">in</span> <span class="n">problem</span><span class="p">[</span>
+                    <span class="s2">&quot;description&quot;</span>
+                <span class="p">]:</span>  <span class="c1"># NVD JSON not clear if we can get more than one CWE per CVE (until we take the last one) -</span>
+                    <span class="c1"># NVD-CWE-Other??? list?</span>
+                    <span class="k">if</span> <span class="n">cwe</span><span class="p">[</span><span class="s2">&quot;lang&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;en&quot;</span><span class="p">:</span>
+                        <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cwe</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="s2">&quot;cwe&quot;</span> <span class="ow">in</span> <span class="n">cve</span><span class="p">):</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultvalue</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultvalue</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span>
+        <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;vulnerable_configuration_cpe_2_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">cve</span>
+
+    <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="n">cve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_cve_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cve</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+                    <span class="n">DatabaseAction</span><span class="p">(</span>
+                        <span class="n">action</span><span class="o">=</span><span class="n">DatabaseAction</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">UpdateOne</span><span class="p">,</span>
+                        <span class="n">collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                        <span class="n">doc</span><span class="o">=</span><span class="n">cve</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+                    <span class="n">DatabaseAction</span><span class="p">(</span>
+                        <span class="n">action</span><span class="o">=</span><span class="n">DatabaseAction</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">InsertOne</span><span class="p">,</span>
+                        <span class="n">collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                        <span class="n">doc</span><span class="o">=</span><span class="n">cve</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CVE database update started&quot;</span><span class="p">)</span>
+
+        <span class="c1"># if collection is non-existent; assume it&#39;s not an update</span>
+        <span class="k">if</span> <span class="s2">&quot;cves&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTableNames</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_downloads</span><span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_url</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">modfile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">feed_url</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">recfile</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished CVE database update&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span>
+
+    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">urls</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CVE database population started&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Starting CVE database population starting from year: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">cveStartYear</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">delColInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropCollection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="n">DatabaseIndexer</span><span class="p">()</span><span class="o">.</span><span class="n">create_indexes</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cve_year_range</span><span class="p">():</span>
+            <span class="n">getfile</span> <span class="o">=</span> <span class="n">file_prefix</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">file_suffix</span>
+
+            <span class="n">urls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_url</span> <span class="o">+</span> <span class="n">getfile</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_downloads</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished CVE database population&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span></div>
+
+
+<div class="viewcode-block" id="VIADownloads"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.VIADownloads">[docs]</a><span class="k">class</span> <span class="nc">VIADownloads</span><span class="p">(</span><span class="n">JSONFileHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class processing VIA4 source files</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="VIADownloads.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.VIADownloads.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span> <span class="o">=</span> <span class="s2">&quot;VIA4&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;cves&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">feed_url</span> <span class="o">=</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">getFeedURL</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;VIADownloads&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="VIADownloads.file_to_queue"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.VIADownloads.file_to_queue">[docs]</a>    <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_tuple</span><span class="p">):</span>
+
+        <span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">file_tuple</span>
+
+        <span class="k">for</span> <span class="n">cve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ijson_handler</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">cve</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">entry_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">key</span><span class="p">}</span>
+                <span class="n">entry_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">entry_dict</span><span class="p">)</span>
+                <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processed </span><span class="si">{}</span><span class="s2"> items from file: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">input_file</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">setColInfo</span><span class="p">(</span><span class="s2">&quot;via4&quot;</span><span class="p">,</span> <span class="s2">&quot;sources&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;sources&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setColInfo</span><span class="p">(</span><span class="s2">&quot;via4&quot;</span><span class="p">,</span> <span class="s2">&quot;searchables&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;searchables&quot;</span><span class="p">])</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processed metadata from file: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Removing working dir: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">working_dir</span><span class="p">))</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">working_dir</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Failed to remove working dir; error produced: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+                <span class="n">DatabaseAction</span><span class="p">(</span>
+                    <span class="n">action</span><span class="o">=</span><span class="n">DatabaseAction</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">UpdateOne</span><span class="p">,</span>
+                    <span class="n">collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                    <span class="n">doc</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+                <span class="n">DatabaseAction</span><span class="p">(</span>
+                    <span class="n">action</span><span class="o">=</span><span class="n">DatabaseAction</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">InsertOne</span><span class="p">,</span>
+                    <span class="n">collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                    <span class="n">doc</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;VIA4 database update started&quot;</span><span class="p">)</span>
+
+        <span class="c1"># if collection is non-existent; assume it&#39;s not an update</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTableNames</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_downloads</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_url</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished VIA4 database update&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span>
+
+    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">delColInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropCollection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="CAPECDownloads"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.CAPECDownloads">[docs]</a><span class="k">class</span> <span class="nc">CAPECDownloads</span><span class="p">(</span><span class="n">XMLFileHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class processing CAPEC source files</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CAPECDownloads.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.CAPECDownloads.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span> <span class="o">=</span> <span class="s2">&quot;CAPEC&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">feed_url</span> <span class="o">=</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">getFeedURL</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;CAPECDownloads&quot;</span><span class="p">)</span>
+
+        <span class="c1"># make parser</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">make_parser</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ch</span> <span class="o">=</span> <span class="n">CapecHandler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">setContentHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ch</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_tuple</span><span class="p">):</span>
+
+        <span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">file_tuple</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">attack</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ch</span><span class="o">.</span><span class="n">capec</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">attack</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processed </span><span class="si">{}</span><span class="s2"> entries from file: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Removing working dir: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">working_dir</span><span class="p">))</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">working_dir</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Failed to remove working dir; error produced: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CAPEC database update started&quot;</span><span class="p">)</span>
+
+        <span class="c1"># if collection is non-existent; assume it&#39;s not an update</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTableNames</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_downloads</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_url</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished CAPEC database update&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span>
+
+    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">delColInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropCollection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="CWEDownloads"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.CWEDownloads">[docs]</a><span class="k">class</span> <span class="nc">CWEDownloads</span><span class="p">(</span><span class="n">XMLFileHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class processing CWE source files</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CWEDownloads.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.CWEDownloads.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span> <span class="o">=</span> <span class="s2">&quot;CWE&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">feed_url</span> <span class="o">=</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">getFeedURL</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;CWEDownloads&quot;</span><span class="p">)</span>
+
+        <span class="c1"># make parser</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">make_parser</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ch</span> <span class="o">=</span> <span class="n">CWEHandler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">setContentHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ch</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_tuple</span><span class="p">):</span>
+
+        <span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">file_tuple</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">cwe</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ch</span><span class="o">.</span><span class="n">cwe</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">cwe</span><span class="p">[</span><span class="s2">&quot;related_weaknesses&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">cwe</span><span class="p">[</span><span class="s2">&quot;related_weaknesses&quot;</span><span class="p">]))</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">cwe</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processed </span><span class="si">{}</span><span class="s2"> entries from file: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Removing working dir: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">working_dir</span><span class="p">))</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">working_dir</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Failed to remove working dir; error produced: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CWE database update started&quot;</span><span class="p">)</span>
+
+        <span class="c1"># if collection is non-existent; assume it&#39;s not an update</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTableNames</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_downloads</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_url</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished CWE database update&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span>
+
+    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">delColInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropCollection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+
+<span class="n">MongoUniqueIndex</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;MongoUniqueIndex&quot;</span><span class="p">,</span> <span class="s2">&quot;index name unique&quot;</span><span class="p">)</span>
+<span class="n">MongoAddIndex</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;MongoAddIndex&quot;</span><span class="p">,</span> <span class="s2">&quot;index name&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DatabaseIndexer"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.DatabaseIndexer">[docs]</a><span class="k">class</span> <span class="nc">DatabaseIndexer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class processing the Mongodb indexes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DatabaseIndexer.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.Sources_process.DatabaseIndexer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">database</span> <span class="o">=</span> <span class="n">MongoDBConnection</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MONGODB_CON_DETAILS&quot;</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">_dbclient</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">indexes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;cpe&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">MongoUniqueIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+                    <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vendor&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vendor&quot;</span>
+                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;product&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;product&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;cpeother&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">MongoUniqueIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+                    <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;cves&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vulnerable_configuration&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vulnerable_configuration&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vulnerable_product&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vulnerable_product&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Modified&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Modified&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Published&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Published&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;last-modified&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;last-modified&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;cvss&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cvss&quot;</span>
+                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;cvss3&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cvss3&quot;</span>
+                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;summary&quot;</span>
+                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vendors&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vendors&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;products&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vulnerable_product_stems&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vulnerable_product_stems&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vulnerable_configuration_stems&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vulnerable_configuration_stems&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;via4&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;mgmt_whitelist&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;mgmt_blacklist&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;capec&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;related_weakness&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;related_weakness&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;DatabaseIndexer&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sanitize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="n">collection</span><span class="p">}))</span>
+
+    <span class="k">def</span> <span class="nf">sanitize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">Cursor</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sanitize</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">and</span> <span class="s2">&quot;_id&quot;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+    <span class="k">def</span> <span class="nf">create_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">collection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexes</span><span class="p">[</span><span class="n">collection</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="n">MongoUniqueIndex</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setIndex</span><span class="p">(</span>
+                            <span class="n">collection</span><span class="p">,</span>
+                            <span class="n">each</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                            <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                            <span class="n">unique</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">unique</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="n">MongoAddIndex</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setIndex</span><span class="p">(</span>
+                            <span class="n">collection</span><span class="p">,</span> <span class="n">each</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">name</span>
+                        <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="c1"># no specific index given, continue</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;Could not find the requested collection: </span><span class="si">{}</span><span class="s2">, skipping...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">collection</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">pass</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_indexes</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setIndex</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="k">for</span> <span class="n">collection</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexes</span><span class="p">[</span><span class="n">collection</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="n">MongoUniqueIndex</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setIndex</span><span class="p">(</span>
+                            <span class="n">collection</span><span class="p">,</span>
+                            <span class="n">each</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                            <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                            <span class="n">unique</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">unique</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="n">MongoAddIndex</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setIndex</span><span class="p">(</span>
+                            <span class="n">collection</span><span class="p">,</span> <span class="n">each</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">name</span>
+                        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">iter_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_via4_indexes</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">each</span>
+
+    <span class="k">def</span> <span class="nf">get_via4_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">via4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">(</span><span class="s2">&quot;via4&quot;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">via4</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">via4</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;searchables&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;via4&quot;</span><span class="p">,</span> <span class="n">index</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">setIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Success to create index </span><span class="si">%s</span><span class="s2"> on </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to create index </span><span class="si">%s</span><span class="s2"> on </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Paul Tikken.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
