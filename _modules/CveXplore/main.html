@@ -87,17 +87,21 @@
               
             
             
-              <p class="caption"><span class="caption-text">General documentation</span></p>
+              <p class="caption" role="heading"><span class="caption-text">General documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../general/general.html">Dependencies</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Package documentation</span></p>
+<p class="caption" role="heading"><span class="caption-text">Package documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../package/core.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../package/common.html">Common</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../package/database.html">Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../package/api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../package/objects.html">Objects</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/cli.html">General</a></li>
 </ul>
 
             
@@ -171,14 +175,17 @@
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">DESCENDING</span>
 
 <span class="kn">from</span> <span class="nn">CveXplore.api.connection.api_db</span> <span class="kn">import</span> <span class="n">ApiDatabaseSource</span>
+<span class="kn">from</span> <span class="nn">CveXplore.common.cpe_converters</span> <span class="kn">import</span> <span class="n">from2to3CPE</span>
 <span class="kn">from</span> <span class="nn">CveXplore.common.db_mapping</span> <span class="kn">import</span> <span class="n">database_mapping</span>
 <span class="kn">from</span> <span class="nn">CveXplore.database.connection.mongo_db</span> <span class="kn">import</span> <span class="n">MongoDBConnection</span>
 <span class="kn">from</span> <span class="nn">CveXplore.errors</span> <span class="kn">import</span> <span class="n">DatabaseIllegalCollection</span>
+<span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.main_updater</span> <span class="kn">import</span> <span class="n">MainUpdater</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">version</span> <span class="kn">import</span> <span class="n">VERSION</span>
@@ -211,6 +218,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__version</span> <span class="o">=</span> <span class="n">VERSION</span>
 
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;DOC_BUILD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;DOC_BUILD&quot;</span><span class="p">:</span> <span class="s2">&quot;NO&quot;</span><span class="p">})</span>
+
         <span class="k">if</span> <span class="p">(</span>
             <span class="n">api_connection_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="ow">and</span> <span class="n">mongodb_connection_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -223,9 +232,11 @@
             <span class="n">mongodb_connection_details</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MONGODB_CON_DETAILS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">mongodb_connection_details</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">datasource</span> <span class="o">=</span> <span class="n">MongoDBConnection</span><span class="p">(</span><span class="o">**</span><span class="n">mongodb_connection_details</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">MainUpdater</span><span class="p">(</span><span class="n">datasource</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">mongodb_connection_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MONGODB_CON_DETAILS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">mongodb_connection_details</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">datasource</span> <span class="o">=</span> <span class="n">MongoDBConnection</span><span class="p">(</span><span class="o">**</span><span class="n">mongodb_connection_details</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">MainUpdater</span><span class="p">(</span><span class="n">datasource</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">api_connection_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">api_connection_details</span><span class="p">[</span><span class="s2">&quot;user_agent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;CveXplore:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;API_CON_DETAILS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">api_connection_details</span><span class="p">)</span>
@@ -238,13 +249,9 @@
 
         <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_mapping</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">each</span> <span class="o">!=</span> <span class="s2">&quot;cves&quot;</span><span class="p">:</span>
-                <span class="nb">setattr</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="p">,</span> <span class="n">each</span><span class="p">,</span> <span class="n">GenericDatabaseFactory</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="n">each</span><span class="p">,),</span>
-                <span class="p">)</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">each</span><span class="p">,</span> <span class="n">GenericDatabaseFactory</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="n">each</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="nb">setattr</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="p">,</span> <span class="n">each</span><span class="p">,</span> <span class="n">CvesDatabaseFunctions</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="n">each</span><span class="p">,),</span>
-                <span class="p">)</span></div>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">each</span><span class="p">,</span> <span class="n">CvesDatabaseFunctions</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="n">each</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="CveXplore.get_single_store_entry"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.get_single_store_entry">[docs]</a>    <span class="k">def</span> <span class="nf">get_single_store_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">,</span> <span class="n">dict_filter</span><span class="o">=</span><span class="p">{}):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -361,24 +368,38 @@
 
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">joined_list</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CveXplore.cves_for_cpe"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.cves_for_cpe">[docs]</a>    <span class="k">def</span> <span class="nf">cves_for_cpe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpe_string</span><span class="p">,</span> <span class="n">vuln_prod_search</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="CveXplore.cves_for_cpe"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.cves_for_cpe">[docs]</a>    <span class="k">def</span> <span class="nf">cves_for_cpe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpe_string</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method for retrieving Cves that match a single CPE string. By default the search will be made matching</span>
 <span class="sd">        the configuration fields of the cves documents.</span>
 
 <span class="sd">        :param cpe_string: CPE string: e.g. ``cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*``</span>
 <span class="sd">        :type cpe_string: str</span>
-<span class="sd">        :param vuln_prod_search: Search for matching products instead of configurations</span>
-<span class="sd">        :type vuln_prod_search: bool</span>
 <span class="sd">        :return: List with Cves</span>
 <span class="sd">        :rtype: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cpe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_single_store_entry</span><span class="p">(</span><span class="s2">&quot;cpe&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;cpe_2_2&quot;</span><span class="p">:</span> <span class="n">cpe_string</span><span class="p">})</span>
 
-        <span class="k">if</span> <span class="n">cpe</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cpe</span><span class="o">.</span><span class="n">iter_cves_matching_cpe</span><span class="p">(</span><span class="n">vuln_prod_search</span><span class="p">))</span>
+        <span class="c1"># format to cpe2.3</span>
+        <span class="n">cpe_string</span> <span class="o">=</span> <span class="n">from2to3CPE</span><span class="p">(</span><span class="n">cpe_string</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cpe_string</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;cpe&quot;</span><span class="p">):</span>
+            <span class="c1"># strict search with term starting with cpe; e.g: cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*</span>
+
+            <span class="n">remove_trailing_regex_stars</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?:\:|\:\:|\:\*)+$&quot;</span>
+
+            <span class="n">cpe_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">remove_trailing_regex_stars</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">cpe_string</span><span class="p">))</span>
+
+            <span class="n">cpe_regex_string</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^</span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cpe_regex</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">cpe</span></div>
+            <span class="c1"># more general search on same field; e.g. microsoft:windows_7</span>
+            <span class="n">cpe_regex_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">cpe_string</span><span class="p">))</span>
+
+        <span class="n">cves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_single_store_entries</span><span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;cves&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;vulnerable_configuration&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$regex&quot;</span><span class="p">:</span> <span class="n">cpe_regex_string</span><span class="p">}}),</span>
+            <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cves</span></div>
 
 <div class="viewcode-block" id="CveXplore.cve_by_id"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.cve_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">cve_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cve_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -425,8 +446,7 @@
 
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">get_db_content_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CveXplore.get_db_content_stats"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.get_db_content_stats">[docs]</a>    <span class="k">def</span> <span class="nf">get_db_content_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Property returning the stats from the database. Stats consist of the time last modified and the document count</span>
 <span class="sd">        per cvedb store in the database.</span>
@@ -468,7 +488,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="s2">&quot;Database info could not be retrieved&quot;</span>
 
-        <span class="k">return</span> <span class="s2">&quot;Using api endpoint: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;Using api endpoint: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">url</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
