@@ -48,6 +48,8 @@ class CveXplore(object):
         """
         self.__version = VERSION
 
+        os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "NO"})
+
         if (
             api_connection_details is not None
             and mongodb_connection_details is not None
