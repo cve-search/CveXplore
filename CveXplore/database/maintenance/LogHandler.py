@@ -1,6 +1,6 @@
 """
-LogHandler.py
-=============
+Log Handler
+===========
 """
 import logging
 import os
@@ -25,9 +25,6 @@ class HelperLogger(logging.Logger):
     """
     The HelperLogger is used by the application / gui as their logging class and *extends* the default python
     logger.logging class.
-
-    This will separate the logging from the application / gui from that of the daemons.
-
     """
 
     runPath = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
@@ -80,7 +77,9 @@ class HelperLogger(logging.Logger):
 
         To pass exception information, use the keyword argument exc_info with a true value, e.g.
 
-        logger.debug(“Houston, we have a %s”, “thorny problem”, exc_info=1)
+        .. code-block:: python
+
+            >>> logger.debug(“Houston, we have a thorny problem”)
 
         :param msg: Message to log
         :type msg: str
@@ -96,7 +95,9 @@ class HelperLogger(logging.Logger):
 
         To pass exception information, use the keyword argument exc_info with a true value, e.g.
 
-        logger.info(“Houston, we have a %s”, “interesting problem”, exc_info=1)
+        .. code-block:: python
+
+            >>> logger.info(“Houston, we have an interesting problem”)
 
         :param msg: Message to log
         :type msg: str
@@ -112,7 +113,9 @@ class HelperLogger(logging.Logger):
 
         To pass exception information, use the keyword argument exc_info with a true value, e.g.
 
-        logger.warning(“Houston, we have a %s”, “bit of a problem”, exc_info=1)
+        .. code-block:: python
+
+            >>> logger.warning(“Houston, we have a bit of a problem”)
 
         :param msg: Message to log
         :type msg: str
@@ -130,7 +133,9 @@ class HelperLogger(logging.Logger):
 
         To pass exception information, use the keyword argument exc_info with a true value, e.g.
 
-        logger.error(“Houston, we have a %s”, “major problem”, exc_info=1)
+        .. code-block:: python
+
+            >>> logger.error(“Houston, we have a major problem”)
 
         :param msg: Message to log
         :type msg: str
@@ -148,7 +153,9 @@ class HelperLogger(logging.Logger):
 
         To pass exception information, use the keyword argument exc_info with a true value, e.g.
 
-        logger.critical(“Houston, we have a %s”, “hell of a problem”, exc_info=1)
+        .. code-block:: python
+
+            >>> logger.critical(“Houston, we have a hell of a problem”)
 
         :param msg: Message to log
         :type msg: str
@@ -160,6 +167,11 @@ class HelperLogger(logging.Logger):
 
 
 class UpdateHandler(HelperLogger):
+    """
+    The UpdateHandler is used by the update process to provide written and visual feedback to the initiator of database
+    management tasks.
+    """
+
     def __init__(self, name, level=logging.NOTSET):
         super().__init__(name, level)
 

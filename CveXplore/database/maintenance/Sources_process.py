@@ -1,3 +1,7 @@
+"""
+Source processing classes
+=========================
+"""
 import datetime
 import hashlib
 import json
@@ -12,12 +16,11 @@ from dateutil.parser import parse as parse_datetime
 from pymongo import TEXT, ASCENDING
 
 from .Config import Configuration
-from .JSONFileHandler import JSONFileHandler
 from .Toolkit import generate_title
-from .XMLFileHandler import XMLFileHandler
 from .content_handlers import CapecHandler, CWEHandler
 from .db_action import DatabaseAction
 from CveXplore.database.connection.mongo_db import MongoDBConnection
+from .file_handlers import XMLFileHandler, JSONFileHandler
 
 file_prefix = "nvdcve-1.1-"
 file_suffix = ".json.gz"
@@ -34,6 +37,10 @@ cveStartYear = Configuration.getCVEStartYear()
 
 
 class CPEDownloads(JSONFileHandler):
+    """
+    Class processing CPE source files
+    """
+
     def __init__(self):
         self.feed_type = "CPE"
         self.prefix = "matches.item"
@@ -135,6 +142,10 @@ class CPEDownloads(JSONFileHandler):
 
 
 class CVEDownloads(JSONFileHandler):
+    """
+    Class processing CVE source files
+    """
+
     def __init__(self):
         self.feed_type = "CVES"
         self.prefix = "CVE_Items.item"
@@ -637,6 +648,10 @@ class CVEDownloads(JSONFileHandler):
 
 
 class VIADownloads(JSONFileHandler):
+    """
+    Class processing VIA4 source files
+    """
+
     def __init__(self):
         self.feed_type = "VIA4"
         self.prefix = "cves"
@@ -720,6 +735,10 @@ class VIADownloads(JSONFileHandler):
 
 
 class CAPECDownloads(XMLFileHandler):
+    """
+    Class processing CAPEC source files
+    """
+
     def __init__(self):
         self.feed_type = "CAPEC"
         super().__init__(self.feed_type)
@@ -778,6 +797,10 @@ class CAPECDownloads(XMLFileHandler):
 
 
 class CWEDownloads(XMLFileHandler):
+    """
+    Class processing CWE source files
+    """
+
     def __init__(self):
         self.feed_type = "CWE"
         super().__init__(self.feed_type)
@@ -844,6 +867,10 @@ MongoAddIndex = namedtuple("MongoAddIndex", "index name")
 
 
 class DatabaseIndexer(object):
+    """
+    Class processing the Mongodb indexes
+    """
+
     def __init__(self):
 
         database = MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))

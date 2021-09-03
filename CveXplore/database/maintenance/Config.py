@@ -1,3 +1,7 @@
+"""
+Configuration
+=============
+"""
 import datetime
 import os
 import re
@@ -6,6 +10,10 @@ runPath = os.path.dirname(os.path.realpath(__file__))
 
 
 class Configuration(object):
+    """
+    Class holding the configuration
+    """
+
     CVE_START_YEAR = os.getenv("CVE_START_YEAR", 2002)
 
     SOURCES = os.getenv(

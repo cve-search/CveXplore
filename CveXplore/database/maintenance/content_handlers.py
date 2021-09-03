@@ -1,8 +1,16 @@
+"""
+XML Content Handlers
+====================
+"""
 from collections import defaultdict
 from xml.sax.handler import ContentHandler
 
 
 class CapecHandler(ContentHandler):
+    """
+    Class handling the CAPEC XML parsing
+    """
+
     def __init__(self):
         self.capec = []
         self.Attack_Pattern_Catalog_tag = False
@@ -364,6 +372,10 @@ class CapecHandler(ContentHandler):
 
 
 class CWEHandler(ContentHandler):
+    """
+    Class handling the CWE XML parsing
+    """
+
     def __init__(self):
         self.cwe = []
         self.description_tag = False
