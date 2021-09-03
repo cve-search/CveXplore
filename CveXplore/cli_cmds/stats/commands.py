@@ -10,13 +10,13 @@ from CveXplore.cli_cmds.cli_utils.utils import printer
 def stats_cmd(ctx, datasource, pretty, output="json"):
     if ctx.invoked_subcommand is None:
         printer(
-            input_data=ctx.obj["data_source"].get_db_content_stats,
+            input_data=ctx.obj["data_source"].get_db_content_stats(),
             pretty=pretty,
             output=output,
         )
     else:
         printer(
-            input_data=ctx.obj["data_source"].get_db_content_stats,
+            input_data=ctx.obj["data_source"].get_db_content_stats(),
             pretty=pretty,
             output=output,
         )
