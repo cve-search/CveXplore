@@ -15,11 +15,13 @@ class DatasourceConnection(object):
     objects and generic database functions
     """
 
-    __DATA_SOURCE_CONNECTION = (
-        ApiDatabaseSource(**json.loads(os.getenv("API_CON_DETAILS")))
-        if os.getenv("API_CON_DETAILS")
-        else MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
-    )
+    # hack for documentation building
+    if json.loads(os.getenv("DOC_BUILD"))["DOC_BUILD"] != "YES":
+        __DATA_SOURCE_CONNECTION = (
+            ApiDatabaseSource(**json.loads(os.getenv("API_CON_DETAILS")))
+            if os.getenv("API_CON_DETAILS")
+            else MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
+        )
 
     def __init__(self, collection):
         """

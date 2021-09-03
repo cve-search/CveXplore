@@ -19,6 +19,12 @@
    /package/api
    /package/objects
 
+.. toctree::
+   :maxdepth: 2
+   :caption: CLI documentation
+
+   /cli/cli
+
 
 Indices and tables
 ==================

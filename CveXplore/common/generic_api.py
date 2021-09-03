@@ -1,6 +1,6 @@
 """
-generic_api.py
-==============
+Generic API
+===========
 """
 import json
 from json import JSONDecodeError

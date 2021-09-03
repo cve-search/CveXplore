@@ -16,7 +16,8 @@ import json
 
 sys.path.insert(0, os.path.abspath(".."))
 
-os.environ["MONGODB_CON_DETAILS"] = json.dumps({"host": "dummy"})
+# os.environ["MONGODB_CON_DETAILS"] = json.dumps({"host": "dummy"})
+os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "YES"})
 
 # -- Project information -----------------------------------------------------
 
@@ -71,4 +72,3 @@ latex_elements = {
     "preamble": "",
     "figure_align": "htbp",
 }
-# latex_logo = "_static/reaper_600.png"
