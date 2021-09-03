@@ -43,6 +43,8 @@ jobs:
           git config --local user.name "GitHub Action"
           git add .
           git commit -m "Update documentation" -a || true
+        env:
+          DOC_BUILD: '{"DOC_BUILD": "YES"}'
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
