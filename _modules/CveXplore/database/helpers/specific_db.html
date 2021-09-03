@@ -1,0 +1,255 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>CveXplore.database.helpers.specific_db &mdash; CveXplore  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/CveExplore_icon.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> CveXplore
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">General documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../general/general.html">Dependencies</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/common.html">Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package/objects.html">Objects</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli/cli.html">General</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CveXplore</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>CveXplore.database.helpers.specific_db</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for CveXplore.database.helpers.specific_db</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Specific database functions</span>
+<span class="sd">===========================</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">DESCENDING</span>
+
+<span class="kn">from</span> <span class="nn">CveXplore.database.helpers.generic_db</span> <span class="kn">import</span> <span class="n">GenericDatabaseFactory</span>
+
+
+<div class="viewcode-block" id="CvesDatabaseFunctions"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions">[docs]</a><span class="k">class</span> <span class="nc">CvesDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The CvesDatabaseFunctions is a specific class that provides the cves attribute of a CveXplore instance additional</span>
+<span class="sd">    functions that only apply to the &#39;cves&#39; collection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CvesDatabaseFunctions.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CvesDatabaseFunctions.get_cves_for_vendor"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_cves_for_vendor">[docs]</a>    <span class="k">def</span> <span class="nf">get_cves_for_vendor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vendor</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to return cves based on a given vendor. By default to result is sorted descending on th cvss field.</span>
+
+<span class="sd">        :param vendor: A vendor to search for; e.g. microsoft</span>
+<span class="sd">        :type vendor: str</span>
+<span class="sd">        :param limit: Limit the amount of returned results</span>
+<span class="sd">        :type limit: int</span>
+<span class="sd">        :return: List with cves objects</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;vendors&quot;</span><span class="p">:</span> <span class="n">vendor</span><span class="p">})</span>
+            <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;cvss&quot;</span><span class="p">,</span> <span class="n">DESCENDING</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="CvesDatabaseFunctions.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CvesDatabaseFunctions:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Paul Tikken.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

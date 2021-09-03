@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>CveXplore.common.generic_api &mdash; CveXplore  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/CveExplore_icon.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> CveXplore
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">General documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../general/general.html">Dependencies</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Package documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../package/core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../package/common.html">Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../package/database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../package/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../package/objects.html">Objects</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli/cli.html">General</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CveXplore</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>CveXplore.common.generic_api</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for CveXplore.common.generic_api</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Generic API</span>
+<span class="sd">===========</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+
+
+<div class="viewcode-block" id="GenericApi"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi">[docs]</a><span class="k">class</span> <span class="nc">GenericApi</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The GenericApi class serves as a base class for all API&#39;s used within CveXplore</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GenericApi.__init__"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">address</span><span class="p">,</span>
+        <span class="n">api_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">proxies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">protocol</span><span class="o">=</span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
+        <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;GenericApi&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The Generic api caller handles all communication towards a api resource.</span>
+
+<span class="sd">        :param address: Tuple with host ip/name and port</span>
+<span class="sd">        :type address: tuple</span>
+<span class="sd">        :param api_path: Generic to connect to api resources, defaults to &#39;None&#39;</span>
+<span class="sd">        :type api_path: str</span>
+<span class="sd">        :param proxies: If you need to use a proxy, you can configure individual requests with the proxies argument</span>
+<span class="sd">                        to any request method</span>
+<span class="sd">        :type proxies: dict</span>
+<span class="sd">        :param protocol: Protocol to use when connecting to api; defaults to &#39;https&#39;</span>
+<span class="sd">        :type protocol: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;The parameter &#39;address&#39; has to be a tuple with the address and port of the api host&quot;</span>
+                <span class="s2">&quot;e.g. (&#39;127.0.0.1&#39;, 8834) &quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">address</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">address</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">protocol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseurl</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">://</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">protocol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_path</span> <span class="o">=</span> <span class="n">api_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span> <span class="o">=</span> <span class="n">proxies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span> <span class="o">=</span> <span class="n">user_agent</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__default_headers</span></div>
+
+<div class="viewcode-block" id="GenericApi.__repr__"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;return a string representation of the obj GenericApi&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;&lt;GenericApi:(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__build_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Internal method to build a url to use when executing commands</span>
+
+<span class="sd">        :param resource: API end point to connect to</span>
+<span class="sd">        :type resource: str</span>
+<span class="sd">        :return: url string</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">/</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseurl</span><span class="p">,</span> <span class="n">resource</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">/</span><span class="si">{1}</span><span class="s2">/</span><span class="si">{2}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseurl</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_path</span><span class="p">,</span> <span class="n">resource</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Send a request</span>
+
+<span class="sd">        Send a request to api host based on the specified data. Specify the content type as JSON and</span>
+<span class="sd">        convert the data to JSON format.</span>
+
+<span class="sd">        :param method: http method to use (e.g. POST, GET, DELETE, PUT)</span>
+<span class="sd">        :type method: str</span>
+<span class="sd">        :param resource: API end point to connect to</span>
+<span class="sd">        :type resource: str</span>
+<span class="sd">        :param session: Session object from requests library</span>
+<span class="sd">        :type session: object</span>
+<span class="sd">        :param data: Request body data</span>
+<span class="sd">        :type data: dict</span>
+<span class="sd">        :param timeout: Set the timeout on a request, defaults to 60 seconds</span>
+<span class="sd">        :type timeout: int</span>
+<span class="sd">        :return: response from the server</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">requests</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">urllib3</span><span class="o">.</span><span class="n">disable_warnings</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">request_api_resource</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span><span class="p">,</span>
+                <span class="s2">&quot;verify&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify</span><span class="p">,</span>
+                <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="n">timeout</span><span class="p">,</span>
+                <span class="s2">&quot;proxies&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">request_api_resource</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
+                <span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span><span class="p">,</span>
+                <span class="s2">&quot;verify&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify</span><span class="p">,</span>
+                <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="n">timeout</span><span class="p">,</span>
+                <span class="s2">&quot;proxies&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="p">,</span>
+            <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__build_url</span><span class="p">(</span><span class="n">resource</span><span class="p">),</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;PUT&quot;</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__build_url</span><span class="p">(</span><span class="n">resource</span><span class="p">),</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;DELETE&quot;</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__build_url</span><span class="p">(</span><span class="n">resource</span><span class="p">),</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__build_url</span><span class="p">(</span><span class="n">resource</span><span class="p">),</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">json_response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">JSONDecodeError</span><span class="p">:</span>
+            <span class="n">json_response</span> <span class="o">=</span> <span class="n">r</span>
+
+        <span class="k">return</span> <span class="n">json_response</span>
+
+<div class="viewcode-block" id="GenericApi.call"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi.call">[docs]</a>    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method for requesting free format api resources</span>
+
+<span class="sd">        :param method: http method to use (e.g. POST, GET, DELETE, PUT)</span>
+<span class="sd">        :type method: str</span>
+<span class="sd">        :param resource: API end point to connect to</span>
+<span class="sd">        :type resource: str</span>
+<span class="sd">        :param data: Request body data</span>
+<span class="sd">        :type data: dict</span>
+<span class="sd">        :return: query result</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__connect</span><span class="p">(</span>
+                    <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="n">result</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connection error, is the host up?&quot;</span><span class="p">)</span>
+            <span class="k">raise</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">__default_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Property to return the default headers</span>
+
+<span class="sd">        :return: Default headers</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span><span class="p">),</span>
+        <span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Property to return the current headers</span>
+
+<span class="sd">        :return: self.myheaders</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span>
+
+<div class="viewcode-block" id="GenericApi.set_header_field"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi.set_header_field">[docs]</a>    <span class="k">def</span> <span class="nf">set_header_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to add a header and set it&#39;s value</span>
+
+<span class="sd">        :param field: Name of the header field to add</span>
+<span class="sd">        :type field: str</span>
+<span class="sd">        :param value: Value of the header field</span>
+<span class="sd">        :type value: str</span>
+<span class="sd">        :return: self.myheaders</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span></div>
+
+<div class="viewcode-block" id="GenericApi.del_header_field"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi.del_header_field">[docs]</a>    <span class="k">def</span> <span class="nf">del_header_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to delete a header field</span>
+
+<span class="sd">        :param field: Name of the header field to delete</span>
+<span class="sd">        :type field: str</span>
+<span class="sd">        :return: self.myheaders</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span></div>
+
+<div class="viewcode-block" id="GenericApi.reset_headers"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi.reset_headers">[docs]</a>    <span class="k">def</span> <span class="nf">reset_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to reset the headers to the default values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__default_headers</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Paul Tikken.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
