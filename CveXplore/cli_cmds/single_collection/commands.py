@@ -7,9 +7,9 @@ from CveXplore.cli_cmds.mutex_options.mutex import Mutex
 
 
 @click.group(
-    "single_collection",
+    "search",
     invoke_without_command=True,
-    help="Perform queries on a single collection",
+    help="Perform search queries on a single collection",
 )
 @click.option("-c", "--collection", required=True, help="Collection to query")
 @click.option("-f", "--field", required=True, help="Field to query")
@@ -32,7 +32,7 @@ from CveXplore.cli_cmds.mutex_options.mutex import Mutex
     not_required_if=["pretty"],
 )
 @click.pass_context
-def single_collection_cmd(ctx, collection, field, value, limit, pretty, output):
+def search_cmd(ctx, collection, field, value, limit, pretty, output):
     ret_list = ctx.obj["data_source"].get_single_store_entries(
         (collection, {field: value.upper()}), limit=limit
     )
@@ -48,7 +48,7 @@ def single_collection_cmd(ctx, collection, field, value, limit, pretty, output):
             ctx.obj["RESULT"] = result
 
 
-@single_collection_cmd.command(
+@search_cmd.command(
     "less", help="Lets you scroll through the returned results"
 )
 @click.pass_context
