@@ -11,7 +11,13 @@ from CveXplore.cli_cmds.mutex_options.mutex import Mutex
     invoke_without_command=True,
     help="Perform search queries on a single collection",
 )
-@click.option("-c", "--collection", required=True, help="Collection to query")
+@click.option(
+    "-c",
+    "--collection",
+    required=True,
+    type=click.Choice(["capec", "cpe", "cwe", "via4", "cves"], case_sensitive=False),
+    help="Collection to query",
+)
 @click.option("-f", "--field", required=True, help="Field to query")
 @click.option("-v", "--value", required=True, help="Value to query")
 @click.option("-l", "--limit", default=10, help="Query limit")
@@ -48,9 +54,7 @@ def search_cmd(ctx, collection, field, value, limit, pretty, output):
             ctx.obj["RESULT"] = result
 
 
-@search_cmd.command(
-    "less", help="Lets you scroll through the returned results"
-)
+@search_cmd.command("less", help="Lets you scroll through the returned results")
 @click.pass_context
 def less_cmd(ctx):
     click.echo_via_pager(ctx.obj["RESULT"])

@@ -36,7 +36,7 @@ setup(
     description="Package for interacting with cve-search",
     long_description=README,
     long_description_content_type="text/x-rst",
-    package_data={"CveXplore": ["LICENSE", "VERSION", ".cvexplore-complete.bash", ".schema_version"]},
+    package_data={"CveXplore": ["LICENSE", "VERSION", ".cvexplore-complete.bash", ".schema_version", ".sources.ini"]},
     entry_points='''
             [console_scripts]
             cvexplore=CveXplore.cli:main

@@ -20,13 +20,16 @@ class Configuration(object):
     if os.getenv("SOURCES") is not None:
         SOURCES = json.loads(os.getenv("SOURCES"))
     else:
-        SOURCES = {
-            "cve": "https://nvd.nist.gov/feeds/json/cve/1.1/",
-            "cpe": "https://nvd.nist.gov/feeds/json/cpematch/1.0/nvdcpematch-1.0.json.zip",
-            "cwe": "https://cwe.mitre.org/data/xml/cwec_v4.4.xml.zip",
-            "capec": "https://capec.mitre.org/data/xml/capec_v3.5.xml",
-            "via4": "https://www.cve-search.org/feeds/via4.json",
-        }
+        with open(os.path.join(runPath, "../../.sources.ini")) as f:
+            SOURCES = json.loads(f.read())
+
+    DEFAULT_SOURCES = {
+        "cve": "https://nvd.nist.gov/feeds/json/cve/1.1/",
+        "cpe": "https://nvd.nist.gov/feeds/json/cpematch/1.0/nvdcpematch-1.0.json.zip",
+        "cwe": "https://cwe.mitre.org/data/xml/cwec_v4.4.xml.zip",
+        "capec": "https://capec.mitre.org/data/xml/capec_v3.5.xml",
+        "via4": "https://www.cve-search.org/feeds/via4.json",
+    }
 
     HTTP_PROXY = os.getenv("HTTP_PROXY", "")
 

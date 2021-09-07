@@ -1,7 +1,10 @@
+import json
+import os
+
 import click
 
 from CveXplore.cli_cmds.cli_utils.utils import printer
-from CveXplore.database.maintenance.Config import Configuration
+from CveXplore.database.maintenance.Config import Configuration, runPath
 
 
 @click.group(
@@ -25,10 +28,15 @@ def initialize_cmd(ctx):
 
 
 @db_cmd.group("sources", invoke_without_command=True, help="Database source management")
+@click.pass_context
+def sources_cmd(ctx):
+    pass
+
+
+@sources_cmd.group("show", invoke_without_command=True, help="Show sources")
 @click.option("--pretty", is_flag=True, help="Pretty print the output")
 @click.pass_context
-def sources_cmd(ctx, pretty):
-
+def show_cmd(ctx, pretty):
     config = Configuration()
 
     if ctx.invoked_subcommand is None:
@@ -41,3 +49,42 @@ def sources_cmd(ctx, pretty):
             input_data=config.SOURCES,
             pretty=pretty,
         )
+
+
+@sources_cmd.group("set", invoke_without_command=True, help="Set sources")
+@click.option(
+    "-k",
+    "--key",
+    help="Set the source key",
+    type=click.Choice(["capec", "cpe", "cwe", "via4", "cves"], case_sensitive=False),
+)
+@click.option(
+    "-v",
+    "--value",
+    help="Set the source key value",
+)
+@click.pass_context
+def set_cmd(ctx, key, value):
+    config = Configuration()
+
+    sources = config.SOURCES
+
+    sources[key] = value
+
+    with open(os.path.join(runPath, "../../.sources.ini"), "w") as f:
+        f.write(json.dumps(sources))
+
+    printer(input_data={"SOURCES SET TO": sources}, pretty=True)
+
+
+@sources_cmd.group("reset", invoke_without_command=True, help="Set sources")
+@click.pass_context
+def reset_cmd(ctx):
+    config = Configuration()
+
+    sources = config.DEFAULT_SOURCES
+
+    with open(os.path.join(runPath, "../../.sources.ini"), "w") as f:
+        f.write(json.dumps(sources))
+
+    printer(input_data={"SOURCES RESET TO": sources}, pretty=True)
