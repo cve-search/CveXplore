@@ -190,13 +190,16 @@
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;SOURCES&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">SOURCES</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;SOURCES&quot;</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">SOURCES</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;cve&quot;</span><span class="p">:</span> <span class="s2">&quot;https://nvd.nist.gov/feeds/json/cve/1.1/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;cpe&quot;</span><span class="p">:</span> <span class="s2">&quot;https://nvd.nist.gov/feeds/json/cpematch/1.0/nvdcpematch-1.0.json.zip&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;cwe&quot;</span><span class="p">:</span> <span class="s2">&quot;https://cwe.mitre.org/data/xml/cwec_v4.4.xml.zip&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;capec&quot;</span><span class="p">:</span> <span class="s2">&quot;https://capec.mitre.org/data/xml/capec_v3.5.xml&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;via4&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.cve-search.org/feeds/via4.json&quot;</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">runPath</span><span class="p">,</span> <span class="s2">&quot;../../.sources.ini&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">SOURCES</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+    <span class="n">DEFAULT_SOURCES</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;cve&quot;</span><span class="p">:</span> <span class="s2">&quot;https://nvd.nist.gov/feeds/json/cve/1.1/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cpe&quot;</span><span class="p">:</span> <span class="s2">&quot;https://nvd.nist.gov/feeds/json/cpematch/1.0/nvdcpematch-1.0.json.zip&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cwe&quot;</span><span class="p">:</span> <span class="s2">&quot;https://cwe.mitre.org/data/xml/cwec_v4.4.xml.zip&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;capec&quot;</span><span class="p">:</span> <span class="s2">&quot;https://capec.mitre.org/data/xml/capec_v3.5.xml&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;via4&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.cve-search.org/feeds/via4.json&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
 
     <span class="n">HTTP_PROXY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;HTTP_PROXY&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
