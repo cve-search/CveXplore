@@ -172,6 +172,7 @@
 <span class="sd">Main Updater</span>
 <span class="sd">============</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.DatabaseSchemaChecker</span> <span class="kn">import</span> <span class="n">SchemaChecker</span>
 <span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.Sources_process</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">CPEDownloads</span><span class="p">,</span>
     <span class="n">CVEDownloads</span><span class="p">,</span>
@@ -205,7 +206,10 @@
             <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;via4&quot;</span><span class="p">,</span> <span class="s2">&quot;updater&quot;</span><span class="p">:</span> <span class="n">VIADownloads</span><span class="p">},</span>
         <span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">posts</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;ensureindex&quot;</span><span class="p">,</span> <span class="s2">&quot;updater&quot;</span><span class="p">:</span> <span class="n">DatabaseIndexer</span><span class="p">}]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">posts</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;ensureindex&quot;</span><span class="p">,</span> <span class="s2">&quot;updater&quot;</span><span class="p">:</span> <span class="n">DatabaseIndexer</span><span class="p">},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;schema&quot;</span><span class="p">,</span> <span class="s2">&quot;updater&quot;</span><span class="p">:</span> <span class="n">SchemaChecker</span><span class="p">},</span>
+        <span class="p">]</span></div>
 
 <div class="viewcode-block" id="MainUpdater.update"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.main_updater.MainUpdater.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
