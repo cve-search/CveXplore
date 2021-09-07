@@ -2,6 +2,7 @@
 Main Updater
 ============
 """
+from CveXplore.database.maintenance.DatabaseSchemaChecker import SchemaChecker
 from CveXplore.database.maintenance.Sources_process import (
     CPEDownloads,
     CVEDownloads,
@@ -35,7 +36,10 @@ class MainUpdater(object):
             {"name": "via4", "updater": VIADownloads},
         ]
 
-        self.posts = [{"name": "ensureindex", "updater": DatabaseIndexer}]
+        self.posts = [
+            {"name": "ensureindex", "updater": DatabaseIndexer},
+            {"name": "schema", "updater": SchemaChecker},
+        ]
 
     def update(self):
         """
