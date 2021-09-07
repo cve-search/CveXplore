@@ -17,7 +17,7 @@ jobs:
         run: |
           echo "In this release:" > ./commits.log
           echo "" >> ./commits.log
-          /usr/bin/git log $(git describe --tags --abbrev=0)..HEAD --no-merges --oneline >> ./commits.log
+          /usr/bin/git log --oneline --no-merges $(git describe --tags --abbrev=0 @^)..@ >> ./commits.log
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
