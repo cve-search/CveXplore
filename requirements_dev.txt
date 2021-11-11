@@ -1,4 +1,4 @@
-sphinx==4.2.0
+sphinx==4.3.0
 sphinx-rtd-theme==1.0.0
 setuptools==58.4.0
 pymongo==3.12.1
