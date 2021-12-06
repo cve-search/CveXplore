@@ -1,4 +1,4 @@
-pymongo==3.12.1
+pymongo==4.0
 requests==2.26.0
 urllib3==1.26.7
 tqdm==4.62.3
