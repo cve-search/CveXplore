@@ -2,6 +2,7 @@
 Mongodb specific
 ================
 """
+
 from pymongo.collection import Collection
 from pymongo.cursor import Cursor
 
@@ -62,24 +63,12 @@ class CveSearchCursor(Cursor):
         if self.__empty:
             raise StopIteration
         if len(self.__data) or self._refresh():
-            if self.__manipulate:
-                _db = self.__collection.database
-                try:
-                    return _db._fix_outgoing(
-                        self.database_objects_mapping[self.__collname](
-                            **self.__data.popleft()
-                        ),
-                        self.__collection,
-                    )
-                except KeyError:
-                    return _db._fix_outgoing(self.__data.popleft(), self.__collection)
-            else:
-                try:
-                    return self.database_objects_mapping[self.__collname](
-                        **self.__data.popleft()
-                    )
-                except KeyError:
-                    return self.__data.popleft()
+            try:
+                return self.database_objects_mapping[self.__collname](
+                    **self.__data.popleft()
+                )
+            except KeyError:
+                return self.__data.popleft()
         else:
             raise StopIteration
 

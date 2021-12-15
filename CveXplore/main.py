@@ -303,14 +303,14 @@ class CveXplore(object):
                     each["last-modified"] = str(each["last-modified"])
                     each["document count"] = getattr(
                         self.datasource, "store_{}".format(db)
-                    ).count()
+                    ).count_documents({})
                     stats[db] = each
 
                     for mgmtlist in ["mgmt_blacklist", "mgmt_whitelist"]:
                         stats[mgmtlist] = {
                             "document count": getattr(
                                 self.datasource, "store_{}".format(mgmtlist)
-                            ).count()
+                            ).count_documents({})
                         }
 
                 return dict(stats)
