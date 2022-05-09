@@ -1,6 +1,6 @@
 sphinx==4.4.0
 sphinx-rtd-theme==1.0.0
-pymongo==4.0.1
+pymongo==4.1.1
 requests==2.27.1
 urllib3==1.26.9
 tqdm==4.62.3
