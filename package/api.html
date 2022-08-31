@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -90,11 +91,11 @@
            <div itemprop="articleBody">
              
   <section id="api">
-<span id="id1"></span><h1>API<a class="headerlink" href="#api" title="Permalink to this headline"></a></h1>
+<span id="id1"></span><h1>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h1>
 <section id="module-CveXplore.api.connection.api_db">
-<span id="api-connection"></span><h2>API connection<a class="headerlink" href="#module-CveXplore.api.connection.api_db" title="Permalink to this headline"></a></h2>
+<span id="api-connection"></span><h2>API connection<a class="headerlink" href="#module-CveXplore.api.connection.api_db" title="Permalink to this heading"></a></h2>
 <section id="id2">
-<h3>API connection<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<h3>API connection<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.api.connection.api_db.ApiDatabaseCollection">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.api.connection.api_db.</span></span><span class="sig-name descname"><span class="pre">ApiDatabaseCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proxies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CveXplore'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/api/connection/api_db.html#ApiDatabaseCollection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.api.connection.api_db.ApiDatabaseCollection" title="Permalink to this definition"></a></dt>
@@ -193,13 +194,13 @@ to any request method</p></li>
 </section>
 </section>
 <section id="module-CveXplore.api.helpers.cve_search_api">
-<span id="api-helpers"></span><h2>API helpers<a class="headerlink" href="#module-CveXplore.api.helpers.cve_search_api" title="Permalink to this headline"></a></h2>
+<span id="api-helpers"></span><h2>API helpers<a class="headerlink" href="#module-CveXplore.api.helpers.cve_search_api" title="Permalink to this heading"></a></h2>
 <section id="cve-search-api">
-<h3>Cve Search API<a class="headerlink" href="#cve-search-api" title="Permalink to this headline"></a></h3>
+<h3>Cve Search API<a class="headerlink" href="#cve-search-api" title="Permalink to this heading"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.api.helpers.cve_search_api.CveSearchApi">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.api.helpers.cve_search_api.</span></span><span class="sig-name descname"><span class="pre">CveSearchApi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_collection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/api/helpers/cve_search_api.html#CveSearchApi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.api.helpers.cve_search_api.CveSearchApi" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="common.html#CveXplore.common.generic_api.GenericApi" title="CveXplore.common.generic_api.GenericApi"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.common.generic_api.GenericApi</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="common.html#CveXplore.common.generic_api.GenericApi" title="CveXplore.common.generic_api.GenericApi"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericApi</span></code></a></p>
 <p>The CveSearchApi handles the different arguments in order to perform a query to a specific Cve Search api endpoint.
 It mimics the pymongo cursor’s behaviour to provide an ambiguous way to talk to either an API or a mongodb.</p>
 <dl class="py method">
