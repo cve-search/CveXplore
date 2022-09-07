@@ -2,7 +2,8 @@
 CPE Converters
 ==============
 """
-from urllib.parse import unquote
+
+from CveXplore.database.maintenance import cpe_conversion
 
 
 def from2to3CPE(cpe, autofill=False):
@@ -19,19 +20,12 @@ def from2to3CPE(cpe, autofill=False):
     cpe = cpe.strip()
     if not cpe.startswith("cpe:2.3:"):
         if not cpe.startswith("cpe:/"):
-            # can not do anything with this; returning original string
-            return cpe
-        cpe = cpe.replace("cpe:/", "cpe:2.3:")
-        cpe = cpe.replace("::", ":-:")
-        cpe = cpe.replace("~-", "~")
-        cpe = cpe.replace("~", ":-:")
-        cpe = cpe.replace("::", ":")
-        cpe = cpe.strip(":-")
-        cpe = unquote(cpe)
+            return False
+        cpe = cpe_conversion.cpe_uri_to_fs(cpe)
     if autofill:
         e = cpe.split(":")
         for x in range(0, 13 - len(e)):
-            cpe += ":*"
+            cpe += ":-"
     return cpe
 
 
@@ -47,21 +41,8 @@ def from3to2CPE(cpe):
     cpe = cpe.strip()
     if not cpe.startswith("cpe:/"):
         if not cpe.startswith("cpe:2.3:"):
-            # can not do anything with this; returning original string
-            return cpe
-        cpe = cpe.replace("cpe:2.3:", "")
-        parts = cpe.split(":")
-        next = []
-        first = "cpe:/" + ":".join(parts[:5])
-        last = parts[5:]
-        if last:
-            for x in last:
-                next.append("~") if x == "-" else next.append(x)
-            if "~" in next:
-                pad(next, 6, "~")
-        cpe = "%s:%s" % (first, "".join(next))
-        cpe = cpe.replace(":-:", "::")
-        cpe = cpe.strip(":")
+            return False
+        cpe = cpe_conversion.cpe_fs_to_uri(cpe)
     return cpe
 
 

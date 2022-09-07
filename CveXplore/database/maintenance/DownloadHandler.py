@@ -338,12 +338,12 @@ class DownloadHandler(ABC):
         return self.database.list_collection_names()
 
     def setColInfo(self, collection, field, data):
-        self.database[collection].update(
+        self.database[collection].update_one(
             {"db": collection}, {"$set": {field: data}}, upsert=True
         )
 
     def delColInfo(self, collection):
-        self.database["info"].remove({"db": collection})
+        self.database["info"].delete_one({"db": collection})
 
     def getCPEVersionInformation(self, query):
         return self.sanitize(self.database["cpe"].find_one(query))
@@ -362,7 +362,7 @@ class DownloadHandler(ABC):
         return x
 
     def setColUpdate(self, collection, date):
-        self.database["info"].update(
+        self.database["info"].update_one(
             {"db": collection}, {"$set": {"last-modified": date}}, upsert=True
         )
 

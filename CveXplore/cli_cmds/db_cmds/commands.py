@@ -40,15 +40,9 @@ def show_cmd(ctx, pretty):
     config = Configuration()
 
     if ctx.invoked_subcommand is None:
-        printer(
-            input_data=config.SOURCES,
-            pretty=pretty,
-        )
+        printer(input_data=config.SOURCES, pretty=pretty)
     else:
-        printer(
-            input_data=config.SOURCES,
-            pretty=pretty,
-        )
+        printer(input_data=config.SOURCES, pretty=pretty)
 
 
 @sources_cmd.group("set", invoke_without_command=True, help="Set sources")
@@ -58,11 +52,7 @@ def show_cmd(ctx, pretty):
     help="Set the source key",
     type=click.Choice(["capec", "cpe", "cwe", "via4", "cves"], case_sensitive=False),
 )
-@click.option(
-    "-v",
-    "--value",
-    help="Set the source key value",
-)
+@click.option("-v", "--value", help="Set the source key value")
 @click.pass_context
 def set_cmd(ctx, key, value):
     config = Configuration()

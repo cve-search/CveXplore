@@ -878,25 +878,12 @@ class DatabaseIndexer(object):
 
         self.indexes = {
             "cpe": [
-                MongoUniqueIndex(
-                    index=[("id", ASCENDING)],
-                    name="id",
-                    unique=True,
-                ),
-                MongoAddIndex(
-                    index=[("vendor", ASCENDING)], name="vendor"
-                ),
-                MongoAddIndex(
-                    index=[("product", ASCENDING)],
-                    name="product",
-                ),
+                MongoUniqueIndex(index=[("id", ASCENDING)], name="id", unique=True),
+                MongoAddIndex(index=[("vendor", ASCENDING)], name="vendor"),
+                MongoAddIndex(index=[("product", ASCENDING)], name="product"),
             ],
             "cpeother": [
-                MongoUniqueIndex(
-                    index=[("id", ASCENDING)],
-                    name="id",
-                    unique=True,
-                )
+                MongoUniqueIndex(index=[("id", ASCENDING)], name="id", unique=True)
             ],
             "cves": [
                 MongoAddIndex(index=[("id", ASCENDING)], name="id"),
@@ -905,38 +892,18 @@ class DatabaseIndexer(object):
                     name="vulnerable_configuration",
                 ),
                 MongoAddIndex(
-                    index=[("vulnerable_product", ASCENDING)],
-                    name="vulnerable_product",
+                    index=[("vulnerable_product", ASCENDING)], name="vulnerable_product"
                 ),
+                MongoAddIndex(index=[("Modified", ASCENDING)], name="Modified"),
+                MongoAddIndex(index=[("Published", ASCENDING)], name="Published"),
                 MongoAddIndex(
-                    index=[("Modified", ASCENDING)],
-                    name="Modified",
+                    index=[("last-modified", ASCENDING)], name="last-modified"
                 ),
-                MongoAddIndex(
-                    index=[("Published", ASCENDING)],
-                    name="Published",
-                ),
-                MongoAddIndex(
-                    index=[("last-modified", ASCENDING)],
-                    name="last-modified",
-                ),
-                MongoAddIndex(
-                    index=[("cvss", ASCENDING)], name="cvss"
-                ),
-                MongoAddIndex(
-                    index=[("cvss3", ASCENDING)], name="cvss3"
-                ),
-                MongoAddIndex(
-                    index=[("summary", TEXT)], name="summary"
-                ),
-                MongoAddIndex(
-                    index=[("vendors", ASCENDING)],
-                    name="vendors",
-                ),
-                MongoAddIndex(
-                    index=[("products", ASCENDING)],
-                    name="products",
-                ),
+                MongoAddIndex(index=[("cvss", ASCENDING)], name="cvss"),
+                MongoAddIndex(index=[("cvss3", ASCENDING)], name="cvss3"),
+                MongoAddIndex(index=[("summary", TEXT)], name="summary"),
+                MongoAddIndex(index=[("vendors", ASCENDING)], name="vendors"),
+                MongoAddIndex(index=[("products", ASCENDING)], name="products"),
                 MongoAddIndex(
                     index=[("vulnerable_product_stems", ASCENDING)],
                     name="vulnerable_product_stems",
@@ -946,19 +913,12 @@ class DatabaseIndexer(object):
                     name="vulnerable_configuration_stems",
                 ),
             ],
-            "via4": [
-                MongoAddIndex(index=[("id", ASCENDING)], name="id")
-            ],
-            "mgmt_whitelist": [
-                MongoAddIndex(index=[("id", ASCENDING)], name="id")
-            ],
-            "mgmt_blacklist": [
-                MongoAddIndex(index=[("id", ASCENDING)], name="id")
-            ],
+            "via4": [MongoAddIndex(index=[("id", ASCENDING)], name="id")],
+            "mgmt_whitelist": [MongoAddIndex(index=[("id", ASCENDING)], name="id")],
+            "mgmt_blacklist": [MongoAddIndex(index=[("id", ASCENDING)], name="id")],
             "capec": [
                 MongoAddIndex(
-                    index=[("related_weakness", ASCENDING)],
-                    name="related_weakness",
+                    index=[("related_weakness", ASCENDING)], name="related_weakness"
                 )
             ],
         }
@@ -985,15 +945,10 @@ class DatabaseIndexer(object):
                 for each in self.indexes[collection]:
                     if isinstance(each, MongoUniqueIndex):
                         self.setIndex(
-                            collection,
-                            each.index,
-                            name=each.name,
-                            unique=each.unique,
+                            collection, each.index, name=each.name, unique=each.unique
                         )
                     elif isinstance(each, MongoAddIndex):
-                        self.setIndex(
-                            collection, each.index, name=each.name
-                        )
+                        self.setIndex(collection, each.index, name=each.name)
             except KeyError:
                 # no specific index given, continue
                 self.logger.warning(
@@ -1011,15 +966,10 @@ class DatabaseIndexer(object):
                 for each in self.indexes[collection]:
                     if isinstance(each, MongoUniqueIndex):
                         self.setIndex(
-                            collection,
-                            each.index,
-                            name=each.name,
-                            unique=each.unique,
+                            collection, each.index, name=each.name, unique=each.unique
                         )
                     elif isinstance(each, MongoAddIndex):
-                        self.setIndex(
-                            collection, each.index, name=each.name
-                        )
+                        self.setIndex(collection, each.index, name=each.name)
 
     def iter_indexes(self):
         for each in self.get_via4_indexes():

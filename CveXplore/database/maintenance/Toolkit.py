@@ -3,59 +3,7 @@ import re
 import dateutil.parser
 from dateutil import tz
 
-
-# Note of warning: CPEs like cpe:/o:microsoft:windows_8:-:-:x64 are given to us by Mitre
-#  x64 will be parsed as Edition in this case, not Architecture
-def toStringFormattedCPE(cpe, autofill=False):
-    cpe = cpe.strip()
-    if not cpe.startswith("cpe:2.3:"):
-        if not cpe.startswith("cpe:/"):
-            return False
-        cpe = cpe.replace("cpe:/", "cpe:2.3:")
-        cpe = cpe.replace("::", ":-:")
-        cpe = cpe.replace("~-", "~")
-        cpe = cpe.replace("~", ":-:")
-        cpe = cpe.replace("::", ":")
-        cpe = cpe.strip(":-")
-        cpe = unquote(cpe)
-    if autofill:
-        e = cpe.split(":")
-        for x in range(0, 13 - len(e)):
-            cpe += ":-"
-    return cpe
-
-
-# Note of warning: Old CPE's can come in different formats, and are not uniform. Possibilities are:
-# cpe:/a:7-zip:7-zip:4.65::~~~~x64~
-# cpe:/a:7-zip:7-zip:4.65:-:~~~~x64~
-# cpe:/a:7-zip:7-zip:4.65:-:~-~-~-~x64~
-def toOldCPE(cpe):
-    cpe = cpe.strip()
-    if not cpe.startswith("cpe:/"):
-        if not cpe.startswith("cpe:2.3:"):
-            return False
-        cpe = cpe.replace("cpe:2.3:", "")
-        parts = cpe.split(":")
-        next = []
-        first = "cpe:/" + ":".join(parts[:5])
-        last = parts[5:]
-        if last:
-            for x in last:
-                next.append("~") if x == "-" else next.append(x)
-            if "~" in next:
-                pad(next, 6, "~")
-        cpe = "%s:%s" % (first, "".join(next))
-        cpe = cpe.replace(":-:", "::")
-        cpe = cpe.strip(":")
-    return cpe
-
-
-def pad(seq, target_length, padding=None):
-    length = len(seq)
-    if length > target_length:
-        return seq
-    seq.extend([padding] * (target_length - length))
-    return seq
+from CveXplore.database.maintenance import cpe_conversion
 
 
 def currentTime(utc):
@@ -104,9 +52,7 @@ def tk_compile(regexes):
 # Convert cpe2.2 url encoded to cpe2.3 char escaped
 # cpe:2.3:o:cisco:ios:12.2%281%29 to cpe:2.3:o:cisco:ios:12.2\(1\)
 def unquote(cpe):
-    return re.compile("%([0-9a-fA-F]{2})", re.M).sub(
-        lambda m: "\\" + chr(int(m.group(1), 16)), cpe
-    )
+    return cpe_conversion.unquote(cpe)
 
 
 # Generates a human readable title from a CPE 2.3 string
