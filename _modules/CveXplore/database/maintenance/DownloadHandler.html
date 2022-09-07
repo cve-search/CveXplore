@@ -14,7 +14,6 @@
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -418,12 +417,12 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">list_collection_names</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">setColInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="n">collection</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="n">collection</span><span class="p">]</span><span class="o">.</span><span class="n">update_one</span><span class="p">(</span>
             <span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="n">collection</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;$set&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="n">data</span><span class="p">}},</span> <span class="n">upsert</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">delColInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">({</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="n">collection</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">delete_one</span><span class="p">({</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="n">collection</span><span class="p">})</span>
 
     <span class="k">def</span> <span class="nf">getCPEVersionInformation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sanitize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s2">&quot;cpe&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
@@ -442,7 +441,7 @@
         <span class="k">return</span> <span class="n">x</span>
 
     <span class="k">def</span> <span class="nf">setColUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update_one</span><span class="p">(</span>
             <span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="n">collection</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;$set&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;last-modified&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">}},</span> <span class="n">upsert</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
 

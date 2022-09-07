@@ -14,7 +14,6 @@
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -958,25 +957,12 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">indexes</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;cpe&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="n">MongoUniqueIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
-                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
-                    <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="p">),</span>
-                <span class="n">MongoAddIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vendor&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vendor&quot;</span>
-                <span class="p">),</span>
-                <span class="n">MongoAddIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;product&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
-                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;product&quot;</span><span class="p">,</span>
-                <span class="p">),</span>
+                <span class="n">MongoUniqueIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vendor&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vendor&quot;</span><span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;product&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;product&quot;</span><span class="p">),</span>
             <span class="p">],</span>
             <span class="s2">&quot;cpeother&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="n">MongoUniqueIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
-                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
-                    <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="p">)</span>
+                <span class="n">MongoUniqueIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="p">],</span>
             <span class="s2">&quot;cves&quot;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">),</span>
@@ -985,38 +971,18 @@
                     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vulnerable_configuration&quot;</span><span class="p">,</span>
                 <span class="p">),</span>
                 <span class="n">MongoAddIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vulnerable_product&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
-                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vulnerable_product&quot;</span><span class="p">,</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vulnerable_product&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vulnerable_product&quot;</span>
                 <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Modified&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Modified&quot;</span><span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Published&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Published&quot;</span><span class="p">),</span>
                 <span class="n">MongoAddIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Modified&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
-                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Modified&quot;</span><span class="p">,</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;last-modified&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;last-modified&quot;</span>
                 <span class="p">),</span>
-                <span class="n">MongoAddIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Published&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
-                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Published&quot;</span><span class="p">,</span>
-                <span class="p">),</span>
-                <span class="n">MongoAddIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;last-modified&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
-                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;last-modified&quot;</span><span class="p">,</span>
-                <span class="p">),</span>
-                <span class="n">MongoAddIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;cvss&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cvss&quot;</span>
-                <span class="p">),</span>
-                <span class="n">MongoAddIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;cvss3&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cvss3&quot;</span>
-                <span class="p">),</span>
-                <span class="n">MongoAddIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;summary&quot;</span>
-                <span class="p">),</span>
-                <span class="n">MongoAddIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vendors&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
-                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vendors&quot;</span><span class="p">,</span>
-                <span class="p">),</span>
-                <span class="n">MongoAddIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
-                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;products&quot;</span><span class="p">,</span>
-                <span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;cvss&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cvss&quot;</span><span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;cvss3&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cvss3&quot;</span><span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;summary&quot;</span><span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vendors&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vendors&quot;</span><span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;products&quot;</span><span class="p">),</span>
                 <span class="n">MongoAddIndex</span><span class="p">(</span>
                     <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vulnerable_product_stems&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
                     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vulnerable_product_stems&quot;</span><span class="p">,</span>
@@ -1026,19 +992,12 @@
                     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vulnerable_configuration_stems&quot;</span><span class="p">,</span>
                 <span class="p">),</span>
             <span class="p">],</span>
-            <span class="s2">&quot;via4&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
-            <span class="p">],</span>
-            <span class="s2">&quot;mgmt_whitelist&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
-            <span class="p">],</span>
-            <span class="s2">&quot;mgmt_blacklist&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
-            <span class="p">],</span>
+            <span class="s2">&quot;via4&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)],</span>
+            <span class="s2">&quot;mgmt_whitelist&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)],</span>
+            <span class="s2">&quot;mgmt_blacklist&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)],</span>
             <span class="s2">&quot;capec&quot;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="n">MongoAddIndex</span><span class="p">(</span>
-                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;related_weakness&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span>
-                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;related_weakness&quot;</span><span class="p">,</span>
+                    <span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;related_weakness&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;related_weakness&quot;</span>
                 <span class="p">)</span>
             <span class="p">],</span>
         <span class="p">}</span>
@@ -1065,15 +1024,10 @@
                 <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexes</span><span class="p">[</span><span class="n">collection</span><span class="p">]:</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="n">MongoUniqueIndex</span><span class="p">):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">setIndex</span><span class="p">(</span>
-                            <span class="n">collection</span><span class="p">,</span>
-                            <span class="n">each</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
-                            <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                            <span class="n">unique</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">unique</span><span class="p">,</span>
+                            <span class="n">collection</span><span class="p">,</span> <span class="n">each</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">unique</span>
                         <span class="p">)</span>
                     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="n">MongoAddIndex</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">setIndex</span><span class="p">(</span>
-                            <span class="n">collection</span><span class="p">,</span> <span class="n">each</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">name</span>
-                        <span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setIndex</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">each</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="c1"># no specific index given, continue</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
@@ -1091,15 +1045,10 @@
                 <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexes</span><span class="p">[</span><span class="n">collection</span><span class="p">]:</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="n">MongoUniqueIndex</span><span class="p">):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">setIndex</span><span class="p">(</span>
-                            <span class="n">collection</span><span class="p">,</span>
-                            <span class="n">each</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
-                            <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                            <span class="n">unique</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">unique</span><span class="p">,</span>
+                            <span class="n">collection</span><span class="p">,</span> <span class="n">each</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">unique</span>
                         <span class="p">)</span>
                     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="n">MongoAddIndex</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">setIndex</span><span class="p">(</span>
-                            <span class="n">collection</span><span class="p">,</span> <span class="n">each</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">name</span>
-                        <span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setIndex</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">each</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">each</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">iter_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_via4_indexes</span><span class="p">():</span>

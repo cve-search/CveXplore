@@ -15,7 +15,6 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -91,7 +90,7 @@ the cve-search binaries and thus providing the same functionality as cve-search 
 <p>All the data provided by this interaction is converted into objects before being returned. And thus providing a way to
 interact with objects rather then with raw data.</p>
 <section id="dependencies">
-<h1>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading"></a></h1>
+<h1>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h1>
 <p>As stated you will need to have one of two things; in order to fully use this package you need access to:</p>
 <ul class="simple">
 <li><p>A cve-search mongodb instance</p></li>
@@ -105,20 +104,20 @@ please check <a class="reference external" href="https://github.com/cve-search/c
 <a class="reference external" href="https://github.com/cve-search/CVE-Search-Docker">CVE-Search-Docker</a> for further details.</p>
 </section>
 <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
 <p>Package is hosted on pypi, so just run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install CveXplore
 </pre></div>
 </div>
 </section>
 <section id="documentation">
-<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h1>
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline"></a></h1>
 <p>Check <a class="reference external" href="https://cve-search.github.io/CveXplore/">github pages documentation</a></p>
 </section>
 <section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h1>
 <section id="local-database-populate-update">
-<h2>Local Database populate / update<a class="headerlink" href="#local-database-populate-update" title="Permalink to this heading"></a></h2>
+<h2>Local Database populate / update<a class="headerlink" href="#local-database-populate-update" title="Permalink to this headline"></a></h2>
 <p>As of version 0.2.5 CveXplore can populate and update a local mongodb instance from either the command line:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># cvexplore database initialize</span>
 <span class="c1"># cvexplore database update</span>
@@ -134,7 +133,7 @@ please check <a class="reference external" href="https://github.com/cve-search/c
 </div>
 </section>
 <section id="instantiation">
-<h2>Instantiation<a class="headerlink" href="#instantiation" title="Permalink to this heading"></a></h2>
+<h2>Instantiation<a class="headerlink" href="#instantiation" title="Permalink to this headline"></a></h2>
 <p>CveXplore can be instantiated with different parameters, depending to which data source you’re going to connect to.
 If no parameters are given it is assumed that you’re going to connect to a mongodb database running on localhost with
 default port and security settings (Cve Search default parameters).</p>
@@ -160,7 +159,7 @@ default port and security settings (Cve Search default parameters).</p>
 </div>
 </section>
 <section id="query-for-data">
-<h2>Query for data<a class="headerlink" href="#query-for-data" title="Permalink to this heading"></a></h2>
+<h2>Query for data<a class="headerlink" href="#query-for-data" title="Permalink to this headline"></a></h2>
 <p>CveXplore supports multiple methods to query for data.</p>
 <p>The queries are limited to the following collections:</p>
 <ul class="simple">
@@ -172,7 +171,7 @@ default port and security settings (Cve Search default parameters).</p>
 </ul>
 </section>
 <section id="free-format-query">
-<h2>Free format query<a class="headerlink" href="#free-format-query" title="Permalink to this heading"></a></h2>
+<h2>Free format query<a class="headerlink" href="#free-format-query" title="Permalink to this headline"></a></h2>
 <p>Besides this restriction the queries can be free format on given parameters (returning a direct object or a
 list of objects); to get a ‘capec’ with the id of 1 you could use:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
@@ -219,7 +218,7 @@ the limit to 0:</p>
 </div>
 </section>
 <section id="collection-specific-query">
-<h2>Collection specific query<a class="headerlink" href="#collection-specific-query" title="Permalink to this heading"></a></h2>
+<h2>Collection specific query<a class="headerlink" href="#collection-specific-query" title="Permalink to this headline"></a></h2>
 <p>By using the collection specific attributes you can drill down to a specific field to query (returning an iterator to
 iterate over the requested results):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
@@ -262,7 +261,7 @@ iterate over the requested results):</p>
 </div>
 </section>
 <section id="collection-specific-functions">
-<h2>Collection specific functions<a class="headerlink" href="#collection-specific-functions" title="Permalink to this heading"></a></h2>
+<h2>Collection specific functions<a class="headerlink" href="#collection-specific-functions" title="Permalink to this headline"></a></h2>
 <p>Some collections are equipped with specific functions; like the ‘cves’ collection has a function to query cve’s based
 on a given vendor:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
@@ -441,7 +440,7 @@ capecs from the CVE-2018-8540, could be done directly:</p>
 </ul>
 </div>
 <section id="indices-and-tables">
-<h3>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h3>
+<h3>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline"></a></h3>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>

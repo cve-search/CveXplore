@@ -15,7 +15,6 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -103,11 +102,11 @@
            <div itemprop="articleBody">
              
   <section id="database">
-<span id="id1"></span><h1>Database<a class="headerlink" href="#database" title="Permalink to this heading"></a></h1>
+<span id="id1"></span><h1>Database<a class="headerlink" href="#database" title="Permalink to this headline"></a></h1>
 <section id="module-CveXplore.database.connection.mongo_db">
-<span id="database-connection"></span><h2>Database connection<a class="headerlink" href="#module-CveXplore.database.connection.mongo_db" title="Permalink to this heading"></a></h2>
+<span id="database-connection"></span><h2>Database connection<a class="headerlink" href="#module-CveXplore.database.connection.mongo_db" title="Permalink to this headline"></a></h2>
 <section id="mongo-db-connection">
-<h3>Mongo DB connection<a class="headerlink" href="#mongo-db-connection" title="Permalink to this heading"></a></h3>
+<h3>Mongo DB connection<a class="headerlink" href="#mongo-db-connection" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.connection.mongo_db.MongoDBConnection">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.connection.mongo_db.</span></span><span class="sig-name descname"><span class="pre">MongoDBConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mongodb://127.0.0.1:27017'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cvedb'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/connection/mongo_db.html#MongoDBConnection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.connection.mongo_db.MongoDBConnection" title="Permalink to this definition"></a></dt>
@@ -154,13 +153,13 @@ a simple hostname.</p></li>
 </section>
 </section>
 <section id="module-CveXplore.database.helpers.generic_db">
-<span id="database-helpers"></span><h2>Database helpers<a class="headerlink" href="#module-CveXplore.database.helpers.generic_db" title="Permalink to this heading"></a></h2>
+<span id="database-helpers"></span><h2>Database helpers<a class="headerlink" href="#module-CveXplore.database.helpers.generic_db" title="Permalink to this headline"></a></h2>
 <section id="generic-database-functions">
-<h3>Generic database functions<a class="headerlink" href="#generic-database-functions" title="Permalink to this heading"></a></h3>
+<h3>Generic database functions<a class="headerlink" href="#generic-database-functions" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFactory">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.generic_db.</span></span><span class="sig-name descname"><span class="pre">GenericDatabaseFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFactory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="common.html#CveXplore.common.data_source_connection.DatasourceConnection" title="CveXplore.common.data_source_connection.DatasourceConnection"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasourceConnection</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="common.html#CveXplore.common.data_source_connection.DatasourceConnection" title="CveXplore.common.data_source_connection.DatasourceConnection"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.common.data_source_connection.DatasourceConnection</span></code></a></p>
 <p>The GenericDatabaseFactory handles the creation of general, collection based, functions which provide an instance
 of CveXplore functions that apply to the given collection.</p>
 <dl class="py method">
@@ -203,7 +202,7 @@ the __fields_mapping.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.generic_db.</span></span><span class="sig-name descname"><span class="pre">GenericDatabaseFieldsFunctions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFieldsFunctions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="common.html#CveXplore.common.data_source_connection.DatasourceConnection" title="CveXplore.common.data_source_connection.DatasourceConnection"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasourceConnection</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="common.html#CveXplore.common.data_source_connection.DatasourceConnection" title="CveXplore.common.data_source_connection.DatasourceConnection"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.common.data_source_connection.DatasourceConnection</span></code></a></p>
 <p>The GenericDatabaseFieldsFunctions handles the creation of general, field based, functions</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.__init__">
@@ -263,11 +262,11 @@ the __fields_mapping.</p>
 
 </section>
 <span class="target" id="module-CveXplore.database.helpers.specific_db"></span><section id="specific-database-functions">
-<h3>Specific database functions<a class="headerlink" href="#specific-database-functions" title="Permalink to this heading"></a></h3>
+<h3>Specific database functions<a class="headerlink" href="#specific-database-functions" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CvesDatabaseFunctions">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.specific_db.</span></span><span class="sig-name descname"><span class="pre">CvesDatabaseFunctions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CvesDatabaseFunctions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory" title="CveXplore.database.helpers.generic_db.GenericDatabaseFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericDatabaseFactory</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory" title="CveXplore.database.helpers.generic_db.GenericDatabaseFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.helpers.generic_db.GenericDatabaseFactory</span></code></a></p>
 <p>The CvesDatabaseFunctions is a specific class that provides the cves attribute of a CveXplore instance additional
 functions that only apply to the ‘cves’ collection</p>
 <dl class="py method">
@@ -312,11 +311,11 @@ the __fields_mapping.</p>
 
 </section>
 <span class="target" id="module-CveXplore.database.helpers.cvesearch_mongo_database"></span><section id="mongodb-specific">
-<h3>Mongodb specific<a class="headerlink" href="#mongodb-specific" title="Permalink to this heading"></a></h3>
+<h3>Mongodb specific<a class="headerlink" href="#mongodb-specific" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.cvesearch_mongo_database.</span></span><span class="sig-name descname"><span class="pre">CveSearchCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCollection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymongo.collection.Collection</span></code></p>
 <p>The CveSearchCollection is a custom Collection based on the pymongo Collection class which has been altered to
 return a CveSearchCursor reference on the find method.</p>
 <dl class="py method">
@@ -359,7 +358,7 @@ return a CveSearchCursor reference on the find method.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.cvesearch_mongo_database.</span></span><span class="sig-name descname"><span class="pre">CveSearchCursor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCursor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Cursor</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymongo.cursor.Cursor</span></code></p>
 <p>The CveSearchCursor is a custom cursor based on the pymongo cursor which will return database objects instead of
 the raw data from the mongodb database.</p>
 <dl class="py method">
@@ -396,9 +395,9 @@ the raw data from the mongodb database.</p>
 </section>
 </section>
 <section id="module-CveXplore.database.maintenance.main_updater">
-<span id="database-maintenance"></span><h2>Database Maintenance<a class="headerlink" href="#module-CveXplore.database.maintenance.main_updater" title="Permalink to this heading"></a></h2>
+<span id="database-maintenance"></span><h2>Database Maintenance<a class="headerlink" href="#module-CveXplore.database.maintenance.main_updater" title="Permalink to this headline"></a></h2>
 <section id="main-updater">
-<h3>Main Updater<a class="headerlink" href="#main-updater" title="Permalink to this heading"></a></h3>
+<h3>Main Updater<a class="headerlink" href="#main-updater" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.main_updater.MainUpdater">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.main_updater.</span></span><span class="sig-name descname"><span class="pre">MainUpdater</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datasource</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/main_updater.html#MainUpdater"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.main_updater.MainUpdater" title="Permalink to this definition"></a></dt>
@@ -431,11 +430,11 @@ the raw data from the mongodb database.</p>
 
 </section>
 <span class="target" id="module-CveXplore.database.maintenance.DownloadHandler"></span><section id="download-handler">
-<h3>Download Handler<a class="headerlink" href="#download-handler" title="Permalink to this heading"></a></h3>
+<h3>Download Handler<a class="headerlink" href="#download-handler" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.DownloadHandler.DownloadHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.DownloadHandler.</span></span><span class="sig-name descname"><span class="pre">DownloadHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feed_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/DownloadHandler.html#DownloadHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>DownloadHandler is the base class for all downloads and subsequent processing of the downloaded content.
 Each download script has a derived class which handles specifics for that type of content / download.</p>
 <dl class="py method">
@@ -517,11 +516,11 @@ Each download script has a derived class which handles specifics for that type o
 
 </section>
 <span class="target" id="module-CveXplore.database.maintenance.file_handlers"></span><section id="file-handlers">
-<h3>File Handlers<a class="headerlink" href="#file-handlers" title="Permalink to this heading"></a></h3>
+<h3>File Handlers<a class="headerlink" href="#file-handlers" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.file_handlers.JSONFileHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.file_handlers.</span></span><span class="sig-name descname"><span class="pre">JSONFileHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feed_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/file_handlers.html#JSONFileHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler" title="CveXplore.database.maintenance.DownloadHandler.DownloadHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">DownloadHandler</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler" title="CveXplore.database.maintenance.DownloadHandler.DownloadHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.DownloadHandler.DownloadHandler</span></code></a></p>
 <p>This class handles all JSON related download processing and functions as a base class for specific JSON sources
 processing and downloading</p>
 <dl class="py method">
@@ -552,7 +551,7 @@ into the database</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.file_handlers.XMLFileHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.file_handlers.</span></span><span class="sig-name descname"><span class="pre">XMLFileHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feed_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/file_handlers.html#XMLFileHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler" title="CveXplore.database.maintenance.DownloadHandler.DownloadHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">DownloadHandler</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler" title="CveXplore.database.maintenance.DownloadHandler.DownloadHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.DownloadHandler.DownloadHandler</span></code></a></p>
 <p>This class handles all XML related download processing and functions as a base class for specific XML sources
 processing and downloading</p>
 <dl class="py method">
@@ -581,11 +580,11 @@ processing and downloading</p>
 
 </section>
 <span class="target" id="module-CveXplore.database.maintenance.content_handlers"></span><section id="xml-content-handlers">
-<h3>XML Content Handlers<a class="headerlink" href="#xml-content-handlers" title="Permalink to this heading"></a></h3>
+<h3>XML Content Handlers<a class="headerlink" href="#xml-content-handlers" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CWEHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.content_handlers.</span></span><span class="sig-name descname"><span class="pre">CWEHandler</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/content_handlers.html#CWEHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.content_handlers.CWEHandler" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ContentHandler</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">xml.sax.handler.ContentHandler</span></code></p>
 <p>Class handling the CWE XML parsing</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CWEHandler.__init__">
@@ -627,7 +626,7 @@ the element.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CapecHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.content_handlers.</span></span><span class="sig-name descname"><span class="pre">CapecHandler</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/content_handlers.html#CapecHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.content_handlers.CapecHandler" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ContentHandler</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">xml.sax.handler.ContentHandler</span></code></p>
 <p>Class handling the CAPEC XML parsing</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CapecHandler.__init__">
@@ -668,11 +667,11 @@ the element.</p>
 
 </section>
 <span class="target" id="module-CveXplore.database.maintenance.Sources_process"></span><section id="source-processing-classes">
-<h3>Source processing classes<a class="headerlink" href="#source-processing-classes" title="Permalink to this heading"></a></h3>
+<h3>Source processing classes<a class="headerlink" href="#source-processing-classes" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CAPECDownloads">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">CAPECDownloads</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CAPECDownloads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CAPECDownloads" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler" title="CveXplore.database.maintenance.file_handlers.XMLFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">XMLFileHandler</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler" title="CveXplore.database.maintenance.file_handlers.XMLFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.file_handlers.XMLFileHandler</span></code></a></p>
 <p>Class processing CAPEC source files</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CAPECDownloads.__init__">
@@ -684,7 +683,7 @@ the element.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CPEDownloads">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">CPEDownloads</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CPEDownloads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CPEDownloads" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler" title="CveXplore.database.maintenance.file_handlers.JSONFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">JSONFileHandler</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler" title="CveXplore.database.maintenance.file_handlers.JSONFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.file_handlers.JSONFileHandler</span></code></a></p>
 <p>Class processing CPE source files</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CPEDownloads.__init__">
@@ -696,7 +695,7 @@ the element.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CVEDownloads">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">CVEDownloads</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CVEDownloads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CVEDownloads" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler" title="CveXplore.database.maintenance.file_handlers.JSONFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">JSONFileHandler</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler" title="CveXplore.database.maintenance.file_handlers.JSONFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.file_handlers.JSONFileHandler</span></code></a></p>
 <p>Class processing CVE source files</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CVEDownloads.__init__">
@@ -714,7 +713,7 @@ the element.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CWEDownloads">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">CWEDownloads</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CWEDownloads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CWEDownloads" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler" title="CveXplore.database.maintenance.file_handlers.XMLFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">XMLFileHandler</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler" title="CveXplore.database.maintenance.file_handlers.XMLFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.file_handlers.XMLFileHandler</span></code></a></p>
 <p>Class processing CWE source files</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CWEDownloads.__init__">
@@ -816,7 +815,7 @@ the element.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.VIADownloads">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">VIADownloads</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#VIADownloads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.VIADownloads" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler" title="CveXplore.database.maintenance.file_handlers.JSONFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">JSONFileHandler</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler" title="CveXplore.database.maintenance.file_handlers.JSONFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.file_handlers.JSONFileHandler</span></code></a></p>
 <p>Class processing VIA4 source files</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.VIADownloads.__init__">
@@ -839,11 +838,11 @@ into the database</p>
 
 </section>
 <span class="target" id="module-CveXplore.database.maintenance.LogHandler"></span><section id="log-handler">
-<h3>Log Handler<a class="headerlink" href="#log-handler" title="Permalink to this heading"></a></h3>
+<h3>Log Handler<a class="headerlink" href="#log-handler" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.HelperLogger">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.LogHandler.</span></span><span class="sig-name descname"><span class="pre">HelperLogger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#HelperLogger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.HelperLogger" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Logger</span></code></p>
 <p>The HelperLogger is used by the application / gui as their logging class and <em>extends</em> the default python
 logger.logging class.</p>
 <dl class="py method">
@@ -934,7 +933,7 @@ logger.logging class.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.HostnameFilter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.LogHandler.</span></span><span class="sig-name descname"><span class="pre">HostnameFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#HostnameFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.HostnameFilter" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Filter</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.HostnameFilter.filter">
 <span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#HostnameFilter.filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.HostnameFilter.filter" title="Permalink to this definition"></a></dt>
@@ -948,7 +947,7 @@ If deemed appropriate, the record may be modified in-place.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.UpdateHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.LogHandler.</span></span><span class="sig-name descname"><span class="pre">UpdateHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#UpdateHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.UpdateHandler" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.HelperLogger" title="CveXplore.database.maintenance.LogHandler.HelperLogger"><code class="xref py py-class docutils literal notranslate"><span class="pre">HelperLogger</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.HelperLogger" title="CveXplore.database.maintenance.LogHandler.HelperLogger"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXplore.database.maintenance.LogHandler.HelperLogger</span></code></a></p>
 <p>The UpdateHandler is used by the update process to provide written and visual feedback to the initiator of database
 management tasks.</p>
 <dl class="py method">
@@ -961,7 +960,7 @@ management tasks.</p>
 
 </section>
 <span class="target" id="module-CveXplore.database.maintenance.Config"></span><section id="configuration">
-<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h3>
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.Config.Configuration">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Config.</span></span><span class="sig-name descname"><span class="pre">Configuration</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Config.html#Configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Config.Configuration" title="Permalink to this definition"></a></dt>
