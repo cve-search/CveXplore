@@ -17,6 +17,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -49,8 +50,24 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Common</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-CveXplore.common.cpe_converters">General tools and converters</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#cpe-converters">CPE Converters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.common.cpe_converters.from2to3CPE"><code class="docutils literal notranslate"><span class="pre">from2to3CPE()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.common.cpe_converters.from3to2CPE"><code class="docutils literal notranslate"><span class="pre">from3to2CPE()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#data-source-connection">Data source connection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.common.data_source_connection.DatasourceConnection"><code class="docutils literal notranslate"><span class="pre">DatasourceConnection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.common.data_source_connection.DatasourceConnection.__init__"><code class="docutils literal notranslate"><span class="pre">DatasourceConnection.__init__()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#generic-api">Generic API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.common.generic_api.GenericApi"><code class="docutils literal notranslate"><span class="pre">GenericApi</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.common.generic_api.GenericApi.__init__"><code class="docutils literal notranslate"><span class="pre">GenericApi.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.common.generic_api.GenericApi.__repr__"><code class="docutils literal notranslate"><span class="pre">GenericApi.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.common.generic_api.GenericApi.call"><code class="docutils literal notranslate"><span class="pre">GenericApi.call()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.common.generic_api.GenericApi.del_header_field"><code class="docutils literal notranslate"><span class="pre">GenericApi.del_header_field()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.common.generic_api.GenericApi.headers"><code class="docutils literal notranslate"><span class="pre">GenericApi.headers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.common.generic_api.GenericApi.reset_headers"><code class="docutils literal notranslate"><span class="pre">GenericApi.reset_headers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.common.generic_api.GenericApi.set_header_field"><code class="docutils literal notranslate"><span class="pre">GenericApi.set_header_field()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -94,6 +111,7 @@
 <span id="general-tools-and-converters"></span><h2>General tools and converters<a class="headerlink" href="#module-CveXplore.common.cpe_converters" title="Permalink to this heading"></a></h2>
 <section id="cpe-converters">
 <h3>CPE Converters<a class="headerlink" href="#cpe-converters" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py function">
 <dt class="sig sig-object py" id="CveXplore.common.cpe_converters.from2to3CPE">
 <span class="sig-prename descclassname"><span class="pre">CveXplore.common.cpe_converters.</span></span><span class="sig-name descname"><span class="pre">from2to3CPE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autofill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/common/cpe_converters.html#from2to3CPE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.common.cpe_converters.from2to3CPE" title="Permalink to this definition"></a></dt>
@@ -131,9 +149,9 @@
 </dl>
 </dd></dl>
 
-</section>
 <span class="target" id="module-CveXplore.common.data_source_connection"></span><section id="data-source-connection">
 <h3>Data source connection<a class="headerlink" href="#data-source-connection" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.common.data_source_connection.DatasourceConnection">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.common.data_source_connection.</span></span><span class="sig-name descname"><span class="pre">DatasourceConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/common/data_source_connection.html#DatasourceConnection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.common.data_source_connection.DatasourceConnection" title="Permalink to this definition"></a></dt>
@@ -153,9 +171,9 @@ objects and generic database functions</p>
 
 </dd></dl>
 
-</section>
 <span class="target" id="module-CveXplore.common.generic_api"></span><section id="generic-api">
 <h3>Generic API<a class="headerlink" href="#generic-api" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.common.generic_api.GenericApi">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.common.generic_api.</span></span><span class="sig-name descname"><span class="pre">GenericApi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proxies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GenericApi'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/common/generic_api.html#GenericApi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.common.generic_api.GenericApi" title="Permalink to this definition"></a></dt>
@@ -264,7 +282,6 @@ to any request method</p></li>
 
 </dd></dl>
 
-</section>
 </section>
 </section>
 

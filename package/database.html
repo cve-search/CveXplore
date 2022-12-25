@@ -17,6 +17,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -50,22 +51,163 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Database</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-CveXplore.database.connection.mongo_db">Database connection</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#mongo-db-connection">Mongo DB connection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.connection.mongo_db.MongoDBConnection"><code class="docutils literal notranslate"><span class="pre">MongoDBConnection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.connection.mongo_db.MongoDBConnection.__del__"><code class="docutils literal notranslate"><span class="pre">MongoDBConnection.__del__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.connection.mongo_db.MongoDBConnection.__init__"><code class="docutils literal notranslate"><span class="pre">MongoDBConnection.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.connection.mongo_db.MongoDBConnection.__repr__"><code class="docutils literal notranslate"><span class="pre">MongoDBConnection.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.connection.mongo_db.MongoDBConnection.disconnect"><code class="docutils literal notranslate"><span class="pre">MongoDBConnection.disconnect()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-CveXplore.database.helpers.generic_db">Database helpers</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#generic-database-functions">Generic database functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFactory</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.__init__"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFactory.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.__repr__"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFactory.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.get_by_id"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFactory.get_by_id()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFieldsFunctions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.__init__"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFieldsFunctions.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.__repr__"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFieldsFunctions.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.find"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFieldsFunctions.find()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.search"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFieldsFunctions.search()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#specific-database-functions">Specific database functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions"><code class="docutils literal notranslate"><span class="pre">CvesDatabaseFunctions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__init__"><code class="docutils literal notranslate"><span class="pre">CvesDatabaseFunctions.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__repr__"><code class="docutils literal notranslate"><span class="pre">CvesDatabaseFunctions.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_cves_for_vendor"><code class="docutils literal notranslate"><span class="pre">CvesDatabaseFunctions.get_cves_for_vendor()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#mongodb-specific">Mongodb specific</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection"><code class="docutils literal notranslate"><span class="pre">CveSearchCollection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__init__"><code class="docutils literal notranslate"><span class="pre">CveSearchCollection.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__repr__"><code class="docutils literal notranslate"><span class="pre">CveSearchCollection.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.find"><code class="docutils literal notranslate"><span class="pre">CveSearchCollection.find()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__init__"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__next__"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor.__next__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__repr__"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.next"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor.next()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-CveXplore.database.maintenance.main_updater">Database Maintenance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#main-updater">Main Updater</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.main_updater.MainUpdater"><code class="docutils literal notranslate"><span class="pre">MainUpdater</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.main_updater.MainUpdater.__init__"><code class="docutils literal notranslate"><span class="pre">MainUpdater.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.main_updater.MainUpdater.initialize"><code class="docutils literal notranslate"><span class="pre">MainUpdater.initialize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.main_updater.MainUpdater.update"><code class="docutils literal notranslate"><span class="pre">MainUpdater.update()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#download-handler">Download Handler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler"><code class="docutils literal notranslate"><span class="pre">DownloadHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.__init__"><code class="docutils literal notranslate"><span class="pre">DownloadHandler.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.__repr__"><code class="docutils literal notranslate"><span class="pre">DownloadHandler.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.chunk_list"><code class="docutils literal notranslate"><span class="pre">DownloadHandler.chunk_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.get_session"><code class="docutils literal notranslate"><span class="pre">DownloadHandler.get_session()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.process_downloads"><code class="docutils literal notranslate"><span class="pre">DownloadHandler.process_downloads()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.store_file"><code class="docutils literal notranslate"><span class="pre">DownloadHandler.store_file()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#file-handlers">File Handlers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler"><code class="docutils literal notranslate"><span class="pre">JSONFileHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler.__init__"><code class="docutils literal notranslate"><span class="pre">JSONFileHandler.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler.__repr__"><code class="docutils literal notranslate"><span class="pre">JSONFileHandler.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler.file_to_queue"><code class="docutils literal notranslate"><span class="pre">JSONFileHandler.file_to_queue()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler"><code class="docutils literal notranslate"><span class="pre">XMLFileHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler.__init__"><code class="docutils literal notranslate"><span class="pre">XMLFileHandler.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler.__repr__"><code class="docutils literal notranslate"><span class="pre">XMLFileHandler.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.file_handlers.XMLFileHandler.process_item"><code class="docutils literal notranslate"><span class="pre">XMLFileHandler.process_item()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#xml-content-handlers">XML Content Handlers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.content_handlers.CWEHandler"><code class="docutils literal notranslate"><span class="pre">CWEHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.content_handlers.CWEHandler.__init__"><code class="docutils literal notranslate"><span class="pre">CWEHandler.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.content_handlers.CWEHandler.characters"><code class="docutils literal notranslate"><span class="pre">CWEHandler.characters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.content_handlers.CWEHandler.endElement"><code class="docutils literal notranslate"><span class="pre">CWEHandler.endElement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.content_handlers.CWEHandler.startElement"><code class="docutils literal notranslate"><span class="pre">CWEHandler.startElement()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.content_handlers.CapecHandler"><code class="docutils literal notranslate"><span class="pre">CapecHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.content_handlers.CapecHandler.__init__"><code class="docutils literal notranslate"><span class="pre">CapecHandler.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.content_handlers.CapecHandler.characters"><code class="docutils literal notranslate"><span class="pre">CapecHandler.characters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.content_handlers.CapecHandler.endElement"><code class="docutils literal notranslate"><span class="pre">CapecHandler.endElement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.content_handlers.CapecHandler.startElement"><code class="docutils literal notranslate"><span class="pre">CapecHandler.startElement()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#source-processing-classes">Source processing classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.CAPECDownloads"><code class="docutils literal notranslate"><span class="pre">CAPECDownloads</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.CAPECDownloads.__init__"><code class="docutils literal notranslate"><span class="pre">CAPECDownloads.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.CPEDownloads"><code class="docutils literal notranslate"><span class="pre">CPEDownloads</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.CPEDownloads.__init__"><code class="docutils literal notranslate"><span class="pre">CPEDownloads.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.CVEDownloads"><code class="docutils literal notranslate"><span class="pre">CVEDownloads</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.CVEDownloads.__init__"><code class="docutils literal notranslate"><span class="pre">CVEDownloads.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.CVEDownloads.get_cve_year_range"><code class="docutils literal notranslate"><span class="pre">CVEDownloads.get_cve_year_range()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.CWEDownloads"><code class="docutils literal notranslate"><span class="pre">CWEDownloads</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.CWEDownloads.__init__"><code class="docutils literal notranslate"><span class="pre">CWEDownloads.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.DatabaseIndexer"><code class="docutils literal notranslate"><span class="pre">DatabaseIndexer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.DatabaseIndexer.__init__"><code class="docutils literal notranslate"><span class="pre">DatabaseIndexer.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.MongoAddIndex"><code class="docutils literal notranslate"><span class="pre">MongoAddIndex</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.MongoAddIndex.__getnewargs__"><code class="docutils literal notranslate"><span class="pre">MongoAddIndex.__getnewargs__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.MongoAddIndex.__new__"><code class="docutils literal notranslate"><span class="pre">MongoAddIndex.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.MongoAddIndex.__repr__"><code class="docutils literal notranslate"><span class="pre">MongoAddIndex.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.MongoAddIndex.index"><code class="docutils literal notranslate"><span class="pre">MongoAddIndex.index</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.MongoAddIndex.name"><code class="docutils literal notranslate"><span class="pre">MongoAddIndex.name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex"><code class="docutils literal notranslate"><span class="pre">MongoUniqueIndex</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.__getnewargs__"><code class="docutils literal notranslate"><span class="pre">MongoUniqueIndex.__getnewargs__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.__new__"><code class="docutils literal notranslate"><span class="pre">MongoUniqueIndex.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.__repr__"><code class="docutils literal notranslate"><span class="pre">MongoUniqueIndex.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.index"><code class="docutils literal notranslate"><span class="pre">MongoUniqueIndex.index</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.name"><code class="docutils literal notranslate"><span class="pre">MongoUniqueIndex.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.MongoUniqueIndex.unique"><code class="docutils literal notranslate"><span class="pre">MongoUniqueIndex.unique</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.VIADownloads"><code class="docutils literal notranslate"><span class="pre">VIADownloads</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.VIADownloads.__init__"><code class="docutils literal notranslate"><span class="pre">VIADownloads.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.Sources_process.VIADownloads.file_to_queue"><code class="docutils literal notranslate"><span class="pre">VIADownloads.file_to_queue()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#log-handler">Log Handler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.HelperLogger"><code class="docutils literal notranslate"><span class="pre">HelperLogger</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.HelperLogger.__init__"><code class="docutils literal notranslate"><span class="pre">HelperLogger.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.HelperLogger.critical"><code class="docutils literal notranslate"><span class="pre">HelperLogger.critical()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.HelperLogger.debug"><code class="docutils literal notranslate"><span class="pre">HelperLogger.debug()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.HelperLogger.error"><code class="docutils literal notranslate"><span class="pre">HelperLogger.error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.HelperLogger.info"><code class="docutils literal notranslate"><span class="pre">HelperLogger.info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.HelperLogger.warning"><code class="docutils literal notranslate"><span class="pre">HelperLogger.warning()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.HostnameFilter"><code class="docutils literal notranslate"><span class="pre">HostnameFilter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.HostnameFilter.filter"><code class="docutils literal notranslate"><span class="pre">HostnameFilter.filter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.UpdateHandler"><code class="docutils literal notranslate"><span class="pre">UpdateHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.maintenance.LogHandler.UpdateHandler.__init__"><code class="docutils literal notranslate"><span class="pre">UpdateHandler.__init__()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.maintenance.Config.Configuration"><code class="docutils literal notranslate"><span class="pre">Configuration</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -108,6 +250,7 @@
 <span id="database-connection"></span><h2>Database connection<a class="headerlink" href="#module-CveXplore.database.connection.mongo_db" title="Permalink to this heading"></a></h2>
 <section id="mongo-db-connection">
 <h3>Mongo DB connection<a class="headerlink" href="#mongo-db-connection" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.connection.mongo_db.MongoDBConnection">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.connection.mongo_db.</span></span><span class="sig-name descname"><span class="pre">MongoDBConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mongodb://127.0.0.1:27017'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cvedb'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/connection/mongo_db.html#MongoDBConnection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.connection.mongo_db.MongoDBConnection" title="Permalink to this definition"></a></dt>
@@ -152,11 +295,11 @@ a simple hostname.</p></li>
 </dd></dl>
 
 </section>
-</section>
 <section id="module-CveXplore.database.helpers.generic_db">
 <span id="database-helpers"></span><h2>Database helpers<a class="headerlink" href="#module-CveXplore.database.helpers.generic_db" title="Permalink to this heading"></a></h2>
 <section id="generic-database-functions">
 <h3>Generic database functions<a class="headerlink" href="#generic-database-functions" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFactory">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.generic_db.</span></span><span class="sig-name descname"><span class="pre">GenericDatabaseFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFactory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory" title="Permalink to this definition"></a></dt>
@@ -261,9 +404,9 @@ the __fields_mapping.</p>
 
 </dd></dl>
 
-</section>
 <span class="target" id="module-CveXplore.database.helpers.specific_db"></span><section id="specific-database-functions">
 <h3>Specific database functions<a class="headerlink" href="#specific-database-functions" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CvesDatabaseFunctions">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.specific_db.</span></span><span class="sig-name descname"><span class="pre">CvesDatabaseFunctions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CvesDatabaseFunctions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions" title="Permalink to this definition"></a></dt>
@@ -310,9 +453,9 @@ the __fields_mapping.</p>
 
 </dd></dl>
 
-</section>
 <span class="target" id="module-CveXplore.database.helpers.cvesearch_mongo_database"></span><section id="mongodb-specific">
 <h3>Mongodb specific<a class="headerlink" href="#mongodb-specific" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.cvesearch_mongo_database.</span></span><span class="sig-name descname"><span class="pre">CveSearchCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCollection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection" title="Permalink to this definition"></a></dt>
@@ -394,11 +537,11 @@ the raw data from the mongodb database.</p>
 </dd></dl>
 
 </section>
-</section>
 <section id="module-CveXplore.database.maintenance.main_updater">
 <span id="database-maintenance"></span><h2>Database Maintenance<a class="headerlink" href="#module-CveXplore.database.maintenance.main_updater" title="Permalink to this heading"></a></h2>
 <section id="main-updater">
 <h3>Main Updater<a class="headerlink" href="#main-updater" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.main_updater.MainUpdater">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.main_updater.</span></span><span class="sig-name descname"><span class="pre">MainUpdater</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datasource</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/main_updater.html#MainUpdater"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.main_updater.MainUpdater" title="Permalink to this definition"></a></dt>
@@ -429,9 +572,9 @@ the raw data from the mongodb database.</p>
 
 </dd></dl>
 
-</section>
 <span class="target" id="module-CveXplore.database.maintenance.DownloadHandler"></span><section id="download-handler">
 <h3>Download Handler<a class="headerlink" href="#download-handler" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.DownloadHandler.DownloadHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.DownloadHandler.</span></span><span class="sig-name descname"><span class="pre">DownloadHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feed_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/DownloadHandler.html#DownloadHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.DownloadHandler.DownloadHandler" title="Permalink to this definition"></a></dt>
@@ -515,9 +658,9 @@ Each download script has a derived class which handles specifics for that type o
 
 </dd></dl>
 
-</section>
 <span class="target" id="module-CveXplore.database.maintenance.file_handlers"></span><section id="file-handlers">
 <h3>File Handlers<a class="headerlink" href="#file-handlers" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.file_handlers.JSONFileHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.file_handlers.</span></span><span class="sig-name descname"><span class="pre">JSONFileHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feed_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/file_handlers.html#JSONFileHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.file_handlers.JSONFileHandler" title="Permalink to this definition"></a></dt>
@@ -579,9 +722,9 @@ processing and downloading</p>
 
 </dd></dl>
 
-</section>
 <span class="target" id="module-CveXplore.database.maintenance.content_handlers"></span><section id="xml-content-handlers">
 <h3>XML Content Handlers<a class="headerlink" href="#xml-content-handlers" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.content_handlers.CWEHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.content_handlers.</span></span><span class="sig-name descname"><span class="pre">CWEHandler</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/content_handlers.html#CWEHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.content_handlers.CWEHandler" title="Permalink to this definition"></a></dt>
@@ -666,9 +809,9 @@ the element.</p>
 
 </dd></dl>
 
-</section>
 <span class="target" id="module-CveXplore.database.maintenance.Sources_process"></span><section id="source-processing-classes">
 <h3>Source processing classes<a class="headerlink" href="#source-processing-classes" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.Sources_process.CAPECDownloads">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Sources_process.</span></span><span class="sig-name descname"><span class="pre">CAPECDownloads</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Sources_process.html#CAPECDownloads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Sources_process.CAPECDownloads" title="Permalink to this definition"></a></dt>
@@ -837,9 +980,9 @@ into the database</p>
 
 </dd></dl>
 
-</section>
 <span class="target" id="module-CveXplore.database.maintenance.LogHandler"></span><section id="log-handler">
 <h3>Log Handler<a class="headerlink" href="#log-handler" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.LogHandler.HelperLogger">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.LogHandler.</span></span><span class="sig-name descname"><span class="pre">HelperLogger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/LogHandler.html#HelperLogger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.LogHandler.HelperLogger" title="Permalink to this definition"></a></dt>
@@ -959,9 +1102,9 @@ management tasks.</p>
 
 </dd></dl>
 
-</section>
 <span class="target" id="module-CveXplore.database.maintenance.Config"></span><section id="configuration">
 <h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="CveXplore.database.maintenance.Config.Configuration">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.maintenance.Config.</span></span><span class="sig-name descname"><span class="pre">Configuration</span></span><a class="reference internal" href="../_modules/CveXplore/database/maintenance/Config.html#Configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.maintenance.Config.Configuration" title="Permalink to this definition"></a></dt>
@@ -969,7 +1112,6 @@ management tasks.</p>
 <p>Class holding the configuration</p>
 </dd></dl>
 
-</section>
 </section>
 </section>
 
