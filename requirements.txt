@@ -7,4 +7,4 @@ click==8.0.3
 ijson==3.1.4
 ansicolors==1.1.8
 pandas==1.5.2
-dicttoxml==1.7.4
+dicttoxml==1.7.16
