@@ -67,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      <li>CveXplore.database.helpers.specific_db</li>
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">CveXplore.database.helpers.specific_db</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -89,7 +89,7 @@
 
 
 <div class="viewcode-block" id="CvesDatabaseFunctions"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions">[docs]</a><span class="k">class</span> <span class="nc">CvesDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The CvesDatabaseFunctions is a specific class that provides the cves attribute of a CveXplore instance additional</span>
 <span class="sd">    functions that only apply to the &#39;cves&#39; collection</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -98,7 +98,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CvesDatabaseFunctions.get_cves_for_vendor"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_cves_for_vendor">[docs]</a>    <span class="k">def</span> <span class="nf">get_cves_for_vendor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vendor</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to return cves based on a given vendor. By default to result is sorted descending on th cvss field.</span>
 
 <span class="sd">        :param vendor: A vendor to search for; e.g. microsoft</span>
@@ -116,7 +116,7 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="CvesDatabaseFunctions.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CvesDatabaseFunctions:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">)</span></div></div>
 </pre></div>
 

@@ -67,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      <li>CveXplore.api.helpers.cve_search_api</li>
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">CveXplore.api.helpers.cve_search_api</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -89,13 +89,13 @@
 
 
 <div class="viewcode-block" id="CveSearchApi"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi">[docs]</a><span class="k">class</span> <span class="nc">CveSearchApi</span><span class="p">(</span><span class="n">GenericApi</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The CveSearchApi handles the different arguments in order to perform a query to a specific Cve Search api endpoint.</span>
 <span class="sd">    It mimics the pymongo cursor&#39;s behaviour to provide an ambiguous way to talk to either an API or a mongodb.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CveSearchApi.__init__"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_collection</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new CveSearchApi object.</span>
 
 <span class="sd">        :param db_collection: ApiDatabaseCollection object</span>
@@ -139,13 +139,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="CveSearchApi.__repr__"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;return a string representation of the obj GenericApi&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return a string representation of the obj GenericApi&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt;CveSearchApi:(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">db_collection</span><span class="o">.</span><span class="n">address</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_collection</span><span class="o">.</span><span class="n">address</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="CveSearchApi.query"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Endpoint for free query to cve search data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -162,7 +162,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span> <span class="o">=</span> <span class="n">results</span></div>
 
 <div class="viewcode-block" id="CveSearchApi.limit"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.limit">[docs]</a>    <span class="k">def</span> <span class="nf">limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to limit the amount of returned data</span>
 
 <span class="sd">        :param value: Limit</span>
@@ -181,7 +181,7 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="CveSearchApi.skip"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.skip">[docs]</a>    <span class="k">def</span> <span class="nf">skip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to skip the given amount of records before returning the data</span>
 
 <span class="sd">        :param value: Skip</span>
@@ -200,7 +200,7 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="CveSearchApi.sort"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.sort">[docs]</a>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to sort the returned data</span>
 
 <span class="sd">        :param field: Field to sort on</span>
@@ -224,12 +224,12 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="CveSearchApi.__iter__"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.__iter__">[docs]</a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Make this class an iterator &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Make this class an iterator &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="CveSearchApi.next"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Iterate to the results and return database objects &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Iterate to the results and return database objects &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__empty</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">StopIteration</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

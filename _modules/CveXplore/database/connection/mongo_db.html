@@ -67,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      <li>CveXplore.database.connection.mongo_db</li>
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">CveXplore.database.connection.mongo_db</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -93,7 +93,7 @@
 
 
 <div class="viewcode-block" id="MongoDBConnection"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection">[docs]</a><span class="k">class</span> <span class="nc">MongoDBConnection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The MongoDBConnection class serves as a shell that functions as uniform way to connect to the mongodb backend.</span>
 <span class="sd">    By default it will try to establish a connection towards a mongodb running on localhost (default port 27017) and</span>
 <span class="sd">    database &#39;cvedb&#39; (as per defaults of cve_search)</span>
@@ -102,7 +102,7 @@
 <div class="viewcode-block" id="MongoDBConnection.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;mongodb://127.0.0.1:27017&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s2">&quot;cvedb&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
 
 <span class="sd">        :param host: The `host` parameter can be a full `mongodb URI</span>
@@ -160,18 +160,18 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span><span class="o">.</span><span class="n">list_collection_names</span><span class="p">()</span>
 
 <div class="viewcode-block" id="MongoDBConnection.disconnect"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Disconnect from mongodb</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="MongoDBConnection.__del__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.__del__">[docs]</a>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Called when the class is garbage collected.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called when the class is garbage collected.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="MongoDBConnection.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; MongoDBConnection:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div></div>
 </pre></div>
 

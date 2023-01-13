@@ -67,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>CveXplore.common.generic_api</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">CveXplore.common.generic_api</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -90,7 +90,7 @@
 
 
 <div class="viewcode-block" id="GenericApi"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi">[docs]</a><span class="k">class</span> <span class="nc">GenericApi</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The GenericApi class serves as a base class for all API&#39;s used within CveXplore</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -102,7 +102,7 @@
         <span class="n">protocol</span><span class="o">=</span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
         <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;GenericApi&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The Generic api caller handles all communication towards a api resource.</span>
 
 <span class="sd">        :param address: Tuple with host ip/name and port</span>
@@ -134,11 +134,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__default_headers</span></div>
 
 <div class="viewcode-block" id="GenericApi.__repr__"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;return a string representation of the obj GenericApi&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return a string representation of the obj GenericApi&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt;GenericApi:(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__build_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Internal method to build a url to use when executing commands</span>
 
 <span class="sd">        :param resource: API end point to connect to</span>
@@ -152,7 +152,7 @@
             <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">/</span><span class="si">{1}</span><span class="s2">/</span><span class="si">{2}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseurl</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_path</span><span class="p">,</span> <span class="n">resource</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send a request</span>
 
 <span class="sd">        Send a request to api host based on the specified data. Specify the content type as JSON and</span>
@@ -208,7 +208,7 @@
         <span class="k">return</span> <span class="n">json_response</span>
 
 <div class="viewcode-block" id="GenericApi.call"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi.call">[docs]</a>    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method for requesting free format api resources</span>
 
 <span class="sd">        :param method: http method to use (e.g. POST, GET, DELETE, PUT)</span>
@@ -232,7 +232,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">__default_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Property to return the default headers</span>
 
 <span class="sd">        :return: Default headers</span>
@@ -246,7 +246,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Property to return the current headers</span>
 
 <span class="sd">        :return: self.myheaders</span>
@@ -256,7 +256,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span>
 
 <div class="viewcode-block" id="GenericApi.set_header_field"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi.set_header_field">[docs]</a>    <span class="k">def</span> <span class="nf">set_header_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to add a header and set it&#39;s value</span>
 
 <span class="sd">        :param field: Name of the header field to add</span>
@@ -272,7 +272,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span></div>
 
 <div class="viewcode-block" id="GenericApi.del_header_field"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi.del_header_field">[docs]</a>    <span class="k">def</span> <span class="nf">del_header_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to delete a header field</span>
 
 <span class="sd">        :param field: Name of the header field to delete</span>
@@ -286,7 +286,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span></div>
 
 <div class="viewcode-block" id="GenericApi.reset_headers"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi.reset_headers">[docs]</a>    <span class="k">def</span> <span class="nf">reset_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to reset the headers to the default values</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 

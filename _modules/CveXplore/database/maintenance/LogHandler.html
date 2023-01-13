@@ -67,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      <li>CveXplore.database.maintenance.LogHandler</li>
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">CveXplore.database.maintenance.LogHandler</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -103,19 +103,19 @@
 
 
 <div class="viewcode-block" id="HelperLogger"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.LogHandler.HelperLogger">[docs]</a><span class="k">class</span> <span class="nc">HelperLogger</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The HelperLogger is used by the application / gui as their logging class and *extends* the default python</span>
 <span class="sd">    logger.logging class.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">runPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span>
-
-    <span class="n">logPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">runPath</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">logPath</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">logPath</span><span class="p">)</span>
-
     <span class="n">config</span> <span class="o">=</span> <span class="n">Configuration</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">LOGGING_TO_FILE</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">LOGGING_FILE_PATH</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">LOGGING_FILE_PATH</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">PermissionError</span><span class="p">:</span>
+            <span class="n">logPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">)</span>
 
     <span class="n">logDict</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
@@ -153,7 +153,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="HelperLogger.debug"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.LogHandler.HelperLogger.debug">[docs]</a>    <span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Log ‘msg % args’ with severity ‘DEBUG’ and color *MAGENTA.</span>
 
 <span class="sd">        To pass exception information, use the keyword argument exc_info with a true value, e.g.</span>
@@ -171,7 +171,7 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">HelperLogger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="HelperLogger.info"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.LogHandler.HelperLogger.info">[docs]</a>    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Log ‘msg % args’ with severity ‘INFO’ and color *WHITE*.</span>
 
 <span class="sd">        To pass exception information, use the keyword argument exc_info with a true value, e.g.</span>
@@ -189,7 +189,7 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">HelperLogger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="HelperLogger.warning"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.LogHandler.HelperLogger.warning">[docs]</a>    <span class="k">def</span> <span class="nf">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Log ‘msg % args’ with severity ‘WARNING’ and color *YELLOW*.</span>
 
 <span class="sd">        To pass exception information, use the keyword argument exc_info with a true value, e.g.</span>
@@ -207,7 +207,7 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">HelperLogger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="HelperLogger.error"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.LogHandler.HelperLogger.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Log ‘msg % args’ with severity ‘ERROR’ and color *RED*.</span>
 
 <span class="sd">        Store logged message to the database for dashboard alerting.</span>
@@ -227,7 +227,7 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">HelperLogger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="HelperLogger.critical"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.LogHandler.HelperLogger.critical">[docs]</a>    <span class="k">def</span> <span class="nf">critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Log ‘msg % args’ with severity ‘CRITICAL’ and color *RED*.</span>
 
 <span class="sd">        Store logged message to the database for dashboard alerting.</span>
@@ -248,7 +248,7 @@
 
 
 <div class="viewcode-block" id="UpdateHandler"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.LogHandler.UpdateHandler">[docs]</a><span class="k">class</span> <span class="nc">UpdateHandler</span><span class="p">(</span><span class="n">HelperLogger</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The UpdateHandler is used by the update process to provide written and visual feedback to the initiator of database</span>
 <span class="sd">    management tasks.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -260,14 +260,15 @@
             <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(name)-8s</span><span class="s2"> - </span><span class="si">%(levelname)-8s</span><span class="s2"> - </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
-        <span class="n">crf</span> <span class="o">=</span> <span class="n">RotatingFileHandler</span><span class="p">(</span>
-            <span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getUpdateLogFile</span><span class="p">(),</span>
-            <span class="n">maxBytes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getMaxLogSize</span><span class="p">(),</span>
-            <span class="n">backupCount</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getBacklog</span><span class="p">(),</span>
-        <span class="p">)</span>
-        <span class="n">crf</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
-        <span class="n">crf</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">crf</span><span class="p">)</span></div></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">LOGGING_TO_FILE</span><span class="p">:</span>
+            <span class="n">crf</span> <span class="o">=</span> <span class="n">RotatingFileHandler</span><span class="p">(</span>
+                <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logPath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getUpdateLogFile</span><span class="p">()),</span>
+                <span class="n">maxBytes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getMaxLogSize</span><span class="p">(),</span>
+                <span class="n">backupCount</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getBacklog</span><span class="p">(),</span>
+            <span class="p">)</span>
+            <span class="n">crf</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+            <span class="n">crf</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">crf</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

@@ -67,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      <li>CveXplore.database.helpers.generic_db</li>
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">CveXplore.database.helpers.generic_db</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -90,13 +90,13 @@
 
 
 <div class="viewcode-block" id="GenericDatabaseFactory"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.generic_db.GenericDatabaseFactory">[docs]</a><span class="k">class</span> <span class="nc">GenericDatabaseFactory</span><span class="p">(</span><span class="n">DatasourceConnection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The GenericDatabaseFactory handles the creation of general, collection based, functions which provide an instance</span>
 <span class="sd">    of CveXplore functions that apply to the given collection.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GenericDatabaseFactory.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new GenericDatabaseFactory and create field specific functions based on the __default_fields and</span>
 <span class="sd">        the __fields_mapping.</span>
 
@@ -146,7 +146,7 @@
             <span class="p">)</span></div>
 
 <div class="viewcode-block" id="GenericDatabaseFactory.get_by_id"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.get_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to fetch a specific collection entry via it&#39;s id number</span>
 
 <span class="sd">        :param id: Id number</span>
@@ -164,17 +164,17 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="GenericDatabaseFactory.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; GenericDatabaseFactory:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="GenericDatabaseFieldsFunctions"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions">[docs]</a><span class="k">class</span> <span class="nc">GenericDatabaseFieldsFunctions</span><span class="p">(</span><span class="n">DatasourceConnection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The GenericDatabaseFieldsFunctions handles the creation of general, field based, functions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GenericDatabaseFieldsFunctions.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">collection</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new GenericDatabaseFieldsFunctions and create field specific functions.</span>
 
 <span class="sd">        :param field: Field name</span>
@@ -187,7 +187,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__field</span> <span class="o">=</span> <span class="n">field</span></div>
 
 <div class="viewcode-block" id="GenericDatabaseFieldsFunctions.search"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method for searching for a given value. The value shall be converted to a regex.</span>
 
 <span class="sd">        :param value: Search for value</span>
@@ -203,7 +203,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GenericDatabaseFieldsFunctions.find"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to find a given value.</span>
 
 <span class="sd">        :param value: Find a value</span>
@@ -220,7 +220,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GenericDatabaseFieldsFunctions.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; GenericDatabaseFieldsFunctions:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">)</span></div></div>
 </pre></div>
 

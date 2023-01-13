@@ -67,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      <li>CveXplore.api.connection.api_db</li>
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">CveXplore.api.connection.api_db</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -89,7 +89,7 @@
 
 
 <div class="viewcode-block" id="ApiDatabaseSource"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseSource">[docs]</a><span class="k">class</span> <span class="nc">ApiDatabaseSource</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The ApiDatabaseSource mimics the behaviour of the MongoDBConnection.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -101,7 +101,7 @@
         <span class="n">protocol</span><span class="o">=</span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
         <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;CveXplore&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create new instance of the ApiDatabaseSource</span>
 
 <span class="sd">        :param address: Tuple with host ip/name and port</span>
@@ -148,12 +148,12 @@
             <span class="p">)</span></div>
 
 <div class="viewcode-block" id="ApiDatabaseSource.__repr__"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseSource.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;return a string representation of the obj ApiDatabaseSource&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return a string representation of the obj ApiDatabaseSource&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; ApiDatabaseSource: </span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="ApiDatabaseCollection"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection">[docs]</a><span class="k">class</span> <span class="nc">ApiDatabaseCollection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The ApiDatabaseCollection mimics the behaviour of the CveSearchCollection</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -166,7 +166,7 @@
         <span class="n">protocol</span><span class="o">=</span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
         <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;CveXplore&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new ApiDatabaseCollection.</span>
 
 <span class="sd">        :param address: Tuple with host ip/name and port</span>
@@ -195,7 +195,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">collname</span> <span class="o">=</span> <span class="n">collname</span></div>
 
 <div class="viewcode-block" id="ApiDatabaseCollection.find"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Query the api endpoint as you would do so with a pymongo Collection.</span>
 
 <span class="sd">        :return: Reference to the CveSearchApi</span>
@@ -205,7 +205,7 @@
         <span class="k">return</span> <span class="n">CveSearchApi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ApiDatabaseCollection.find_one"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection.find_one">[docs]</a>    <span class="k">def</span> <span class="nf">find_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Query the api endpoint as you would do so with a pymongo Collection.</span>
 
 <span class="sd">        :return: Data or None</span>
@@ -219,7 +219,7 @@
         <span class="k">return</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="ApiDatabaseCollection.__repr__"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;return a string representation of the obj ApiDatabaseCollection&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return a string representation of the obj ApiDatabaseCollection&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; ApiDatabaseCollection: </span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div></div>
 </pre></div>
 

@@ -67,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>CveXplore.main</li>
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">CveXplore.main</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -108,12 +108,12 @@
 
 
 <div class="viewcode-block" id="CveXplore"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore">[docs]</a><span class="k">class</span> <span class="nc">CveXplore</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Main class for CveXplore package</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CveXplore.__init__"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mongodb_connection_details</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_connection_details</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new instance of CveXplore</span>
 
 <span class="sd">        :param mongodb_connection_details: Provide the connection details needed to establish a connection to a mongodb</span>
@@ -165,7 +165,7 @@
                 <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">each</span><span class="p">,</span> <span class="n">CvesDatabaseFunctions</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="n">each</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="CveXplore.get_single_store_entry"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.get_single_store_entry">[docs]</a>    <span class="k">def</span> <span class="nf">get_single_store_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">,</span> <span class="n">dict_filter</span><span class="o">=</span><span class="p">{}):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to perform a query on a *single* collection in the data source and return a *single* result.</span>
 
 <span class="sd">        :param entry_type: Which specific store are you querying? Choices are:</span>
@@ -197,7 +197,7 @@
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="CveXplore.get_single_store_entries"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.get_single_store_entries">[docs]</a>    <span class="k">def</span> <span class="nf">get_single_store_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to perform a query on a *single* collection in the data source and return all of the results.</span>
 
 <span class="sd">        :param query: Tuple which contains the entry_type and the dict_filter in a tuple.</span>
@@ -248,7 +248,7 @@
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CveXplore.get_multi_store_entries"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.get_multi_store_entries">[docs]</a>    <span class="k">def</span> <span class="nf">get_multi_store_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">queries</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to perform *multiple* queries on *a single* or *multiple* collections in the data source and return the</span>
 <span class="sd">        results.</span>
 
@@ -280,7 +280,7 @@
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">joined_list</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CveXplore.cves_for_cpe"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.cves_for_cpe">[docs]</a>    <span class="k">def</span> <span class="nf">cves_for_cpe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpe_string</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method for retrieving Cves that match a single CPE string. By default the search will be made matching</span>
 <span class="sd">        the configuration fields of the cves documents.</span>
 
@@ -313,7 +313,7 @@
         <span class="k">return</span> <span class="n">cves</span></div>
 
 <div class="viewcode-block" id="CveXplore.cve_by_id"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.cve_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">cve_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cve_id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to retrieve a single CVE from the database by it&#39;s CVE ID number</span>
 
 <span class="sd">        :param cve_id: String representing the CVE id; e.g. CVE-2020-0001</span>
@@ -324,7 +324,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_single_store_entry</span><span class="p">(</span><span class="s2">&quot;cves&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">cve_id</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="CveXplore.capec_by_cwe_id"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.capec_by_cwe_id">[docs]</a>    <span class="k">def</span> <span class="nf">capec_by_cwe_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwe_id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to retrieve capecs related to a specific CWE ID</span>
 
 <span class="sd">        :param cwe_id: String representing the CWE id; e.g. &#39;15&#39;</span>
@@ -341,7 +341,7 @@
             <span class="k">return</span> <span class="n">cwe</span></div>
 
 <div class="viewcode-block" id="CveXplore.last_cves"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.last_cves">[docs]</a>    <span class="k">def</span> <span class="nf">last_cves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to retrieve the last entered / changed cves. By default limited to 10.</span>
 
 <span class="sd">        :return: List with Cves</span>
@@ -358,7 +358,7 @@
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CveXplore.get_db_content_stats"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.get_db_content_stats">[docs]</a>    <span class="k">def</span> <span class="nf">get_db_content_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Property returning the stats from the database. Stats consist of the time last modified and the document count</span>
 <span class="sd">        per cvedb store in the database.</span>
 
@@ -403,11 +403,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Property returning current version &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Property returning current version &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__version</span>
 
 <div class="viewcode-block" id="CveXplore.__repr__"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CveXplore:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span></div></div>
 </pre></div>
 

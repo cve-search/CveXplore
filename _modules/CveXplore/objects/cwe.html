@@ -67,9 +67,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>CveXplore.objects.cwe</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">CveXplore.objects.cwe</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -87,7 +87,7 @@
 
 
 <div class="viewcode-block" id="Cwe"><a class="viewcode-back" href="../../../package/objects.html#CveXplore.objects.cwe.Cwe">[docs]</a><span class="k">class</span> <span class="nc">Cwe</span><span class="p">(</span><span class="n">DatasourceConnection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Cwe database object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -99,7 +99,7 @@
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">each</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">each</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Cwe.iter_related_weaknessess"><a class="viewcode-back" href="../../../package/objects.html#CveXplore.objects.cwe.Cwe.iter_related_weaknessess">[docs]</a>    <span class="k">def</span> <span class="nf">iter_related_weaknessess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generator function for iterating the related weaknesses from the current weakness object</span>
 
 <span class="sd">        :return: Cwe object</span>
@@ -116,7 +116,7 @@
                     <span class="k">yield</span> <span class="n">cwe_doc</span></div>
 
 <div class="viewcode-block" id="Cwe.iter_related_capecs"><a class="viewcode-back" href="../../../package/objects.html#CveXplore.objects.cwe.Cwe.iter_related_capecs">[docs]</a>    <span class="k">def</span> <span class="nf">iter_related_capecs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">         Generator function for iterating the related capecs from the current weakness object</span>
 
 <span class="sd">        :return: Capec object</span>
@@ -131,7 +131,7 @@
             <span class="k">yield</span> <span class="n">each</span></div>
 
 <div class="viewcode-block" id="Cwe.to_dict"><a class="viewcode-back" href="../../../package/objects.html#CveXplore.objects.cwe.Cwe.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to convert the entire object to a dictionary</span>
 
 <span class="sd">        :return: Data from object</span>
@@ -147,7 +147,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="vm">__dict__</span></div>
 
 <div class="viewcode-block" id="Cwe.__repr__"><a class="viewcode-back" href="../../../package/objects.html#CveXplore.objects.cwe.Cwe.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; Cwe:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div></div>
 </pre></div>
 
