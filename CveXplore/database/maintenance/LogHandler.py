@@ -27,14 +27,14 @@ class HelperLogger(logging.Logger):
     logger.logging class.
     """
 
-    runPath = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-
-    logPath = os.path.join(runPath, "log")
-
-    if not os.path.exists(logPath):
-        os.makedirs(logPath)
-
     config = Configuration()
+
+    if config.LOGGING_TO_FILE:
+        try:
+            if not os.path.exists(config.LOGGING_FILE_PATH):
+                os.makedirs(config.LOGGING_FILE_PATH)
+        except PermissionError:
+            logPath = os.path.expanduser("~")
 
     logDict = {
         "version": 1,
@@ -179,11 +179,12 @@ class UpdateHandler(HelperLogger):
             "%(asctime)s - %(name)-8s - %(levelname)-8s - %(message)s"
         )
 
-        crf = RotatingFileHandler(
-            filename=self.config.getUpdateLogFile(),
-            maxBytes=self.config.getMaxLogSize(),
-            backupCount=self.config.getBacklog(),
-        )
-        crf.setLevel(logging.DEBUG)
-        crf.setFormatter(formatter)
-        self.addHandler(crf)
+        if self.config.LOGGING_TO_FILE:
+            crf = RotatingFileHandler(
+                filename=os.path.join(self.logPath, self.config.getUpdateLogFile()),
+                maxBytes=self.config.getMaxLogSize(),
+                backupCount=self.config.getBacklog(),
+            )
+            crf.setLevel(logging.DEBUG)
+            crf.setFormatter(formatter)
+            self.addHandler(crf)

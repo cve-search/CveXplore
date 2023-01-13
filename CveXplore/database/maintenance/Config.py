@@ -2,12 +2,18 @@
 Configuration
 =============
 """
+import ast
 import datetime
 import json
 import os
 import re
 
 runPath = os.path.dirname(os.path.realpath(__file__))
+
+
+def getenv_bool(name: str, default: str = "False"):
+    raw = os.getenv(name, default).title()
+    return ast.literal_eval(raw)
 
 
 class Configuration(object):
@@ -33,6 +39,8 @@ class Configuration(object):
 
     HTTP_PROXY = os.getenv("HTTP_PROXY", "")
 
+    LOGGING_TO_FILE = getenv_bool("LOGGING_TO_FILE", "False")
+    LOGGING_FILE_PATH = os.getenv("LOGGING_FILE_PATH", "./")
     LOGGING_MAX_FILE_SIZE = os.getenv("LOGGING_MAX_FILE_SIZE", "100MB")
     LOGGING_BACKLOG = os.getenv("LOGGING_BACKLOG", 5)
     LOGGING_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "./update_populate.log")
