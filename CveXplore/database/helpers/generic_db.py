@@ -4,8 +4,8 @@ Generic database functions
 """
 import re
 
-from CveXplore.common.db_mapping import database_mapping
 from CveXplore.common.data_source_connection import DatasourceConnection
+from CveXplore.common.db_mapping import database_mapping
 
 
 class GenericDatabaseFactory(DatasourceConnection):
@@ -53,7 +53,7 @@ class GenericDatabaseFactory(DatasourceConnection):
         }
 
         total_fields_list = (
-            self.__default_fields + self.__fields_mapping[self._collection]
+                self.__default_fields + self.__fields_mapping[self._collection]
         )
         for field in total_fields_list:
             setattr(

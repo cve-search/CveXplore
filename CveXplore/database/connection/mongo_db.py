@@ -4,11 +4,10 @@ Mongo DB connection
 """
 import atexit
 
-from pymongo import MongoClient
-from pymongo.errors import ServerSelectionTimeoutError
-
 from CveXplore.database.helpers.cvesearch_mongo_database import CveSearchCollection
 from CveXplore.errors import DatabaseConnectionException
+from pymongo import MongoClient
+from pymongo.errors import ServerSelectionTimeoutError
 
 
 class MongoDBConnection(object):
@@ -19,11 +18,9 @@ class MongoDBConnection(object):
     """
 
     def __init__(
-        self, host="mongodb://127.0.0.1:27017", port=None, database="cvedb", **kwargs
+            self, host="mongodb://127.0.0.1:27017", port=None, database="cvedb", **kwargs
     ):
         """
-
-
         :param host: The `host` parameter can be a full `mongodb URI
                      <http://dochub.mongodb.org/core/connections>`_, in addition to
                      a simple hostname.

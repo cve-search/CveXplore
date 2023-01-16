@@ -4,10 +4,9 @@ cpe
 """
 import re
 
-from pymongo import DESCENDING
-
 from CveXplore.common.cpe_converters import from2to3CPE
 from CveXplore.common.data_source_connection import DatasourceConnection
+from pymongo import DESCENDING
 
 
 class Cpe(DatasourceConnection):

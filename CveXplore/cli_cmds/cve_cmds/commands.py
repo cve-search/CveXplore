@@ -1,7 +1,6 @@
 from pprint import pformat
 
 import click
-
 from CveXplore.cli_cmds.cli_utils.utils import printer
 from CveXplore.cli_cmds.mutex_options.mutex import Mutex
 

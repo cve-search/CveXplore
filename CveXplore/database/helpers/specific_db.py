@@ -2,9 +2,8 @@
 Specific database functions
 ===========================
 """
-from pymongo import DESCENDING
-
 from CveXplore.database.helpers.generic_db import GenericDatabaseFactory
+from pymongo import DESCENDING
 
 
 class CvesDatabaseFunctions(GenericDatabaseFactory):

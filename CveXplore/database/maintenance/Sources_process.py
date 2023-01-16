@@ -12,6 +12,7 @@ from collections import namedtuple
 from xml.sax import make_parser
 
 import pymongo
+from CveXplore.database.connection.mongo_db import MongoDBConnection
 from dateutil.parser import parse as parse_datetime
 from pymongo import TEXT, ASCENDING
 
@@ -19,7 +20,6 @@ from .Config import Configuration
 from .Toolkit import generate_title
 from .content_handlers import CapecHandler, CWEHandler
 from .db_action import DatabaseAction
-from CveXplore.database.connection.mongo_db import MongoDBConnection
 from .file_handlers import XMLFileHandler, JSONFileHandler
 
 file_prefix = "nvdcve-1.1-"

@@ -2,7 +2,6 @@ import json
 import os
 
 import click
-
 from CveXplore.cli_cmds.cli_utils.utils import printer
 from CveXplore.database.maintenance.Config import Configuration, runPath
 

@@ -6,6 +6,7 @@ import json
 from json import JSONDecodeError
 
 import requests
+from requests.adapters import HTTPAdapter, Retry
 
 
 class GenericApi(object):
@@ -14,12 +15,12 @@ class GenericApi(object):
     """
 
     def __init__(
-        self,
-        address,
-        api_path=None,
-        proxies=None,
-        protocol="https",
-        user_agent="GenericApi",
+            self,
+            address,
+            api_path=None,
+            proxies=None,
+            protocol="https",
+            user_agent="GenericApi",
     ):
         """
         The Generic api caller handles all communication towards a api resource.
@@ -45,7 +46,7 @@ class GenericApi(object):
         self.server = address[0]
         self.port = address[1]
         self.protocol = protocol
-        self.baseurl = "{}://{}:{}".format(self.protocol, self.server, self.port)
+        self.baseurl = f"{self.protocol}://{self.server}:{self.port}"
         self.api_path = api_path
         self.proxies = proxies
         self.user_agent = user_agent
@@ -54,9 +55,9 @@ class GenericApi(object):
 
     def __repr__(self):
         """return a string representation of the obj GenericApi"""
-        return "<<GenericApi:({}, {})>>".format(self.server, self.port)
+        return f"<<GenericApi:({self.server}, {self.port})>>"
 
-    def __build_url(self, resource):
+    def _build_url(self, resource):
         """
         Internal method to build a url to use when executing commands
 
@@ -66,11 +67,11 @@ class GenericApi(object):
         :rtype: str
         """
         if self.api_path is None:
-            return "{0}/{1}".format(self.baseurl, resource)
+            return f"{self.baseurl}/{resource}"
         else:
-            return "{0}/{1}/{2}".format(self.baseurl, self.api_path, resource)
+            return f"{self.baseurl}/{self.api_path}/{resource}"
 
-    def __connect(self, method, resource, session, data=None, timeout=60):
+    def _connect(self, method, resource, session, data=None, timeout=60):
         """
         Send a request
 
@@ -93,14 +94,7 @@ class GenericApi(object):
 
         requests.packages.urllib3.disable_warnings()
 
-        if data is None:
-            request_api_resource = {
-                "headers": self.myheaders,
-                "verify": self.verify,
-                "timeout": timeout,
-                "proxies": self.proxies,
-            }
-        else:
+        if data is not None:
             data = json.dumps(data)
             request_api_resource = {
                 "data": data,
@@ -109,24 +103,59 @@ class GenericApi(object):
                 "timeout": timeout,
                 "proxies": self.proxies,
             }
-
-        if method == "POST":
-            r = session.post(self.__build_url(resource), **request_api_resource)
-        elif method == "PUT":
-            r = session.put(self.__build_url(resource), **request_api_resource)
-        elif method == "DELETE":
-            r = session.delete(self.__build_url(resource), **request_api_resource)
         else:
-            r = session.get(self.__build_url(resource), **request_api_resource)
+            request_api_resource = {
+                "headers": self.myheaders,
+                "verify": self.verify,
+                "timeout": timeout,
+                "proxies": self.proxies,
+            }
 
         try:
-            json_response = json.loads(r.text)
-        except JSONDecodeError:
-            json_response = r
 
-        return json_response
+            if method == "POST":
+                r = session.post(self._build_url(resource), **request_api_resource)
+            elif method == "PUT":
+                r = session.put(self._build_url(resource), **request_api_resource)
+            elif method == "DELETE":
+                r = session.delete(self._build_url(resource), **request_api_resource)
+            else:
+                r = session.get(self._build_url(resource), **request_api_resource)
 
-    def call(self, method=None, resource=None, data=None):
+            try:
+                json_response = json.loads(r.text)
+            except JSONDecodeError:
+                json_response = r
+
+            return json_response
+        except requests.exceptions.ConnectionError:
+            raise ConnectionError
+
+    def get_session(
+            self,
+            retries=3,
+            backoff_factor=0.3,
+            status_forcelist=(429, 500, 502, 503, 504),
+            session=None,
+    ):
+        """
+        Method for returning a session object per every requesting thread
+        """
+        session = session or requests.Session()
+        retry = Retry(
+            total=retries,
+            read=retries,
+            connect=retries,
+            backoff_factor=backoff_factor,
+            status_forcelist=status_forcelist,
+        )
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount("http://", adapter)
+        session.mount("https://", adapter)
+
+        return session
+
+    def call(self, method=None, resource=None, data=None, json=None, files=None):
         """
         Method for requesting free format api resources
 
@@ -140,8 +169,8 @@ class GenericApi(object):
         :rtype: dict
         """
         try:
-            with requests.Session() as session:
-                result = self.__connect(
+            with self.get_session() as session:
+                result = self._connect(
                     method=method, resource=resource, session=session, data=data
                 )
                 return result
@@ -160,7 +189,7 @@ class GenericApi(object):
         return {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "User-Agent": "{}".format(self.user_agent),
+            "User-Agent": f"{self.user_agent}",
         }
 
     @property
