@@ -143,12 +143,12 @@ class CveSearchApi(GenericApi):
         return self
 
     def __iter__(self):
-        """ Make this class an iterator """
+        """Make this class an iterator"""
         self.query()
         return self
 
     def next(self):
-        """ Iterate to the results and return database objects """
+        """Iterate to the results and return database objects"""
         if self.__empty:
             raise StopIteration
         if self.data_queue is None:

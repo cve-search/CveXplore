@@ -9,10 +9,10 @@ class Mutex(click.Option):
             raise AssertionError("'not_required_if' parameter required")
 
         kwargs["help"] = (
-            kwargs.get("help", "")
-            + ". *** Option is mutually exclusive with the option(s): '"
-            + ", ".join(self.not_required_if)
-            + "'. ***"
+                kwargs.get("help", "")
+                + ". *** Option is mutually exclusive with the option(s): '"
+                + ", ".join(self.not_required_if)
+                + "'. ***"
         ).strip()
         super(Mutex, self).__init__(*args, **kwargs)
 

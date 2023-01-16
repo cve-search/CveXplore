@@ -36,11 +36,19 @@ setup(
     description="Package for interacting with cve-search",
     long_description=README,
     long_description_content_type="text/x-rst",
-    package_data={"CveXplore": ["LICENSE", "VERSION", ".cvexplore-complete.bash", ".schema_version", ".sources.ini"]},
-    entry_points='''
+    package_data={
+        "CveXplore": [
+            "LICENSE",
+            "VERSION",
+            ".cvexplore-complete.bash",
+            ".schema_version",
+            ".sources.ini",
+        ]
+    },
+    entry_points="""
             [console_scripts]
             cvexplore=CveXplore.cli:main
-        ''',
+        """,
     classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Programming Language :: Python :: 3",

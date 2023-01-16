@@ -42,7 +42,6 @@ def format_output(format_type, input_list):
 
 
 def printer(input_data, pretty=False, output="json"):
-
     if isinstance(input_data, list):
         if not pretty:
             click.echo(format_output(output, input_data))

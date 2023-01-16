@@ -1,8 +1,8 @@
 .. image:: images/CveExplore_logo.png
 
 .. Everything after the include marker below is inserted into the sphinx html docs. Everything above this comment is
-   only visible in the github README.rst
-   ##INCLUDE_MARKER##
+only visible in the github README.rst
+##INCLUDE_MARKER##
 
 .. image:: https://img.shields.io/github/release/cve-search/CveXplore.svg
    :target: https://GitHub.com/cve-search/CveXplore/releases/

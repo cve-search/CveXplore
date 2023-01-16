@@ -11,7 +11,6 @@ class Via4(DatasourceConnection):
     """
 
     def __init__(self, **kwargs):
-
         super().__init__("via4")
 
         for each in kwargs:

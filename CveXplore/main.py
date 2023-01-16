@@ -14,8 +14,8 @@ from CveXplore.api.connection.api_db import ApiDatabaseSource
 from CveXplore.common.cpe_converters import from2to3CPE
 from CveXplore.common.db_mapping import database_mapping
 from CveXplore.database.connection.mongo_db import MongoDBConnection
-from CveXplore.errors import DatabaseIllegalCollection
 from CveXplore.database.maintenance.main_updater import MainUpdater
+from CveXplore.errors import DatabaseIllegalCollection
 
 try:
     from version import VERSION
@@ -51,8 +51,8 @@ class CveXplore(object):
         os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "NO"})
 
         if (
-            api_connection_details is not None
-            and mongodb_connection_details is not None
+                api_connection_details is not None
+                and mongodb_connection_details is not None
         ):
             raise ValueError(
                 "CveXplore can be used to connect to either a cve-search database OR a cve-search api, not both!"
@@ -193,7 +193,6 @@ class CveXplore(object):
         joined_list = []
 
         for result_list in results:
-
             joined_list += result_list
 
         return list(joined_list)

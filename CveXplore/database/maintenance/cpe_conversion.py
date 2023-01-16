@@ -10,6 +10,7 @@
 
 import re
 
+
 # Convert cpe2.2 url encoded to cpe2.3 char escaped
 # cpe:2.3:o:cisco:ios:12.2%281%29 to cpe:2.3:o:cisco:ios:12.2\(1\)
 def unquote(cpe):
@@ -47,10 +48,10 @@ class WFN:
     def pack_edition(self) -> str:
         packed_edition = self.edition
         if (
-            self.sw_edition != "*"
-            or self.target_hw != "*"
-            or self.target_sw != "*"
-            or self.other != "*"
+                self.sw_edition != "*"
+                or self.target_hw != "*"
+                or self.target_sw != "*"
+                or self.other != "*"
         ):
             packed_edition = "~{}~{}~{}~{}~{}".format(
                 self.edition,

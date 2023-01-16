@@ -1,9 +1,9 @@
 import click
 
-from CveXplore.cli_cmds.search_cmds import commands as group1
 from CveXplore.cli_cmds.cve_cmds import commands as group2
-from CveXplore.cli_cmds.stats_cmds import commands as group3
 from CveXplore.cli_cmds.db_cmds import commands as group4
+from CveXplore.cli_cmds.search_cmds import commands as group1
+from CveXplore.cli_cmds.stats_cmds import commands as group3
 from CveXplore.main import CveXplore
 
 

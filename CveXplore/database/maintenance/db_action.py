@@ -4,7 +4,6 @@ from pymongo import InsertOne, UpdateOne
 
 
 class DatabaseAction(object):
-
     actions = collections.namedtuple("Actions", "InsertOne UpdateOne")(0, 1)
 
     def __init__(self, action, collection, doc):
