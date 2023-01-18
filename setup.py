@@ -42,7 +42,7 @@ setup(
             "VERSION",
             ".cvexplore-complete.bash",
             ".schema_version",
-            ".sources.ini",
+            "/common/.sources.ini",
         ]
     },
     entry_points="""

@@ -3,14 +3,13 @@ Log Handler
 ===========
 """
 import logging
-import os
 import platform
 from logging.config import dictConfig
 from logging.handlers import RotatingFileHandler
 
 import colors
 
-from .Config import Configuration
+from CveXplore.common.config import Configuration
 
 
 class HostnameFilter(logging.Filter):
@@ -28,13 +27,6 @@ class HelperLogger(logging.Logger):
     """
 
     config = Configuration()
-
-    if config.LOGGING_TO_FILE:
-        try:
-            if not os.path.exists(config.LOGGING_FILE_PATH):
-                os.makedirs(config.LOGGING_FILE_PATH)
-        except PermissionError:
-            logPath = os.path.expanduser("~")
 
     logDict = {
         "version": 1,
@@ -68,7 +60,6 @@ class HelperLogger(logging.Logger):
     }
 
     def __init__(self, name, level=logging.NOTSET):
-
         super().__init__(name, level)
 
     def debug(self, msg, *args, **kwargs):
@@ -181,7 +172,7 @@ class UpdateHandler(HelperLogger):
 
         if self.config.LOGGING_TO_FILE:
             crf = RotatingFileHandler(
-                filename=os.path.join(self.logPath, self.config.getUpdateLogFile()),
+                filename=self.config.getUpdateLogFile(),
                 maxBytes=self.config.getMaxLogSize(),
                 backupCount=self.config.getBacklog(),
             )

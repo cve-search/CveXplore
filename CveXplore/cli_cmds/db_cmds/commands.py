@@ -4,7 +4,7 @@ import os
 import click
 
 from CveXplore.cli_cmds.cli_utils.utils import printer
-from CveXplore.database.maintenance.Config import Configuration, runPath
+from CveXplore.common.config import Configuration
 
 
 @click.group(
@@ -61,7 +61,7 @@ def set_cmd(ctx, key, value):
 
     sources[key] = value
 
-    with open(os.path.join(runPath, "../../.sources.ini"), "w") as f:
+    with open(os.path.join(config.USER_HOME_DIR, ".sources.ini"), "w") as f:
         f.write(json.dumps(sources))
 
     printer(input_data={"SOURCES SET TO": sources}, pretty=True)
@@ -74,7 +74,7 @@ def reset_cmd(ctx):
 
     sources = config.DEFAULT_SOURCES
 
-    with open(os.path.join(runPath, "../../.sources.ini"), "w") as f:
+    with open(os.path.join(config.USER_HOME_DIR, ".sources.ini"), "w") as f:
         f.write(json.dumps(sources))
 
     printer(input_data={"SOURCES RESET TO": sources}, pretty=True)

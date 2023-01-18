@@ -7,8 +7,27 @@ import datetime
 import json
 import os
 import re
+import shutil
+from json import JSONDecodeError
+from pathlib import Path
 
-runPath = os.path.dirname(os.path.realpath(__file__))
+from dotenv import load_dotenv
+
+if not os.path.exists(os.path.expanduser("~/.cvexplore")):
+    os.mkdir(os.path.expanduser("~/.cvexplore"))
+
+user_wd = os.path.expanduser("~/.cvexplore")
+
+if not os.path.exists(os.path.join(user_wd, ".env")):
+    Path(os.path.join(user_wd, ".env")).touch()
+
+load_dotenv(os.path.join(user_wd, ".env"))
+
+if not os.path.exists(os.path.join(user_wd, ".sources.ini")):
+    shutil.copyfile(
+        os.path.join(os.path.dirname(__file__), ".sources.ini"),
+        os.path.join(user_wd, ".sources.ini"),
+    )
 
 
 def getenv_bool(name: str, default: str = "False"):
@@ -16,18 +35,39 @@ def getenv_bool(name: str, default: str = "False"):
     return ast.literal_eval(raw)
 
 
+def getenv_dict(name: str, default: dict = None):
+    if default is None:
+        default = {}
+
+    raw = os.getenv(name, default)
+
+    if not isinstance(raw, dict):
+        try:
+            the_dict = json.loads(raw)
+            return the_dict
+        except JSONDecodeError:
+            raise
+
+    return default
+
+
 class Configuration(object):
     """
     Class holding the configuration
     """
 
+    USER_HOME_DIR = user_wd
+
     CVE_START_YEAR = os.getenv("CVE_START_YEAR", 2002)
 
     if os.getenv("SOURCES") is not None:
-        SOURCES = json.loads(os.getenv("SOURCES"))
+        SOURCES = getenv_dict("SOURCES", None)
     else:
-        with open(os.path.join(runPath, "../../.sources.ini")) as f:
+        with open(os.path.join(user_wd, ".sources.ini")) as f:
             SOURCES = json.loads(f.read())
+
+    NVD_NIST_API_KEY = os.getenv("NVD_NIST_API_KEY", None)
+    NVD_NIST_NO_REJECTED = getenv_bool("NVD_NIST_NO_REJECTED", "True")
 
     DEFAULT_SOURCES = {
         "cve": "https://nvd.nist.gov/feeds/json/cve/1.1/",
@@ -39,11 +79,16 @@ class Configuration(object):
 
     HTTP_PROXY = os.getenv("HTTP_PROXY", "")
 
-    LOGGING_TO_FILE = getenv_bool("LOGGING_TO_FILE", "False")
-    LOGGING_FILE_PATH = os.getenv("LOGGING_FILE_PATH", "./")
+    LOGGING_TO_FILE = getenv_bool("LOGGING_TO_FILE", "True")
+    LOGGING_FILE_PATH = os.getenv("LOGGING_FILE_PATH", os.path.join(user_wd, "log"))
+
+    if not os.path.exists(LOGGING_FILE_PATH):
+        os.mkdir(LOGGING_FILE_PATH)
+
     LOGGING_MAX_FILE_SIZE = os.getenv("LOGGING_MAX_FILE_SIZE", "100MB")
     LOGGING_BACKLOG = os.getenv("LOGGING_BACKLOG", 5)
-    LOGGING_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "./update_populate.log")
+    LOGGING_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "./cvexplore.log")
+    LOGGING_UPDATE_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "./update_populate.log")
 
     @classmethod
     def getCVEStartYear(cls):
@@ -66,12 +111,8 @@ class Configuration(object):
         return cls.SOURCES[source]
 
     @classmethod
-    def toPath(cls, path):
-        return path if os.path.isabs(path) else os.path.join(runPath, "../..", path)
-
-    @classmethod
     def getUpdateLogFile(cls):
-        return cls.toPath(cls.LOGGING_FILE_NAME)
+        return os.path.join(cls.LOGGING_FILE_PATH, cls.LOGGING_UPDATE_FILE_NAME)
 
     @classmethod
     def getMaxLogSize(cls):

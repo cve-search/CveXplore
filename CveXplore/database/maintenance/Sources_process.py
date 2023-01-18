@@ -8,16 +8,19 @@ import json
 import logging
 import os
 import shutil
+import time
 from collections import namedtuple
 from xml.sax import make_parser
 
 import pymongo
 from dateutil.parser import parse as parse_datetime
 from pymongo import TEXT, ASCENDING
+from tqdm import tqdm
 
+from CveXplore.common.config import Configuration
 from CveXplore.database.connection.mongo_db import MongoDBConnection
-from .Config import Configuration
 from .Toolkit import generate_title
+from .api_handlers import NVDApiHandler
 from .content_handlers import CapecHandler, CWEHandler
 from .db_action import DatabaseAction
 from .file_handlers import XMLFileHandler, JSONFileHandler
@@ -36,33 +39,51 @@ defaultvalue = {"cwe": "Unknown"}
 cveStartYear = Configuration.getCVEStartYear()
 
 
-class CPEDownloads(JSONFileHandler):
+class CPEDownloads(NVDApiHandler):
     """
     Class processing CPE source files
     """
 
     def __init__(self):
         self.feed_type = "CPE"
-        self.prefix = "matches.item"
-        super().__init__(self.feed_type, self.prefix)
 
-        self.feed_url = Configuration.getFeedURL(self.feed_type.lower())
+        super().__init__(self.feed_type)
 
         self.logger = logging.getLogger("CPEDownloads")
 
+    def file_to_queue(self, *args):
+        pass
+
     @staticmethod
-    def process_cpe_item(item=None):
+    def process_the_item(item=None):
         if item is None:
             return None
-        if "cpe23Uri" not in item:
+
+        item = item["cpe"]
+
+        if "cpeName" not in item:
             return None
 
+        title = None
+
+        if "titles" in item:
+            for t in item["titles"]:
+                if t["lang"] == "en":
+                    title = t["title"]
+
         cpe = {
-            "title": generate_title(item["cpe23Uri"]),
-            "cpe_2_2": item["cpe23Uri"],
-            "cpe_name": item["cpe_name"],
-            "vendor": item["cpe23Uri"].split(":")[3],
-            "product": item["cpe23Uri"].split(":")[4],
+            "title": title,
+            "CveSearchtitle": generate_title(item["cpeName"]),
+            "cpe_2_2": item["cpeName"],
+            # "cpe_name": [
+            #     {"cpe23Uri": f"{item['cpeName']}"}
+            # ],
+            "vendor": item["cpeName"].split(":")[3],
+            "product": item["cpeName"].split(":")[4],
+            "cpeNameId": item["cpeNameId"],
+            "lastModified": parse_datetime(item["lastModified"], ignoretz=True),
+            "created": parse_datetime(item["created"], ignoretz=True),
+            "deprecated": item["deprecated"],
         }
 
         version_info = ""
@@ -87,35 +108,110 @@ class CPEDownloads(JSONFileHandler):
 
         return cpe
 
-    def process_item(self, item):
-        cpe = self.process_cpe_item(item)
+    def process_downloads(self, sites=None):
+        """
+        Method to download and process files
 
-        if cpe is not None:
-            if self.is_update:
-                self.queue.put(
-                    DatabaseAction(
-                        action=DatabaseAction.actions.UpdateOne,
-                        collection=self.feed_type.lower(),
-                        doc=cpe,
-                    )
+        """
+
+        self.logger.info("Starting download...")
+
+        start_time = time.time()
+
+        self.last_modified = datetime.datetime.now()
+
+        self.logger.debug(
+            f"do_process = {self.do_process}; is_update = {self.is_update}"
+        )
+
+        if self.do_process:
+
+            if not self.is_update:
+
+                total_results = self.api_handler.get_count(
+                    self.api_handler.datasource.CPE
                 )
+
+                self.logger.info(f"Preparing to download {total_results} CPE entries")
+
+                with tqdm(
+                        desc="Downloading and processing content",
+                        total=total_results,
+                        position=0,
+                        leave=True,
+                ) as pbar:
+                    for entry in self.api_handler.get_all_cpes():
+                        # do something here with the results...
+                        for product_list in tqdm(
+                                entry, desc=f"Processing batch", leave=False
+                        ):
+                            processed_items = [
+                                self.process_item(item)
+                                for item in product_list["products"]
+                            ]
+                            self._db_bulk_writer(processed_items)
+                            pbar.update(len(product_list["products"]))
+
             else:
-                self.queue.put(
-                    DatabaseAction(
-                        action=DatabaseAction.actions.InsertOne,
-                        collection=self.feed_type.lower(),
-                        doc=cpe,
-                    )
+                last_mod_start_date = self.database[self.feed_type.lower()].find_one(
+                    {}, {"lastModified": 1}, sort=[("lastModified", -1)]
                 )
+
+                if "lastModified" in last_mod_start_date:
+                    last_mod_start_date = last_mod_start_date["lastModified"]
+                else:
+                    raise KeyError(
+                        "Missing field 'lastModified' from database query..."
+                    )
+
+                # Get datetime from runtime
+                last_mod_end_date = datetime.datetime.now()
+
+                total_results = self.api_handler.get_count(
+                    self.api_handler.datasource.CPE,
+                    last_mod_start_date=last_mod_start_date,
+                    last_mod_end_date=last_mod_end_date,
+                )
+
+                self.logger.info(f"Preparing to download {total_results} CPE entries")
+
+                with tqdm(
+                        desc="Downloading and processing content",
+                        total=total_results,
+                        position=0,
+                        leave=True,
+                ) as pbar:
+                    for entry in self.api_handler.get_all_cpes(
+                            last_mod_start_date=last_mod_start_date,
+                            last_mod_end_date=last_mod_end_date,
+                    ):
+                        # do something here with the results...
+                        for product_list in tqdm(
+                                entry, desc=f"Processing batch", leave=False
+                        ):
+                            processed_items = [
+                                self.process_item(item)
+                                for item in product_list["products"]
+                            ]
+                            self._db_bulk_writer(processed_items)
+                            pbar.update(len(product_list["products"]))
+
+            # Set the last update time in the info collection
+            self.setColUpdate(self.feed_type.lower(), self.last_modified)
+
+        self.logger.info(
+            "Duration: {}".format(datetime.timedelta(seconds=time.time() - start_time))
+        )
 
     def update(self, **kwargs):
         self.logger.info("CPE database update started")
 
         # if collection is non-existent; assume it's not an update
         if self.feed_type.lower() not in self.getTableNames():
+            DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
             self.is_update = False
 
-        self.process_downloads([self.feed_url])
+        self.process_downloads()
 
         self.logger.info("Finished CPE database update")
 
@@ -123,8 +219,6 @@ class CPEDownloads(JSONFileHandler):
 
     def populate(self, **kwargs):
         self.logger.info("CPE Database population started")
-
-        self.queue.clear()
 
         self.delColInfo(self.feed_type.lower())
 
@@ -134,7 +228,7 @@ class CPEDownloads(JSONFileHandler):
 
         self.is_update = False
 
-        self.process_downloads([self.feed_url])
+        self.process_downloads()
 
         self.logger.info("Finished CPE database population")
 
@@ -206,6 +300,8 @@ class CVEDownloads(JSONFileHandler):
             return None
         if "ASSIGNER" not in item["cve"]["CVE_data_meta"]:
             item["cve"]["CVE_data_meta"]["ASSIGNER"] = None
+
+        print(f"***************\n\n {item} \n\n*******************")
 
         cve = {
             "id": item["cve"]["CVE_data_meta"]["ID"],

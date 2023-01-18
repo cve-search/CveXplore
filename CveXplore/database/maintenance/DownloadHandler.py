@@ -21,13 +21,13 @@ from shutil import copy
 import pymongo
 import requests
 from dateutil.parser import parse as parse_datetime
-from pymongo.errors import BulkWriteError
+from pymongo.errors import BulkWriteError, InvalidOperation
 from requests.adapters import HTTPAdapter
 from tqdm.contrib.concurrent import thread_map
 from urllib3 import Retry
 
+from CveXplore.common.config import Configuration
 from CveXplore.database.connection.mongo_db import MongoDBConnection
-from .Config import Configuration
 from .LogHandler import UpdateHandler
 from .worker_q import WorkerQueue
 
@@ -169,8 +169,14 @@ class DownloadHandler(ABC):
         try:
             self.database[self.feed_type.lower()].bulk_write(batch, ordered=False)
         except BulkWriteError as err:
-            self.logger.debug("Error during bulk write: {}".format(err))
+            self.logger.debug(f"Error during bulk write: {err}")
             pass
+        except InvalidOperation as err:
+            self.logger.debug(f"Got error during bulk update: {err}")
+            pass
+        except TypeError as err:
+            self.logger.debug(f"Error during bulk write: {err}")
+            raise
 
     def store_file(self, response_content, content_type, url):
         """

@@ -4,6 +4,7 @@ Generic API
 """
 import json
 from json import JSONDecodeError
+from typing import Union
 
 import requests
 from requests.adapters import HTTPAdapter, Retry
@@ -155,18 +156,9 @@ class GenericApi(object):
 
         return session
 
-    def call(self, method=None, resource=None, data=None, json=None, files=None):
+    def call(self, method=None, resource=None, data: Union[dict, int] = None):
         """
         Method for requesting free format api resources
-
-        :param method: http method to use (e.g. POST, GET, DELETE, PUT)
-        :type method: str
-        :param resource: API end point to connect to
-        :type resource: str
-        :param data: Request body data
-        :type data: dict
-        :return: query result
-        :rtype: dict
         """
         try:
             with self.get_session() as session:
