@@ -12,12 +12,12 @@ class ApiDatabaseSource(object):
     """
 
     def __init__(
-            self,
-            address,
-            api_path=None,
-            proxies=None,
-            protocol="https",
-            user_agent="CveXplore",
+        self,
+        address,
+        api_path=None,
+        proxies=None,
+        protocol="https",
+        user_agent="CveXplore",
     ):
         """
         Create new instance of the ApiDatabaseSource
@@ -76,13 +76,13 @@ class ApiDatabaseCollection(object):
     """
 
     def __init__(
-            self,
-            address,
-            collname,
-            api_path=None,
-            proxies=None,
-            protocol="https",
-            user_agent="CveXplore",
+        self,
+        address,
+        collname,
+        api_path=None,
+        proxies=None,
+        protocol="https",
+        user_agent="CveXplore",
     ):
         """
         Create a new ApiDatabaseCollection.

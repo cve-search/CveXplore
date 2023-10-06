@@ -75,7 +75,7 @@ class CveSearchCursor(Cursor):
     __next__ = next
 
     def __repr__(self):
-        """ Return string representation of this class """
+        """Return string representation of this class"""
         return "<< CveSearchCursor:{} >>".format(self.collection)
 
 
@@ -100,7 +100,7 @@ class CveSearchCollection(Collection):
         super().__init__(database, name, **kwargs)
 
     def __repr__(self):
-        """ Return string representation of this class """
+        """Return string representation of this class"""
         return "<< CveSearchCollection:{} >>".format(self.name)
 
     def find(self, *args, **kwargs):

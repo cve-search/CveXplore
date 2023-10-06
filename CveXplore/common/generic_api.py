@@ -15,12 +15,12 @@ class GenericApi(object):
     """
 
     def __init__(
-            self,
-            address,
-            api_path=None,
-            proxies=None,
-            protocol="https",
-            user_agent="GenericApi",
+        self,
+        address,
+        api_path=None,
+        proxies=None,
+        protocol="https",
+        user_agent="GenericApi",
     ):
         """
         The Generic api caller handles all communication towards a api resource.
@@ -132,11 +132,11 @@ class GenericApi(object):
             raise ConnectionError
 
     def get_session(
-            self,
-            retries=3,
-            backoff_factor=0.3,
-            status_forcelist=(429, 500, 502, 503, 504),
-            session=None,
+        self,
+        retries=3,
+        backoff_factor=0.3,
+        status_forcelist=(429, 500, 502, 503, 504),
+        session=None,
     ):
         """
         Method for returning a session object per every requesting thread

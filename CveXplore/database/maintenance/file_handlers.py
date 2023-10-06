@@ -26,7 +26,7 @@ class JSONFileHandler(DownloadHandler):
         self.ijson_handler = IJSONHandler()
 
     def __repr__(self):
-        """ return string representation of object """
+        """return string representation of object"""
         return "<< JSONFileHandler:{} >>".format(self.feed_type)
 
     def file_to_queue(self, file_tuple):
@@ -84,7 +84,7 @@ class XMLFileHandler(DownloadHandler):
         self.is_update = True
 
     def __repr__(self):
-        """ return string representation of object """
+        """return string representation of object"""
         return "<< XMLFileHandler:{} >>".format(self.feed_type)
 
     def process_item(self, item):

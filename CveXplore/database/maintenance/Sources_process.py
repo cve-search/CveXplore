@@ -12,10 +12,10 @@ from collections import namedtuple
 from xml.sax import make_parser
 
 import pymongo
-from CveXplore.database.connection.mongo_db import MongoDBConnection
 from dateutil.parser import parse as parse_datetime
 from pymongo import TEXT, ASCENDING
 
+from CveXplore.database.connection.mongo_db import MongoDBConnection
 from .Config import Configuration
 from .Toolkit import generate_title
 from .content_handlers import CapecHandler, CWEHandler

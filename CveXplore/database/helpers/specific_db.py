@@ -2,8 +2,9 @@
 Specific database functions
 ===========================
 """
-from CveXplore.database.helpers.generic_db import GenericDatabaseFactory
 from pymongo import DESCENDING
+
+from CveXplore.database.helpers.generic_db import GenericDatabaseFactory
 
 
 class CvesDatabaseFunctions(GenericDatabaseFactory):
@@ -34,5 +35,5 @@ class CvesDatabaseFunctions(GenericDatabaseFactory):
         )
 
     def __repr__(self):
-        """ String representation of object """
+        """String representation of object"""
         return "<< CvesDatabaseFunctions:{} >>".format(self._collection)
