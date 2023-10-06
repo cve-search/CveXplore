@@ -85,8 +85,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.common.db_mapping</span> <span class="kn">import</span> <span class="n">database_mapping</span>
 <span class="kn">from</span> <span class="nn">CveXplore.common.data_source_connection</span> <span class="kn">import</span> <span class="n">DatasourceConnection</span>
+<span class="kn">from</span> <span class="nn">CveXplore.common.db_mapping</span> <span class="kn">import</span> <span class="n">database_mapping</span>
 
 
 <div class="viewcode-block" id="GenericDatabaseFactory"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.generic_db.GenericDatabaseFactory">[docs]</a><span class="k">class</span> <span class="nc">GenericDatabaseFactory</span><span class="p">(</span><span class="n">DatasourceConnection</span><span class="p">):</span>
@@ -134,7 +134,7 @@
         <span class="p">}</span>
 
         <span class="n">total_fields_list</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__default_fields</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fields_mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__default_fields</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fields_mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">total_fields_list</span><span class="p">:</span>
             <span class="nb">setattr</span><span class="p">(</span>

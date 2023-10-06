@@ -224,12 +224,12 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="CveSearchApi.__iter__"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.__iter__">[docs]</a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Make this class an iterator &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make this class an iterator&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="CveSearchApi.next"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Iterate to the results and return database objects &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate to the results and return database objects&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__empty</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">StopIteration</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
