@@ -4,3 +4,11 @@ class ApiException(Exception):
 
 class ApiErrorException(ApiException):
     pass
+
+
+class ApiDataError(ApiException):
+    pass
+
+
+class ApiDataRetrievalFailed(ApiException):
+    pass

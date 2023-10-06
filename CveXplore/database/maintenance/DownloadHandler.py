@@ -70,15 +70,15 @@ class DownloadHandler(ABC):
         self.config = Configuration()
 
     def __repr__(self):
-        """ return string representation of object """
+        """return string representation of object"""
         return "<< DownloadHandler:{} >>".format(self.feed_type)
 
     def get_session(
-            self,
-            retries=3,
-            backoff_factor=0.3,
-            status_forcelist=(429, 500, 502, 503, 504),
-            session=None,
+        self,
+        retries=3,
+        backoff_factor=0.3,
+        status_forcelist=(429, 500, 502, 503, 504),
+        session=None,
     ):
         """
         Method for returning a session object per every requesting thread
@@ -156,7 +156,7 @@ class DownloadHandler(ABC):
         :rtype: list
         """
         for i in range(0, len(lst), number):
-            yield lst[i: i + number]
+            yield lst[i : i + number]
 
     def _db_bulk_writer(self, batch):
         """
@@ -195,10 +195,10 @@ class DownloadHandler(ABC):
         filename = None
 
         if (
-                content_type == "application/zip"
-                or content_type == "application/x-zip"
-                or content_type == "application/x-zip-compressed"
-                or content_type == "application/zip-compressed"
+            content_type == "application/zip"
+            or content_type == "application/x-zip"
+            or content_type == "application/x-zip-compressed"
+            or content_type == "application/zip-compressed"
         ):
             filename = os.path.join(wd, url.split("/")[-1][:-4])
             self.logger.debug("Saving file to: {}".format(filename))
@@ -207,10 +207,10 @@ class DownloadHandler(ABC):
                 zip_file.extractall(wd)
 
         elif (
-                content_type == "application/x-gzip"
-                or content_type == "application/gzip"
-                or content_type == "application/x-gzip-compressed"
-                or content_type == "application/gzip-compressed"
+            content_type == "application/x-gzip"
+            or content_type == "application/gzip"
+            or content_type == "application/x-gzip-compressed"
+            or content_type == "application/gzip-compressed"
         ):
             filename = os.path.join(wd, url.split("/")[-1][:-3])
             self.logger.debug("Saving file to: {}".format(filename))

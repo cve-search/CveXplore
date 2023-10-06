@@ -12,54 +12,28 @@ class ApiDatabaseSource(object):
     """
 
     def __init__(
-            self,
-            address,
-            api_path=None,
-            proxies=None,
-            protocol="https",
-            user_agent="CveXplore",
+        self,
+        baseurl: str,
+        api_path: str = None,
+        proxies: dict = None,
+        user_agent: str = "CveXplore",
     ):
         """
         Create new instance of the ApiDatabaseSource
-
-        :param address: Tuple with host ip/name and port
-        :type address: tuple
-        :param api_path: The api_path parameter needs to be provided if the API runs on a non-root path.
-                         So if the API is reachable at: https://localhost/api, this parameter needs to be set to 'api'.
-                         So it is needed to connect to api resources, defaults to 'None'
-        :type api_path: str
-        :param proxies: If you need to use a proxy, you can configure individual requests with the proxies argument
-                        to any request method
-        :type proxies: dict
-        :param protocol: Protocol to use when connecting to api; defaults to 'https'
-        :type protocol: str
-        :param user_agent: User agent to use when connecting; defaults to CveXplore:<<version>>
-        :type user_agent: str
         """
 
         self.database_mapping = database_mapping
 
-        if address == {}:
-            return
-
-        self.address = address
-
-        if api_path is not None:
-            self.url = "{}://{}:{}/{}".format(
-                protocol, address[0], address[1], api_path
-            )
-        else:
-            self.url = "{}://{}:{}".format(protocol, address[0], address[1])
+        self.baseurl = baseurl
 
         for each in self.database_mapping:
             setattr(
                 self,
                 "store_{}".format(each),
                 ApiDatabaseCollection(
-                    address=address,
+                    baseurl=baseurl,
                     api_path=api_path,
                     proxies=proxies,
-                    protocol=protocol,
                     user_agent=user_agent,
                     collname=each,
                 ),
@@ -67,7 +41,7 @@ class ApiDatabaseSource(object):
 
     def __repr__(self):
         """return a string representation of the obj ApiDatabaseSource"""
-        return "<< ApiDatabaseSource: {} >>".format(self.address)
+        return f"<< ApiDatabaseSource: {self.baseurl} >>"
 
 
 class ApiDatabaseCollection(object):
@@ -76,38 +50,20 @@ class ApiDatabaseCollection(object):
     """
 
     def __init__(
-            self,
-            address,
-            collname,
-            api_path=None,
-            proxies=None,
-            protocol="https",
-            user_agent="CveXplore",
+        self,
+        baseurl: str,
+        collname: str,
+        api_path: str = None,
+        proxies: dict = None,
+        user_agent="CveXplore",
     ):
         """
         Create a new ApiDatabaseCollection.
-
-        :param address: Tuple with host ip/name and port
-        :type address: tuple
-        :param collname: Collection name
-        :type collname: str
-        :param api_path: The api_path parameter needs to be provided if the API runs on a non-root path.
-                         So if the API is reachable at: https://localhost/api, this parameter needs to be set to 'api'.
-                         So it is needed to connect to api resources, defaults to 'None'
-        :type api_path: str
-        :param proxies: If you need to use a proxy, you can configure individual requests with the proxies argument
-                        to any request method
-        :type proxies: dict
-        :param protocol: Protocol to use when connecting to api; defaults to 'https'
-        :type protocol: str
-        :param user_agent: User agent to use when connecting; defaults to CveXplore:<<version>>
-        :type user_agent: str
         """
 
-        self.address = address
+        self.baseurl = baseurl
         self.api_path = api_path
         self.proxies = proxies
-        self.protocol = protocol
         self.user_agent = user_agent
 
         self.collname = collname
@@ -138,4 +94,4 @@ class ApiDatabaseCollection(object):
 
     def __repr__(self):
         """return a string representation of the obj ApiDatabaseCollection"""
-        return "<< ApiDatabaseCollection: {} >>".format(self.address)
+        return f"<< ApiDatabaseCollection: {self.baseurl} >>"

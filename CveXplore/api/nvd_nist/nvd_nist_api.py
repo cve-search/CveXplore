@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import math
+import random
 from collections import namedtuple
 from datetime import datetime, timedelta
 from json import JSONDecodeError
@@ -9,23 +10,30 @@ from urllib.parse import urlencode
 
 import aiohttp as aiohttp
 import requests
+from aiohttp import ContentTypeError
+from aioretry import retry, RetryPolicyStrategy, RetryInfo
+from requests import Response
 
+from CveXplore.api.api_base_class import ApiBaseClass
 from CveXplore.common.config import Configuration
-from CveXplore.common.generic_api import GenericApi
 from CveXplore.database.maintenance.LogHandler import UpdateHandler
-from CveXplore.errors.apis import ApiErrorException
+from CveXplore.errors.apis import (
+    ApiErrorException,
+    ApiDataError,
+    ApiDataRetrievalFailed,
+)
 
 logging.setLoggerClass(UpdateHandler)
 
 
-class NvdNistApi(GenericApi):
+class NvdNistApi(ApiBaseClass):
     def __init__(
         self,
-        address=("services.nvd.nist.gov", 443),
-        api_path="2.0",
-        user_agent="CveXplore",
+        baseurl: str = "https://services.nvd.nist.gov",
+        api_path: str = "2.0",
+        user_agent: str = "CveXplore",
     ):
-        super().__init__(address, api_path=api_path, user_agent=user_agent)
+        super().__init__(baseurl, api_path=api_path, user_agent=user_agent)
 
         self.config = Configuration()
 
@@ -77,7 +85,13 @@ class NvdNistApi(GenericApi):
                 return f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/"
 
     def _connect(
-        self, method, resource: dict, session: requests.Session, data=None, timeout=60
+        self,
+        method,
+        resource: dict,
+        session: requests.Session,
+        data=None,
+        timeout=60,
+        return_response_object=False,
     ):
 
         requests.packages.urllib3.disable_warnings()
@@ -96,17 +110,30 @@ class NvdNistApi(GenericApi):
             )
 
             try:
-                json_response = json.loads(r.text)
+                if isinstance(r, Response):
+                    if return_response_object:
+                        return r
+                    if r.status_code >= 400:
+                        the_response = json.loads(r.text)
+                        raise requests.exceptions.ConnectionError(the_response)
+                    else:
+                        the_response = json.loads(r.text)
             except JSONDecodeError:
-                json_response = r
+                if r.headers["content-type"] == "text/plain":
+                    the_response = r.text
+                else:
+                    the_response = r
 
-            return json_response
-        except requests.exceptions.ConnectionError:
-            raise ConnectionError
+            return the_response
+
+        except requests.exceptions.ConnectionError as err:
+            raise requests.exceptions.ConnectionError(err)
+        except Exception as err:
+            raise Exception(err)
 
     def __repr__(self):
-        """return a string representation of the obj GenericApi"""
-        return f"<<NvdNistApi:({self.server}, {self.port})>>"
+        """return a string representation of the obj"""
+        return f"<< NvdNistApi:{self.baseurl} >>"
 
     def get_cves_from_start_year(self):
 
@@ -179,14 +206,19 @@ class NvdNistApi(GenericApi):
             )
 
         if datasource == self.datasource.CVE:
-            ret_data = self.call("GET", resource=resource, data=self.datasource.CVE)
+            ret_data = self.call(
+                self.methods.GET, resource=resource, data=self.datasource.CVE
+            )
         else:
-            ret_data = self.call("GET", resource=resource, data=self.datasource.CPE)
+            ret_data = self.call(
+                self.methods.GET, resource=resource, data=self.datasource.CPE
+            )
 
         return ret_data["totalResults"]
 
-    def get_all_cpes(
+    def get_all_data(
         self,
+        data_type: str,
         last_mod_start_date: datetime = None,
         last_mod_end_date: datetime = None,
     ):
@@ -194,17 +226,17 @@ class NvdNistApi(GenericApi):
         resource = {}
 
         if last_mod_start_date is not None and last_mod_end_date is not None:
-            self.logger.debug("Getting all updated cpes....")
+            self.logger.debug(f"Getting all updated {data_type}s....")
             resource = self.check_date_range(
                 resource=resource,
                 last_mod_start_date=last_mod_start_date,
                 last_mod_end_date=last_mod_end_date,
             )
         else:
-            self.logger.debug("Getting all cpes...")
+            self.logger.debug(f"Getting all {data_type}s...")
 
         data = self.get_count(
-            self.datasource.CPE,
+            getattr(self.datasource, data_type.upper()),
             last_mod_start_date=last_mod_start_date,
             last_mod_end_date=last_mod_end_date,
         )
@@ -216,7 +248,7 @@ class NvdNistApi(GenericApi):
                 start_index=0,
                 total_results=data,
                 api_handle=self,
-                data_source=self.datasource.CPE,
+                data_source=getattr(self.datasource, data_type.upper()),
                 resource=resource,
             ):
                 yield each_data
@@ -243,6 +275,32 @@ class ApiData(object):
 
     def __iter__(self):
         return ApiDataIterator(self)
+
+
+def retry_policy(info: RetryInfo) -> RetryPolicyStrategy:
+    """
+    - It will always retry until succeeded
+    - If fails for the first time, it will retry immediately,
+    - If it fails again,
+      aioretry will perform a 100ms delay before the second retry,
+      200ms delay before the 3rd retry,
+      the 4th retry immediately,
+      100ms delay before the 5th retry,
+      etc...
+    """
+    max_retries = 5
+    backoff_in_ms = 0.2 * 2**info.fails + random.uniform(0, 1)
+    logger = logging.getLogger("RetryPolicy")
+
+    if info.fails != max_retries:
+        logger.debug(f"Current backoff: {backoff_in_ms}")
+
+        logger.warning(f"Retrying {info.fails + 1}/{max_retries}")
+
+        return False, backoff_in_ms
+
+    else:
+        return True, 0
 
 
 class ApiDataIterator(object):
@@ -315,15 +373,41 @@ class ApiDataIterator(object):
 
         return results
 
+    @retry(retry_policy)
     async def fetch(self, session, url):
         try:
             async with session.get(url) as response:
                 self.logger.debug(f"Sending request to url: {url}")
                 # time.sleep(self.sleep_time)
                 data = await response.json()
+                if "format" in data:
+                    if data["format"] == "NVD_CPE":
+                        if "products" not in data:
+                            self.logger.warning(
+                                f"Data received does not contain a products list; raise error to retry!"
+                            )
+                            raise ApiDataError
+                    elif data["format"] == "NVD_CVE":
+                        if "vulnerabilities" not in data:
+                            self.logger.warning(
+                                f"Data received does not contain a vulnerabilities list; raise error to retry!"
+                            )
+                            raise ApiDataError
+                    else:
+                        self.logger.warning(
+                            f"Data received does not match expected formatting string; raise error to retry!"
+                        )
+                        raise ApiDataError
+                else:
+                    self.logger.warning(
+                        f"Data received does not match expected content; raise error to retry!"
+                    )
+                    raise ApiDataError
                 return data
-        except Exception as err:
-            return {"ERROR": f"Error getting {url} data.... Error observed: {err}"}
+        except ApiDataError:
+            raise
+        except ContentTypeError:
+            return ApiDataRetrievalFailed(url)
 
     async def fetch_all(self, loop):
         sem = asyncio.Semaphore(math.ceil(30 / self.sleep_time))
@@ -331,6 +415,9 @@ class ApiDataIterator(object):
             async with aiohttp.ClientSession(
                 loop=loop,
                 headers=self.api_data.api_handle.headers,
+                timeout=aiohttp.ClientTimeout(
+                    total=60.0, sock_connect=60.0, sock_read=60.0, connect=60.0
+                ),
             ) as session:
                 results = await asyncio.gather(
                     *[

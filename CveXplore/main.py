@@ -51,8 +51,8 @@ class CveXplore(object):
         os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "NO"})
 
         if (
-                api_connection_details is not None
-                and mongodb_connection_details is not None
+            api_connection_details is not None
+            and mongodb_connection_details is not None
         ):
             raise ValueError(
                 "CveXplore can be used to connect to either a cve-search database OR a cve-search api, not both!"

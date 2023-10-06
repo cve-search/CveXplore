@@ -4,35 +4,30 @@ Cve Search API
 """
 import pymongo
 
-from CveXplore.common.generic_api import GenericApi
+from CveXplore.api.api_base_class import ApiBaseClass
 
 
-class CveSearchApi(GenericApi):
+class CveSearchApi(ApiBaseClass):
     """
     The CveSearchApi handles the different arguments in order to perform a query to a specific Cve Search api endpoint.
     It mimics the pymongo cursor's behaviour to provide an ambiguous way to talk to either an API or a mongodb.
     """
 
-    def __init__(self, db_collection, filter=None, limit=None, skip=None, sort=None):
+    def __init__(
+        self,
+        db_collection,
+        filter: dict = None,
+        limit: int = None,
+        skip: int = None,
+        sort: tuple = None,
+    ):
         """
         Create a new CveSearchApi object.
-
-        :param db_collection: ApiDatabaseCollection object
-        :type db_collection: ApiDatabaseCollection
-        :param filter: Filter to be used when querying data
-        :type filter: dict
-        :param limit: Limit value
-        :type limit: int
-        :param skip: Skip value
-        :type skip: int
-        :param sort: Sort value
-        :type sort: tuple
         """
         super().__init__(
-            address=tuple(db_collection.address),
+            address=db_collection.baseurl,
             api_path=db_collection.api_path,
             proxies=db_collection.proxies,
-            protocol=db_collection.protocol,
             user_agent=db_collection.user_agent,
         )
         from CveXplore.common.db_obj_mapping import database_objects_mapping
@@ -80,14 +75,9 @@ class CveSearchApi(GenericApi):
         except Exception:
             self.data_queue = results
 
-    def limit(self, value):
+    def limit(self, value: int):
         """
         Method to limit the amount of returned data
-
-        :param value: Limit
-        :type value: int
-        :return: CveSearchApi object
-        :rtype: CveSearchApi
         """
 
         if not isinstance(value, int):
@@ -99,14 +89,9 @@ class CveSearchApi(GenericApi):
 
         return self
 
-    def skip(self, value):
+    def skip(self, value: int):
         """
         Method to skip the given amount of records before returning the data
-
-        :param value: Skip
-        :type value: int
-        :return: CveSearchApi object
-        :rtype: CveSearchApi
         """
 
         if not isinstance(value, int):
@@ -118,16 +103,9 @@ class CveSearchApi(GenericApi):
 
         return self
 
-    def sort(self, field, direction):
+    def sort(self, field: str, direction: int):
         """
         Method to sort the returned data
-
-        :param field: Field to sort on
-        :type field: str
-        :param direction: The direction to sort in; e.g. pymongo.DESCENDING
-        :type direction: int
-        :return: CveSearchApi object
-        :rtype: CveSearchApi
         """
 
         if direction == pymongo.DESCENDING:

@@ -53,7 +53,7 @@ class GenericDatabaseFactory(DatasourceConnection):
         }
 
         total_fields_list = (
-                self.__default_fields + self.__fields_mapping[self._collection]
+            self.__default_fields + self.__fields_mapping[self._collection]
         )
         for field in total_fields_list:
             setattr(

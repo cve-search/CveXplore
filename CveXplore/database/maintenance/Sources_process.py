@@ -24,6 +24,7 @@ from .api_handlers import NVDApiHandler
 from .content_handlers import CapecHandler, CWEHandler
 from .db_action import DatabaseAction
 from .file_handlers import XMLFileHandler, JSONFileHandler
+from ...errors.apis import ApiDataRetrievalFailed
 
 file_prefix = "nvdcve-1.1-"
 file_suffix = ".json.gz"
@@ -111,7 +112,6 @@ class CPEDownloads(NVDApiHandler):
     def process_downloads(self, sites=None):
         """
         Method to download and process files
-
         """
 
         self.logger.info("Starting download...")
@@ -135,23 +135,27 @@ class CPEDownloads(NVDApiHandler):
                 self.logger.info(f"Preparing to download {total_results} CPE entries")
 
                 with tqdm(
-                        desc="Downloading and processing content",
-                        total=total_results,
-                        position=0,
-                        leave=True,
+                    desc="Downloading and processing content",
+                    total=total_results,
+                    position=0,
+                    leave=True,
                 ) as pbar:
-                    for entry in self.api_handler.get_all_cpes():
+                    for entry in self.api_handler.get_all_data(data_type="cpe"):
                         # do something here with the results...
-                        for product_list in tqdm(
-                                entry, desc=f"Processing batch", leave=False
+                        for data_list in tqdm(
+                            entry, desc=f"Processing batch", leave=False
                         ):
-                            processed_items = [
-                                self.process_item(item)
-                                for item in product_list["products"]
-                            ]
-                            self._db_bulk_writer(processed_items)
-                            pbar.update(len(product_list["products"]))
-
+                            if not isinstance(data_list, ApiDataRetrievalFailed):
+                                processed_items = [
+                                    self.process_item(item)
+                                    for item in data_list["products"]
+                                ]
+                                self._db_bulk_writer(processed_items)
+                                pbar.update(len(data_list["products"]))
+                            else:
+                                self.logger.error(
+                                    f"Retrieval of api data on url: {data_list.args[0]} failed...."
+                                )
             else:
                 last_mod_start_date = self.database[self.feed_type.lower()].find_one(
                     {}, {"lastModified": 1}, sort=[("lastModified", -1)]
@@ -176,25 +180,31 @@ class CPEDownloads(NVDApiHandler):
                 self.logger.info(f"Preparing to download {total_results} CPE entries")
 
                 with tqdm(
-                        desc="Downloading and processing content",
-                        total=total_results,
-                        position=0,
-                        leave=True,
+                    desc="Downloading and processing content",
+                    total=total_results,
+                    position=0,
+                    leave=True,
                 ) as pbar:
-                    for entry in self.api_handler.get_all_cpes(
-                            last_mod_start_date=last_mod_start_date,
-                            last_mod_end_date=last_mod_end_date,
+                    for entry in self.api_handler.get_all_data(
+                        data_type="cpe",
+                        last_mod_start_date=last_mod_start_date,
+                        last_mod_end_date=last_mod_end_date,
                     ):
                         # do something here with the results...
-                        for product_list in tqdm(
-                                entry, desc=f"Processing batch", leave=False
+                        for data_list in tqdm(
+                            entry, desc=f"Processing batch", leave=False
                         ):
-                            processed_items = [
-                                self.process_item(item)
-                                for item in product_list["products"]
-                            ]
-                            self._db_bulk_writer(processed_items)
-                            pbar.update(len(product_list["products"]))
+                            if not isinstance(data_list, ApiDataRetrievalFailed):
+                                processed_items = [
+                                    self.process_item(item)
+                                    for item in data_list["products"]
+                                ]
+                                self._db_bulk_writer(processed_items)
+                                pbar.update(len(data_list["products"]))
+                            else:
+                                self.logger.error(
+                                    f"Retrieval of api data on url: {data_list.args[0]} failed...."
+                                )
 
             # Set the last update time in the info collection
             self.setColUpdate(self.feed_type.lower(), self.last_modified)
@@ -220,13 +230,15 @@ class CPEDownloads(NVDApiHandler):
     def populate(self, **kwargs):
         self.logger.info("CPE Database population started")
 
+        self.is_update = False
+
+        self.queue.clear()
+
         self.delColInfo(self.feed_type.lower())
 
         self.dropCollection(self.feed_type.lower())
 
         DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
-
-        self.is_update = False
 
         self.process_downloads()
 
@@ -235,19 +247,15 @@ class CPEDownloads(NVDApiHandler):
         return self.last_modified
 
 
-class CVEDownloads(JSONFileHandler):
+class CVEDownloads(NVDApiHandler):
     """
     Class processing CVE source files
     """
 
     def __init__(self):
         self.feed_type = "CVES"
-        self.prefix = "CVE_Items.item"
-        super().__init__(self.feed_type, self.prefix)
 
-        self.feed_url = Configuration.getFeedURL("cve")
-        self.modfile = file_prefix + file_mod + file_suffix
-        self.recfile = file_prefix + file_rec + file_suffix
+        super().__init__(self.feed_type)
 
         self.logger = logging.getLogger("CVEDownloads")
 
@@ -295,112 +303,122 @@ class CVEDownloads(JSONFileHandler):
         cpeArr = cpeUri.split(":")
         return ":".join(cpeArr[:5])
 
-    def process_cve_item(self, item=None):
+    def file_to_queue(self, *args):
+        pass
+
+    def process_the_item(self, item=None):
         if item is None:
             return None
-        if "ASSIGNER" not in item["cve"]["CVE_data_meta"]:
-            item["cve"]["CVE_data_meta"]["ASSIGNER"] = None
-
-        print(f"***************\n\n {item} \n\n*******************")
 
         cve = {
-            "id": item["cve"]["CVE_data_meta"]["ID"],
-            "assigner": item["cve"]["CVE_data_meta"]["ASSIGNER"],
-            "Published": parse_datetime(item["publishedDate"], ignoretz=True),
-            "Modified": parse_datetime(item["lastModifiedDate"], ignoretz=True),
-            "last-modified": parse_datetime(item["lastModifiedDate"], ignoretz=True),
+            "id": item["cve"]["id"],
+            "assigner": item["cve"]["sourceIdentifier"],
+            "Status": item["cve"]["vulnStatus"],
+            "Published": parse_datetime(item["cve"]["published"], ignoretz=True),
+            "Modified": parse_datetime(item["cve"]["lastModified"], ignoretz=True),
+            "last-modified": parse_datetime(item["cve"]["lastModified"], ignoretz=True),
         }
 
-        for description in item["cve"]["description"]["description_data"]:
+        for description in item["cve"]["descriptions"]:
             if description["lang"] == "en":
                 if "summary" in cve:
                     cve["summary"] += " {}".format(description["value"])
                 else:
                     cve["summary"] = description["value"]
-        if "impact" in item:
+
+        if "metrics" in item:
             cve["access"] = {}
             cve["impact"] = {}
-            if "baseMetricV3" in item["impact"]:
+            if "cvssMetricV3" in item["metrics"]:
                 cve["impact3"] = {}
                 cve["exploitability3"] = {}
-                cve["impact3"]["availability"] = item["impact"]["baseMetricV3"][
-                    "cvssV3"
+                cve["impact3"]["availability"] = item["metrics"]["cvssMetricV3"][
+                    "cvssData"
                 ]["availabilityImpact"]
-                cve["impact3"]["confidentiality"] = item["impact"]["baseMetricV3"][
-                    "cvssV3"
+                cve["impact3"]["confidentiality"] = item["metrics"]["cvssMetricV3"][
+                    "cvssData"
                 ]["confidentialityImpact"]
-                cve["impact3"]["integrity"] = item["impact"]["baseMetricV3"]["cvssV3"][
-                    "integrityImpact"
-                ]
-                cve["exploitability3"]["attackvector"] = item["impact"]["baseMetricV3"][
-                    "cvssV3"
-                ]["attackVector"]
-                cve["exploitability3"]["attackcomplexity"] = item["impact"][
-                    "baseMetricV3"
-                ]["cvssV3"]["attackComplexity"]
-                cve["exploitability3"]["privilegesrequired"] = item["impact"][
-                    "baseMetricV3"
-                ]["cvssV3"]["privilegesRequired"]
-                cve["exploitability3"]["userinteraction"] = item["impact"][
-                    "baseMetricV3"
-                ]["cvssV3"]["userInteraction"]
-                cve["exploitability3"]["scope"] = item["impact"]["baseMetricV3"][
-                    "cvssV3"
+                cve["impact3"]["integrity"] = item["metrics"]["cvssMetricV3"][
+                    "cvssData"
+                ]["integrityImpact"]
+                cve["exploitability3"]["attackvector"] = item["metrics"][
+                    "cvssMetricV3"
+                ]["cvssData"]["attackVector"]
+                cve["exploitability3"]["attackcomplexity"] = item["metrics"][
+                    "cvssMetricV3"
+                ]["cvssData"]["attackComplexity"]
+                cve["exploitability3"]["privilegesrequired"] = item["metrics"][
+                    "cvssMetricV3"
+                ]["cvssData"]["privilegesRequired"]
+                cve["exploitability3"]["userinteraction"] = item["metrics"][
+                    "cvssMetricV3"
+                ]["cvssData"]["userInteraction"]
+                cve["exploitability3"]["scope"] = item["metrics"]["cvssMetricV3"][
+                    "cvssData"
                 ]["scope"]
                 cve["cvss3"] = float(
-                    item["impact"]["baseMetricV3"]["cvssV3"]["baseScore"]
+                    item["metrics"]["cvssMetricV3"]["cvssData"]["baseScore"]
                 )
-                cve["cvss3-vector"] = item["impact"]["baseMetricV3"]["cvssV3"][
+                cve["cvss3-vector"] = item["metrics"]["cvssMetricV3"]["cvssData"][
                     "vectorString"
                 ]
                 cve["impactScore3"] = float(
-                    item["impact"]["baseMetricV3"]["impactScore"]
+                    item["metrics"]["cvssMetricV3"]["impactScore"]
                 )
                 cve["exploitabilityScore3"] = float(
-                    item["impact"]["baseMetricV3"]["exploitabilityScore"]
+                    item["metrics"]["cvssMetricV3"]["exploitabilityScore"]
                 )
+                cve["cvss3-time"] = parse_datetime(
+                    item["lastModifiedDate"], ignoretz=True
+                )
+                cve["cvss3-type"] = item["metrics"]["cvssMetricV3"]["type"]
+                cve["cvss3-source"] = item["metrics"]["cvssMetricV3"]["source"]
             else:
                 cve["cvss3"] = None
-            if "baseMetricV2" in item["impact"]:
-                cve["access"]["authentication"] = item["impact"]["baseMetricV2"][
-                    "cvssV2"
+            if "cvssMetricV2" in item["metrics"]:
+                cve["access"]["authentication"] = item["metrics"]["cvssMetricV2"][
+                    "cvssData"
                 ]["authentication"]
-                cve["access"]["complexity"] = item["impact"]["baseMetricV2"]["cvssV2"][
-                    "accessComplexity"
-                ]
-                cve["access"]["vector"] = item["impact"]["baseMetricV2"]["cvssV2"][
+                cve["access"]["complexity"] = item["metrics"]["cvssMetricV2"][
+                    "cvssData"
+                ]["accessComplexity"]
+                cve["access"]["vector"] = item["metrics"]["cvssMetricV2"]["cvssData"][
                     "accessVector"
                 ]
-                cve["impact"]["availability"] = item["impact"]["baseMetricV2"][
-                    "cvssV2"
+                cve["impact"]["availability"] = item["metrics"]["cvssMetricV2"][
+                    "cvssData"
                 ]["availabilityImpact"]
-                cve["impact"]["confidentiality"] = item["impact"]["baseMetricV2"][
-                    "cvssV2"
+                cve["impact"]["confidentiality"] = item["metrics"]["cvssMetricV2"][
+                    "cvssData"
                 ]["confidentialityImpact"]
-                cve["impact"]["integrity"] = item["impact"]["baseMetricV2"]["cvssV2"][
-                    "integrityImpact"
-                ]
+                cve["impact"]["integrity"] = item["metrics"]["cvssMetricV2"][
+                    "cvssData"
+                ]["integrityImpact"]
                 cve["cvss"] = float(
-                    item["impact"]["baseMetricV2"]["cvssV2"]["baseScore"]
+                    item["metrics"]["cvssMetricV2"]["cvssData"]["baseScore"]
                 )
                 cve["exploitabilityScore"] = float(
-                    item["impact"]["baseMetricV2"]["exploitabilityScore"]
+                    item["metrics"]["cvssMetricV2"]["exploitabilityScore"]
                 )
                 cve["impactScore"] = float(
-                    item["impact"]["baseMetricV2"]["impactScore"]
+                    item["metrics"]["cvssMetricV2"]["impactScore"]
                 )
                 cve["cvss-time"] = parse_datetime(
                     item["lastModifiedDate"], ignoretz=True
                 )  # NVD JSON lacks the CVSS time which was present in the original XML format
-                cve["cvss-vector"] = item["impact"]["baseMetricV2"]["cvssV2"][
+                cve["cvss-vector"] = item["metrics"]["cvssMetricV2"]["cvssData"][
                     "vectorString"
                 ]
+                cve["cvss-type"] = item["metrics"]["cvssMetricV2"]["type"]
+                cve["cvss-source"] = item["metrics"]["cvssMetricV2"]["source"]
             else:
                 cve["cvss"] = None
+
         if "references" in item["cve"]:
             cve["references"] = []
-            for ref in item["cve"]["references"]["reference_data"]:
+            for ref in item["cve"]["references"]:
                 cve["references"].append(ref["url"])
+
         if "configurations" in item:
             cve["vulnerable_configuration"] = []
             cve["vulnerable_product"] = []
@@ -409,40 +427,40 @@ class CVEDownloads(JSONFileHandler):
             cve["vulnerable_product_stems"] = []
             cve["vulnerable_configuration_stems"] = []
             for cpe in item["configurations"]["nodes"]:
-                if "cpe_match" in cpe:
-                    for cpeuri in cpe["cpe_match"]:
-                        if "cpe23Uri" not in cpeuri:
+                if "cpeMatch" in cpe:
+                    for cpeuri in cpe["cpeMatch"]:
+                        if "criteria" not in cpeuri:
                             continue
                         if cpeuri["vulnerable"]:
                             query, version_info = self.get_cpe_info(cpeuri)
                             if query != {}:
                                 query["id"] = hashlib.sha1(
-                                    cpeuri["cpe23Uri"].encode("utf-8")
+                                    cpeuri["criteria"].encode("utf-8")
                                     + version_info.encode("utf-8")
                                 ).hexdigest()
                                 cpe_info = self.getCPEVersionInformation(query)
                                 if cpe_info:
-                                    if cpe_info["cpe_name"]:
-                                        for vulnerable_version in cpe_info["cpe_name"]:
+                                    if cpe_info["cpeMatch"]:
+                                        for vulnerable_version in cpe_info["cpeMatch"]:
                                             cve = self.add_if_missing(
                                                 cve,
                                                 "vulnerable_product",
-                                                vulnerable_version["cpe23Uri"],
+                                                vulnerable_version["criteria"],
                                             )
                                             cve = self.add_if_missing(
                                                 cve,
                                                 "vulnerable_configuration",
-                                                vulnerable_version["cpe23Uri"],
+                                                vulnerable_version["criteria"],
                                             )
                                             cve = self.add_if_missing(
                                                 cve,
                                                 "vulnerable_configuration_stems",
                                                 self.stem(
-                                                    vulnerable_version["cpe23Uri"]
+                                                    vulnerable_version["criteria"]
                                                 ),
                                             )
                                             vendor, product = self.get_vendor_product(
-                                                vulnerable_version["cpe23Uri"]
+                                                vulnerable_version["criteria"]
                                             )
                                             cve = self.add_if_missing(
                                                 cve, "vendors", vendor
@@ -454,27 +472,27 @@ class CVEDownloads(JSONFileHandler):
                                                 cve,
                                                 "vulnerable_product_stems",
                                                 self.stem(
-                                                    vulnerable_version["cpe23Uri"]
+                                                    vulnerable_version["criteria"]
                                                 ),
                                             )
                                     else:
                                         cve = self.add_if_missing(
                                             cve,
                                             "vulnerable_product",
-                                            cpeuri["cpe23Uri"],
+                                            cpeuri["criteria"],
                                         )
                                         cve = self.add_if_missing(
                                             cve,
                                             "vulnerable_configuration",
-                                            cpeuri["cpe23Uri"],
+                                            cpeuri["criteria"],
                                         )
                                         cve = self.add_if_missing(
                                             cve,
                                             "vulnerable_configuration_stems",
-                                            self.stem(cpeuri["cpe23Uri"]),
+                                            self.stem(cpeuri["criteria"]),
                                         )
                                         vendor, product = self.get_vendor_product(
-                                            cpeuri["cpe23Uri"]
+                                            cpeuri["criteria"]
                                         )
                                         cve = self.add_if_missing(
                                             cve, "vendors", vendor
@@ -485,76 +503,76 @@ class CVEDownloads(JSONFileHandler):
                                         cve = self.add_if_missing(
                                             cve,
                                             "vulnerable_product_stems",
-                                            self.stem(cpeuri["cpe23Uri"]),
+                                            self.stem(cpeuri["criteria"]),
                                         )
                             else:
-                                # If the cpe_match did not have any of the version start/end modifiers,
+                                # If the cpeMatch did not have any of the version start/end modifiers,
                                 # add the CPE string as it is.
                                 cve = self.add_if_missing(
-                                    cve, "vulnerable_product", cpeuri["cpe23Uri"]
+                                    cve, "vulnerable_product", cpeuri["criteria"]
                                 )
                                 cve = self.add_if_missing(
-                                    cve, "vulnerable_configuration", cpeuri["cpe23Uri"]
+                                    cve, "vulnerable_configuration", cpeuri["criteria"]
                                 )
                                 cve = self.add_if_missing(
                                     cve,
                                     "vulnerable_configuration_stems",
-                                    self.stem(cpeuri["cpe23Uri"]),
+                                    self.stem(cpeuri["criteria"]),
                                 )
                                 vendor, product = self.get_vendor_product(
-                                    cpeuri["cpe23Uri"]
+                                    cpeuri["criteria"]
                                 )
                                 cve = self.add_if_missing(cve, "vendors", vendor)
                                 cve = self.add_if_missing(cve, "products", product)
                                 cve = self.add_if_missing(
                                     cve,
                                     "vulnerable_product_stems",
-                                    self.stem(cpeuri["cpe23Uri"]),
+                                    self.stem(cpeuri["criteria"]),
                                 )
                         else:
                             cve = self.add_if_missing(
-                                cve, "vulnerable_configuration", cpeuri["cpe23Uri"]
+                                cve, "vulnerable_configuration", cpeuri["criteria"]
                             )
                             cve = self.add_if_missing(
                                 cve,
                                 "vulnerable_configuration_stems",
-                                self.stem(cpeuri["cpe23Uri"]),
+                                self.stem(cpeuri["criteria"]),
                             )
                 if "children" in cpe:
                     for child in cpe["children"]:
-                        if "cpe_match" in child:
-                            for cpeuri in child["cpe_match"]:
-                                if "cpe23Uri" not in cpeuri:
+                        if "cpeMatch" in child:
+                            for cpeuri in child["cpeMatch"]:
+                                if "criteria" not in cpeuri:
                                     continue
                                 if cpeuri["vulnerable"]:
                                     query, version_info = self.get_cpe_info(cpeuri)
                                     if query != {}:
                                         query["id"] = hashlib.sha1(
-                                            cpeuri["cpe23Uri"].encode("utf-8")
+                                            cpeuri["criteria"].encode("utf-8")
                                             + version_info.encode("utf-8")
                                         ).hexdigest()
                                         cpe_info = self.getCPEVersionInformation(query)
                                         if cpe_info:
-                                            if cpe_info["cpe_name"]:
+                                            if cpe_info["cpeMatch"]:
                                                 for vulnerable_version in cpe_info[
-                                                    "cpe_name"
+                                                    "cpeMatch"
                                                 ]:
                                                     cve = self.add_if_missing(
                                                         cve,
                                                         "vulnerable_product",
-                                                        vulnerable_version["cpe23Uri"],
+                                                        vulnerable_version["criteria"],
                                                     )
                                                     cve = self.add_if_missing(
                                                         cve,
                                                         "vulnerable_configuration",
-                                                        vulnerable_version["cpe23Uri"],
+                                                        vulnerable_version["criteria"],
                                                     )
                                                     cve = self.add_if_missing(
                                                         cve,
                                                         "vulnerable_configuration_stems",
                                                         self.stem(
                                                             vulnerable_version[
-                                                                "cpe23Uri"
+                                                                "criteria"
                                                             ]
                                                         ),
                                                     )
@@ -562,7 +580,7 @@ class CVEDownloads(JSONFileHandler):
                                                         vendor,
                                                         product,
                                                     ) = self.get_vendor_product(
-                                                        vulnerable_version["cpe23Uri"]
+                                                        vulnerable_version["criteria"]
                                                     )
                                                     cve = self.add_if_missing(
                                                         cve, "vendors", vendor
@@ -575,7 +593,7 @@ class CVEDownloads(JSONFileHandler):
                                                         "vulnerable_product_stems",
                                                         self.stem(
                                                             vulnerable_version[
-                                                                "cpe23Uri"
+                                                                "criteria"
                                                             ]
                                                         ),
                                                     )
@@ -583,23 +601,23 @@ class CVEDownloads(JSONFileHandler):
                                                 cve = self.add_if_missing(
                                                     cve,
                                                     "vulnerable_product",
-                                                    cpeuri["cpe23Uri"],
+                                                    cpeuri["criteria"],
                                                 )
                                                 cve = self.add_if_missing(
                                                     cve,
                                                     "vulnerable_configuration",
-                                                    cpeuri["cpe23Uri"],
+                                                    cpeuri["criteria"],
                                                 )
                                                 cve = self.add_if_missing(
                                                     cve,
                                                     "vulnerable_configuration_stems",
-                                                    self.stem(cpeuri["cpe23Uri"]),
+                                                    self.stem(cpeuri["criteria"]),
                                                 )
                                                 (
                                                     vendor,
                                                     product,
                                                 ) = self.get_vendor_product(
-                                                    cpeuri["cpe23Uri"]
+                                                    cpeuri["criteria"]
                                                 )
                                                 cve = self.add_if_missing(
                                                     cve, "vendors", vendor
@@ -610,30 +628,30 @@ class CVEDownloads(JSONFileHandler):
                                                 cve = self.add_if_missing(
                                                     cve,
                                                     "vulnerable_product_stems",
-                                                    self.stem(cpeuri["cpe23Uri"]),
+                                                    self.stem(cpeuri["criteria"]),
                                                 )
                                     else:
-                                        # If the cpe_match did not have any of the version start/end modifiers,
+                                        # If the cpeMatch did not have any of the version start/end modifiers,
                                         # add the CPE string as it is.
-                                        if "cpe23Uri" not in cpeuri:
+                                        if "criteria" not in cpeuri:
                                             continue
                                         cve = self.add_if_missing(
                                             cve,
                                             "vulnerable_product",
-                                            cpeuri["cpe23Uri"],
+                                            cpeuri["criteria"],
                                         )
                                         cve = self.add_if_missing(
                                             cve,
                                             "vulnerable_configuration",
-                                            cpeuri["cpe23Uri"],
+                                            cpeuri["criteria"],
                                         )
                                         cve = self.add_if_missing(
                                             cve,
                                             "vulnerable_configuration_stems",
-                                            self.stem(cpeuri["cpe23Uri"]),
+                                            self.stem(cpeuri["criteria"]),
                                         )
                                         vendor, product = self.get_vendor_product(
-                                            cpeuri["cpe23Uri"]
+                                            cpeuri["criteria"]
                                         )
                                         cve = self.add_if_missing(
                                             cve, "vendors", vendor
@@ -644,23 +662,24 @@ class CVEDownloads(JSONFileHandler):
                                         cve = self.add_if_missing(
                                             cve,
                                             "vulnerable_product_stems",
-                                            self.stem(cpeuri["cpe23Uri"]),
+                                            self.stem(cpeuri["criteria"]),
                                         )
                                 else:
-                                    if "cpe23Uri" not in cpeuri:
+                                    if "criteria" not in cpeuri:
                                         continue
                                     cve = self.add_if_missing(
                                         cve,
                                         "vulnerable_configuration",
-                                        cpeuri["cpe23Uri"],
+                                        cpeuri["criteria"],
                                     )
                                     cve = self.add_if_missing(
                                         cve,
                                         "vulnerable_configuration_stems",
-                                        self.stem(cpeuri["cpe23Uri"]),
+                                        self.stem(cpeuri["criteria"]),
                                     )
-        if "problemtype" in item["cve"]:
-            for problem in item["cve"]["problemtype"]["problemtype_data"]:
+
+        if "weaknesses" in item["cve"]:
+            for problem in item["cve"]["weaknesses"]:
                 for cwe in problem[
                     "description"
                 ]:  # NVD JSON not clear if we can get more than one CWE per CVE (until we take the last one) -
@@ -671,47 +690,130 @@ class CVEDownloads(JSONFileHandler):
                 cve["cwe"] = defaultvalue["cwe"]
         else:
             cve["cwe"] = defaultvalue["cwe"]
+
         cve["vulnerable_configuration_cpe_2_2"] = []
+
         return cve
 
-    def process_item(self, item):
-        cve = self.process_cve_item(item)
+    def process_downloads(self, sites=None):
+        """
+        Method to download and process files
+        """
 
-        if cve is not None:
-            if self.is_update:
-                self.queue.put(
-                    DatabaseAction(
-                        action=DatabaseAction.actions.UpdateOne,
-                        collection=self.feed_type.lower(),
-                        doc=cve,
-                    )
+        self.logger.info("Starting download...")
+
+        start_time = time.time()
+
+        self.last_modified = datetime.datetime.now()
+
+        self.logger.debug(
+            f"do_process = {self.do_process}; is_update = {self.is_update}"
+        )
+
+        if self.do_process:
+
+            if not self.is_update:
+
+                total_results = self.api_handler.get_count(
+                    self.api_handler.datasource.CVE
                 )
+
+                self.logger.info(f"Preparing to download {total_results} CVE entries")
+
+                with tqdm(
+                    desc="Downloading and processing content",
+                    total=total_results,
+                    position=0,
+                    leave=True,
+                ) as pbar:
+                    for entry in self.api_handler.get_all_data(data_type="cve"):
+                        # do something here with the results...
+                        for data_list in tqdm(
+                            entry, desc=f"Processing batch", leave=False
+                        ):
+                            if not isinstance(data_list, ApiDataRetrievalFailed):
+                                processed_items = [
+                                    self.process_item(item)
+                                    for item in data_list["vulnerabilities"]
+                                ]
+                                self._db_bulk_writer(processed_items)
+                                pbar.update(len(data_list["vulnerabilities"]))
+                            else:
+                                self.logger.error(
+                                    f"Retrieval of api data on url: {data_list.args[0]} failed...."
+                                )
             else:
-                self.queue.put(
-                    DatabaseAction(
-                        action=DatabaseAction.actions.InsertOne,
-                        collection=self.feed_type.lower(),
-                        doc=cve,
-                    )
+                last_mod_start_date = self.database[self.feed_type.lower()].find_one(
+                    {}, {"lastModified": 1}, sort=[("lastModified", -1)]
                 )
+
+                if "lastModified" in last_mod_start_date:
+                    last_mod_start_date = last_mod_start_date["lastModified"]
+                else:
+                    raise KeyError(
+                        "Missing field 'lastModified' from database query..."
+                    )
+
+                # Get datetime from runtime
+                last_mod_end_date = datetime.datetime.now()
+
+                total_results = self.api_handler.get_count(
+                    self.api_handler.datasource.CVE,
+                    last_mod_start_date=last_mod_start_date,
+                    last_mod_end_date=last_mod_end_date,
+                )
+
+                self.logger.info(f"Preparing to download {total_results} CVE entries")
+
+                with tqdm(
+                    desc="Downloading and processing content",
+                    total=total_results,
+                    position=0,
+                    leave=True,
+                ) as pbar:
+                    for entry in self.api_handler.get_all_data(
+                        data_type="cve",
+                        last_mod_start_date=last_mod_start_date,
+                        last_mod_end_date=last_mod_end_date,
+                    ):
+                        # do something here with the results...
+                        for data_list in tqdm(
+                            entry, desc=f"Processing batch", leave=False
+                        ):
+                            if not isinstance(data_list, ApiDataRetrievalFailed):
+                                processed_items = [
+                                    self.process_item(item)
+                                    for item in data_list["vulnerabilities"]
+                                ]
+                                self._db_bulk_writer(processed_items)
+                                pbar.update(len(data_list["vulnerabilities"]))
+                            else:
+                                self.logger.error(
+                                    f"Retrieval of api data on url: {data_list.args[0]} failed...."
+                                )
+
+            # Set the last update time in the info collection
+            self.setColUpdate(self.feed_type.lower(), self.last_modified)
+
+        self.logger.info(
+            "Duration: {}".format(datetime.timedelta(seconds=time.time() - start_time))
+        )
 
     def update(self):
         self.logger.info("CVE database update started")
 
         # if collection is non-existent; assume it's not an update
-        if "cves" not in self.getTableNames():
+        if self.feed_type.lower() not in self.getTableNames():
+            DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
             self.is_update = False
 
-        self.process_downloads(
-            [self.feed_url + self.modfile, self.feed_url + self.recfile]
-        )
+        self.process_downloads()
 
         self.logger.info("Finished CVE database update")
 
         return self.last_modified
 
     def populate(self):
-        urls = []
 
         self.logger.info("CVE database population started")
 
@@ -731,12 +833,7 @@ class CVEDownloads(JSONFileHandler):
 
         DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
 
-        for x in self.get_cve_year_range():
-            getfile = file_prefix + str(x) + file_suffix
-
-            urls.append(self.feed_url + getfile)
-
-        self.process_downloads(urls)
+        self.process_downloads()
 
         self.logger.info("Finished CVE database population")
 

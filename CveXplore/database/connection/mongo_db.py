@@ -19,7 +19,7 @@ class MongoDBConnection(object):
     """
 
     def __init__(
-            self, host="mongodb://127.0.0.1:27017", port=None, database="cvedb", **kwargs
+        self, host="mongodb://127.0.0.1:27017", port=None, database="cvedb", **kwargs
     ):
         """
         :param host: The `host` parameter can be a full `mongodb URI
