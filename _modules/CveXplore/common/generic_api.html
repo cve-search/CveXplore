@@ -96,12 +96,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GenericApi.__init__"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">address</span><span class="p">,</span>
-            <span class="n">api_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">proxies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">protocol</span><span class="o">=</span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
-            <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;GenericApi&quot;</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">address</span><span class="p">,</span>
+        <span class="n">api_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">proxies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">protocol</span><span class="o">=</span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
+        <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;GenericApi&quot;</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The Generic api caller handles all communication towards a api resource.</span>
@@ -213,11 +213,11 @@
             <span class="k">raise</span> <span class="ne">ConnectionError</span>
 
 <div class="viewcode-block" id="GenericApi.get_session"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.generic_api.GenericApi.get_session">[docs]</a>    <span class="k">def</span> <span class="nf">get_session</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-            <span class="n">backoff_factor</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-            <span class="n">status_forcelist</span><span class="o">=</span><span class="p">(</span><span class="mi">429</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">),</span>
-            <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">backoff_factor</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">status_forcelist</span><span class="o">=</span><span class="p">(</span><span class="mi">429</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">),</span>
+        <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method for returning a session object per every requesting thread</span>

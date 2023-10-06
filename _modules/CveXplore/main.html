@@ -89,13 +89,14 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
+<span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">DESCENDING</span>
+
 <span class="kn">from</span> <span class="nn">CveXplore.api.connection.api_db</span> <span class="kn">import</span> <span class="n">ApiDatabaseSource</span>
 <span class="kn">from</span> <span class="nn">CveXplore.common.cpe_converters</span> <span class="kn">import</span> <span class="n">from2to3CPE</span>
 <span class="kn">from</span> <span class="nn">CveXplore.common.db_mapping</span> <span class="kn">import</span> <span class="n">database_mapping</span>
 <span class="kn">from</span> <span class="nn">CveXplore.database.connection.mongo_db</span> <span class="kn">import</span> <span class="n">MongoDBConnection</span>
 <span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.main_updater</span> <span class="kn">import</span> <span class="n">MainUpdater</span>
 <span class="kn">from</span> <span class="nn">CveXplore.errors</span> <span class="kn">import</span> <span class="n">DatabaseIllegalCollection</span>
-<span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">DESCENDING</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">version</span> <span class="kn">import</span> <span class="n">VERSION</span>
@@ -131,8 +132,8 @@
         <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;DOC_BUILD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;DOC_BUILD&quot;</span><span class="p">:</span> <span class="s2">&quot;NO&quot;</span><span class="p">})</span>
 
         <span class="k">if</span> <span class="p">(</span>
-                <span class="n">api_connection_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="ow">and</span> <span class="n">mongodb_connection_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="n">api_connection_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">mongodb_connection_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;CveXplore can be used to connect to either a cve-search database OR a cve-search api, not both!&quot;</span>
@@ -401,11 +402,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Property returning current version &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Property returning current version&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__version</span>
 
 <div class="viewcode-block" id="CveXplore.__repr__"><a class="viewcode-back" href="../../package/core.html#CveXplore.main.CveXplore.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of object&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CveXplore:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span></div></div>
 </pre></div>
 

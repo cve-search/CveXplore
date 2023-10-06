@@ -83,8 +83,9 @@
 <span class="sd">Specific database functions</span>
 <span class="sd">===========================</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">CveXplore.database.helpers.generic_db</span> <span class="kn">import</span> <span class="n">GenericDatabaseFactory</span>
 <span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">DESCENDING</span>
+
+<span class="kn">from</span> <span class="nn">CveXplore.database.helpers.generic_db</span> <span class="kn">import</span> <span class="n">GenericDatabaseFactory</span>
 
 
 <div class="viewcode-block" id="CvesDatabaseFunctions"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions">[docs]</a><span class="k">class</span> <span class="nc">CvesDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
@@ -115,7 +116,7 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="CvesDatabaseFunctions.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of object&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CvesDatabaseFunctions:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">)</span></div></div>
 </pre></div>
 

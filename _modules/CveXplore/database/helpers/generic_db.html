@@ -134,7 +134,7 @@
         <span class="p">}</span>
 
         <span class="n">total_fields_list</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">__default_fields</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fields_mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__default_fields</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fields_mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">total_fields_list</span><span class="p">:</span>
             <span class="nb">setattr</span><span class="p">(</span>
@@ -164,7 +164,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="GenericDatabaseFactory.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of object&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; GenericDatabaseFactory:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">)</span></div></div>
 
 
@@ -220,7 +220,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GenericDatabaseFieldsFunctions.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; String representation of object &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of object&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; GenericDatabaseFieldsFunctions:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">)</span></div></div>
 </pre></div>
 

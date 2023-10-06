@@ -101,13 +101,13 @@
 
 <span class="kn">import</span> <span class="nn">pymongo</span>
 <span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">CveXplore.database.connection.mongo_db</span> <span class="kn">import</span> <span class="n">MongoDBConnection</span>
 <span class="kn">from</span> <span class="nn">dateutil.parser</span> <span class="kn">import</span> <span class="n">parse</span> <span class="k">as</span> <span class="n">parse_datetime</span>
 <span class="kn">from</span> <span class="nn">pymongo.errors</span> <span class="kn">import</span> <span class="n">BulkWriteError</span>
 <span class="kn">from</span> <span class="nn">requests.adapters</span> <span class="kn">import</span> <span class="n">HTTPAdapter</span>
 <span class="kn">from</span> <span class="nn">tqdm.contrib.concurrent</span> <span class="kn">import</span> <span class="n">thread_map</span>
 <span class="kn">from</span> <span class="nn">urllib3</span> <span class="kn">import</span> <span class="n">Retry</span>
 
+<span class="kn">from</span> <span class="nn">CveXplore.database.connection.mongo_db</span> <span class="kn">import</span> <span class="n">MongoDBConnection</span>
 <span class="kn">from</span> <span class="nn">.Config</span> <span class="kn">import</span> <span class="n">Configuration</span>
 <span class="kn">from</span> <span class="nn">.LogHandler</span> <span class="kn">import</span> <span class="n">UpdateHandler</span>
 <span class="kn">from</span> <span class="nn">.worker_q</span> <span class="kn">import</span> <span class="n">WorkerQueue</span>
@@ -151,15 +151,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">Configuration</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DownloadHandler.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; return string representation of object &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return string representation of object&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; DownloadHandler:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DownloadHandler.get_session"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.get_session">[docs]</a>    <span class="k">def</span> <span class="nf">get_session</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-            <span class="n">backoff_factor</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-            <span class="n">status_forcelist</span><span class="o">=</span><span class="p">(</span><span class="mi">429</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">),</span>
-            <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">backoff_factor</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">status_forcelist</span><span class="o">=</span><span class="p">(</span><span class="mi">429</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">),</span>
+        <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method for returning a session object per every requesting thread</span>
@@ -237,7 +237,7 @@
 <span class="sd">        :rtype: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">),</span> <span class="n">number</span><span class="p">):</span>
-            <span class="k">yield</span> <span class="n">lst</span><span class="p">[</span><span class="n">i</span><span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">number</span><span class="p">]</span></div>
+            <span class="k">yield</span> <span class="n">lst</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">number</span><span class="p">]</span></div>
 
     <span class="k">def</span> <span class="nf">_db_bulk_writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -270,10 +270,10 @@
         <span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="p">(</span>
-                <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/zip&quot;</span>
-                <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/x-zip&quot;</span>
-                <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/x-zip-compressed&quot;</span>
-                <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/zip-compressed&quot;</span>
+            <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/zip&quot;</span>
+            <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/x-zip&quot;</span>
+            <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/x-zip-compressed&quot;</span>
+            <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/zip-compressed&quot;</span>
         <span class="p">):</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">wd</span><span class="p">,</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Saving file to: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
@@ -282,10 +282,10 @@
                 <span class="n">zip_file</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">wd</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="p">(</span>
-                <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/x-gzip&quot;</span>
-                <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/gzip&quot;</span>
-                <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/x-gzip-compressed&quot;</span>
-                <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/gzip-compressed&quot;</span>
+            <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/x-gzip&quot;</span>
+            <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/gzip&quot;</span>
+            <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/x-gzip-compressed&quot;</span>
+            <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/gzip-compressed&quot;</span>
         <span class="p">):</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">wd</span><span class="p">,</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">3</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Saving file to: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
