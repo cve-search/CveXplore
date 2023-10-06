@@ -88,5 +88,5 @@ class MongoDBConnection(object):
         self.disconnect()
 
     def __repr__(self):
-        """ String representation of object """
+        """String representation of object"""
         return "<< MongoDBConnection:{} >>".format(self._dbclient.name)

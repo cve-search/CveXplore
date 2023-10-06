@@ -66,5 +66,5 @@ class Capec(DatasourceConnection):
         return self.__dict__ != other.__dict__
 
     def __repr__(self):
-        """ String representation of object """
+        """String representation of object"""
         return "<< Capec:{} >>".format(self.id)

@@ -321,9 +321,9 @@ class CveXplore(object):
 
     @property
     def version(self):
-        """ Property returning current version """
+        """Property returning current version"""
         return self.__version
 
     def __repr__(self):
-        """ String representation of object """
+        """String representation of object"""
         return "<< CveXplore:{} >>".format(self.version)
