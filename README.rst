@@ -54,6 +54,19 @@ Check `github pages documentation <https://cve-search.github.io/CveXplore/>`_
 Usage
 -----
 
+Configuration
+*************
+
+CveXplore automatically creates a config folder in '~/.cvexplore'. CveXplore stores several configuration
+files in here such as the .env for general configuration and the .sources.ini for data sources configuration.
+
+Logging
+*******
+
+CveXplore stores all logs in the '~/.cvexplore/log' folder:
+
+* update_populate.log; logging produced during database updates and database initialization.
+
 Local Database populate / update
 ********************************
 
@@ -74,6 +87,9 @@ Or via the the CveXplore object:
    >>> cvx = CveXplore()
    >>> cvx.database.populate()
    >>> cvx.database.update()
+
+You can add your `nist api key <https://nvd.nist.gov/developers/request-an-api-key>`_ in the .env file.
+You can populate CveXplore without an api key, but it will limit the amount of parallel requests made to the NIST api.
 
 Instantiation
 *************

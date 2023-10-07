@@ -9,7 +9,6 @@ import os
 import re
 import shutil
 from json import JSONDecodeError
-from pathlib import Path
 
 from dotenv import load_dotenv
 
@@ -19,7 +18,10 @@ if not os.path.exists(os.path.expanduser("~/.cvexplore")):
 user_wd = os.path.expanduser("~/.cvexplore")
 
 if not os.path.exists(os.path.join(user_wd, ".env")):
-    Path(os.path.join(user_wd, ".env")).touch()
+    shutil.copyfile(
+        os.path.join(os.path.dirname(__file__), ".env_example"),
+        os.path.join(user_wd, ".env"),
+    )
 
 load_dotenv(os.path.join(user_wd, ".env"))
 

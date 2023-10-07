@@ -55,10 +55,7 @@ class NvdNistApi(ApiBaseClass):
 
         self.datasource_mapping = {1: "cves", 2: "cpes"}
 
-        self.NVD_SOURCES = {
-            "cve": "https://services.nvd.nist.gov/rest/json/cves/2.0",
-            "cpe": "https://services.nvd.nist.gov/rest/json/cpes/2.0",
-        }
+        self.max_page_length = namedtuple("max_page_length", "CVE CPE")(2000, 10000)
 
     def get_url_only(self, resource: dict = None, data: int = 1) -> str:
 
@@ -150,23 +147,6 @@ class NvdNistApi(ApiBaseClass):
 
         return self.call("GET", resource=resource, data=self.datasource.CVE)
 
-    def get_all_cves(self):
-
-        data = self.get_count(self.datasource.CVE)
-
-        if isinstance(data, int):
-
-            for each_data in ApiData(
-                2000,
-                0,
-                data,
-                self,
-                self.datasource.CVE,
-            ):
-                yield each_data
-        else:
-            raise ApiErrorException
-
     def check_date_range(
         self,
         resource: dict = None,
@@ -244,7 +224,7 @@ class NvdNistApi(ApiBaseClass):
         if isinstance(data, int):
 
             for each_data in ApiData(
-                results_per_page=10000,
+                results_per_page=getattr(self.max_page_length, data_type.upper()),
                 start_index=0,
                 total_results=data,
                 api_handle=self,
@@ -315,7 +295,7 @@ class ApiDataIterator(object):
         self.sleep_time = 6
 
         if not self.api_data.api_handle.api_key_limit:
-            self.sleep_time = 0.75
+            self.sleep_time = 0.6
 
         self.logger.debug(f"Using sleep time: {self.sleep_time}")
 
@@ -338,7 +318,7 @@ class ApiDataIterator(object):
             if self.api_data.api_handle.api_key_limit:
                 api_key_range = 25
             else:
-                api_key_range = 40
+                api_key_range = 45
 
             for i in range(api_key_range):
                 if not self.first_iteration:
@@ -378,7 +358,7 @@ class ApiDataIterator(object):
         try:
             async with session.get(url) as response:
                 self.logger.debug(f"Sending request to url: {url}")
-                # time.sleep(self.sleep_time)
+                await asyncio.sleep(self.sleep_time)
                 data = await response.json()
                 if "format" in data:
                     if data["format"] == "NVD_CPE":
