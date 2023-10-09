@@ -3,6 +3,7 @@ import json
 import logging
 import math
 import random
+import time
 from collections import namedtuple
 from datetime import datetime, timedelta
 from json import JSONDecodeError
@@ -185,16 +186,12 @@ class NvdNistApi(ApiBaseClass):
                 last_mod_end_date=last_mod_end_date,
             )
 
-        if datasource == self.datasource.CVE:
-            ret_data = self.call(
-                self.methods.GET, resource=resource, data=self.datasource.CVE
-            )
-        else:
-            ret_data = self.call(
-                self.methods.GET, resource=resource, data=self.datasource.CPE
-            )
+        ret_data = self.call(self.methods.GET, resource=resource, data=datasource)
 
-        return ret_data["totalResults"]
+        if not isinstance(ret_data, Response):
+            return ret_data["totalResults"]
+        else:
+            raise ApiDataRetrievalFailed
 
     def get_all_data(
         self,
@@ -269,13 +266,13 @@ def retry_policy(info: RetryInfo) -> RetryPolicyStrategy:
       etc...
     """
     max_retries = 5
-    backoff_in_ms = 0.2 * 2**info.fails + random.uniform(0, 1)
+    backoff_in_ms = 0.2 * 2**info.fails + random.uniform(0, 1) * 2
     logger = logging.getLogger("RetryPolicy")
 
     if info.fails != max_retries:
         logger.debug(f"Current backoff: {backoff_in_ms}")
 
-        logger.warning(f"Retrying {info.fails + 1}/{max_retries}")
+        logger.debug(f"Retrying {info.fails + 1}/{max_retries}")
 
         return False, backoff_in_ms
 
@@ -292,14 +289,16 @@ class ApiDataIterator(object):
         self._current_index = api_data.start_index
         self.api_data = api_data
 
-        self.sleep_time = 6
+        self.sem_factor = 6
 
         if not self.api_data.api_handle.api_key_limit:
-            self.sleep_time = 0.6
+            self.sem_factor = 0.6
 
-        self.logger.debug(f"Using sleep time: {self.sleep_time}")
+        self.logger.debug(f"Using sem factor: {self.sem_factor}")
 
         self.first_iteration = True
+
+        self.last_stop_time = 0
 
         self.workload = None
 
@@ -313,14 +312,28 @@ class ApiDataIterator(object):
             or self._page_length == self._total_results
         ):
 
+            start_time = time.time()
+
+            if not self.last_stop_time == 0:
+                # adhering to best practices @https://nvd.nist.gov/general/news/API-Key-Announcement
+                # which advises to sleep for 6 seconds, so we add this to the 30 seconds rolling window; hence 36
+                sleep_time = start_time - self.last_stop_time
+                if sleep_time <= 36:
+                    self.logger.debug(
+                        f"36 second window not expired; sleeping for : {36 - sleep_time}"
+                    )
+                    time.sleep(36 - sleep_time)
+
+            self.logger.debug(f"Starting download run...")
+
             self.workload = []
 
             if self.api_data.api_handle.api_key_limit:
-                api_key_range = 25
+                batch_range = 5
             else:
-                api_key_range = 45
+                batch_range = 45
 
-            for i in range(api_key_range):
+            for i in range(batch_range):
                 if not self.first_iteration:
                     new_start_index = self._current_index + self._page_length
                 else:
@@ -341,6 +354,11 @@ class ApiDataIterator(object):
 
             ret_data = self.process_async()
 
+            self.last_stop_time = time.time()
+            elapsed_time = self.last_stop_time - start_time
+
+            self.logger.debug(f"Elapsed run time: {elapsed_time}")
+
             return ret_data
 
         raise StopIteration
@@ -358,45 +376,55 @@ class ApiDataIterator(object):
         try:
             async with session.get(url) as response:
                 self.logger.debug(f"Sending request to url: {url}")
-                await asyncio.sleep(self.sleep_time)
-                data = await response.json()
-                if "format" in data:
-                    if data["format"] == "NVD_CPE":
-                        if "products" not in data:
-                            self.logger.warning(
-                                f"Data received does not contain a products list; raise error to retry!"
-                            )
-                            raise ApiDataError
-                    elif data["format"] == "NVD_CVE":
-                        if "vulnerabilities" not in data:
-                            self.logger.warning(
-                                f"Data received does not contain a vulnerabilities list; raise error to retry!"
+                if response.status == 200:
+                    data = await response.json()
+                    if "format" in data:
+                        if data["format"] == "NVD_CPE":
+                            if "products" not in data:
+                                self.logger.debug(
+                                    f"Data received does not contain a products list; raise error to retry!"
+                                )
+                                raise ApiDataError
+                        elif data["format"] == "NVD_CVE":
+                            if "vulnerabilities" not in data:
+                                self.logger.debug(
+                                    f"Data received does not contain a vulnerabilities list; raise error to retry!"
+                                )
+                                raise ApiDataError
+                        else:
+                            self.logger.debug(
+                                f"Data received does not match expected formatting string; raise error to retry!"
                             )
                             raise ApiDataError
                     else:
-                        self.logger.warning(
-                            f"Data received does not match expected formatting string; raise error to retry!"
+                        self.logger.debug(
+                            f"Data received does not match expected content; raise error to retry!"
                         )
                         raise ApiDataError
+                    return data
                 else:
-                    self.logger.warning(
-                        f"Data received does not match expected content; raise error to retry!"
-                    )
-                    raise ApiDataError
-                return data
+                    if str(response.status).startswith("4"):
+                        if "message" in response.headers:
+                            self.logger.debug(response.headers["message"])
+                    if response.status == 403:
+                        self.logger.debug(f"Request forbidden by administrative rules")
+                    raise ApiDataRetrievalFailed(url)
         except ApiDataError:
             raise
         except ContentTypeError:
             return ApiDataRetrievalFailed(url)
+        finally:
+            self.logger.debug(f"Finished request to url: {url}")
+            time.sleep(self.sem_factor / 2)
 
     async def fetch_all(self, loop):
-        sem = asyncio.Semaphore(math.ceil(30 / self.sleep_time))
+        sem = asyncio.Semaphore(math.ceil(30 / self.sem_factor))
         async with sem:
             async with aiohttp.ClientSession(
                 loop=loop,
                 headers=self.api_data.api_handle.headers,
                 timeout=aiohttp.ClientTimeout(
-                    total=60.0, sock_connect=60.0, sock_read=60.0, connect=60.0
+                    total=30.0, sock_connect=30.0, sock_read=30.0, connect=30.0
                 ),
             ) as session:
                 results = await asyncio.gather(

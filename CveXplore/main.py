@@ -299,7 +299,7 @@ class CveXplore(object):
                         each.pop("sources")
                         each.pop("searchables")
 
-                    each["last-modified"] = str(each["last-modified"])
+                    each["lastModified"] = str(each["lastModified"])
                     each["document count"] = getattr(
                         self.datasource, "store_{}".format(db)
                     ).count_documents({})

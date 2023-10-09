@@ -1,6 +1,6 @@
 from queue import Empty, Queue
 
-from .db_action import DatabaseAction
+from CveXplore.database.maintenance.db_action import DatabaseAction
 
 
 class WorkerQueue(Queue):

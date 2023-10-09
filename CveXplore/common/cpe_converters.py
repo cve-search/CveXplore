@@ -2,8 +2,7 @@
 CPE Converters
 ==============
 """
-
-from CveXplore.database.maintenance import cpe_conversion
+from CveXplore.database.helpers.cpe_conversion import cpe_uri_to_fs, cpe_fs_to_uri
 
 
 def from2to3CPE(cpe, autofill=False):
@@ -21,7 +20,7 @@ def from2to3CPE(cpe, autofill=False):
     if not cpe.startswith("cpe:2.3:"):
         if not cpe.startswith("cpe:/"):
             return False
-        cpe = cpe_conversion.cpe_uri_to_fs(cpe)
+        cpe = cpe_uri_to_fs(cpe)
     if autofill:
         e = cpe.split(":")
         for x in range(0, 13 - len(e)):
@@ -42,7 +41,7 @@ def from3to2CPE(cpe):
     if not cpe.startswith("cpe:/"):
         if not cpe.startswith("cpe:2.3:"):
             return False
-        cpe = cpe_conversion.cpe_fs_to_uri(cpe)
+        cpe = cpe_fs_to_uri(cpe)
     return cpe
 
 

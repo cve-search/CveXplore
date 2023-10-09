@@ -3,7 +3,7 @@ import re
 import dateutil.parser
 from dateutil import tz
 
-from CveXplore.database.maintenance import cpe_conversion
+from CveXplore.database.helpers import cpe_conversion
 
 
 def currentTime(utc):

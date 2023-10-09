@@ -72,10 +72,8 @@ class Configuration(object):
     NVD_NIST_NO_REJECTED = getenv_bool("NVD_NIST_NO_REJECTED", "True")
 
     DEFAULT_SOURCES = {
-        "cve": "https://nvd.nist.gov/feeds/json/cve/1.1/",
-        "cpe": "https://nvd.nist.gov/feeds/json/cpematch/1.0/nvdcpematch-1.0.json.zip",
-        "cwe": "https://cwe.mitre.org/data/xml/cwec_v4.4.xml.zip",
-        "capec": "https://capec.mitre.org/data/xml/capec_v3.5.xml",
+        "cwe": "https://cwe.mitre.org/data/xml/cwec_latest.xml.zip",
+        "capec": "https://capec.mitre.org/data/xml/capec_latest.xml",
         "via4": "https://www.cve-search.org/feeds/via4.json",
     }
 

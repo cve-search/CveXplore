@@ -3,6 +3,7 @@ Source processing classes
 =========================
 """
 import datetime
+import glob
 import hashlib
 import json
 import logging
@@ -19,12 +20,12 @@ from tqdm import tqdm
 
 from CveXplore.common.config import Configuration
 from CveXplore.database.connection.mongo_db import MongoDBConnection
-from .Toolkit import generate_title
-from .api_handlers import NVDApiHandler
-from .content_handlers import CapecHandler, CWEHandler
-from .db_action import DatabaseAction
-from .file_handlers import XMLFileHandler, JSONFileHandler
-from ...errors.apis import ApiDataRetrievalFailed
+from CveXplore.database.maintenance.Toolkit import generate_title
+from CveXplore.database.maintenance.api_handlers import NVDApiHandler
+from CveXplore.database.maintenance.content_handlers import CapecHandler, CWEHandler
+from CveXplore.database.maintenance.db_action import DatabaseAction
+from CveXplore.database.maintenance.file_handlers import XMLFileHandler, JSONFileHandler
+from CveXplore.errors.apis import ApiDataRetrievalFailed
 
 file_prefix = "nvdcve-1.1-"
 file_suffix = ".json.gz"
@@ -162,7 +163,11 @@ class CPEDownloads(NVDApiHandler):
                 )
 
                 if "lastModified" in last_mod_start_date:
-                    last_mod_start_date = last_mod_start_date["lastModified"]
+                    last_mod_start_date = last_mod_start_date[
+                        "lastModified"
+                    ] + datetime.timedelta(
+                        0, 1
+                    )  # add one second to prevent false results...
                 else:
                     raise KeyError(
                         "Missing field 'lastModified' from database query..."
@@ -316,7 +321,7 @@ class CVEDownloads(NVDApiHandler):
             "Status": item["cve"]["vulnStatus"],
             "Published": parse_datetime(item["cve"]["published"], ignoretz=True),
             "Modified": parse_datetime(item["cve"]["lastModified"], ignoretz=True),
-            "last-modified": parse_datetime(item["cve"]["lastModified"], ignoretz=True),
+            "lastModified": parse_datetime(item["cve"]["lastModified"], ignoretz=True),
         }
 
         for description in item["cve"]["descriptions"]:
@@ -326,91 +331,94 @@ class CVEDownloads(NVDApiHandler):
                 else:
                     cve["summary"] = description["value"]
 
-        if "metrics" in item:
+        if "metrics" in item["cve"]:
             cve["access"] = {}
             cve["impact"] = {}
-            if "cvssMetricV3" in item["metrics"]:
+            if "cvssMetricV3" in item["cve"]["metrics"]:
                 cve["impact3"] = {}
                 cve["exploitability3"] = {}
-                cve["impact3"]["availability"] = item["metrics"]["cvssMetricV3"][
-                    "cvssData"
-                ]["availabilityImpact"]
-                cve["impact3"]["confidentiality"] = item["metrics"]["cvssMetricV3"][
-                    "cvssData"
-                ]["confidentialityImpact"]
-                cve["impact3"]["integrity"] = item["metrics"]["cvssMetricV3"][
+                cve["impact3"]["availability"] = item["cve"]["metrics"]["cvssMetricV3"][
+                    0
+                ]["cvssData"]["availabilityImpact"]
+                cve["impact3"]["confidentiality"] = item["cve"]["metrics"][
+                    "cvssMetricV3"
+                ][0]["cvssData"]["confidentialityImpact"]
+                cve["impact3"]["integrity"] = item["cve"]["metrics"]["cvssMetricV3"][0][
                     "cvssData"
                 ]["integrityImpact"]
-                cve["exploitability3"]["attackvector"] = item["metrics"][
+                cve["exploitability3"]["attackvector"] = item["cve"]["metrics"][
                     "cvssMetricV3"
-                ]["cvssData"]["attackVector"]
-                cve["exploitability3"]["attackcomplexity"] = item["metrics"][
+                ][0]["cvssData"]["attackVector"]
+                cve["exploitability3"]["attackcomplexity"] = item["cve"]["metrics"][
                     "cvssMetricV3"
-                ]["cvssData"]["attackComplexity"]
-                cve["exploitability3"]["privilegesrequired"] = item["metrics"][
+                ][0]["cvssData"]["attackComplexity"]
+                cve["exploitability3"]["privilegesrequired"] = item["cve"]["metrics"][
                     "cvssMetricV3"
-                ]["cvssData"]["privilegesRequired"]
-                cve["exploitability3"]["userinteraction"] = item["metrics"][
+                ][0]["cvssData"]["privilegesRequired"]
+                cve["exploitability3"]["userinteraction"] = item["cve"]["metrics"][
                     "cvssMetricV3"
-                ]["cvssData"]["userInteraction"]
-                cve["exploitability3"]["scope"] = item["metrics"]["cvssMetricV3"][
-                    "cvssData"
-                ]["scope"]
+                ][0]["cvssData"]["userInteraction"]
+                cve["exploitability3"]["scope"] = item["cve"]["metrics"][
+                    "cvssMetricV3"
+                ][0]["cvssData"]["scope"]
                 cve["cvss3"] = float(
-                    item["metrics"]["cvssMetricV3"]["cvssData"]["baseScore"]
+                    item["cve"]["metrics"]["cvssMetricV3"][0]["cvssData"]["baseScore"]
                 )
-                cve["cvss3-vector"] = item["metrics"]["cvssMetricV3"]["cvssData"][
-                    "vectorString"
-                ]
+                cve["cvss3-vector"] = item["cve"]["metrics"]["cvssMetricV3"][0][
+                    "cvssData"
+                ]["vectorString"]
                 cve["impactScore3"] = float(
-                    item["metrics"]["cvssMetricV3"]["impactScore"]
+                    item["cve"]["metrics"]["cvssMetricV3"][0]["impactScore"]
                 )
                 cve["exploitabilityScore3"] = float(
-                    item["metrics"]["cvssMetricV3"]["exploitabilityScore"]
+                    item["cve"]["metrics"]["cvssMetricV3"][0]["exploitabilityScore"]
                 )
                 cve["cvss3-time"] = parse_datetime(
-                    item["lastModifiedDate"], ignoretz=True
+                    item["cve"]["lastModified"], ignoretz=True
                 )
-                cve["cvss3-type"] = item["metrics"]["cvssMetricV3"]["type"]
-                cve["cvss3-source"] = item["metrics"]["cvssMetricV3"]["source"]
+                cve["cvss3-type"] = item["cve"]["metrics"]["cvssMetricV3"][0]["type"]
+                cve["cvss3-source"] = item["cve"]["metrics"]["cvssMetricV3"][0][
+                    "source"
+                ]
             else:
                 cve["cvss3"] = None
-            if "cvssMetricV2" in item["metrics"]:
-                cve["access"]["authentication"] = item["metrics"]["cvssMetricV2"][
-                    "cvssData"
-                ]["authentication"]
-                cve["access"]["complexity"] = item["metrics"]["cvssMetricV2"][
+
+            if "cvssMetricV2" in item["cve"]["metrics"]:
+                cve["access"]["authentication"] = item["cve"]["metrics"][
+                    "cvssMetricV2"
+                ][0]["cvssData"]["authentication"]
+                cve["access"]["complexity"] = item["cve"]["metrics"]["cvssMetricV2"][0][
                     "cvssData"
                 ]["accessComplexity"]
-                cve["access"]["vector"] = item["metrics"]["cvssMetricV2"]["cvssData"][
-                    "accessVector"
-                ]
-                cve["impact"]["availability"] = item["metrics"]["cvssMetricV2"][
+                cve["access"]["vector"] = item["cve"]["metrics"]["cvssMetricV2"][0][
                     "cvssData"
-                ]["availabilityImpact"]
-                cve["impact"]["confidentiality"] = item["metrics"]["cvssMetricV2"][
-                    "cvssData"
-                ]["confidentialityImpact"]
-                cve["impact"]["integrity"] = item["metrics"]["cvssMetricV2"][
+                ]["accessVector"]
+                cve["impact"]["availability"] = item["cve"]["metrics"]["cvssMetricV2"][
+                    0
+                ]["cvssData"]["availabilityImpact"]
+                cve["impact"]["confidentiality"] = item["cve"]["metrics"][
+                    "cvssMetricV2"
+                ][0]["cvssData"]["confidentialityImpact"]
+                cve["impact"]["integrity"] = item["cve"]["metrics"]["cvssMetricV2"][0][
                     "cvssData"
                 ]["integrityImpact"]
                 cve["cvss"] = float(
-                    item["metrics"]["cvssMetricV2"]["cvssData"]["baseScore"]
+                    item["cve"]["metrics"]["cvssMetricV2"][0]["cvssData"]["baseScore"]
                 )
                 cve["exploitabilityScore"] = float(
-                    item["metrics"]["cvssMetricV2"]["exploitabilityScore"]
+                    item["cve"]["metrics"]["cvssMetricV2"][0]["exploitabilityScore"]
                 )
                 cve["impactScore"] = float(
-                    item["metrics"]["cvssMetricV2"]["impactScore"]
+                    item["cve"]["metrics"]["cvssMetricV2"][0]["impactScore"]
                 )
                 cve["cvss-time"] = parse_datetime(
-                    item["lastModifiedDate"], ignoretz=True
+                    item["cve"]["lastModified"], ignoretz=True
                 )  # NVD JSON lacks the CVSS time which was present in the original XML format
-                cve["cvss-vector"] = item["metrics"]["cvssMetricV2"]["cvssData"][
-                    "vectorString"
-                ]
-                cve["cvss-type"] = item["metrics"]["cvssMetricV2"]["type"]
-                cve["cvss-source"] = item["metrics"]["cvssMetricV2"]["source"]
+                cve["cvss-vector"] = item["cve"]["metrics"]["cvssMetricV2"][0][
+                    "cvssData"
+                ]["vectorString"]
+                cve["cvss-type"] = item["cve"]["metrics"]["cvssMetricV2"][0]["type"]
+                cve["cvss-source"] = item["cve"]["metrics"]["cvssMetricV2"][0]["source"]
             else:
                 cve["cvss"] = None
 
@@ -419,14 +427,14 @@ class CVEDownloads(NVDApiHandler):
             for ref in item["cve"]["references"]:
                 cve["references"].append(ref["url"])
 
-        if "configurations" in item:
+        if "configurations" in item["cve"]:
             cve["vulnerable_configuration"] = []
             cve["vulnerable_product"] = []
             cve["vendors"] = []
             cve["products"] = []
             cve["vulnerable_product_stems"] = []
             cve["vulnerable_configuration_stems"] = []
-            for cpe in item["configurations"]["nodes"]:
+            for cpe in item["cve"]["configurations"][0]["nodes"]:
                 if "cpeMatch" in cpe:
                     for cpeuri in cpe["cpeMatch"]:
                         if "criteria" not in cpeuri:
@@ -1011,7 +1019,10 @@ class CWEDownloads(XMLFileHandler):
 
         working_dir, filename = file_tuple
 
-        self.parser.parse(filename)
+        for f in glob.glob(f"{working_dir}/*.xml"):
+            filename = f
+
+        self.parser.parse(f"file://{filename}")
         x = 0
         for cwe in self.ch.cwe:
             try:
@@ -1089,9 +1100,7 @@ class DatabaseIndexer(object):
                 ),
                 MongoAddIndex(index=[("Modified", ASCENDING)], name="Modified"),
                 MongoAddIndex(index=[("Published", ASCENDING)], name="Published"),
-                MongoAddIndex(
-                    index=[("last-modified", ASCENDING)], name="last-modified"
-                ),
+                MongoAddIndex(index=[("lastModified", ASCENDING)], name="lastModified"),
                 MongoAddIndex(index=[("cvss", ASCENDING)], name="cvss"),
                 MongoAddIndex(index=[("cvss3", ASCENDING)], name="cvss3"),
                 MongoAddIndex(index=[("summary", TEXT)], name="summary"),

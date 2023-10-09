@@ -219,7 +219,11 @@ class DownloadHandler(ABC):
             with open(filename, "wb") as f:
                 f.write(gzip.GzipFile(fileobj=buf).read())
 
-        elif content_type == "application/json" or content_type == "application/xml":
+        elif (
+            content_type == "application/json"
+            or content_type == "application/xml"
+            or content_type == "text/xml"
+        ):
             filename = os.path.join(wd, url.split("/")[-1])
             self.logger.debug("Saving file to: {}".format(filename))
 
@@ -296,7 +300,7 @@ class DownloadHandler(ABC):
                     i = self.getInfo(self.feed_type.lower())
 
                     if i is not None:
-                        if self.last_modified == i["last-modified"]:
+                        if self.last_modified == i["lastModified"]:
                             self.logger.info(
                                 "{}'s are not modified since the last update".format(
                                     self.feed_type
@@ -369,7 +373,7 @@ class DownloadHandler(ABC):
 
     def setColUpdate(self, collection, date):
         self.database["info"].update_one(
-            {"db": collection}, {"$set": {"last-modified": date}}, upsert=True
+            {"db": collection}, {"$set": {"lastModified": date}}, upsert=True
         )
 
     @abstractmethod

@@ -46,7 +46,7 @@ class GenericDatabaseFactory(DatasourceConnection):
                 "summary",
                 "vendors",
                 "products",
-                "last-modified",
+                "lastModified",
                 "Modified",
                 "Published",
             ],

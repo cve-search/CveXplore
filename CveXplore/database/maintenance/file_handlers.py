@@ -5,9 +5,9 @@ File Handlers
 import shutil
 from abc import abstractmethod
 
-from .DownloadHandler import DownloadHandler
-from .IJSONHandler import IJSONHandler
-from .db_action import DatabaseAction
+from CveXplore.database.maintenance.DownloadHandler import DownloadHandler
+from CveXplore.database.maintenance.IJSONHandler import IJSONHandler
+from CveXplore.database.maintenance.db_action import DatabaseAction
 
 
 class JSONFileHandler(DownloadHandler):

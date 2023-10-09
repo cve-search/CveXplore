@@ -43,6 +43,7 @@ setup(
             ".cvexplore-complete.bash",
             ".schema_version",
             "/common/.sources.ini",
+            "/common/.env_example",
         ]
     },
     entry_points="""
