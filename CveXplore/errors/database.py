@@ -12,3 +12,7 @@ class DatabaseConnectionException(DatabaseException):
 
 class DatabaseIllegalCollection(DatabaseException):
     pass
+
+
+class UpdateSourceNotFound(DatabaseException):
+    pass

@@ -15,6 +15,7 @@ from CveXplore.database.maintenance.Sources_process import (
     VIADownloads,
     DatabaseIndexer,
 )
+from CveXplore.errors import UpdateSourceNotFound
 
 logging.setLoggerClass(UpdateHandler)
 
@@ -49,18 +50,96 @@ class MainUpdater(object):
 
         self.logger = logging.getLogger("MainUpdater")
 
-    def update(self):
+    def update(self, update_source: str | list = None):
         """
         Method used for updating the database
         """
+        if not isinstance(update_source, str | list):
+            raise ValueError
+        try:
+            if update_source is None:
 
-        for source in self.sources:
-            up = source["updater"]()
-            up.update()
+                for source in self.sources:
+                    up = source["updater"]()
+                    up.update()
 
-        for post in self.posts:
-            indexer = post["updater"]()
-            indexer.create_indexes()
+            elif isinstance(update_source, list):
+                for source in update_source:
+                    try:
+                        update_this_source = [
+                            x for x in self.sources if x["name"] == source
+                        ][0]
+                        up = update_this_source["updater"]()
+                        up.update()
+                    except IndexError:
+                        raise UpdateSourceNotFound(
+                            f"Provided source: {source} could not be found...."
+                        )
+            else:
+                # single string then....
+                try:
+                    update_this_source = [
+                        x for x in self.sources if x["name"] == update_source
+                    ][0]
+                    up = update_this_source["updater"]()
+                    up.update()
+                except IndexError:
+                    raise UpdateSourceNotFound(
+                        f"Provided source: {update_source} could not be found...."
+                    )
+        except UpdateSourceNotFound:
+            raise
+        else:
+            for post in self.posts:
+                indexer = post["updater"]()
+                indexer.create_indexes()
+
+        self.datasource.set_handlers_for_collections()
+
+        self.logger.info(f"Database update / initialization complete!")
+
+    def populate(self, populate_source: str | list = None):
+        """
+        Method used for updating the database
+        """
+        if not isinstance(populate_source, str | list):
+            raise ValueError
+        try:
+            if populate_source is None:
+                for source in self.sources:
+                    up = source["updater"]()
+                    up.populate()
+
+            elif isinstance(populate_source, list):
+                for source in populate_source:
+                    try:
+                        update_this_source = [
+                            x for x in self.sources if x["name"] == source
+                        ][0]
+                        up = update_this_source["updater"]()
+                        up.populate()
+                    except IndexError:
+                        raise UpdateSourceNotFound(
+                            f"Provided source: {source} could not be found...."
+                        )
+            else:
+                # single string then....
+                try:
+                    update_this_source = [
+                        x for x in self.sources if x["name"] == populate_source
+                    ][0]
+                    up = update_this_source["updater"]()
+                    up.populate()
+                except IndexError:
+                    raise UpdateSourceNotFound(
+                        f"Provided source: {populate_source} could not be found...."
+                    )
+        except UpdateSourceNotFound:
+            raise
+        else:
+            for post in self.posts:
+                indexer = post["updater"]()
+                indexer.create_indexes()
 
         self.datasource.set_handlers_for_collections()
 

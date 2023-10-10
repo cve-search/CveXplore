@@ -27,11 +27,6 @@ from CveXplore.database.maintenance.db_action import DatabaseAction
 from CveXplore.database.maintenance.file_handlers import XMLFileHandler, JSONFileHandler
 from CveXplore.errors.apis import ApiDataRetrievalFailed
 
-file_prefix = "nvdcve-1.1-"
-file_suffix = ".json.gz"
-file_mod = "modified"
-file_rec = "recent"
-
 date = datetime.datetime.now()
 year = date.year + 1
 
@@ -77,9 +72,6 @@ class CPEDownloads(NVDApiHandler):
             "title": title,
             "CveSearchtitle": generate_title(item["cpeName"]),
             "cpe_2_2": item["cpeName"],
-            # "cpe_name": [
-            #     {"cpe23Uri": f"{item['cpeName']}"}
-            # ],
             "vendor": item["cpeName"].split(":")[3],
             "product": item["cpeName"].split(":")[4],
             "cpeNameId": item["cpeNameId"],
