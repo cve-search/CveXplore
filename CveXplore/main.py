@@ -317,7 +317,7 @@ class CveXplore(object):
             else:
                 return "Database info could not be retrieved"
 
-        return "Using api endpoint: {}".format(self.datasource.url)
+        return "Using api endpoint: {}".format(self.datasource.baseurl)
 
     @property
     def version(self):

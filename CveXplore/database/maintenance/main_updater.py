@@ -48,7 +48,12 @@ class MainUpdater(object):
             {"name": "schema", "updater": SchemaChecker},
         ]
 
+        self.schema_checker = SchemaChecker()
+
         self.logger = logging.getLogger("MainUpdater")
+
+    def validate_schema(self):
+        return self.schema_checker.validate_schema()
 
     def update(self, update_source: str | list = None):
         """
