@@ -16,3 +16,7 @@ class DatabaseIllegalCollection(DatabaseException):
 
 class UpdateSourceNotFound(DatabaseException):
     pass
+
+
+class DatabaseSchemaError(DatabaseException):
+    pass
