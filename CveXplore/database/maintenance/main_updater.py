@@ -59,8 +59,10 @@ class MainUpdater(object):
         """
         Method used for updating the database
         """
-        if not isinstance(update_source, str | list):
-            raise ValueError
+        if update_source is not None:
+            if not isinstance(update_source, str | list):
+                raise ValueError("Wrong 'update_source' parameter type received!")
+
         try:
             if update_source is None:
 
@@ -107,8 +109,10 @@ class MainUpdater(object):
         """
         Method used for updating the database
         """
-        if not isinstance(populate_source, str | list):
-            raise ValueError
+        if populate_source is not None:
+            if not isinstance(populate_source, str | list):
+                raise ValueError("Wrong 'populate_source' parameter type received!")
+
         try:
             if populate_source is None:
                 for source in self.sources:
