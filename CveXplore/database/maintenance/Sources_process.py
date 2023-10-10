@@ -318,9 +318,9 @@ class CVEDownloads(NVDApiHandler):
         cve = {
             "id": item["cve"]["id"],
             "assigner": item["cve"]["sourceIdentifier"],
-            "Status": item["cve"]["vulnStatus"],
-            "Published": parse_datetime(item["cve"]["published"], ignoretz=True),
-            "Modified": parse_datetime(item["cve"]["lastModified"], ignoretz=True),
+            "status": item["cve"]["vulnStatus"],
+            "published": parse_datetime(item["cve"]["published"], ignoretz=True),
+            "modified": parse_datetime(item["cve"]["lastModified"], ignoretz=True),
             "lastModified": parse_datetime(item["cve"]["lastModified"], ignoretz=True),
         }
 
@@ -364,7 +364,7 @@ class CVEDownloads(NVDApiHandler):
                 cve["cvss3"] = float(
                     item["cve"]["metrics"]["cvssMetricV3"][0]["cvssData"]["baseScore"]
                 )
-                cve["cvss3-vector"] = item["cve"]["metrics"]["cvssMetricV3"][0][
+                cve["cvss3Vector"] = item["cve"]["metrics"]["cvssMetricV3"][0][
                     "cvssData"
                 ]["vectorString"]
                 cve["impactScore3"] = float(
@@ -373,13 +373,11 @@ class CVEDownloads(NVDApiHandler):
                 cve["exploitabilityScore3"] = float(
                     item["cve"]["metrics"]["cvssMetricV3"][0]["exploitabilityScore"]
                 )
-                cve["cvss3-time"] = parse_datetime(
+                cve["cvss3Time"] = parse_datetime(
                     item["cve"]["lastModified"], ignoretz=True
                 )
-                cve["cvss3-type"] = item["cve"]["metrics"]["cvssMetricV3"][0]["type"]
-                cve["cvss3-source"] = item["cve"]["metrics"]["cvssMetricV3"][0][
-                    "source"
-                ]
+                cve["cvss3Type"] = item["cve"]["metrics"]["cvssMetricV3"][0]["type"]
+                cve["cvss3Source"] = item["cve"]["metrics"]["cvssMetricV3"][0]["source"]
             else:
                 cve["cvss3"] = None
 
@@ -411,14 +409,14 @@ class CVEDownloads(NVDApiHandler):
                 cve["impactScore"] = float(
                     item["cve"]["metrics"]["cvssMetricV2"][0]["impactScore"]
                 )
-                cve["cvss-time"] = parse_datetime(
+                cve["cvssTime"] = parse_datetime(
                     item["cve"]["lastModified"], ignoretz=True
                 )  # NVD JSON lacks the CVSS time which was present in the original XML format
-                cve["cvss-vector"] = item["cve"]["metrics"]["cvssMetricV2"][0][
+                cve["cvssVector"] = item["cve"]["metrics"]["cvssMetricV2"][0][
                     "cvssData"
                 ]["vectorString"]
-                cve["cvss-type"] = item["cve"]["metrics"]["cvssMetricV2"][0]["type"]
-                cve["cvss-source"] = item["cve"]["metrics"]["cvssMetricV2"][0]["source"]
+                cve["cvssType"] = item["cve"]["metrics"]["cvssMetricV2"][0]["type"]
+                cve["cvssSource"] = item["cve"]["metrics"]["cvssMetricV2"][0]["source"]
             else:
                 cve["cvss"] = None
 
@@ -1098,8 +1096,8 @@ class DatabaseIndexer(object):
                 MongoAddIndex(
                     index=[("vulnerable_product", ASCENDING)], name="vulnerable_product"
                 ),
-                MongoAddIndex(index=[("Modified", ASCENDING)], name="Modified"),
-                MongoAddIndex(index=[("Published", ASCENDING)], name="Published"),
+                MongoAddIndex(index=[("modified", ASCENDING)], name="modified"),
+                MongoAddIndex(index=[("published", ASCENDING)], name="published"),
                 MongoAddIndex(index=[("lastModified", ASCENDING)], name="lastModified"),
                 MongoAddIndex(index=[("cvss", ASCENDING)], name="cvss"),
                 MongoAddIndex(index=[("cvss3", ASCENDING)], name="cvss3"),

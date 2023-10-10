@@ -2,7 +2,11 @@
 Main Updater
 ============
 """
+import logging
+import time
+
 from CveXplore.database.maintenance.DatabaseSchemaChecker import SchemaChecker
+from CveXplore.database.maintenance.LogHandler import UpdateHandler
 from CveXplore.database.maintenance.Sources_process import (
     CPEDownloads,
     CVEDownloads,
@@ -11,6 +15,8 @@ from CveXplore.database.maintenance.Sources_process import (
     VIADownloads,
     DatabaseIndexer,
 )
+
+logging.setLoggerClass(UpdateHandler)
 
 
 class MainUpdater(object):
@@ -41,10 +47,11 @@ class MainUpdater(object):
             {"name": "schema", "updater": SchemaChecker},
         ]
 
+        self.logger = logging.getLogger("MainUpdater")
+
     def update(self):
         """
         Method used for updating the database
-
         """
 
         for source in self.sources:
@@ -57,14 +64,20 @@ class MainUpdater(object):
 
         self.datasource.set_handlers_for_collections()
 
+        self.logger.info(f"Database update / initialization complete!")
+
     def initialize(self):
         """
         Method to initialize a new (fresh) instance of a cvedb database
-
         """
 
         cpe_pop = CPEDownloads()
         cpe_pop.populate()
+
+        self.logger.info(
+            f"Sleeping for 30 seconds between CPE and CVE database population.."
+        )
+        time.sleep(30)
 
         cve_pop = CVEDownloads()
         cve_pop.populate()

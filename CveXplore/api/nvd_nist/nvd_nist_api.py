@@ -266,7 +266,7 @@ def retry_policy(info: RetryInfo) -> RetryPolicyStrategy:
       etc...
     """
     max_retries = 5
-    backoff_in_ms = 0.2 * 2**info.fails + random.uniform(0, 1) * 2
+    backoff_in_ms = 0.2 * 2**info.fails + random.uniform(0, 1) * 4
     logger = logging.getLogger("RetryPolicy")
 
     if info.fails != max_retries:
