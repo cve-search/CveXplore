@@ -326,50 +326,98 @@ class CVEDownloads(NVDApiHandler):
         if "metrics" in item["cve"]:
             cve["access"] = {}
             cve["impact"] = {}
-            if "cvssMetricV3" in item["cve"]["metrics"]:
+            if "cvssMetricV31" in item["cve"]["metrics"]:
                 cve["impact3"] = {}
                 cve["exploitability3"] = {}
-                cve["impact3"]["availability"] = item["cve"]["metrics"]["cvssMetricV3"][
-                    0
-                ]["cvssData"]["availabilityImpact"]
+                cve["impact3"]["availability"] = item["cve"]["metrics"][
+                    "cvssMetricV31"
+                ][0]["cvssData"]["availabilityImpact"]
                 cve["impact3"]["confidentiality"] = item["cve"]["metrics"][
-                    "cvssMetricV3"
+                    "cvssMetricV31"
                 ][0]["cvssData"]["confidentialityImpact"]
-                cve["impact3"]["integrity"] = item["cve"]["metrics"]["cvssMetricV3"][0][
-                    "cvssData"
-                ]["integrityImpact"]
+                cve["impact3"]["integrity"] = item["cve"]["metrics"]["cvssMetricV31"][
+                    0
+                ]["cvssData"]["integrityImpact"]
                 cve["exploitability3"]["attackvector"] = item["cve"]["metrics"][
-                    "cvssMetricV3"
+                    "cvssMetricV31"
                 ][0]["cvssData"]["attackVector"]
                 cve["exploitability3"]["attackcomplexity"] = item["cve"]["metrics"][
-                    "cvssMetricV3"
+                    "cvssMetricV31"
                 ][0]["cvssData"]["attackComplexity"]
                 cve["exploitability3"]["privilegesrequired"] = item["cve"]["metrics"][
-                    "cvssMetricV3"
+                    "cvssMetricV31"
                 ][0]["cvssData"]["privilegesRequired"]
                 cve["exploitability3"]["userinteraction"] = item["cve"]["metrics"][
-                    "cvssMetricV3"
+                    "cvssMetricV31"
                 ][0]["cvssData"]["userInteraction"]
                 cve["exploitability3"]["scope"] = item["cve"]["metrics"][
-                    "cvssMetricV3"
+                    "cvssMetricV31"
                 ][0]["cvssData"]["scope"]
                 cve["cvss3"] = float(
-                    item["cve"]["metrics"]["cvssMetricV3"][0]["cvssData"]["baseScore"]
+                    item["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]["baseScore"]
                 )
-                cve["cvss3Vector"] = item["cve"]["metrics"]["cvssMetricV3"][0][
+                cve["cvss3Vector"] = item["cve"]["metrics"]["cvssMetricV31"][0][
                     "cvssData"
                 ]["vectorString"]
                 cve["impactScore3"] = float(
-                    item["cve"]["metrics"]["cvssMetricV3"][0]["impactScore"]
+                    item["cve"]["metrics"]["cvssMetricV31"][0]["impactScore"]
                 )
                 cve["exploitabilityScore3"] = float(
-                    item["cve"]["metrics"]["cvssMetricV3"][0]["exploitabilityScore"]
+                    item["cve"]["metrics"]["cvssMetricV31"][0]["exploitabilityScore"]
                 )
                 cve["cvss3Time"] = parse_datetime(
                     item["cve"]["lastModified"], ignoretz=True
                 )
-                cve["cvss3Type"] = item["cve"]["metrics"]["cvssMetricV3"][0]["type"]
-                cve["cvss3Source"] = item["cve"]["metrics"]["cvssMetricV3"][0]["source"]
+                cve["cvss3Type"] = item["cve"]["metrics"]["cvssMetricV31"][0]["type"]
+                cve["cvss3Source"] = item["cve"]["metrics"]["cvssMetricV31"][0][
+                    "source"
+                ]
+            elif "cvssMetricV30" in item["cve"]["metrics"]:
+                cve["impact3"] = {}
+                cve["exploitability3"] = {}
+                cve["impact3"]["availability"] = item["cve"]["metrics"][
+                    "cvssMetricV30"
+                ][0]["cvssData"]["availabilityImpact"]
+                cve["impact3"]["confidentiality"] = item["cve"]["metrics"][
+                    "cvssMetricV30"
+                ][0]["cvssData"]["confidentialityImpact"]
+                cve["impact3"]["integrity"] = item["cve"]["metrics"]["cvssMetricV30"][
+                    0
+                ]["cvssData"]["integrityImpact"]
+                cve["exploitability3"]["attackvector"] = item["cve"]["metrics"][
+                    "cvssMetricV30"
+                ][0]["cvssData"]["attackVector"]
+                cve["exploitability3"]["attackcomplexity"] = item["cve"]["metrics"][
+                    "cvssMetricV30"
+                ][0]["cvssData"]["attackComplexity"]
+                cve["exploitability3"]["privilegesrequired"] = item["cve"]["metrics"][
+                    "cvssMetricV30"
+                ][0]["cvssData"]["privilegesRequired"]
+                cve["exploitability3"]["userinteraction"] = item["cve"]["metrics"][
+                    "cvssMetricV30"
+                ][0]["cvssData"]["userInteraction"]
+                cve["exploitability3"]["scope"] = item["cve"]["metrics"][
+                    "cvssMetricV30"
+                ][0]["cvssData"]["scope"]
+                cve["cvss3"] = float(
+                    item["cve"]["metrics"]["cvssMetricV30"][0]["cvssData"]["baseScore"]
+                )
+                cve["cvss3Vector"] = item["cve"]["metrics"]["cvssMetricV30"][0][
+                    "cvssData"
+                ]["vectorString"]
+                cve["impactScore3"] = float(
+                    item["cve"]["metrics"]["cvssMetricV30"][0]["impactScore"]
+                )
+                cve["exploitabilityScore3"] = float(
+                    item["cve"]["metrics"]["cvssMetricV30"][0]["exploitabilityScore"]
+                )
+                cve["cvss3Time"] = parse_datetime(
+                    item["cve"]["lastModified"], ignoretz=True
+                )
+                cve["cvss3Type"] = item["cve"]["metrics"]["cvssMetricV30"][0]["type"]
+                cve["cvss3Source"] = item["cve"]["metrics"]["cvssMetricV30"][0][
+                    "source"
+                ]
             else:
                 cve["cvss3"] = None
 
