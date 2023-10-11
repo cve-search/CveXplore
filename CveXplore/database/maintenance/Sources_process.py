@@ -20,7 +20,7 @@ from tqdm import tqdm
 
 from CveXplore.common.config import Configuration
 from CveXplore.database.connection.mongo_db import MongoDBConnection
-from CveXplore.database.maintenance.Toolkit import generate_title, sanitize
+from CveXplore.database.maintenance.Toolkit import sanitize
 from CveXplore.database.maintenance.api_handlers import NVDApiHandler
 from CveXplore.database.maintenance.content_handlers import CapecHandler, CWEHandler
 from CveXplore.database.maintenance.db_action import DatabaseAction
@@ -70,8 +70,7 @@ class CPEDownloads(NVDApiHandler):
 
         cpe = {
             "title": title,
-            "CveSearchtitle": generate_title(item["cpeName"]),
-            "cpe_2_2": item["cpeName"],
+            "cpeName": item["cpeName"],
             "vendor": item["cpeName"].split(":")[3],
             "product": item["cpeName"].split(":")[4],
             "cpeNameId": item["cpeNameId"],
@@ -95,7 +94,7 @@ class CPEDownloads(NVDApiHandler):
             version_info += cpe["versionEndIncluding"] + "_VEI"
 
         sha1_hash = hashlib.sha1(
-            cpe["cpe_2_2"].encode("utf-8") + version_info.encode("utf-8")
+            cpe["cpeName"].encode("utf-8") + version_info.encode("utf-8")
         ).hexdigest()
 
         cpe["id"] = sha1_hash
@@ -1123,6 +1122,10 @@ class DatabaseIndexer(object):
                 MongoUniqueIndex(index=[("id", ASCENDING)], name="id", unique=True),
                 MongoAddIndex(index=[("vendor", ASCENDING)], name="vendor"),
                 MongoAddIndex(index=[("product", ASCENDING)], name="product"),
+                MongoAddIndex(index=[("cpeNameId", ASCENDING)], name="cpeNameId"),
+                MongoAddIndex(index=[("deprecated", ASCENDING)], name="deprecated"),
+                MongoAddIndex(index=[("cpeName", ASCENDING)], name="cpeName"),
+                MongoAddIndex(index=[("title", ASCENDING)], name="title"),
             ],
             "cpeother": [
                 MongoUniqueIndex(index=[("id", ASCENDING)], name="id", unique=True)

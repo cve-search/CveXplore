@@ -34,7 +34,7 @@ class GenericDatabaseFactory(DatasourceConnection):
                 "loa",
                 "typical_severity",
             ],
-            "cpe": ["title", "cpe_2_2", "vendor", "product"],
+            "cpe": ["title", "cpeName", "vendor", "product"],
             "cwe": ["name", "status", "Description"],
             "via4": ["name"],
             "cves": [

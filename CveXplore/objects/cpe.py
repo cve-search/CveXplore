@@ -33,7 +33,7 @@ class Cpe(DatasourceConnection):
         )
 
         # format to cpe2.3
-        cpe_string = from2to3CPE(self.cpe_2_2)
+        cpe_string = from2to3CPE(self.cpeName)
 
         if cpe_string.startswith("cpe"):
             # strict search with term starting with cpe; e.g: cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*
@@ -56,20 +56,6 @@ class Cpe(DatasourceConnection):
                 yield each
             else:
                 yield None
-
-    def iter_cpe_names(self):
-        """
-        Generator function for iterating over cpe_names for this CPE.
-
-        :return: cpe_name
-        :rtype: str
-        """
-
-        if hasattr(self, "cpe_name"):
-            for each in self.cpe_name:
-                yield each
-        else:
-            return "None"
 
     def to_dict(self):
         """
