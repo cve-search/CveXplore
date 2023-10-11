@@ -43,7 +43,7 @@ Package is hosted on pypi, so just run:
 
 .. code-block:: bash
 
-   pip install CveXplore
+   pip install cvexplore
 
 Documentation
 -------------
