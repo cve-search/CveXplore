@@ -17,8 +17,8 @@ from datetime import timedelta
 from io import BytesIO
 from itertools import islice
 from shutil import copy
+from typing import Tuple
 
-import pymongo
 import requests
 from dateutil.parser import parse as parse_datetime
 from pymongo.errors import BulkWriteError, InvalidOperation
@@ -29,6 +29,7 @@ from urllib3 import Retry
 from CveXplore.common.config import Configuration
 from CveXplore.database.connection.mongo_db import MongoDBConnection
 from .LogHandler import UpdateHandler
+from .Toolkit import sanitize
 from .worker_q import WorkerQueue
 
 thread_local = threading.local()
@@ -43,7 +44,7 @@ class DownloadHandler(ABC):
     Each download script has a derived class which handles specifics for that type of content / download.
     """
 
-    def __init__(self, feed_type, prefix=None):
+    def __init__(self, feed_type: str, prefix: str = None):
         self._end = None
 
         self.feed_type = feed_type
@@ -75,11 +76,11 @@ class DownloadHandler(ABC):
 
     def get_session(
         self,
-        retries=3,
-        backoff_factor=0.3,
-        status_forcelist=(429, 500, 502, 503, 504),
+        retries: int = 1,
+        backoff_factor: float = 0.3,
+        status_forcelist: tuple = (429, 500, 502, 503, 504),
         session=None,
-    ):
+    ) -> requests.Session:
         """
         Method for returning a session object per every requesting thread
         """
@@ -106,14 +107,9 @@ class DownloadHandler(ABC):
 
         return thread_local.session
 
-    def process_downloads(self, sites):
+    def process_downloads(self, sites: list):
         """
         Method to download and process files
-
-        :param sites: List of file to download and process
-        :type sites: list
-        :return:
-        :rtype:
         """
 
         start_time = time.time()
@@ -144,26 +140,16 @@ class DownloadHandler(ABC):
             "Duration: {}".format(timedelta(seconds=time.time() - start_time))
         )
 
-    def chunk_list(self, lst, number):
+    def chunk_list(self, lst: list, number: int) -> list:
         """
         Yield successive n-sized chunks from lst.
-
-        :param lst: List to be chunked
-        :type lst: list
-        :param number: Chunk size
-        :type number: int
-        :return: Chunked list
-        :rtype: list
         """
         for i in range(0, len(lst), number):
             yield lst[i : i + number]
 
-    def _db_bulk_writer(self, batch):
+    def _db_bulk_writer(self, batch: list):
         """
         Method to act as worker for writing queued entries into the database
-
-        :param batch: Batch entry
-        :type batch: list
         """
 
         try:
@@ -178,18 +164,11 @@ class DownloadHandler(ABC):
             self.logger.debug(f"Error during bulk write: {err}")
             raise
 
-    def store_file(self, response_content, content_type, url):
+    def store_file(
+        self, response_content: bytes, content_type: str, url: str
+    ) -> Tuple[str, str]:
         """
         Method to store the download based on the headers content type
-
-        :param response_content: Response content
-        :type response_content: bytes
-        :param content_type: Content type; e.g. 'application/zip'
-        :type content_type: str
-        :param url: Download url
-        :type url: str
-        :return: A working directory and a filename
-        :rtype: str and str
         """
         wd = tempfile.mkdtemp()
         filename = None
@@ -246,7 +225,7 @@ class DownloadHandler(ABC):
 
         return wd, filename
 
-    def download_site(self, url):
+    def download_site(self, url: str):
         if url[:4] == "file":
             self.logger.info("Scheduling local hosted file: {}".format(url))
 
@@ -341,37 +320,27 @@ class DownloadHandler(ABC):
                 )
                 self.do_process = False
 
-    def dropCollection(self, col):
+    def dropCollection(self, col: str):
         return self.database[col].drop()
 
     def getTableNames(self):
         return self.database.list_collection_names()
 
-    def setColInfo(self, collection, field, data):
+    def setColInfo(self, collection: str, field: str, data: dict):
         self.database[collection].update_one(
             {"db": collection}, {"$set": {field: data}}, upsert=True
         )
 
-    def delColInfo(self, collection):
+    def delColInfo(self, collection: str):
         self.database["info"].delete_one({"db": collection})
 
-    def getCPEVersionInformation(self, query):
-        return self.sanitize(self.database["cpe"].find_one(query))
+    def getCPEVersionInformation(self, query: dict):
+        return sanitize(self.database["cpe"].find_one(query))
 
-    def getInfo(self, collection):
-        return self.sanitize(self.database["info"].find_one({"db": collection}))
+    def getInfo(self, collection: str):
+        return sanitize(self.database["info"].find_one({"db": collection}))
 
-    def sanitize(self, x):
-        if type(x) == pymongo.cursor.Cursor:
-            x = list(x)
-        if type(x) == list:
-            for y in x:
-                self.sanitize(y)
-        if x and "_id" in x:
-            x.pop("_id")
-        return x
-
-    def setColUpdate(self, collection, date):
+    def setColUpdate(self, collection: str, date: datetime):
         self.database["info"].update_one(
             {"db": collection}, {"$set": {"lastModified": date}}, upsert=True
         )

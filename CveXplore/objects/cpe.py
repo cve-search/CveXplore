@@ -22,15 +22,10 @@ class Cpe(DatasourceConnection):
         for each in kwargs:
             setattr(self, each, kwargs[each])
 
-    def iter_cves_matching_cpe(self, vuln_prod_search=False):
+    def iter_cves_matching_cpe(self, vuln_prod_search: bool = False):
         """
         Generator function for iterating over cve's matching this CPE. By default the search will be made matching
         the configuration fields of the cves documents.
-
-        :param vuln_prod_search: Search for matching products instead of configurations
-        :type vuln_prod_search: bool
-        :return: Matching CVES
-        :rtype: Cves
         """
 
         cpe_searchField = (
@@ -38,7 +33,7 @@ class Cpe(DatasourceConnection):
         )
 
         # format to cpe2.3
-        cpe_string = from2to3CPE(self.cpe_2_2)
+        cpe_string = from2to3CPE(self.cpeName)
 
         if cpe_string.startswith("cpe"):
             # strict search with term starting with cpe; e.g: cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*
@@ -61,20 +56,6 @@ class Cpe(DatasourceConnection):
                 yield each
             else:
                 yield None
-
-    def iter_cpe_names(self):
-        """
-        Generator function for iterating over cpe_names for this CPE.
-
-        :return: cpe_name
-        :rtype: str
-        """
-
-        if hasattr(self, "cpe_name"):
-            for each in self.cpe_name:
-                yield each
-        else:
-            return "None"
 
     def to_dict(self):
         """

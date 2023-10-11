@@ -19,19 +19,15 @@ class MongoDBConnection(object):
     """
 
     def __init__(
-        self, host="mongodb://127.0.0.1:27017", port=None, database="cvedb", **kwargs
+        self,
+        host: str = "mongodb://127.0.0.1:27017",
+        port: int = None,
+        database: str = "cvedb",
+        **kwargs
     ):
         """
-        :param host: The `host` parameter can be a full `mongodb URI
-                     <http://dochub.mongodb.org/core/connections>`_, in addition to
-                     a simple hostname.
-        :type host: str
-        :param port: Port number (optional when a URI is used as host parameter)
-        :type port: int
-        :param database: Database to connect to; defaults to cvedb (Cve Search default)
-        :type database: str
-        :param kwargs: Other arguments supported by the MongoClient instantiation
-        :type kwargs: dict
+        The `host` parameter can be a full `mongodb URI <http://dochub.mongodb.org/core/connections>`_, in addition to
+        a simple hostname.
         """
 
         self.client = None

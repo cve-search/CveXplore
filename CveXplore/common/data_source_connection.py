@@ -7,9 +7,10 @@ import os
 
 from CveXplore.api.connection.api_db import ApiDatabaseSource
 from CveXplore.database.connection.mongo_db import MongoDBConnection
+from CveXplore.objects.cvexplore_object import CveXploreObject
 
 
-class DatasourceConnection(object):
+class DatasourceConnection(CveXploreObject):
     """
     The DatasourceConnection class handles the connection to the data source and is the base class for the database
     objects and generic database functions
@@ -23,13 +24,11 @@ class DatasourceConnection(object):
             else MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
         )
 
-    def __init__(self, collection):
+    def __init__(self, collection: str):
         """
         Create a DatasourceConnection object
-
-        :param collection: Define the collection to connect to
-        :type collection: str
         """
+        super().__init__()
         self.__collection = collection
 
     @property

@@ -2,9 +2,32 @@
 Mongodb specific
 ================
 """
-
 from pymongo.collection import Collection
 from pymongo.cursor import Cursor
+
+
+class CveSearchCollection(Collection):
+    """
+    The CveSearchCollection is a custom Collection based on the pymongo Collection class which has been altered to
+    return a CveSearchCursor reference on the find method.
+    """
+
+    def __init__(self, database, name: str, **kwargs):
+        """
+        Get / create a custon cve-search Mongo collection.
+        """
+
+        super().__init__(database, name, **kwargs)
+
+    def __repr__(self):
+        """Return string representation of this class"""
+        return "<< CveSearchCollection:{} >>".format(self.name)
+
+    def find(self, *args, **kwargs):
+        """
+        Query the database as you would do so with a pymongo Collection.
+        """
+        return CveSearchCursor(self, *args, **kwargs)
 
 
 class CveSearchCursor(Cursor):
@@ -13,12 +36,9 @@ class CveSearchCursor(Cursor):
     the raw data from the mongodb database.
     """
 
-    def __init__(self, collection, *args, **kwargs):
+    def __init__(self, collection: CveSearchCollection, *args, **kwargs):
         """
         Create a new cve-search cursor.
-
-        :param collection: Reference to a CveSearchCollection object
-        :type collection: CveSearchCollection
         """
         super().__init__(collection, *args, **kwargs)
 
@@ -77,37 +97,3 @@ class CveSearchCursor(Cursor):
     def __repr__(self):
         """Return string representation of this class"""
         return "<< CveSearchCursor:{} >>".format(self.collection)
-
-
-class CveSearchCollection(Collection):
-    """
-    The CveSearchCollection is a custom Collection based on the pymongo Collection class which has been altered to
-    return a CveSearchCursor reference on the find method.
-    """
-
-    def __init__(self, database, name, **kwargs):
-        """
-        Get / create a custon cve-search Mongo collection.
-
-        :param database: the database to get a collection from
-        :type database: MongoDBConnection
-        :param name: the name of the collection to get
-        :type name: str
-        :param kwargs: additional keyword arguments will be passed as options for the create collection command
-        :type kwargs: kwargs
-        """
-
-        super().__init__(database, name, **kwargs)
-
-    def __repr__(self):
-        """Return string representation of this class"""
-        return "<< CveSearchCollection:{} >>".format(self.name)
-
-    def find(self, *args, **kwargs):
-        """
-        Query the database as you would do so with a pymongo Collection.
-
-        :return: Reference to the CveSearchCursor
-        :rtype: CveSearchCursor
-        """
-        return CveSearchCursor(self, *args, **kwargs)

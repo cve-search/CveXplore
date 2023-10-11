@@ -59,10 +59,10 @@ class HelperLogger(logging.Logger):
         "critical": "red",
     }
 
-    def __init__(self, name, level=logging.NOTSET):
+    def __init__(self, name: str, level: int | str = logging.NOTSET):
         super().__init__(name, level)
 
-    def debug(self, msg, *args, **kwargs):
+    def debug(self, msg: str, *args, **kwargs):
         """
         Log ‘msg % args’ with severity ‘DEBUG’ and color *MAGENTA.
 
@@ -72,15 +72,13 @@ class HelperLogger(logging.Logger):
 
             >>> logger.debug(“Houston, we have a thorny problem”)
 
-        :param msg: Message to log
-        :type msg: str
         """
 
         msg = colors.color("{}".format(msg), fg=HelperLogger.level_map["debug"])
 
         return super(HelperLogger, self).debug(msg, *args, **kwargs)
 
-    def info(self, msg, *args, **kwargs):
+    def info(self, msg: str, *args, **kwargs):
         """
         Log ‘msg % args’ with severity ‘INFO’ and color *WHITE*.
 
@@ -90,15 +88,13 @@ class HelperLogger(logging.Logger):
 
             >>> logger.info(“Houston, we have an interesting problem”)
 
-        :param msg: Message to log
-        :type msg: str
         """
 
         msg = colors.color("{}".format(msg), fg=HelperLogger.level_map["info"])
 
         return super(HelperLogger, self).info(msg, *args, **kwargs)
 
-    def warning(self, msg, *args, **kwargs):
+    def warning(self, msg: str, *args, **kwargs):
         """
         Log ‘msg % args’ with severity ‘WARNING’ and color *YELLOW*.
 
@@ -108,15 +104,13 @@ class HelperLogger(logging.Logger):
 
             >>> logger.warning(“Houston, we have a bit of a problem”)
 
-        :param msg: Message to log
-        :type msg: str
         """
 
         msg = colors.color("{}".format(msg), fg=HelperLogger.level_map["warning"])
 
         return super(HelperLogger, self).warning(msg, *args, **kwargs)
 
-    def error(self, msg, *args, **kwargs):
+    def error(self, msg: str, *args, **kwargs):
         """
         Log ‘msg % args’ with severity ‘ERROR’ and color *RED*.
 
@@ -128,15 +122,13 @@ class HelperLogger(logging.Logger):
 
             >>> logger.error(“Houston, we have a major problem”)
 
-        :param msg: Message to log
-        :type msg: str
         """
 
         msg = colors.color("{}".format(msg), fg=HelperLogger.level_map["error"])
 
         return super(HelperLogger, self).error(msg, *args, **kwargs)
 
-    def critical(self, msg, *args, **kwargs):
+    def critical(self, msg: str, *args, **kwargs):
         """
         Log ‘msg % args’ with severity ‘CRITICAL’ and color *RED*.
 
@@ -148,8 +140,6 @@ class HelperLogger(logging.Logger):
 
             >>> logger.critical(“Houston, we have a hell of a problem”)
 
-        :param msg: Message to log
-        :type msg: str
         """
 
         msg = colors.color("{}".format(msg), fg=HelperLogger.level_map["critical"])
@@ -163,7 +153,7 @@ class UpdateHandler(HelperLogger):
     management tasks.
     """
 
-    def __init__(self, name, level=logging.NOTSET):
+    def __init__(self, name: str, level: int | str = logging.NOTSET):
         super().__init__(name, level)
 
         formatter = logging.Formatter(

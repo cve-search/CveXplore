@@ -4,6 +4,7 @@ File Handlers
 """
 import shutil
 from abc import abstractmethod
+from typing import Tuple
 
 from CveXplore.database.maintenance.DownloadHandler import DownloadHandler
 from CveXplore.database.maintenance.IJSONHandler import IJSONHandler
@@ -16,7 +17,7 @@ class JSONFileHandler(DownloadHandler):
     processing and downloading
     """
 
-    def __init__(self, feed_type, prefix):
+    def __init__(self, feed_type: str, prefix: str):
         super().__init__(feed_type)
 
         self.is_update = True
@@ -29,13 +30,10 @@ class JSONFileHandler(DownloadHandler):
         """return string representation of object"""
         return "<< JSONFileHandler:{} >>".format(self.feed_type)
 
-    def file_to_queue(self, file_tuple):
+    def file_to_queue(self, file_tuple: Tuple[str, str]):
         """
         Method responsible for transferring file contents to the worker queue for further processing and inserting them
         into the database
-
-        :param file_tuple: A tuple containing the working dir for processing and the filename of the file to process
-        :type file_tuple: tuple
         """
 
         working_dir, filename = file_tuple
@@ -79,7 +77,7 @@ class XMLFileHandler(DownloadHandler):
     processing and downloading
     """
 
-    def __init__(self, feed_type):
+    def __init__(self, feed_type: str):
         super().__init__(feed_type)
         self.is_update = True
 
@@ -87,12 +85,9 @@ class XMLFileHandler(DownloadHandler):
         """return string representation of object"""
         return "<< XMLFileHandler:{} >>".format(self.feed_type)
 
-    def process_item(self, item):
+    def process_item(self, item: dict):
         """
         Method responsible for putting items into the worker queue as database actions
-
-        :param item: Item processed from XML source and parsed into a dictionary
-        :type item: dict
         """
 
         if self.is_update:

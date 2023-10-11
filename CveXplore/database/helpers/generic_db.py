@@ -14,13 +14,10 @@ class GenericDatabaseFactory(DatasourceConnection):
     of CveXplore functions that apply to the given collection.
     """
 
-    def __init__(self, collection):
+    def __init__(self, collection: str):
         """
         Create a new GenericDatabaseFactory and create field specific functions based on the __default_fields and
         the __fields_mapping.
-
-        :param collection: Collection to create the functions for
-        :type collection: str
         """
         super().__init__(collection=collection)
 
@@ -37,7 +34,7 @@ class GenericDatabaseFactory(DatasourceConnection):
                 "loa",
                 "typical_severity",
             ],
-            "cpe": ["title", "cpe_2_2", "vendor", "product"],
+            "cpe": ["title", "cpeName", "vendor", "product"],
             "cwe": ["name", "status", "Description"],
             "via4": ["name"],
             "cves": [
@@ -47,8 +44,8 @@ class GenericDatabaseFactory(DatasourceConnection):
                 "vendors",
                 "products",
                 "lastModified",
-                "Modified",
-                "Published",
+                "modified",
+                "published",
             ],
         }
 
@@ -64,23 +61,18 @@ class GenericDatabaseFactory(DatasourceConnection):
                 ),
             )
 
-    def get_by_id(self, id):
+    def get_by_id(self, doc_id: str):
         """
         Method to fetch a specific collection entry via it's id number
-
-        :param id: Id number
-        :type id: str
-        :return: Requested data or None
-        :rtype: object
         """
 
-        if not isinstance(id, str):
+        if not isinstance(doc_id, str):
             try:
-                id = str(id)
+                doc_id = str(doc_id)
             except ValueError:
                 return "Provided value is not a string nor can it be cast to one"
 
-        return self._datasource_collection_connection.find_one({"id": id})
+        return self._datasource_collection_connection.find_one({"id": doc_id})
 
     def __repr__(self):
         """String representation of object"""
@@ -92,27 +84,17 @@ class GenericDatabaseFieldsFunctions(DatasourceConnection):
     The GenericDatabaseFieldsFunctions handles the creation of general, field based, functions
     """
 
-    def __init__(self, field, collection):
+    def __init__(self, field: str, collection: str):
         """
         Create a new GenericDatabaseFieldsFunctions and create field specific functions.
-
-        :param field: Field name
-        :type field: str
-        :param collection: Collection to create the field functions for
-        :type collection: str
         """
         super().__init__(collection=collection)
 
         self.__field = field
 
-    def search(self, value):
+    def search(self, value: str):
         """
         Method for searching for a given value. The value shall be converted to a regex.
-
-        :param value: Search for value
-        :type value: str
-        :return: Data or None
-        :rtype: object
         """
 
         regex = re.compile(value, re.IGNORECASE)
@@ -121,14 +103,9 @@ class GenericDatabaseFieldsFunctions(DatasourceConnection):
 
         return self._datasource_collection_connection.find(query)
 
-    def find(self, value=None):
+    def find(self, value: str | dict = None):
         """
         Method to find a given value.
-
-        :param value: Find a value
-        :type value: str
-        :return: Data or None
-        :rtype: object
         """
 
         if value is not None:

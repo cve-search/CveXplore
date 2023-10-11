@@ -13,7 +13,7 @@ import re
 
 # Convert cpe2.2 url encoded to cpe2.3 char escaped
 # cpe:2.3:o:cisco:ios:12.2%281%29 to cpe:2.3:o:cisco:ios:12.2\(1\)
-def unquote(cpe):
+def unquote(cpe: str) -> str:
     return re.compile("%([0-9a-fA-F]{2})", re.M).sub(
         lambda m: "\\" + chr(int(m.group(1), 16)), cpe
     )
@@ -21,7 +21,7 @@ def unquote(cpe):
 
 # Convert cpe2.3 char escaped to cpe2.2 url encoded
 # cpe:2.3:o:cisco:ios:12.2\(1\) to cpe:2.3:o:cisco:ios:12.2%281%29
-def quote(cpe):
+def quote(cpe: str) -> str:
     cpe = cpe.replace("\\-", "-")
     cpe = cpe.replace("\\.", ".")
     return re.compile("\\\\(.)", re.M).sub(

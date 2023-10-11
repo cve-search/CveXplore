@@ -28,9 +28,6 @@ class MainUpdater(object):
     def __init__(self, datasource):
         """
         Init a new MainUpdater class
-
-        :param datasource: Datasource to update
-        :type datasource: MongoDBConnection
         """
 
         self.datasource = datasource
