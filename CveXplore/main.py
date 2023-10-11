@@ -7,6 +7,7 @@ import json
 import os
 import re
 from collections import defaultdict
+from typing import List, Tuple
 
 from pymongo import DESCENDING
 
@@ -16,6 +17,8 @@ from CveXplore.common.db_mapping import database_mapping
 from CveXplore.database.connection.mongo_db import MongoDBConnection
 from CveXplore.database.maintenance.main_updater import MainUpdater
 from CveXplore.errors import DatabaseIllegalCollection
+from CveXplore.errors.validation import CveNumberValidationError
+from CveXplore.objects.cvexplore_object import CveXploreObject
 
 try:
     from version import VERSION
@@ -31,7 +34,11 @@ class CveXplore(object):
     Main class for CveXplore package
     """
 
-    def __init__(self, mongodb_connection_details=None, api_connection_details=None):
+    def __init__(
+        self,
+        mongodb_connection_details: dict = None,
+        api_connection_details: dict = None,
+    ):
         """
         Create a new instance of CveXplore
 
@@ -83,22 +90,22 @@ class CveXplore(object):
             else:
                 setattr(self, each, CvesDatabaseFunctions(collection=each))
 
-    def get_single_store_entry(self, entry_type, dict_filter={}):
+    def get_single_store_entry(
+        self, entry_type: str, dict_filter: dict = None
+    ) -> CveXploreObject | None:
         """
         Method to perform a query on a *single* collection in the data source and return a *single* result.
 
-        :param entry_type: Which specific store are you querying? Choices are:
-                           - capec;
-                           - cpe;
-                           - cwe;
-                           - via4;
-                           - cves;
-        :type entry_type: str
-        :param dict_filter: Dictionary representing a filter according to pymongo documentation
-        :type dict_filter: dict
-        :return: Objectified result from the query
-        :rtype: object
+        Which specific store are you querying? Choices are:
+            - capec;
+            - cpe;
+            - cwe;
+            - via4;
+            - cves;
         """
+
+        if dict_filter is None:
+            dict_filter = {}
 
         entry_type = entry_type.lower()
 
@@ -115,25 +122,22 @@ class CveXplore(object):
 
         return result
 
-    def get_single_store_entries(self, query, limit=10):
+    def get_single_store_entries(
+        self, query: Tuple[str, dict], limit: int = 10
+    ) -> List[CveXploreObject] | None:
         """
-        Method to perform a query on a *single* collection in the data source and return all of the results.
+        Method to perform a query on a *single* collection in the data source and return all the results.
 
-        :param query: Tuple which contains the entry_type and the dict_filter in a tuple.
-                      Choices for entry_type:
-                      - capec;
-                      - cpe;
-                      - cwe;
-                      - via4;
-                      - cves;
-                      dict_filter is a dictionary representing a filter according to pymongo documentation.
-                      example:
-                      get_single_store_entries(("CWE", {"id": "78"}))
-        :type query: tuple
-        :param limit: Limit the amount of returned results, defaults to 10
-        :type limit: int
-        :return: list with queried results
-        :rtype: list
+        Tuple which contains the entry_type and the dict_filter in a tuple.
+            Choices for entry_type:
+                - capec;
+                - cpe;
+                - cwe;
+                - via4;
+                - cves;
+            dict_filter is a dictionary representing a filter according to pymongo documentation.
+            example:
+                get_single_store_entries(("cwe", {"id": "78"}))
         """
         if not isinstance(query, tuple):
             raise ValueError(
@@ -164,26 +168,30 @@ class CveXplore(object):
             .limit(limit)
         )
 
-        return list(results)
+        the_results = list(results)
 
-    def get_multi_store_entries(self, *queries, limit=10):
+        if len(the_results) != 0:
+            return the_results
+        else:
+            return None
+
+    def get_multi_store_entries(
+        self, *queries: List[Tuple[str, dict]], limit: int = 10
+    ) -> List[CveXploreObject] | None:
         """
         Method to perform *multiple* queries on *a single* or *multiple* collections in the data source and return the
         results.
 
-        :param queries: A list of tuples which contains the entry_type and the dict_filter.
-                        Choices for entry_type:
-                        - capec;
-                        - cpe;
-                        - cwe;
-                        - via4;
-                        - cves;
-                        dict_filter is a dictionary representing a filter according to pymongo documentation.
-                        example:
-                        get_multi_store_entries([("CWE", {"id": "78"}), ("cves", {"id": "CVE-2009-0018"})])
-        :type queries: list
-        :return: Queried results in a single list
-        :rtype: list
+        A list of tuples which contains the entry_type and the dict_filter.
+            Choices for entry_type:
+                - capec;
+                - cpe;
+                - cwe;
+                - via4;
+                - cves;
+            dict_filter is a dictionary representing a filter according to pymongo documentation.
+            example:
+                get_multi_store_entries([("cwe", {"id": "78"}), ("cves", {"id": "CVE-2009-0018"})])
         """
 
         results = map(
@@ -195,17 +203,18 @@ class CveXplore(object):
         for result_list in results:
             joined_list += result_list
 
-        return list(joined_list)
+        the_results = list(joined_list)
 
-    def cves_for_cpe(self, cpe_string):
+        if len(the_results) != 0:
+            return the_results
+        else:
+            return None
+
+    def cves_for_cpe(self, cpe_string: str) -> List[CveXploreObject] | None:
         """
-        Method for retrieving Cves that match a single CPE string. By default the search will be made matching
+        Method for retrieving Cves that match a single CPE string. By default, the search will be made matching
         the configuration fields of the cves documents.
-
-        :param cpe_string: CPE string: e.g. ``cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*``
-        :type cpe_string: str
-        :return: List with Cves
-        :rtype: list
+        CPE string could be formatted like: ``cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*``
         """
 
         # format to cpe2.3
@@ -230,25 +239,31 @@ class CveXplore(object):
 
         return cves
 
-    def cve_by_id(self, cve_id):
+    def cve_by_id(self, cve_id: str) -> CveXploreObject | None:
         """
-        Method to retrieve a single CVE from the database by it's CVE ID number
+        Method to retrieve a single CVE from the database by its CVE ID number.
+        The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.
+        """
 
-        :param cve_id: String representing the CVE id; e.g. CVE-2020-0001
-        :type cve_id: str
-        :return: CVE object
-        :rtype: Cves
-        """
+        # first try to match full cve number format
+        reg_match = re.compile(r"[cC][vV][eE]-\d{4}-\d{4,10}")
+        if reg_match.match(cve_id) is not None:
+            cve_id = cve_id.upper()
+        else:
+            part_match = re.compile(r"\d{4}-\d{4,10}")
+            if part_match.match(cve_id) is not None:
+                cve_id = f"CVE-{cve_id}"
+            else:
+                raise CveNumberValidationError(
+                    "Could not validate the CVE number. The number format should be either "
+                    "CVE-2000-0001, cve-2000-0001 or 2000-0001."
+                )
+
         return self.get_single_store_entry("cves", {"id": cve_id})
 
-    def capec_by_cwe_id(self, cwe_id):
+    def capec_by_cwe_id(self, cwe_id: int) -> List[CveXploreObject] | None:
         """
         Method to retrieve capecs related to a specific CWE ID
-
-        :param cwe_id: String representing the CWE id; e.g. '15'
-        :type cwe_id:
-        :return: List with Capecs
-        :rtype: list
         """
 
         cwe = self.get_single_store_entry("cwe", {"id": cwe_id})
@@ -258,30 +273,29 @@ class CveXplore(object):
         else:
             return cwe
 
-    def last_cves(self, limit=10):
+    def last_cves(self, limit: int = 10) -> List[CveXploreObject] | None:
         """
-        Method to retrieve the last entered / changed cves. By default limited to 10.
-
-        :return: List with Cves
-        :rtype: list
+        Method to retrieve the last entered / changed cves. By default, limited to 10.
         """
 
         results = (
             getattr(self.datasource, "store_cves")
             .find()
-            .sort("Modified", DESCENDING)
+            .sort("modified", DESCENDING)
             .limit(limit)
         )
 
-        return list(results)
+        the_results = list(results)
 
-    def get_db_content_stats(self):
+        if len(the_results) != 0:
+            return the_results
+        else:
+            return None
+
+    def get_db_content_stats(self) -> dict | str:
         """
         Property returning the stats from the database. Stats consist of the time last modified and the document count
         per cvedb store in the database.
-
-        :return: Statistics
-        :rtype: dict
         """
 
         stats = defaultdict(dict)
