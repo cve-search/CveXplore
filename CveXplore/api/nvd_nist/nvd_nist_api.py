@@ -45,6 +45,10 @@ class NvdNistApi(ApiBaseClass):
             self.set_header_field("apiKey", self.api_key)
             self.api_key_limit = False
         else:
+            self.logger.warning(
+                "Could not find a NIST API Key in the '~/.cvexplore/.env' file; "
+                "you could request one at: https://nvd.nist.gov/developers/request-an-api-key"
+            )
             self.api_key_limit = True
 
         self.filter_rejected = False
