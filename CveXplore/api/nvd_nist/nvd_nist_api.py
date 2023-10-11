@@ -88,12 +88,12 @@ class NvdNistApi(ApiBaseClass):
 
     def _connect(
         self,
-        method,
+        method: str,
         resource: dict,
         session: requests.Session,
-        data=None,
-        timeout=60,
-        return_response_object=False,
+        data: dict = None,
+        timeout: int = 60,
+        return_response_object: bool = False,
     ):
 
         requests.packages.urllib3.disable_warnings()
@@ -240,11 +240,11 @@ class NvdNistApi(ApiBaseClass):
 class ApiData(object):
     def __init__(
         self,
-        results_per_page,
-        start_index,
-        total_results,
+        results_per_page: int,
+        start_index: int,
+        total_results: int,
         api_handle: NvdNistApi,
-        data_source,
+        data_source: int,
         resource=None,
     ):
         self.results_per_page = results_per_page
@@ -376,7 +376,7 @@ class ApiDataIterator(object):
         return results
 
     @retry(retry_policy)
-    async def fetch(self, session, url):
+    async def fetch(self, session: aiohttp.ClientSession, url: str):
         try:
             async with session.get(url) as response:
                 self.logger.debug(f"Sending request to url: {url}")

@@ -11,16 +11,16 @@ import os
 import shutil
 import time
 from collections import namedtuple
+from typing import Any, Tuple
 from xml.sax import make_parser
 
-import pymongo
 from dateutil.parser import parse as parse_datetime
 from pymongo import TEXT, ASCENDING
 from tqdm import tqdm
 
 from CveXplore.common.config import Configuration
 from CveXplore.database.connection.mongo_db import MongoDBConnection
-from CveXplore.database.maintenance.Toolkit import generate_title
+from CveXplore.database.maintenance.Toolkit import generate_title, sanitize
 from CveXplore.database.maintenance.api_handlers import NVDApiHandler
 from CveXplore.database.maintenance.content_handlers import CapecHandler, CWEHandler
 from CveXplore.database.maintenance.db_action import DatabaseAction
@@ -52,7 +52,7 @@ class CPEDownloads(NVDApiHandler):
         pass
 
     @staticmethod
-    def process_the_item(item=None):
+    def process_the_item(item: dict = None):
         if item is None:
             return None
 
@@ -102,7 +102,7 @@ class CPEDownloads(NVDApiHandler):
 
         return cpe
 
-    def process_downloads(self, sites=None):
+    def process_downloads(self, sites: list = None):
         """
         Method to download and process files
         """
@@ -265,7 +265,7 @@ class CVEDownloads(NVDApiHandler):
             yield a_year
 
     @staticmethod
-    def get_cpe_info(cpeuri):
+    def get_cpe_info(cpeuri: str):
         query = {}
         version_info = ""
         if "versionStartExcluding" in cpeuri:
@@ -284,26 +284,26 @@ class CVEDownloads(NVDApiHandler):
         return query, version_info
 
     @staticmethod
-    def add_if_missing(cve, key, value):
+    def add_if_missing(cve: dict, key: str, value: Any):
         if value not in cve[key]:
             cve[key].append(value)
         return cve
 
     @staticmethod
-    def get_vendor_product(cpeUri):
+    def get_vendor_product(cpeUri: str):
         vendor = cpeUri.split(":")[3]
         product = cpeUri.split(":")[4]
         return vendor, product
 
     @staticmethod
-    def stem(cpeUri):
+    def stem(cpeUri: str):
         cpeArr = cpeUri.split(":")
         return ":".join(cpeArr[:5])
 
     def file_to_queue(self, *args):
         pass
 
-    def process_the_item(self, item=None):
+    def process_the_item(self, item: dict = None):
         if item is None:
             return None
 
@@ -741,7 +741,7 @@ class CVEDownloads(NVDApiHandler):
 
         return cve
 
-    def process_downloads(self, sites=None):
+    def process_downloads(self, sites: list = None):
         """
         Method to download and process files
         """
@@ -900,7 +900,7 @@ class VIADownloads(JSONFileHandler):
 
         self.logger = logging.getLogger("VIADownloads")
 
-    def file_to_queue(self, file_tuple):
+    def file_to_queue(self, file_tuple: Tuple[str, str]):
 
         working_dir, filename = file_tuple
 
@@ -930,7 +930,7 @@ class VIADownloads(JSONFileHandler):
                 "Failed to remove working dir; error produced: {}".format(err)
             )
 
-    def process_item(self, item):
+    def process_item(self, item: dict):
 
         if self.is_update:
             self.queue.put(
@@ -991,7 +991,7 @@ class CAPECDownloads(XMLFileHandler):
         self.ch = CapecHandler()
         self.parser.setContentHandler(self.ch)
 
-    def file_to_queue(self, file_tuple):
+    def file_to_queue(self, file_tuple: Tuple[str, str]):
 
         working_dir, filename = file_tuple
 
@@ -1053,7 +1053,7 @@ class CWEDownloads(XMLFileHandler):
         self.ch = CWEHandler()
         self.parser.setContentHandler(self.ch)
 
-    def file_to_queue(self, file_tuple):
+    def file_to_queue(self, file_tuple: Tuple[str, str]):
 
         working_dir, filename = file_tuple
 
@@ -1165,20 +1165,10 @@ class DatabaseIndexer(object):
 
         self.logger = logging.getLogger("DatabaseIndexer")
 
-    def getInfo(self, collection):
-        return self.sanitize(self.database["info"].find_one({"db": collection}))
+    def getInfo(self, collection: str):
+        return sanitize(self.database["info"].find_one({"db": collection}))
 
-    def sanitize(self, x):
-        if type(x) == pymongo.cursor.Cursor:
-            x = list(x)
-        if type(x) == list:
-            for y in x:
-                self.sanitize(y)
-        if x and "_id" in x:
-            x.pop("_id")
-        return x
-
-    def create_indexes(self, collection=None):
+    def create_indexes(self, collection: str = None):
 
         if collection is not None:
             try:
@@ -1223,7 +1213,7 @@ class DatabaseIndexer(object):
                 result.append(("via4", index))
         return result
 
-    def setIndex(self, col, field, **kwargs):
+    def setIndex(self, col: str, field: str, **kwargs):
         try:
             self.database[col].create_index(field, **kwargs)
             self.logger.info("Success to create index %s on %s" % (field, col))

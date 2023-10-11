@@ -22,15 +22,10 @@ class Cpe(DatasourceConnection):
         for each in kwargs:
             setattr(self, each, kwargs[each])
 
-    def iter_cves_matching_cpe(self, vuln_prod_search=False):
+    def iter_cves_matching_cpe(self, vuln_prod_search: bool = False):
         """
         Generator function for iterating over cve's matching this CPE. By default the search will be made matching
         the configuration fields of the cves documents.
-
-        :param vuln_prod_search: Search for matching products instead of configurations
-        :type vuln_prod_search: bool
-        :return: Matching CVES
-        :rtype: Cves
         """
 
         cpe_searchField = (

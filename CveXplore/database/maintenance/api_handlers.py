@@ -11,7 +11,7 @@ class NVDApiHandler(DownloadHandler):
     processing and downloading
     """
 
-    def __init__(self, feed_type):
+    def __init__(self, feed_type: str):
         super().__init__(feed_type)
 
         self.is_update = True
@@ -22,7 +22,7 @@ class NVDApiHandler(DownloadHandler):
         """return string representation of object"""
         return "<< NVDApiHandler:{} >>".format(self.feed_type)
 
-    def process_item(self, item):
+    def process_item(self, item: dict):
         item = self.process_the_item(item)
 
         if item is not None:

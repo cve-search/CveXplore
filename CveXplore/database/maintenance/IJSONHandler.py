@@ -11,7 +11,7 @@ class IJSONHandler(object):
     def __init__(self):
         self.logger = logging.getLogger("IJSONHandler")
 
-    def fetch(self, filename, prefix):
+    def fetch(self, filename: str, prefix: str):
         x = 0
         with open(filename, "rb") as input_file:
             for item in ijson.items(input_file, prefix):

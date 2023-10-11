@@ -24,12 +24,9 @@ class DatasourceConnection(CveXploreObject):
             else MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
         )
 
-    def __init__(self, collection):
+    def __init__(self, collection: str):
         """
         Create a DatasourceConnection object
-
-        :param collection: Define the collection to connect to
-        :type collection: str
         """
         super().__init__()
         self.__collection = collection

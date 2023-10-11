@@ -68,17 +68,14 @@ class ApiDatabaseCollection(object):
 
         self.collname = collname
 
-    def find(self, filter=None):
+    def find(self, the_filter: dict = None):
         """
         Query the api endpoint as you would do so with a pymongo Collection.
-
-        :return: Reference to the CveSearchApi
-        :rtype: CveSearchApi
         """
 
-        return CveSearchApi(self, filter)
+        return CveSearchApi(self, the_filter)
 
-    def find_one(self, filter=None):
+    def find_one(self, the_filter: dict = None):
         """
         Query the api endpoint as you would do so with a pymongo Collection.
 
@@ -86,7 +83,7 @@ class ApiDatabaseCollection(object):
         :rtype: object
         """
 
-        cursor = self.find(filter)
+        cursor = self.find(the_filter)
 
         for result in cursor.limit(-1):
             return result

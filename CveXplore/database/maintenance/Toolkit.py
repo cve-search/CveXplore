@@ -1,12 +1,25 @@
 import re
+from typing import IO
 
 import dateutil.parser
+import pymongo
 from dateutil import tz
 
 from CveXplore.database.helpers import cpe_conversion
 
 
-def currentTime(utc):
+def sanitize(x: list | pymongo.cursor.Cursor):
+    if isinstance(x, pymongo.cursor.Cursor):
+        x = list(x)
+    if type(x) == list:
+        for y in x:
+            sanitize(y)
+    if x and "_id" in x:
+        x.pop("_id")
+    return x
+
+
+def currentTime(utc: bytes | str | IO[str] | IO):
     timezone = tz.tzlocal()
     utc = dateutil.parser.parse(utc)
     output = utc.astimezone(timezone)
@@ -14,18 +27,18 @@ def currentTime(utc):
     return output
 
 
-def isURL(string):
+def isURL(string: str):
     urlTypes = [re.escape(x) for x in ["http://", "https://", "www."]]
     return re.match("^(" + "|".join(urlTypes) + ")", string)
 
 
-def vFeedName(string):
+def vFeedName(string: str):
     string = string.replace("map_", "")
     string = string.replace("cve_", "")
     return string.title()
 
 
-def mergeSearchResults(database, plugins):
+def mergeSearchResults(database: dict, plugins: dict):
     if "errors" in database:
         results = {"data": [], "errors": database["errors"]}
     else:
@@ -40,7 +53,7 @@ def mergeSearchResults(database, plugins):
     return results
 
 
-def tk_compile(regexes):
+def tk_compile(regexes: str | list | tuple):
     if type(regexes) not in [list, tuple]:
         regexes = [regexes]
     r = []
@@ -51,12 +64,12 @@ def tk_compile(regexes):
 
 # Convert cpe2.2 url encoded to cpe2.3 char escaped
 # cpe:2.3:o:cisco:ios:12.2%281%29 to cpe:2.3:o:cisco:ios:12.2\(1\)
-def unquote(cpe):
+def unquote(cpe: str):
     return cpe_conversion.unquote(cpe)
 
 
 # Generates a human readable title from a CPE 2.3 string
-def generate_title(cpe):
+def generate_title(cpe: str):
     title = ""
 
     cpe_split = cpe.split(":")
