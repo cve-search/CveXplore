@@ -17,7 +17,7 @@ def cpe_cmd(ctx):
 @cpe_cmd.group(
     "search",
     invoke_without_command=True,
-    help="Search for cpe entries by name or title. Results are sorted ASCENDING by default",
+    help="Search for cpe entries by name, vendor or title. Results are sorted ASCENDING by default",
 )
 @click.option(
     "-n",

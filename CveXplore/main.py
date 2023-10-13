@@ -7,7 +7,7 @@ import json
 import os
 import re
 from collections import defaultdict
-from typing import List, Tuple
+from typing import List, Tuple, Union, Iterable
 
 from pymongo import DESCENDING
 
@@ -269,6 +269,20 @@ class CveXplore(object):
                 )
 
         return self.get_single_store_entry("cves", {"id": cve_id})
+
+    def cves_by_id(self, *cve_ids: str) -> Union[Iterable[CveXploreObject], Iterable]:
+        """
+        Method to retrieve a multiple CVE's from the database by its CVE ID number.
+        The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.
+        """
+        ret_data = []
+        for cve_id in cve_ids:
+            ret_data.append(self.cve_by_id(cve_id=cve_id))
+
+        if len(ret_data) >= 1:
+            return sorted(ret_data, key=lambda x: x.id)
+        else:
+            return ret_data
 
     def capec_by_cwe_id(self, cwe_id: int) -> List[CveXploreObject] | None:
         """
