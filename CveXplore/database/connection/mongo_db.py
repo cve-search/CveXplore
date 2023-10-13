@@ -54,7 +54,6 @@ class MongoDBConnection(object):
         atexit.register(self.disconnect)
 
     def get_collections_details(self):
-
         for each in self._dbclient.list_collections():
             yield each
 
@@ -69,7 +68,6 @@ class MongoDBConnection(object):
 
     @property
     def get_collection_names(self):
-
         return self._dbclient.list_collection_names()
 
     def disconnect(self):

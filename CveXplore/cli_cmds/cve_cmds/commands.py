@@ -54,7 +54,6 @@ def search_cmd(
     pretty,
     output,
 ):
-
     if cve:
         ret_list = ctx.obj["data_source"].cves_by_id(*cve)
     else:

@@ -324,7 +324,6 @@ class CveXplore(object):
         stats = defaultdict(dict)
 
         if not isinstance(self.datasource, ApiDatabaseSource):
-
             if hasattr(self.datasource, "store_info"):
                 results = self.datasource.store_info.find({})
                 for each in results:

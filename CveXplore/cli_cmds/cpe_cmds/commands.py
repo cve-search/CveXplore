@@ -103,7 +103,6 @@ def search_cmd(
     pretty,
     output,
 ):
-
     if not name and not vendor and title:
         search_by = "title"
     elif name and not vendor and title:

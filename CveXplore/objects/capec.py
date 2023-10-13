@@ -11,7 +11,6 @@ class Capec(DatasourceConnection):
     """
 
     def __init__(self, **kwargs):
-
         super().__init__("capec")
 
         for each in kwargs:

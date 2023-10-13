@@ -13,7 +13,6 @@ class Cves(DatasourceConnection):
     """
 
     def __init__(self, **kwargs):
-
         super().__init__("cves")
 
         for each in kwargs:

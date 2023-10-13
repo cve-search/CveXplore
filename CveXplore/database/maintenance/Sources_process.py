@@ -117,9 +117,7 @@ class CPEDownloads(NVDApiHandler):
         )
 
         if self.do_process:
-
             if not self.is_update:
-
                 total_results = self.api_handler.get_count(
                     self.api_handler.datasource.CPE
                 )
@@ -756,9 +754,7 @@ class CVEDownloads(NVDApiHandler):
         )
 
         if self.do_process:
-
             if not self.is_update:
-
                 total_results = self.api_handler.get_count(
                     self.api_handler.datasource.CVE
                 )
@@ -859,7 +855,6 @@ class CVEDownloads(NVDApiHandler):
         return self.last_modified
 
     def populate(self):
-
         self.logger.info("CVE database population started")
 
         self.logger.info(
@@ -900,7 +895,6 @@ class VIADownloads(JSONFileHandler):
         self.logger = logging.getLogger("VIADownloads")
 
     def file_to_queue(self, file_tuple: Tuple[str, str]):
-
         working_dir, filename = file_tuple
 
         for cve in self.ijson_handler.fetch(filename=filename, prefix=self.prefix):
@@ -930,7 +924,6 @@ class VIADownloads(JSONFileHandler):
             )
 
     def process_item(self, item: dict):
-
         if self.is_update:
             self.queue.put(
                 DatabaseAction(
@@ -991,7 +984,6 @@ class CAPECDownloads(XMLFileHandler):
         self.parser.setContentHandler(self.ch)
 
     def file_to_queue(self, file_tuple: Tuple[str, str]):
-
         working_dir, filename = file_tuple
 
         self.parser.parse(filename)
@@ -1053,7 +1045,6 @@ class CWEDownloads(XMLFileHandler):
         self.parser.setContentHandler(self.ch)
 
     def file_to_queue(self, file_tuple: Tuple[str, str]):
-
         working_dir, filename = file_tuple
 
         for f in glob.glob(f"{working_dir}/*.xml"):
@@ -1113,7 +1104,6 @@ class DatabaseIndexer(object):
     """
 
     def __init__(self):
-
         database = MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
         self.database = database._dbclient
 
@@ -1175,7 +1165,6 @@ class DatabaseIndexer(object):
         return sanitize(self.database["info"].find_one({"db": collection}))
 
     def create_indexes(self, collection: str = None):
-
         if collection is not None:
             try:
                 for each in self.indexes[collection]:

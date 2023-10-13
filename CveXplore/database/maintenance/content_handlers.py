@@ -77,7 +77,6 @@ class CapecHandler(ContentHandler):
         self.execution_flow = defaultdict(dict)
 
     def startElement(self, name, attrs):
-
         if name == "Attack_Pattern_Catalog":
             self.Attack_Pattern_Catalog_tag = True
         if name == "Attack_Patterns" and self.Attack_Pattern_Catalog_tag:
@@ -230,7 +229,6 @@ class CapecHandler(ContentHandler):
                     )
 
             elif self.taxonomy_name == "WASC":
-
                 if "/" in self.entry_name_ch:
                     url = "http://projects.webappsec.org/{}".format(
                         self.entry_name_ch.replace("/", " and ").replace(" ", "-")
@@ -385,7 +383,6 @@ class CWEHandler(ContentHandler):
         self.category_relationships_tag = False
 
     def startElement(self, name, attrs):
-
         if name == "Weakness":
             self.weakness_tag = True
             self.statement = ""

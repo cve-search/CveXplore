@@ -63,11 +63,9 @@ class NvdNistApi(ApiBaseClass):
         self.max_page_length = namedtuple("max_page_length", "CVE CPE")(2000, 10000)
 
     def get_url_only(self, resource: dict = None, data: int = 1) -> str:
-
         return self._build_url(resource=resource, data=data)
 
     def _build_url(self, resource: dict = None, data: int = 1) -> str:
-
         if resource is not None:
             resource = urlencode(resource)
             if data == self.datasource.CVE:
@@ -95,7 +93,6 @@ class NvdNistApi(ApiBaseClass):
         timeout: int = 60,
         return_response_object: bool = False,
     ):
-
         requests.packages.urllib3.disable_warnings()
 
         request_api_resource = {
@@ -138,7 +135,6 @@ class NvdNistApi(ApiBaseClass):
         return f"<< NvdNistApi:{self.baseurl} >>"
 
     def get_cves_from_start_year(self):
-
         start_date = datetime(int(self.config.CVE_START_YEAR), 1, 1, 0, 0, 0, 0)
         start_date_iso = start_date.isoformat()
 
@@ -158,7 +154,6 @@ class NvdNistApi(ApiBaseClass):
         last_mod_start_date: datetime = None,
         last_mod_end_date: datetime = None,
     ):
-
         # Check if diff > 120 days
         diff = last_mod_end_date - last_mod_start_date
 
@@ -203,7 +198,6 @@ class NvdNistApi(ApiBaseClass):
         last_mod_start_date: datetime = None,
         last_mod_end_date: datetime = None,
     ):
-
         resource = {}
 
         if last_mod_start_date is not None and last_mod_end_date is not None:
@@ -223,7 +217,6 @@ class NvdNistApi(ApiBaseClass):
         )
 
         if isinstance(data, int):
-
             for each_data in ApiData(
                 results_per_page=getattr(self.max_page_length, data_type.upper()),
                 start_index=0,
@@ -310,12 +303,10 @@ class ApiDataIterator(object):
         return self
 
     def __next__(self):
-
         if (
             self._current_index < self._total_results
             or self._page_length == self._total_results
         ):
-
             start_time = time.time()
 
             if not self.last_stop_time == 0:
@@ -368,7 +359,6 @@ class ApiDataIterator(object):
         raise StopIteration
 
     def process_async(self):
-
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         results = loop.run_until_complete(self.fetch_all(loop))
