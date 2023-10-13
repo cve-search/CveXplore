@@ -62,7 +62,6 @@ class MainUpdater(object):
 
         try:
             if update_source is None:
-
                 for source in self.sources:
                     up = source["updater"]()
                     up.update()

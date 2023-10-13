@@ -49,7 +49,6 @@ class SchemaChecker(object):
 
     def update(self):
         try:
-
             current_record = list(self.dbh.find({}))
 
             if len(current_record) != 0:

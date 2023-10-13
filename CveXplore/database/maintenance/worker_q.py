@@ -5,7 +5,6 @@ from CveXplore.database.maintenance.db_action import DatabaseAction
 
 class WorkerQueue(Queue):
     def __init__(self, name: str, maxsize: int = 0):
-
         super().__init__(maxsize)
         self.name = name
         self.maxsize = maxsize

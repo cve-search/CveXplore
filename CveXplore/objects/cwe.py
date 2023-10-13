@@ -11,7 +11,6 @@ class Cwe(DatasourceConnection):
     """
 
     def __init__(self, **kwargs):
-
         super().__init__("cwe")
 
         for each in kwargs:

@@ -16,7 +16,6 @@ class Cpe(DatasourceConnection):
     """
 
     def __init__(self, **kwargs):
-
         super().__init__("cpe")
 
         for each in kwargs:
