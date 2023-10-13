@@ -246,6 +246,7 @@ iterate over the requested results):</p>
 <span class="go">&lt;&lt; Capec:1 &gt;&gt;</span>
 </pre></div>
 </div>
+<p><strong>WARNING The collection specific find method does not adhere to the default limit of 10</strong></p>
 <p>If you would limit (or sort / skip) the returned results you could append additional commands to your original query:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
@@ -275,6 +276,23 @@ iterate over the requested results):</p>
 <span class="go">&lt;&lt; Cves:CVE-2017-16344 &gt;&gt;]</span>
 </pre></div>
 </div>
+</section>
+<section id="collection-regex-query">
+<h2>Collection Regex query<a class="headerlink" href="#collection-regex-query" title="Permalink to this heading"></a></h2>
+<p>If you would like to perform a regex search; the collection specific attributes have a search method available (returning an iterator to
+iterate over the requested results):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvex</span><span class="o">.</span><span class="n">cves</span><span class="o">.</span><span class="n">assigner</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;eaton\.com$&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+<span class="go">21</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvex</span><span class="o">.</span><span class="n">cves</span><span class="o">.</span><span class="n">assigner</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;eaton\.com$&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+<span class="go">10</span>
+</pre></div>
+</div>
+<p><strong>WARNING The collection specific search method does not adhere to the default limit of 10</strong></p>
 </section>
 <section id="collection-specific-functions">
 <h2>Collection specific functions<a class="headerlink" href="#collection-specific-functions" title="Permalink to this heading"></a></h2>
