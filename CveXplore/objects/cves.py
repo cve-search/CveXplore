@@ -81,15 +81,21 @@ class Cves(DatasourceConnection):
             for each in self.capec:
                 yield each
 
-    def to_dict(self):
+    def to_dict(self, *print_keys: str) -> dict:
         """
         Method to convert the entire object to a dictionary
-
-        :return: Data from object
-        :rtype: dict
         """
 
-        full_dict = {k: v for (k, v) in self.__dict__.items() if not k.startswith("_")}
+        if len(print_keys) != 0:
+            full_dict = {
+                k: v
+                for (k, v) in self.__dict__.items()
+                if not k.startswith("_") and k in print_keys
+            }
+        else:
+            full_dict = {
+                k: v for (k, v) in self.__dict__.items() if not k.startswith("_")
+            }
 
         for k, v in full_dict.items():
             if isinstance(v, DatasourceConnection):
@@ -105,12 +111,6 @@ class Cves(DatasourceConnection):
                 full_dict[k] = str(v)
 
         return full_dict
-
-    def __eq__(self, other):
-        return self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return self.__dict__ != other.__dict__
 
     def __repr__(self):
         """String representation of object"""

@@ -57,21 +57,19 @@ class Cpe(DatasourceConnection):
             else:
                 yield None
 
-    def to_dict(self):
+    def to_cve_summary(self) -> dict:
         """
-        Method to convert the entire object to a dictionary
-
-        :return: Data from object
-        :rtype: dict
+        Method to request all cve's from the database based on this cpe object
         """
-
-        return {k: v for (k, v) in self.__dict__.items() if not k.startswith("_")}
-
-    def __eq__(self, other):
-        return self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return self.__dict__ != other.__dict__
+        all_cves = list(self.iter_cves_matching_cpe())
+        data_cves = [
+            d.to_dict("id", "cvss", "cvss3", "published", "modified", "summary")
+            for d in all_cves
+        ]
+        data_cpe = self.to_dict()
+        data_cpe["cvecount"] = len(data_cves)
+        data_cpe["cves"] = data_cves
+        return data_cpe
 
     def __repr__(self):
         """String representation of object"""
