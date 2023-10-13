@@ -116,8 +116,8 @@ please check <a class="reference external" href="https://github.com/cve-search/c
 <h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h1>
 <p>Check <a class="reference external" href="https://cve-search.github.io/CveXplore/">github pages documentation</a></p>
 </section>
-<section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
+<section id="general">
+<h1>General<a class="headerlink" href="#general" title="Permalink to this heading"></a></h1>
 <section id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h2>
 <p>CveXplore automatically creates a config folder in ‘~/.cvexplore’. CveXplore stores several configuration
@@ -148,6 +148,9 @@ files in here such as the .env for general configuration and the .sources.ini fo
 <p>You can add your <a class="reference external" href="https://nvd.nist.gov/developers/request-an-api-key">nist api key</a> in the .env file.
 You can populate CveXplore without an api key, but it will limit the amount of parallel requests made to the NIST api.</p>
 </section>
+</section>
+<section id="package-usage">
+<h1>Package usage<a class="headerlink" href="#package-usage" title="Permalink to this heading"></a></h1>
 <section id="instantiation">
 <h2>Instantiation<a class="headerlink" href="#instantiation" title="Permalink to this heading"></a></h2>
 <p>CveXplore can be instantiated with different parameters, depending to which data source you’re going to connect to.
@@ -429,6 +432,14 @@ capecs from the CVE-2018-8540, could be done directly:</p>
 <span class="go">&#39;typical_severity&#39;: &#39;High&#39;}</span>
 </pre></div>
 </div>
+</section>
+</section>
+<section id="command-line-usage">
+<h1>Command line usage<a class="headerlink" href="#command-line-usage" title="Permalink to this heading"></a></h1>
+<section id="shell-completion">
+<h2>Shell completion<a class="headerlink" href="#shell-completion" title="Permalink to this heading"></a></h2>
+<p>The command line application is a click application and therefore supports tab completion; please follow the
+<a class="reference external" href="https://click.palletsprojects.com/en/8.1.x/shell-completion/">Instructions</a> on the click site</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">General documentation</span></p>
 <ul>
