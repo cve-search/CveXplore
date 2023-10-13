@@ -202,6 +202,8 @@ iterate over the requested results):
    ...
    << Capec:1 >>
 
+**WARNING The collection specific find method does not adhere to the default limit of 10**
+
 If you would limit (or sort / skip) the returned results you could append additional commands to your original query:
 
 .. code-block:: python
@@ -234,6 +236,25 @@ If you would like to sort the results:
    << Cves:CVE-2017-16346 >>,
    << Cves:CVE-2017-16345 >>,
    << Cves:CVE-2017-16344 >>]
+
+Collection Regex query
+**********************
+If you would like to perform a regex search; the collection specific attributes have a search method available (returning an iterator to
+iterate over the requested results):
+
+.. code-block:: python
+
+   >>> from CveXplore import CveXplore
+   >>> cvx = CveXplore()
+   >>> result = cvex.cves.assigner.search("eaton\.com$")
+   >>> len(list(result))
+   21
+
+   >>> result = cvex.cves.assigner.search("eaton\.com$").limit(10)
+   >>> len(list(result))
+   10
+
+**WARNING The collection specific search method does not adhere to the default limit of 10**
 
 Collection specific functions
 *****************************
