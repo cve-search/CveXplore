@@ -1147,6 +1147,9 @@ class DatabaseIndexer(object):
                 MongoAddIndex(index=[("summary", TEXT)], name="summary"),
                 MongoAddIndex(index=[("vendors", ASCENDING)], name="vendors"),
                 MongoAddIndex(index=[("products", ASCENDING)], name="products"),
+                MongoAddIndex(index=[("assigner", ASCENDING)], name="assigner"),
+                MongoAddIndex(index=[("cwe", ASCENDING)], name="cwe"),
+                MongoAddIndex(index=[("status", ASCENDING)], name="status"),
                 MongoAddIndex(
                     index=[("vulnerable_product_stems", ASCENDING)],
                     name="vulnerable_product_stems",

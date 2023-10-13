@@ -85,10 +85,14 @@ class CveXplore(object):
         from CveXplore.database.helpers.specific_db import CvesDatabaseFunctions
 
         for each in self.database_mapping:
-            if each != "cves":
-                setattr(self, each, GenericDatabaseFactory(collection=each))
-            else:
-                setattr(self, each, CvesDatabaseFunctions(collection=each))
+            try:
+                if each != "cves":
+                    setattr(self, each, GenericDatabaseFactory(collection=each))
+                else:
+                    setattr(self, each, CvesDatabaseFunctions(collection=each))
+            except KeyError:
+                # no specific or generic methods configured, skipping
+                continue
 
     def get_single_store_entry(
         self, entry_type: str, dict_filter: dict = None

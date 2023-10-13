@@ -49,8 +49,8 @@ Documentation
 -------------
 Check `github pages documentation <https://cve-search.github.io/CveXplore/>`_
 
-Usage
------
+General
+-------
 
 Configuration
 *************
@@ -88,6 +88,9 @@ Or via the the CveXplore object:
 
 You can add your `nist api key <https://nvd.nist.gov/developers/request-an-api-key>`_ in the .env file.
 You can populate CveXplore without an api key, but it will limit the amount of parallel requests made to the NIST api.
+
+Package usage
+-------------
 
 Instantiation
 *************
@@ -398,3 +401,11 @@ All returned objects can be serialized into a dictionary with the to_dict() func
                                                     'Weakness',
                                       'URL': 'https://attack.mitre.org/techniques/T1574/010'}}},
    'typical_severity': 'High'}
+
+Command line usage
+------------------
+
+Shell completion
+****************
+The command line application is a click application and therefore supports tab completion; please follow the
+`Instructions <https://click.palletsprojects.com/en/8.1.x/shell-completion/>`_ on the click site

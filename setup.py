@@ -40,7 +40,6 @@ setup(
         "CveXplore": [
             "LICENSE",
             "VERSION",
-            ".cvexplore-complete.bash",
             ".schema_version",
             "/common/.sources.ini",
             "/common/.env_example",

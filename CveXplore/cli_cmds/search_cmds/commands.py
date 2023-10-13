@@ -42,8 +42,10 @@ def search_cmd(ctx, collection, field, value, limit, pretty, output):
     ret_list = ctx.obj["data_source"].get_single_store_entries(
         (collection, {field: value.upper()}), limit=limit
     )
-
-    result = [result.to_dict() for result in ret_list]
+    try:
+        result = [result.to_dict() for result in ret_list]
+    except TypeError:
+        result = []
 
     if ctx.invoked_subcommand is None:
         printer(input_data=result, pretty=pretty, output=output)

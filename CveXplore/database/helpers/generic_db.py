@@ -36,7 +36,6 @@ class GenericDatabaseFactory(DatasourceConnection):
             ],
             "cpe": ["title", "cpeName", "vendor", "product"],
             "cwe": ["name", "status", "Description"],
-            "via4": ["name"],
             "cves": [
                 "cvss",
                 "cvss3",
@@ -46,6 +45,9 @@ class GenericDatabaseFactory(DatasourceConnection):
                 "lastModified",
                 "modified",
                 "published",
+                "status",
+                "assigner",
+                "cwe",
             ],
         }
 
