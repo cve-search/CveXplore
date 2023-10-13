@@ -57,13 +57,22 @@ class Cpe(DatasourceConnection):
             else:
                 yield None
 
-    def to_cve_summary(self) -> dict:
+    def to_cve_summary(self, vuln_prod_search: bool = False) -> dict:
         """
         Method to request all cve's from the database based on this cpe object
         """
-        all_cves = list(self.iter_cves_matching_cpe())
+        all_cves = list(self.iter_cves_matching_cpe(vuln_prod_search=vuln_prod_search))
         data_cves = [
-            d.to_dict("id", "cvss", "cvss3", "published", "modified", "summary")
+            d.to_dict(
+                "id",
+                "cvss",
+                "cvss3",
+                "published",
+                "modified",
+                "summary",
+                "references",
+                "status",
+            )
             for d in all_cves
         ]
         data_cpe = self.to_dict()

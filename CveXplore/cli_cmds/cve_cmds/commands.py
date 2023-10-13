@@ -9,11 +9,14 @@ from CveXplore.cli_cmds.mutex_options.mutex import Mutex
 @click.group("cve", invoke_without_command=True, help="Query for cve specific data")
 @click.pass_context
 def cve_cmd(ctx):
-    pass
+    if ctx.invoked_subcommand is None:
+        click.echo(cve_cmd.get_help(ctx))
 
 
 @cve_cmd.group(
-    "last", invoke_without_command=True, help="Query the last N amount of cve entries"
+    "last",
+    invoke_without_command=True,
+    help="Query the last L (-l) amount of cve entries",
 )
 @click.option("-l", "--limit", default=10, help="Query limit")
 @click.option(
@@ -27,7 +30,7 @@ def cve_cmd(ctx):
     "-o",
     "--output",
     default="json",
-    help="Set the desired output format",
+    help="Set the desired output format (defaults to json)",
     type=click.Choice(["json", "csv", "xml", "html"], case_sensitive=False),
     cls=Mutex,
     not_required_if=["pretty"],
@@ -45,9 +48,3 @@ def last_cmd(ctx, limit, pretty, output):
             ctx.obj["RESULT"] = pformat(result, indent=4)
         else:
             ctx.obj["RESULT"] = result
-
-
-@last_cmd.command("less", help="Lets you scroll through the returned results")
-@click.pass_context
-def less_cmd(ctx):
-    click.echo_via_pager(ctx.obj["RESULT"])

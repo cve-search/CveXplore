@@ -7,9 +7,9 @@ from CveXplore.cli_cmds.mutex_options.mutex import Mutex
 
 
 @click.group(
-    "search",
+    "find",
     invoke_without_command=True,
-    help="Perform search queries on a single collection",
+    help="Perform find queries on a single collection",
 )
 @click.option(
     "-c",
@@ -32,7 +32,7 @@ from CveXplore.cli_cmds.mutex_options.mutex import Mutex
     "-o",
     "--output",
     default="json",
-    help="Set the desired output format",
+    help="Set the desired output format (defaults to json)",
     type=click.Choice(["json", "csv", "xml", "html"], case_sensitive=False),
     cls=Mutex,
     not_required_if=["pretty"],
@@ -54,9 +54,3 @@ def search_cmd(ctx, collection, field, value, limit, pretty, output):
             ctx.obj["RESULT"] = pformat(result, indent=4)
         else:
             ctx.obj["RESULT"] = result
-
-
-@search_cmd.command("less", help="Lets you scroll through the returned results")
-@click.pass_context
-def less_cmd(ctx):
-    click.echo_via_pager(ctx.obj["RESULT"])

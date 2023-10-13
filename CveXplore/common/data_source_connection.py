@@ -24,12 +24,36 @@ class DatasourceConnection(CveXploreObject):
             else MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
         )
 
+    def to_dict(self, *print_keys: str) -> dict:
+        """
+        Method to convert the entire object to a dictionary
+        """
+
+        if len(print_keys) != 0:
+            full_dict = {
+                k: v
+                for (k, v) in self.__dict__.items()
+                if not k.startswith("_") and k in print_keys
+            }
+        else:
+            full_dict = {
+                k: v for (k, v) in self.__dict__.items() if not k.startswith("_")
+            }
+
+        return full_dict
+
     def __init__(self, collection: str):
         """
         Create a DatasourceConnection object
         """
         super().__init__()
         self.__collection = collection
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return self.__dict__ != other.__dict__
 
     @property
     def _datasource_connection(self):

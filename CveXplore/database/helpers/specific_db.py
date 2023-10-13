@@ -2,6 +2,7 @@
 Specific database functions
 ===========================
 """
+import re
 from typing import List
 
 from pymongo import DESCENDING
@@ -24,13 +25,6 @@ class CvesDatabaseFunctions(GenericDatabaseFactory):
     ) -> List[CveXploreObject] | None:
         """
         Function to return cves based on a given vendor. By default, to result is sorted descending on th cvss field.
-
-        :param vendor: A vendor to search for; e.g. microsoft
-        :type vendor: str
-        :param limit: Limit the amount of returned results
-        :type limit: int
-        :return: List with cves objects
-        :rtype: list
         """
 
         the_result = list(
@@ -47,3 +41,59 @@ class CvesDatabaseFunctions(GenericDatabaseFactory):
     def __repr__(self):
         """String representation of object"""
         return "<< CvesDatabaseFunctions:{} >>".format(self._collection)
+
+
+class CpeDatabaseFunctions(GenericDatabaseFactory):
+    """
+    The CpeDatabaseFunctions is a specific class that provides the cpe attribute of a CveXplore instance additional
+    functions that only apply to the 'cpe' collection
+    """
+
+    def __init__(self, collection: str):
+        super().__init__(collection)
+
+    def search_active_cpes(
+        self, field: str, value: str, limit: int = 0, sorting: int = 1
+    ) -> List[CveXploreObject] | None:
+        """
+        Function to regex search for cpe based on value in string. Only active (deprecated == false) cpe records are
+        returned.
+        """
+        regex = re.compile(value, re.IGNORECASE)
+
+        query = {"$and": [{field: {"$regex": regex}}, {"deprecated": False}]}
+
+        the_result = list(
+            self._datasource_collection_connection.find(query)
+            .limit(limit)
+            .sort(field, sorting)
+        )
+
+        if len(the_result) != 0:
+            return the_result
+        else:
+            return None
+
+    def find_active_cpes(
+        self, field: str, value: str, limit: int = 0, sorting: int = 1
+    ) -> List[CveXploreObject] | None:
+        """
+        Function to find cpe based on value in string. Only active (deprecated == false) cpe records are
+        returned.
+        """
+        query = {"$and": [{field: value}, {"deprecated": False}]}
+
+        the_result = list(
+            self._datasource_collection_connection.find(query)
+            .limit(limit)
+            .sort(field, sorting)
+        )
+
+        if len(the_result) != 0:
+            return the_result
+        else:
+            return None
+
+    def __repr__(self):
+        """String representation of object"""
+        return "<< CpeDatabaseFunctions:{} >>".format(self._collection)

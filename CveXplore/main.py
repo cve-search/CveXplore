@@ -82,14 +82,19 @@ class CveXplore(object):
         self.database_mapping = database_mapping
 
         from CveXplore.database.helpers.generic_db import GenericDatabaseFactory
-        from CveXplore.database.helpers.specific_db import CvesDatabaseFunctions
+        from CveXplore.database.helpers.specific_db import (
+            CvesDatabaseFunctions,
+            CpeDatabaseFunctions,
+        )
 
         for each in self.database_mapping:
             try:
-                if each != "cves":
-                    setattr(self, each, GenericDatabaseFactory(collection=each))
-                else:
+                if each == "cves":
                     setattr(self, each, CvesDatabaseFunctions(collection=each))
+                elif each == "cpe":
+                    setattr(self, each, CpeDatabaseFunctions(collection=each))
+                else:
+                    setattr(self, each, GenericDatabaseFactory(collection=each))
             except KeyError:
                 # no specific or generic methods configured, skipping
                 continue

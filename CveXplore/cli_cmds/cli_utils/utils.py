@@ -20,7 +20,7 @@ def format_output(format_type, input_list):
     """
 
     if format_type == "json":
-        output = json.dumps(input_list)
+        output = json.dumps(input_list, indent=4, sort_keys=True, default=str)
     elif format_type == "csv":
         df = pd.DataFrame(input_list)
         output = df.to_csv(index=False)
