@@ -3,11 +3,12 @@ Specific database functions
 ===========================
 """
 import re
-from typing import List
+from typing import List, Union, Iterable
 
 from pymongo import DESCENDING
 
 from CveXplore.database.helpers.generic_db import GenericDatabaseFactory
+from CveXplore.errors.validation import CveNumberValidationError
 from CveXplore.objects.cvexplore_object import CveXploreObject
 
 
@@ -37,6 +38,33 @@ class CvesDatabaseFunctions(GenericDatabaseFactory):
             return the_result
         else:
             return None
+
+    def get_by_id(self, doc_id: str):
+        """
+        Method to retrieve a single CVE from the database by its CVE ID number.
+        The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.
+        """
+        # first try to match full cve number format
+        reg_match = re.compile(r"[cC][vV][eE]-\d{4}-\d{4,10}")
+        if reg_match.match(doc_id) is not None:
+            doc_id = doc_id.upper()
+        else:
+            part_match = re.compile(r"\d{4}-\d{4,10}")
+            if part_match.match(doc_id) is not None:
+                doc_id = f"CVE-{doc_id}"
+            else:
+                raise CveNumberValidationError(
+                    "Could not validate the CVE number. The number format should be either "
+                    "CVE-2000-0001, cve-2000-0001 or 2000-0001."
+                )
+
+        if not isinstance(doc_id, str):
+            try:
+                doc_id = str(doc_id)
+            except ValueError:
+                return "Provided value is not a string nor can it be cast to one"
+
+        return self._datasource_collection_connection.find_one({"id": doc_id})
 
     def __repr__(self):
         """String representation of object"""

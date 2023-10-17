@@ -1,5 +1,3 @@
-from pprint import pformat
-
 import click
 import pymongo
 
@@ -26,7 +24,7 @@ def cpe_cmd(ctx):
     is_flag=True,
     help="Search by name",
     cls=Mutex,
-    not_required_if=["title", "vendor"],
+    not_required_if=["field", "cpe", "title", "vendor", "field_list"],
 )
 @click.option(
     "-t",
@@ -35,7 +33,7 @@ def cpe_cmd(ctx):
     is_flag=True,
     help="Search by title (default)",
     cls=Mutex,
-    not_required_if=["name", "vendor"],
+    not_required_if=["field", "cpe", "name", "vendor", "field_list"],
 )
 @click.option(
     "-v",
@@ -44,7 +42,32 @@ def cpe_cmd(ctx):
     is_flag=True,
     help="Search by vendor",
     cls=Mutex,
-    not_required_if=["name", "title"],
+    not_required_if=["field", "cpe", "name", "title", "field_list"],
+)
+@click.option(
+    "-c",
+    "--cpe",
+    help="Search for CPE's (could be multiple) by id",
+    multiple=True,
+    cls=Mutex,
+    not_required_if=["field_list", "name", "title", "vendor"],
+)
+@click.option(
+    "-f",
+    "--field",
+    help="Field to return (could be multiple)",
+    multiple=True,
+    cls=Mutex,
+    not_required_if=["field_list", "name", "title", "vendor"],
+)
+@click.option(
+    "-fl",
+    "--field_list",
+    help="Return a field list for this collection",
+    multiple=True,
+    is_flag=True,
+    cls=Mutex,
+    not_required_if=["field", "cpe", "name", "title", "vendor"],
 )
 @click.option(
     "-m",
@@ -72,20 +95,11 @@ def cpe_cmd(ctx):
 @click.option("-l", "--limit", default=10, help="Search limit")
 @click.option("-s", "--sort", is_flag=True, help="Sort DESCENDING")
 @click.option(
-    "--pretty",
-    is_flag=True,
-    help="Pretty print the output",
-    cls=Mutex,
-    not_required_if=["output"],
-)
-@click.option(
     "-o",
     "--output",
     default="json",
     help="Set the desired output format (defaults to json)",
     type=click.Choice(["json", "csv", "xml", "html"], case_sensitive=False),
-    cls=Mutex,
-    not_required_if=["pretty"],
 )
 @click.pass_context
 def search_cmd(
@@ -93,6 +107,9 @@ def search_cmd(
     name,
     title,
     vendor,
+    cpe,
+    field,
+    field_list,
     match,
     regex,
     deprecated,
@@ -100,7 +117,6 @@ def search_cmd(
     product_search,
     limit,
     sort,
-    pretty,
     output,
 ):
     if not name and not vendor and title:
@@ -139,19 +155,24 @@ def search_cmd(
                 .limit(limit)
                 .sort(search_by, sorting)
             )
+    elif cpe:
+        ret_list = getattr(ctx.obj["data_source"], "cpe").mget_by_id(*cpe)
+    elif field_list:
+        ret_list = getattr(ctx.obj["data_source"], "cpe").field_list()
     else:
         click.echo(search_cmd.get_help(ctx))
         return
 
     if cve:
         result = [result.to_cve_summary(product_search) for result in ret_list]
+    elif cpe:
+        result = [result.to_dict(*field) for result in ret_list]
+    elif isinstance(ret_list, set):
+        result = sorted([result for result in ret_list])
     else:
         result = [result.to_dict() for result in ret_list]
 
     if ctx.invoked_subcommand is None:
-        printer(input_data=result, pretty=pretty, output=output)
+        printer(input_data=result, output=output)
     else:
-        if pretty:
-            ctx.obj["RESULT"] = pformat(result, indent=4)
-        else:
-            ctx.obj["RESULT"] = result
+        ctx.obj["RESULT"] = result

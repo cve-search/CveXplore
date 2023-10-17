@@ -1,6 +1,5 @@
 import json
 from collections import defaultdict
-from pprint import pformat
 
 import click
 import pandas as pd
@@ -41,14 +40,8 @@ def format_output(format_type, input_list):
     return output
 
 
-def printer(input_data, pretty=False, output="json"):
+def printer(input_data, output="json"):
     if isinstance(input_data, list):
-        if not pretty:
-            click.echo(format_output(output, input_data))
-        else:
-            click.secho(pformat(input_data, indent=4), bold=True, fg="blue")
+        click.echo(format_output(output, input_data))
     elif isinstance(input_data, dict):
-        if not pretty:
-            click.echo(input_data)
-        else:
-            click.secho(pformat(input_data, indent=4), bold=True, fg="blue")
+        click.echo(input_data)

@@ -3,9 +3,12 @@ Generic database functions
 ==========================
 """
 import re
+from functools import reduce
+from typing import Union, Iterable
 
 from CveXplore.common.data_source_connection import DatasourceConnection
 from CveXplore.common.db_mapping import database_mapping
+from CveXplore.objects.cvexplore_object import CveXploreObject
 
 
 class GenericDatabaseFactory(DatasourceConnection):
@@ -75,6 +78,34 @@ class GenericDatabaseFactory(DatasourceConnection):
                 return "Provided value is not a string nor can it be cast to one"
 
         return self._datasource_collection_connection.find_one({"id": doc_id})
+
+    def mget_by_id(self, *doc_ids: str) -> Union[Iterable[CveXploreObject], Iterable]:
+        """
+        Method to fetch a specific collection entry via it's id number
+        """
+        ret_data = []
+        for doc_id in doc_ids:
+            data = self.get_by_id(doc_id=doc_id)
+            if data is not None:
+                ret_data.append(data)
+
+        if len(ret_data) >= 1:
+            return sorted(ret_data, key=lambda x: x.id)
+        else:
+            return ret_data
+
+    def field_list(self) -> set:
+        """
+        Method to fetch all field names from a specific collection
+        """
+        return reduce(
+            lambda all_keys, rec_keys: all_keys | set(rec_keys),
+            map(
+                lambda d: d.to_dict(),
+                [self._datasource_collection_connection.find_one()],
+            ),
+            set(),
+        )
 
     def __repr__(self):
         """String representation of object"""

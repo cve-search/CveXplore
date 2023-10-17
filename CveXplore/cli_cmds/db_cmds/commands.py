@@ -12,7 +12,8 @@ from CveXplore.common.config import Configuration
 )
 @click.pass_context
 def db_cmd(ctx):
-    pass
+    if ctx.invoked_subcommand is None:
+        click.echo(db_cmd.get_help(ctx))
 
 
 @db_cmd.group("update", invoke_without_command=True, help="Update the database")
@@ -30,19 +31,19 @@ def initialize_cmd(ctx):
 @db_cmd.group("sources", invoke_without_command=True, help="Database source management")
 @click.pass_context
 def sources_cmd(ctx):
-    pass
+    if ctx.invoked_subcommand is None:
+        click.echo(sources_cmd.get_help(ctx))
 
 
 @sources_cmd.group("show", invoke_without_command=True, help="Show sources")
-@click.option("--pretty", is_flag=True, help="Pretty print the output")
 @click.pass_context
-def show_cmd(ctx, pretty):
+def show_cmd(ctx):
     config = Configuration()
 
     if ctx.invoked_subcommand is None:
-        printer(input_data=config.SOURCES, pretty=pretty)
+        printer(input_data=[config.SOURCES])
     else:
-        printer(input_data=config.SOURCES, pretty=pretty)
+        printer(input_data=[config.SOURCES])
 
 
 @sources_cmd.group("set", invoke_without_command=True, help="Set sources")
@@ -64,7 +65,7 @@ def set_cmd(ctx, key, value):
     with open(os.path.join(config.USER_HOME_DIR, ".sources.ini"), "w") as f:
         f.write(json.dumps(sources))
 
-    printer(input_data={"SOURCES SET TO": sources}, pretty=True)
+    printer(input_data=[{"SOURCES SET TO": sources}])
 
 
 @sources_cmd.group("reset", invoke_without_command=True, help="Set sources")
@@ -77,4 +78,4 @@ def reset_cmd(ctx):
     with open(os.path.join(config.USER_HOME_DIR, ".sources.ini"), "w") as f:
         f.write(json.dumps(sources))
 
-    printer(input_data={"SOURCES RESET TO": sources}, pretty=True)
+    printer(input_data=[{"SOURCES RESET TO": sources}])

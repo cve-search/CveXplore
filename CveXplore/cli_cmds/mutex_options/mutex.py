@@ -10,7 +10,7 @@ class Mutex(click.Option):
 
         kwargs["help"] = (
             kwargs.get("help", "")
-            + ". *** Option is mutually exclusive with the option(s): '"
+            + ". \n\n*** Option is mutually exclusive with the option(s): '"
             + ", ".join(self.not_required_if)
             + "'. ***"
         ).strip()
