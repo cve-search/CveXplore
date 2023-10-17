@@ -21,8 +21,6 @@ def cwe_cmd(ctx):
     "--cwe",
     help="Search for CWE's (could be multiple)",
     multiple=True,
-    cls=Mutex,
-    not_required_if=["field_list"],
 )
 @click.option(
     "-f",
@@ -36,10 +34,9 @@ def cwe_cmd(ctx):
     "-fl",
     "--field_list",
     help="Return a field list for this collection",
-    multiple=True,
     is_flag=True,
     cls=Mutex,
-    not_required_if=["field", "cwe"],
+    not_required_if=["field"],
 )
 @click.option(
     "-o",
@@ -56,18 +53,18 @@ def search_cmd(
     field_list,
     output,
 ):
-    if cwe:
+    if cwe and not field_list:
         ret_list = getattr(ctx.obj["data_source"], "cwe").mget_by_id(*cwe)
-    elif field_list:
-        ret_list = getattr(ctx.obj["data_source"], "cwe").field_list()
+    elif cwe and field_list:
+        ret_list = getattr(ctx.obj["data_source"], "cwe").field_list(*cwe)
     else:
         click.echo(search_cmd.get_help(ctx))
         return
 
-    if isinstance(ret_list, list):
+    if isinstance(ret_list, list) and not field_list:
         result = [result.to_dict(*field) for result in ret_list]
-    elif isinstance(ret_list, set):
-        result = sorted([result for result in ret_list])
+    elif field_list:
+        result = [result for result in ret_list]
     else:
         result = []
 

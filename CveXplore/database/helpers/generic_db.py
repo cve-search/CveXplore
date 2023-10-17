@@ -94,18 +94,37 @@ class GenericDatabaseFactory(DatasourceConnection):
         else:
             return ret_data
 
-    def field_list(self) -> set:
+    def _field_list(self, doc_id: str) -> list:
         """
         Method to fetch all field names from a specific collection
         """
-        return reduce(
-            lambda all_keys, rec_keys: all_keys | set(rec_keys),
-            map(
-                lambda d: d.to_dict(),
-                [self._datasource_collection_connection.find_one()],
-            ),
-            set(),
+        return sorted(
+            list(
+                reduce(
+                    lambda all_keys, rec_keys: all_keys | set(rec_keys),
+                    map(
+                        lambda d: d.to_dict(),
+                        [
+                            self._datasource_collection_connection.find_one(
+                                {"id": doc_id}
+                            )
+                        ],
+                    ),
+                    set(),
+                )
+            )
         )
+
+    def field_list(self, *doc_ids: str) -> list | dict:
+        """
+        Method to fetch all field names from a specific collection
+        """
+        ret_data = []
+        for doc_id in sorted(doc_ids):
+            data = self._field_list(doc_id=doc_id)
+            ret_data.append({doc_id: data, "field_count": len(data)})
+
+        return ret_data
 
     def __repr__(self):
         """String representation of object"""

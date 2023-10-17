@@ -4,9 +4,9 @@ import click
 import click_completion.core
 
 from CveXplore.cli_cmds.capec_cmds import commands as group6
-from CveXplore.cli_cmds.cwe_cmds import commands as group7
 from CveXplore.cli_cmds.cpe_cmds import commands as group5
 from CveXplore.cli_cmds.cve_cmds import commands as group2
+from CveXplore.cli_cmds.cwe_cmds import commands as group7
 from CveXplore.cli_cmds.db_cmds import commands as group4
 from CveXplore.cli_cmds.find_cmds import commands as group1
 from CveXplore.cli_cmds.stats_cmds import commands as group3

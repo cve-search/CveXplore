@@ -50,7 +50,7 @@ def cpe_cmd(ctx):
     help="Search for CPE's (could be multiple) by id",
     multiple=True,
     cls=Mutex,
-    not_required_if=["field_list", "name", "title", "vendor"],
+    not_required_if=["name", "title", "vendor"],
 )
 @click.option(
     "-f",
@@ -64,10 +64,9 @@ def cpe_cmd(ctx):
     "-fl",
     "--field_list",
     help="Return a field list for this collection",
-    multiple=True,
     is_flag=True,
     cls=Mutex,
-    not_required_if=["field", "cpe", "name", "title", "vendor"],
+    not_required_if=["field", "name", "title", "vendor"],
 )
 @click.option(
     "-m",
@@ -84,7 +83,7 @@ def cpe_cmd(ctx):
     not_required_if=["match"],
 )
 @click.option("-d", "--deprecated", is_flag=True, help="Filter deprecated cpe's")
-@click.option("-c", "--cve", is_flag=True, help="Add related CVE's")
+@click.option("-rc", "--related_cve", is_flag=True, help="Add related CVE's")
 @click.option(
     "-p",
     "--product_search",
@@ -113,7 +112,7 @@ def search_cmd(
     match,
     regex,
     deprecated,
-    cve,
+    related_cve,
     product_search,
     limit,
     sort,
@@ -155,20 +154,20 @@ def search_cmd(
                 .limit(limit)
                 .sort(search_by, sorting)
             )
-    elif cpe:
+    elif cpe and not field_list:
         ret_list = getattr(ctx.obj["data_source"], "cpe").mget_by_id(*cpe)
-    elif field_list:
-        ret_list = getattr(ctx.obj["data_source"], "cpe").field_list()
+    elif cpe and field_list:
+        ret_list = getattr(ctx.obj["data_source"], "cpe").field_list(*cpe)
     else:
         click.echo(search_cmd.get_help(ctx))
         return
 
-    if cve:
+    if related_cve:
         result = [result.to_cve_summary(product_search) for result in ret_list]
-    elif cpe:
+    elif cpe and not field_list:
         result = [result.to_dict(*field) for result in ret_list]
-    elif isinstance(ret_list, set):
-        result = sorted([result for result in ret_list])
+    elif field_list:
+        result = [result for result in ret_list]
     else:
         result = [result.to_dict() for result in ret_list]
 

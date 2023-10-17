@@ -3,7 +3,8 @@ Specific database functions
 ===========================
 """
 import re
-from typing import List, Union, Iterable
+from functools import reduce
+from typing import List
 
 from pymongo import DESCENDING
 
@@ -39,11 +40,7 @@ class CvesDatabaseFunctions(GenericDatabaseFactory):
         else:
             return None
 
-    def get_by_id(self, doc_id: str):
-        """
-        Method to retrieve a single CVE from the database by its CVE ID number.
-        The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.
-        """
+    def __parse_cve_id(self, doc_id: str) -> str:
         # first try to match full cve number format
         reg_match = re.compile(r"[cC][vV][eE]-\d{4}-\d{4,10}")
         if reg_match.match(doc_id) is not None:
@@ -57,6 +54,14 @@ class CvesDatabaseFunctions(GenericDatabaseFactory):
                     "Could not validate the CVE number. The number format should be either "
                     "CVE-2000-0001, cve-2000-0001 or 2000-0001."
                 )
+        return doc_id
+
+    def get_by_id(self, doc_id: str):
+        """
+        Method to retrieve a single CVE from the database by its CVE ID number.
+        The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.
+        """
+        doc_id = self.__parse_cve_id(doc_id)
 
         if not isinstance(doc_id, str):
             try:
@@ -65,6 +70,29 @@ class CvesDatabaseFunctions(GenericDatabaseFactory):
                 return "Provided value is not a string nor can it be cast to one"
 
         return self._datasource_collection_connection.find_one({"id": doc_id})
+
+    def _field_list(self, doc_id: str) -> list:
+        """
+        Method to fetch all field names from a specific collection
+        """
+        doc_id = self.__parse_cve_id(doc_id)
+
+        return sorted(
+            list(
+                reduce(
+                    lambda all_keys, rec_keys: all_keys | set(rec_keys),
+                    map(
+                        lambda d: d.to_dict(),
+                        [
+                            self._datasource_collection_connection.find_one(
+                                {"id": doc_id}
+                            )
+                        ],
+                    ),
+                    set(),
+                )
+            )
+        )
 
     def __repr__(self):
         """String representation of object"""
