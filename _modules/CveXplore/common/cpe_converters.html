@@ -11,12 +11,11 @@
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -27,11 +26,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> CveXplore
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            CveXplore
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -67,7 +70,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
       <li class="breadcrumb-item active">CveXplore.common.cpe_converters</li>
       <li class="wy-breadcrumbs-aside">
@@ -83,26 +86,20 @@
 <span class="sd">CPE Converters</span>
 <span class="sd">==============</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">CveXplore.database.helpers.cpe_conversion</span> <span class="kn">import</span> <span class="n">cpe_uri_to_fs</span><span class="p">,</span> <span class="n">cpe_fs_to_uri</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.database.maintenance</span> <span class="kn">import</span> <span class="n">cpe_conversion</span>
 
-
-<div class="viewcode-block" id="from2to3CPE"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.cpe_converters.from2to3CPE">[docs]</a><span class="k">def</span> <span class="nf">from2to3CPE</span><span class="p">(</span><span class="n">cpe</span><span class="p">,</span> <span class="n">autofill</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="from2to3CPE">
+<a class="viewcode-back" href="../../../package/common.html#CveXplore.common.cpe_converters.from2to3CPE">[docs]</a>
+<span class="k">def</span> <span class="nf">from2to3CPE</span><span class="p">(</span><span class="n">cpe</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">autofill</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Method to transform cpe2.2 to cpe2.3 format</span>
-
-<span class="sd">    :param cpe: cpe2.2 string</span>
-<span class="sd">    :type cpe: str</span>
-<span class="sd">    :param autofill: Whether to cpe string should be autofilled with double quotes and hyphens</span>
-<span class="sd">    :type autofill: bool</span>
-<span class="sd">    :return: cpe2.3 formatted string</span>
-<span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">cpe</span> <span class="o">=</span> <span class="n">cpe</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cpe</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;cpe:2.3:&quot;</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">cpe</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;cpe:/&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="n">cpe</span> <span class="o">=</span> <span class="n">cpe_conversion</span><span class="o">.</span><span class="n">cpe_uri_to_fs</span><span class="p">(</span><span class="n">cpe</span><span class="p">)</span>
+        <span class="n">cpe</span> <span class="o">=</span> <span class="n">cpe_uri_to_fs</span><span class="p">(</span><span class="n">cpe</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">autofill</span><span class="p">:</span>
         <span class="n">e</span> <span class="o">=</span> <span class="n">cpe</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">13</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">)):</span>
@@ -110,29 +107,20 @@
     <span class="k">return</span> <span class="n">cpe</span></div>
 
 
-<div class="viewcode-block" id="from3to2CPE"><a class="viewcode-back" href="../../../package/common.html#CveXplore.common.cpe_converters.from3to2CPE">[docs]</a><span class="k">def</span> <span class="nf">from3to2CPE</span><span class="p">(</span><span class="n">cpe</span><span class="p">):</span>
+
+<div class="viewcode-block" id="from3to2CPE">
+<a class="viewcode-back" href="../../../package/common.html#CveXplore.common.cpe_converters.from3to2CPE">[docs]</a>
+<span class="k">def</span> <span class="nf">from3to2CPE</span><span class="p">(</span><span class="n">cpe</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Method to transform cpe2.3 to cpe2.2 format</span>
-
-<span class="sd">    :param cpe: cpe2.3 string</span>
-<span class="sd">    :type cpe: str</span>
-<span class="sd">    :return: cpe2.2 string</span>
-<span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">cpe</span> <span class="o">=</span> <span class="n">cpe</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cpe</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;cpe:/&quot;</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">cpe</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;cpe:2.3:&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="n">cpe</span> <span class="o">=</span> <span class="n">cpe_conversion</span><span class="o">.</span><span class="n">cpe_fs_to_uri</span><span class="p">(</span><span class="n">cpe</span><span class="p">)</span>
+        <span class="n">cpe</span> <span class="o">=</span> <span class="n">cpe_fs_to_uri</span><span class="p">(</span><span class="n">cpe</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cpe</span></div>
 
-
-<span class="k">def</span> <span class="nf">pad</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">target_length</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">length</span> <span class="o">&gt;</span> <span class="n">target_length</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">seq</span>
-    <span class="n">seq</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">padding</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">target_length</span> <span class="o">-</span> <span class="n">length</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">seq</span>
 </pre></div>
 
            </div>

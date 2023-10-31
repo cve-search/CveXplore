@@ -11,12 +11,11 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -27,11 +26,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../../index.html" class="icon icon-home"> CveXplore
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            CveXplore
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -67,7 +70,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
       <li class="breadcrumb-item active">CveXplore.database.helpers.cvesearch_mongo_database</li>
       <li class="wy-breadcrumbs-aside">
@@ -83,23 +86,59 @@
 <span class="sd">Mongodb specific</span>
 <span class="sd">================</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
 <span class="kn">from</span> <span class="nn">pymongo.collection</span> <span class="kn">import</span> <span class="n">Collection</span>
 <span class="kn">from</span> <span class="nn">pymongo.cursor</span> <span class="kn">import</span> <span class="n">Cursor</span>
 
 
-<div class="viewcode-block" id="CveSearchCursor"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor">[docs]</a><span class="k">class</span> <span class="nc">CveSearchCursor</span><span class="p">(</span><span class="n">Cursor</span><span class="p">):</span>
+<div class="viewcode-block" id="CveSearchCollection">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection">[docs]</a>
+<span class="k">class</span> <span class="nc">CveSearchCollection</span><span class="p">(</span><span class="n">Collection</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The CveSearchCollection is a custom Collection based on the pymongo Collection class which has been altered to</span>
+<span class="sd">    return a CveSearchCursor reference on the find method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CveSearchCollection.__init__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get / create a custon cve-search Mongo collection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CveSearchCollection.__repr__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return string representation of this class&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CveSearchCollection:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CveSearchCollection.find">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.find">[docs]</a>
+    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query the database as you would do so with a pymongo Collection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">CveSearchCursor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CveSearchCursor">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor">[docs]</a>
+<span class="k">class</span> <span class="nc">CveSearchCursor</span><span class="p">(</span><span class="n">Cursor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The CveSearchCursor is a custom cursor based on the pymongo cursor which will return database objects instead of</span>
 <span class="sd">    the raw data from the mongodb database.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CveSearchCursor.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="CveSearchCursor.__init__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="n">CveSearchCollection</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new cve-search cursor.</span>
-
-<span class="sd">        :param collection: Reference to a CveSearchCollection object</span>
-<span class="sd">        :type collection: CveSearchCollection</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -116,6 +155,7 @@
             <span class="s2">&quot;via4&quot;</span><span class="p">:</span> <span class="n">Via4</span><span class="p">,</span>
             <span class="s2">&quot;cves&quot;</span><span class="p">:</span> <span class="n">Cves</span><span class="p">,</span>
         <span class="p">}</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">__empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -137,7 +177,9 @@
     <span class="k">def</span> <span class="nf">__collname</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Cursor__collname</span>
 
-<div class="viewcode-block" id="CveSearchCursor.next"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CveSearchCursor.next">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.next">[docs]</a>
+    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Advance the cursor and return CveXplore objects</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -153,45 +195,16 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">StopIteration</span></div>
 
+
     <span class="fm">__next__</span> <span class="o">=</span> <span class="nb">next</span>
 
-<div class="viewcode-block" id="CveSearchCursor.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CveSearchCursor.__repr__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return string representation of this class&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CveSearchCursor:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CveSearchCursor:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="p">)</span></div>
+</div>
 
-
-<div class="viewcode-block" id="CveSearchCollection"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection">[docs]</a><span class="k">class</span> <span class="nc">CveSearchCollection</span><span class="p">(</span><span class="n">Collection</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The CveSearchCollection is a custom Collection based on the pymongo Collection class which has been altered to</span>
-<span class="sd">    return a CveSearchCursor reference on the find method.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="CveSearchCollection.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get / create a custon cve-search Mongo collection.</span>
-
-<span class="sd">        :param database: the database to get a collection from</span>
-<span class="sd">        :type database: MongoDBConnection</span>
-<span class="sd">        :param name: the name of the collection to get</span>
-<span class="sd">        :type name: str</span>
-<span class="sd">        :param kwargs: additional keyword arguments will be passed as options for the create collection command</span>
-<span class="sd">        :type kwargs: kwargs</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="CveSearchCollection.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return string representation of this class&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CveSearchCollection:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="CveSearchCollection.find"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Query the database as you would do so with a pymongo Collection.</span>
-
-<span class="sd">        :return: Reference to the CveSearchCursor</span>
-<span class="sd">        :rtype: CveSearchCursor</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">CveSearchCursor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dependencies &mdash; CveXplore  documentation</title>
@@ -12,12 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -29,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="#" class="icon icon-home"> CveXplore
+
+          
+          
+          <a href="#" class="icon icon-home">
+            CveXplore
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -69,7 +72,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home"></a></li>
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Dependencies</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
@@ -92,7 +95,7 @@ the cve-search binaries and thus providing the same functionality as cve-search 
 <p>All the data provided by this interaction is converted into objects before being returned. And thus providing a way to
 interact with objects rather then with raw data.</p>
 <section id="dependencies">
-<h1>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading"></a></h1>
+<h1>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h1>
 <p>As stated you will need to have one of two things; in order to fully use this package you need access to:</p>
 <ul class="simple">
 <li><p>A cve-search mongodb instance</p></li>
@@ -106,32 +109,32 @@ please check <a class="reference external" href="https://github.com/cve-search/c
 <a class="reference external" href="https://github.com/cve-search/CVE-Search-Docker">CVE-Search-Docker</a> for further details.</p>
 </section>
 <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
 <p>Package is hosted on pypi, so just run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>CveXplore
 </pre></div>
 </div>
 </section>
 <section id="documentation">
-<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h1>
+<h1>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h1>
 <p>Check <a class="reference external" href="https://cve-search.github.io/CveXplore/">github pages documentation</a></p>
 </section>
 <section id="general">
-<h1>General<a class="headerlink" href="#general" title="Permalink to this heading"></a></h1>
+<h1>General<a class="headerlink" href="#general" title="Link to this heading"></a></h1>
 <section id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h2>
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>CveXplore automatically creates a config folder in ‘~/.cvexplore’. CveXplore stores several configuration
 files in here such as the .env for general configuration and the .sources.ini for data sources configuration.</p>
 </section>
 <section id="logging">
-<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this heading"></a></h2>
+<h2>Logging<a class="headerlink" href="#logging" title="Link to this heading"></a></h2>
 <p>CveXplore stores all logs in the ‘~/.cvexplore/log’ folder:</p>
 <ul class="simple">
 <li><p>update_populate.log; logging produced during database updates and database initialization.</p></li>
 </ul>
 </section>
 <section id="local-database-populate-update">
-<h2>Local Database populate / update<a class="headerlink" href="#local-database-populate-update" title="Permalink to this heading"></a></h2>
+<h2>Local Database populate / update<a class="headerlink" href="#local-database-populate-update" title="Link to this heading"></a></h2>
 <p>As of version 0.2.5 CveXplore can populate and update a local mongodb instance from either the command line:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># cvexplore database initialize</span>
 <span class="c1"># cvexplore database update</span>
@@ -150,9 +153,9 @@ You can populate CveXplore without an api key, but it will limit the amount of p
 </section>
 </section>
 <section id="package-usage">
-<h1>Package usage<a class="headerlink" href="#package-usage" title="Permalink to this heading"></a></h1>
+<h1>Package usage<a class="headerlink" href="#package-usage" title="Link to this heading"></a></h1>
 <section id="instantiation">
-<h2>Instantiation<a class="headerlink" href="#instantiation" title="Permalink to this heading"></a></h2>
+<h2>Instantiation<a class="headerlink" href="#instantiation" title="Link to this heading"></a></h2>
 <p>CveXplore can be instantiated with different parameters, depending to which data source you’re going to connect to.
 If no parameters are given it is assumed that you’re going to connect to a mongodb database running on localhost with
 default port and security settings (Cve Search default parameters).</p>
@@ -178,7 +181,7 @@ default port and security settings (Cve Search default parameters).</p>
 </div>
 </section>
 <section id="query-for-data">
-<h2>Query for data<a class="headerlink" href="#query-for-data" title="Permalink to this heading"></a></h2>
+<h2>Query for data<a class="headerlink" href="#query-for-data" title="Link to this heading"></a></h2>
 <p>CveXplore supports multiple methods to query for data.</p>
 <p>The queries are limited to the following collections:</p>
 <ul class="simple">
@@ -190,7 +193,7 @@ default port and security settings (Cve Search default parameters).</p>
 </ul>
 </section>
 <section id="free-format-query">
-<h2>Free format query<a class="headerlink" href="#free-format-query" title="Permalink to this heading"></a></h2>
+<h2>Free format query<a class="headerlink" href="#free-format-query" title="Link to this heading"></a></h2>
 <p>Besides this restriction the queries can be free format on given parameters (returning a direct object or a
 list of objects); to get a ‘capec’ with the id of 1 you could use:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
@@ -237,7 +240,7 @@ the limit to 0:</p>
 </div>
 </section>
 <section id="collection-specific-query">
-<h2>Collection specific query<a class="headerlink" href="#collection-specific-query" title="Permalink to this heading"></a></h2>
+<h2>Collection specific query<a class="headerlink" href="#collection-specific-query" title="Link to this heading"></a></h2>
 <p>By using the collection specific attributes you can drill down to a specific field to query (returning an iterator to
 iterate over the requested results):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
@@ -281,7 +284,7 @@ iterate over the requested results):</p>
 </div>
 </section>
 <section id="collection-regex-query">
-<h2>Collection Regex query<a class="headerlink" href="#collection-regex-query" title="Permalink to this heading"></a></h2>
+<h2>Collection Regex query<a class="headerlink" href="#collection-regex-query" title="Link to this heading"></a></h2>
 <p>If you would like to perform a regex search; the collection specific attributes have a search method available (returning an iterator to
 iterate over the requested results):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
@@ -298,7 +301,7 @@ iterate over the requested results):</p>
 <p><strong>WARNING The collection specific search method does not adhere to the default limit of 10</strong></p>
 </section>
 <section id="collection-specific-functions">
-<h2>Collection specific functions<a class="headerlink" href="#collection-specific-functions" title="Permalink to this heading"></a></h2>
+<h2>Collection specific functions<a class="headerlink" href="#collection-specific-functions" title="Link to this heading"></a></h2>
 <p>Some collections are equipped with specific functions; like the ‘cves’ collection has a function to query cve’s based
 on a given vendor:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
@@ -435,9 +438,9 @@ capecs from the CVE-2018-8540, could be done directly:</p>
 </section>
 </section>
 <section id="command-line-usage">
-<h1>Command line usage<a class="headerlink" href="#command-line-usage" title="Permalink to this heading"></a></h1>
+<h1>Command line usage<a class="headerlink" href="#command-line-usage" title="Link to this heading"></a></h1>
 <section id="shell-completion">
-<h2>Shell completion<a class="headerlink" href="#shell-completion" title="Permalink to this heading"></a></h2>
+<h2>Shell completion<a class="headerlink" href="#shell-completion" title="Link to this heading"></a></h2>
 <p>The command line application is a click application and therefore supports tab completion; please follow the
 <a class="reference external" href="https://click.palletsprojects.com/en/8.1.x/shell-completion/">Instructions</a> on the click site</p>
 <div class="toctree-wrapper compound">
@@ -451,18 +454,18 @@ capecs from the CVE-2018-8540, could be done directly:</p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="package/core.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="package/common.html">Common</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="package/common.html#general-tools-and-converters">General tools and converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package/common.html#module-CveXplore.common.cpe_converters">General tools and converters</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="package/database.html">Database</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="package/database.html#database-connection">Database connection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="package/database.html#database-helpers">Database helpers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="package/database.html#database-maintenance">Database Maintenance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package/database.html#module-CveXplore.database.connection.mongo_db">Database connection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package/database.html#module-CveXplore.database.helpers.cvesearch_mongo_database">Database helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package/database.html#module-CveXplore.database.maintenance.content_handlers">Database Maintenance</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="package/api.html">API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="package/api.html#api-connection">API connection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="package/api.html#api-helpers">API helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package/api.html#module-CveXplore.api.connection.api_db">API connection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package/api.html#module-CveXplore.api.helpers.cve_search_api">API helpers</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="package/objects.html">Objects</a></li>
@@ -475,7 +478,7 @@ capecs from the CVE-2018-8540, could be done directly:</p>
 </ul>
 </div>
 <section id="indices-and-tables">
-<h3>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h3>
+<h3>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>

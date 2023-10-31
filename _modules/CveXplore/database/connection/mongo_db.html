@@ -11,12 +11,11 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -27,11 +26,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../../index.html" class="icon icon-home"> CveXplore
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            CveXplore
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -67,7 +70,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
       <li class="breadcrumb-item active">CveXplore.database.connection.mongo_db</li>
       <li class="wy-breadcrumbs-aside">
@@ -92,27 +95,27 @@
 <span class="kn">from</span> <span class="nn">CveXplore.errors</span> <span class="kn">import</span> <span class="n">DatabaseConnectionException</span>
 
 
-<div class="viewcode-block" id="MongoDBConnection"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection">[docs]</a><span class="k">class</span> <span class="nc">MongoDBConnection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="MongoDBConnection">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection">[docs]</a>
+<span class="k">class</span> <span class="nc">MongoDBConnection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The MongoDBConnection class serves as a shell that functions as uniform way to connect to the mongodb backend.</span>
 <span class="sd">    By default it will try to establish a connection towards a mongodb running on localhost (default port 27017) and</span>
 <span class="sd">    database &#39;cvedb&#39; (as per defaults of cve_search)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="MongoDBConnection.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;mongodb://127.0.0.1:27017&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s2">&quot;cvedb&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<div class="viewcode-block" id="MongoDBConnection.__init__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mongodb://127.0.0.1:27017&quot;</span><span class="p">,</span>
+        <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cvedb&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param host: The `host` parameter can be a full `mongodb URI</span>
-<span class="sd">                     &lt;http://dochub.mongodb.org/core/connections&gt;`_, in addition to</span>
-<span class="sd">                     a simple hostname.</span>
-<span class="sd">        :type host: str</span>
-<span class="sd">        :param port: Port number (optional when a URI is used as host parameter)</span>
-<span class="sd">        :type port: int</span>
-<span class="sd">        :param database: Database to connect to; defaults to cvedb (Cve Search default)</span>
-<span class="sd">        :type database: str</span>
-<span class="sd">        :param kwargs: Other arguments supported by the MongoClient instantiation</span>
-<span class="sd">        :type kwargs: dict</span>
+<span class="sd">        The `host` parameter can be a full `mongodb URI &lt;http://dochub.mongodb.org/core/connections&gt;`_, in addition to</span>
+<span class="sd">        a simple hostname.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="kc">None</span>
@@ -138,8 +141,8 @@
 
         <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">get_collections_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
+    <span class="k">def</span> <span class="nf">get_collections_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span><span class="o">.</span><span class="n">list_collections</span><span class="p">():</span>
             <span class="k">yield</span> <span class="n">each</span>
 
@@ -154,23 +157,32 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">get_collection_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span><span class="o">.</span><span class="n">list_collection_names</span><span class="p">()</span>
 
-<div class="viewcode-block" id="MongoDBConnection.disconnect"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MongoDBConnection.disconnect">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.disconnect">[docs]</a>
+    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Disconnect from mongodb</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="MongoDBConnection.__del__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.__del__">[docs]</a>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="MongoDBConnection.__del__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.__del__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Called when the class is garbage collected.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="MongoDBConnection.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="MongoDBConnection.__repr__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.connection.mongo_db.MongoDBConnection.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of object&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; MongoDBConnection:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; MongoDBConnection:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
 
            </div>

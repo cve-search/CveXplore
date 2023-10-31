@@ -11,12 +11,11 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -27,11 +26,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../../index.html" class="icon icon-home"> CveXplore
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            CveXplore
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -67,7 +70,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
       <li class="breadcrumb-item active">CveXplore.api.connection.api_db</li>
       <li class="wy-breadcrumbs-aside">
@@ -87,123 +90,95 @@
 <span class="kn">from</span> <span class="nn">CveXplore.common.db_mapping</span> <span class="kn">import</span> <span class="n">database_mapping</span>
 
 
-<div class="viewcode-block" id="ApiDatabaseSource"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseSource">[docs]</a><span class="k">class</span> <span class="nc">ApiDatabaseSource</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="ApiDatabaseSource">
+<a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseSource">[docs]</a>
+<span class="k">class</span> <span class="nc">ApiDatabaseSource</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The ApiDatabaseSource mimics the behaviour of the MongoDBConnection.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ApiDatabaseSource.__init__"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseSource.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="ApiDatabaseSource.__init__">
+<a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseSource.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">address</span><span class="p">,</span>
-        <span class="n">api_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">proxies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">protocol</span><span class="o">=</span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
-        <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;CveXplore&quot;</span><span class="p">,</span>
+        <span class="n">baseurl</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">api_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">proxies</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_agent</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;CveXplore&quot;</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create new instance of the ApiDatabaseSource</span>
-
-<span class="sd">        :param address: Tuple with host ip/name and port</span>
-<span class="sd">        :type address: tuple</span>
-<span class="sd">        :param api_path: The api_path parameter needs to be provided if the API runs on a non-root path.</span>
-<span class="sd">                         So if the API is reachable at: https://localhost/api, this parameter needs to be set to &#39;api&#39;.</span>
-<span class="sd">                         So it is needed to connect to api resources, defaults to &#39;None&#39;</span>
-<span class="sd">        :type api_path: str</span>
-<span class="sd">        :param proxies: If you need to use a proxy, you can configure individual requests with the proxies argument</span>
-<span class="sd">                        to any request method</span>
-<span class="sd">        :type proxies: dict</span>
-<span class="sd">        :param protocol: Protocol to use when connecting to api; defaults to &#39;https&#39;</span>
-<span class="sd">        :type protocol: str</span>
-<span class="sd">        :param user_agent: User agent to use when connecting; defaults to CveXplore:&lt;&lt;version&gt;&gt;</span>
-<span class="sd">        :type user_agent: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">database_mapping</span> <span class="o">=</span> <span class="n">database_mapping</span>
 
-        <span class="k">if</span> <span class="n">address</span> <span class="o">==</span> <span class="p">{}:</span>
-            <span class="k">return</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
-
-        <span class="k">if</span> <span class="n">api_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">://</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">protocol</span><span class="p">,</span> <span class="n">address</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">address</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">api_path</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">://</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">address</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">address</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseurl</span> <span class="o">=</span> <span class="n">baseurl</span>
 
         <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_mapping</span><span class="p">:</span>
             <span class="nb">setattr</span><span class="p">(</span>
                 <span class="bp">self</span><span class="p">,</span>
                 <span class="s2">&quot;store_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">each</span><span class="p">),</span>
                 <span class="n">ApiDatabaseCollection</span><span class="p">(</span>
-                    <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">,</span>
+                    <span class="n">baseurl</span><span class="o">=</span><span class="n">baseurl</span><span class="p">,</span>
                     <span class="n">api_path</span><span class="o">=</span><span class="n">api_path</span><span class="p">,</span>
                     <span class="n">proxies</span><span class="o">=</span><span class="n">proxies</span><span class="p">,</span>
-                    <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">,</span>
                     <span class="n">user_agent</span><span class="o">=</span><span class="n">user_agent</span><span class="p">,</span>
                     <span class="n">collname</span><span class="o">=</span><span class="n">each</span><span class="p">,</span>
                 <span class="p">),</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="ApiDatabaseSource.__repr__"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseSource.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ApiDatabaseSource.__repr__">
+<a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseSource.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return a string representation of the obj ApiDatabaseSource&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; ApiDatabaseSource: </span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; ApiDatabaseSource: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">baseurl</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
+</div>
 
 
-<div class="viewcode-block" id="ApiDatabaseCollection"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection">[docs]</a><span class="k">class</span> <span class="nc">ApiDatabaseCollection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ApiDatabaseCollection">
+<a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection">[docs]</a>
+<span class="k">class</span> <span class="nc">ApiDatabaseCollection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The ApiDatabaseCollection mimics the behaviour of the CveSearchCollection</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ApiDatabaseCollection.__init__"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="ApiDatabaseCollection.__init__">
+<a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">address</span><span class="p">,</span>
-        <span class="n">collname</span><span class="p">,</span>
-        <span class="n">api_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">proxies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">protocol</span><span class="o">=</span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
+        <span class="n">baseurl</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">collname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">api_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">proxies</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;CveXplore&quot;</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new ApiDatabaseCollection.</span>
-
-<span class="sd">        :param address: Tuple with host ip/name and port</span>
-<span class="sd">        :type address: tuple</span>
-<span class="sd">        :param collname: Collection name</span>
-<span class="sd">        :type collname: str</span>
-<span class="sd">        :param api_path: The api_path parameter needs to be provided if the API runs on a non-root path.</span>
-<span class="sd">                         So if the API is reachable at: https://localhost/api, this parameter needs to be set to &#39;api&#39;.</span>
-<span class="sd">                         So it is needed to connect to api resources, defaults to &#39;None&#39;</span>
-<span class="sd">        :type api_path: str</span>
-<span class="sd">        :param proxies: If you need to use a proxy, you can configure individual requests with the proxies argument</span>
-<span class="sd">                        to any request method</span>
-<span class="sd">        :type proxies: dict</span>
-<span class="sd">        :param protocol: Protocol to use when connecting to api; defaults to &#39;https&#39;</span>
-<span class="sd">        :type protocol: str</span>
-<span class="sd">        :param user_agent: User agent to use when connecting; defaults to CveXplore:&lt;&lt;version&gt;&gt;</span>
-<span class="sd">        :type user_agent: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseurl</span> <span class="o">=</span> <span class="n">baseurl</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api_path</span> <span class="o">=</span> <span class="n">api_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span> <span class="o">=</span> <span class="n">proxies</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">protocol</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span> <span class="o">=</span> <span class="n">user_agent</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">collname</span> <span class="o">=</span> <span class="n">collname</span></div>
 
-<div class="viewcode-block" id="ApiDatabaseCollection.find"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ApiDatabaseCollection.find">
+<a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection.find">[docs]</a>
+    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">the_filter</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Query the api endpoint as you would do so with a pymongo Collection.</span>
-
-<span class="sd">        :return: Reference to the CveSearchApi</span>
-<span class="sd">        :rtype: CveSearchApi</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">CveSearchApi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">CveSearchApi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">the_filter</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ApiDatabaseCollection.find_one"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection.find_one">[docs]</a>    <span class="k">def</span> <span class="nf">find_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ApiDatabaseCollection.find_one">
+<a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection.find_one">[docs]</a>
+    <span class="k">def</span> <span class="nf">find_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">the_filter</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Query the api endpoint as you would do so with a pymongo Collection.</span>
 
@@ -211,15 +186,20 @@
 <span class="sd">        :rtype: object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">the_filter</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">result</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="ApiDatabaseCollection.__repr__"><a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ApiDatabaseCollection.__repr__">
+<a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.connection.api_db.ApiDatabaseCollection.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return a string representation of the obj ApiDatabaseCollection&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; ApiDatabaseCollection: </span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; ApiDatabaseCollection: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">baseurl</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
+</div>
+
 </pre></div>
 
            </div>
