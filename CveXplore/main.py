@@ -171,6 +171,16 @@ class CveXplore(object):
                 )
             )
 
+        if entry_type == "cves":
+            if "id" in dict_filter:
+                if isinstance(dict_filter["id"], str):
+                    dict_filter["id"] = self._validate_cve_id(dict_filter["id"])
+                elif isinstance(dict_filter["id"], dict):
+                    if "$in" in dict_filter["id"]:
+                        dict_filter["id"]["$in"] = [
+                            self._validate_cve_id(x) for x in dict_filter["id"]["$in"]
+                        ]
+
         results = (
             getattr(self.datasource, "store_{}".format(entry_type))
             .find(dict_filter)
@@ -207,12 +217,12 @@ class CveXplore(object):
             functools.partial(self.get_single_store_entries, limit=limit), *queries
         )
 
-        joined_list = []
+        the_results = [
+            result_list for result_list in results if result_list is not None
+        ]
 
-        for result_list in results:
-            joined_list += result_list
-
-        the_results = list(joined_list)
+        # flatten results
+        the_results = [item for row in the_results for item in row]
 
         if len(the_results) != 0:
             return the_results
@@ -248,13 +258,7 @@ class CveXplore(object):
 
         return cves
 
-    def cve_by_id(self, cve_id: str) -> CveXploreObject | None:
-        """
-        Method to retrieve a single CVE from the database by its CVE ID number.
-        The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.
-        """
-
-        # first try to match full cve number format
+    def _validate_cve_id(self, cve_id: str):
         reg_match = re.compile(r"[cC][vV][eE]-\d{4}-\d{4,10}")
         if reg_match.match(cve_id) is not None:
             cve_id = cve_id.upper()
@@ -264,9 +268,18 @@ class CveXplore(object):
                 cve_id = f"CVE-{cve_id}"
             else:
                 raise CveNumberValidationError(
-                    "Could not validate the CVE number. The number format should be either "
+                    f"Could not validate the CVE number: {cve_id}. The number format should be either "
                     "CVE-2000-0001, cve-2000-0001 or 2000-0001."
                 )
+
+        return cve_id
+
+    def cve_by_id(self, cve_id: str) -> CveXploreObject | None:
+        """
+        Method to retrieve a single CVE from the database by its CVE ID number.
+        The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.
+        """
+        cve_id = self._validate_cve_id(cve_id=cve_id)
 
         return self.get_single_store_entry("cves", {"id": cve_id})
 
