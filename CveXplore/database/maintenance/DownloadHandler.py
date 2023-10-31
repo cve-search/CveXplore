@@ -66,7 +66,7 @@ class DownloadHandler(ABC):
 
         self.database = database._dbclient
 
-        self.logger = logging.getLogger("DownloadHandler")
+        self.logger = logging.getLogger(__name__)
 
         self.config = Configuration()
 

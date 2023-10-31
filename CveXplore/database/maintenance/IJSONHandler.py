@@ -9,7 +9,7 @@ logging.setLoggerClass(UpdateHandler)
 
 class IJSONHandler(object):
     def __init__(self):
-        self.logger = logging.getLogger("IJSONHandler")
+        self.logger = logging.getLogger(__name__)
 
     def fetch(self, filename: str, prefix: str):
         x = 0

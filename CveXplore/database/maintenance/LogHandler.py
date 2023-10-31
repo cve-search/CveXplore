@@ -30,6 +30,7 @@ class HelperLogger(logging.Logger):
 
     logDict = {
         "version": 1,
+        "disable_existing_loggers": False,
         "formatters": {
             "sysLogFormatter": {
                 "format": "%(asctime)s - %(name)-8s - %(levelname)-8s - %(message)s"
@@ -46,7 +47,13 @@ class HelperLogger(logging.Logger):
                 "formatter": "simpleFormatter",
             }
         },
-        "root": {"level": "DEBUG", "handlers": ["consoleHandler"]},
+        "loggers": {
+            "CveXplore": {
+                "handlers": ["consoleHandler"],
+                "level": "DEBUG",
+                "propagate": True,
+            },
+        },
     }
 
     dictConfig(logDict)

@@ -115,7 +115,7 @@ class GenericDatabaseFactory(DatasourceConnection):
             )
         )
 
-    def field_list(self, *doc_ids: str) -> list | dict:
+    def field_list(self, *doc_ids: str) -> list:
         """
         Method to fetch all field names from a specific collection
         """

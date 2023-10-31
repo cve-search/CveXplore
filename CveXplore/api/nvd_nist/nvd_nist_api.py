@@ -38,7 +38,7 @@ class NvdNistApi(ApiBaseClass):
 
         self.config = Configuration()
 
-        self.logger = logging.getLogger("NvdNistApi")
+        self.logger = logging.getLogger(__name__)
 
         if self.config.NVD_NIST_API_KEY is not None:
             self.api_key = self.config.NVD_NIST_API_KEY
@@ -264,7 +264,7 @@ def retry_policy(info: RetryInfo) -> RetryPolicyStrategy:
     """
     max_retries = 5
     backoff_in_ms = 0.2 * 2**info.fails + random.uniform(0, 1) * 4
-    logger = logging.getLogger("RetryPolicy")
+    logger = logging.getLogger(__name__)
 
     if info.fails != max_retries:
         logger.debug(f"Current backoff: {backoff_in_ms}")
@@ -279,7 +279,7 @@ def retry_policy(info: RetryInfo) -> RetryPolicyStrategy:
 
 class ApiDataIterator(object):
     def __init__(self, api_data: ApiData):
-        self.logger = logging.getLogger("ApiDataIterator")
+        self.logger = logging.getLogger(__name__)
 
         self._page_length = api_data.results_per_page
         self._total_results = api_data.total_results

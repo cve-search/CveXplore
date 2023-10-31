@@ -22,7 +22,7 @@ logging.setLoggerClass(UpdateHandler)
 
 class MainUpdater(object):
     """
-    The MainUpdater class is the main class for performing database maintenaince tasks
+    The MainUpdater class is the main class for performing database maintenance tasks
     """
 
     def __init__(self, datasource):
@@ -47,7 +47,7 @@ class MainUpdater(object):
 
         self.schema_checker = SchemaChecker()
 
-        self.logger = logging.getLogger("MainUpdater")
+        self.logger = logging.getLogger(__name__)
 
     def validate_schema(self):
         return self.schema_checker.validate_schema()

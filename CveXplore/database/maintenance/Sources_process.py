@@ -46,7 +46,7 @@ class CPEDownloads(NVDApiHandler):
 
         super().__init__(self.feed_type)
 
-        self.logger = logging.getLogger("CPEDownloads")
+        self.logger = logging.getLogger(__name__)
 
     def file_to_queue(self, *args):
         pass
@@ -251,7 +251,7 @@ class CVEDownloads(NVDApiHandler):
 
         super().__init__(self.feed_type)
 
-        self.logger = logging.getLogger("CVEDownloads")
+        self.logger = logging.getLogger(__name__)
 
     @staticmethod
     def get_cve_year_range():
@@ -892,7 +892,7 @@ class VIADownloads(JSONFileHandler):
 
         self.feed_url = Configuration.getFeedURL(self.feed_type.lower())
 
-        self.logger = logging.getLogger("VIADownloads")
+        self.logger = logging.getLogger(__name__)
 
     def file_to_queue(self, file_tuple: Tuple[str, str]):
         working_dir, filename = file_tuple
@@ -976,7 +976,7 @@ class CAPECDownloads(XMLFileHandler):
 
         self.feed_url = Configuration.getFeedURL(self.feed_type.lower())
 
-        self.logger = logging.getLogger("CAPECDownloads")
+        self.logger = logging.getLogger(__name__)
 
         # make parser
         self.parser = make_parser()
@@ -1037,7 +1037,7 @@ class CWEDownloads(XMLFileHandler):
 
         self.feed_url = Configuration.getFeedURL(self.feed_type.lower())
 
-        self.logger = logging.getLogger("CWEDownloads")
+        self.logger = logging.getLogger(__name__)
 
         # make parser
         self.parser = make_parser()
@@ -1159,7 +1159,7 @@ class DatabaseIndexer(object):
             ],
         }
 
-        self.logger = logging.getLogger("DatabaseIndexer")
+        self.logger = logging.getLogger(__name__)
 
     def getInfo(self, collection: str):
         return sanitize(self.database["info"].find_one({"db": collection}))

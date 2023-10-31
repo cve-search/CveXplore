@@ -17,7 +17,7 @@ class SchemaChecker(object):
 
         self.dbh = database._dbclient["schema"]
 
-        self.logger = logging.getLogger("SchemaChecker")
+        self.logger = logging.getLogger(__name__)
 
     def validate_schema(self):
         try:
