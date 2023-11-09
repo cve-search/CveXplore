@@ -118,8 +118,11 @@ class NvdNistApi(ApiBaseClass):
                     else:
                         the_response = json.loads(r.text)
             except JSONDecodeError:
-                if r.headers["content-type"] == "text/plain":
-                    the_response = r.text
+                if "content-type" in r.headers:
+                    if r.headers["content-type"] == "text/plain":
+                        the_response = r.text
+                    else:
+                        the_response = r
                 else:
                     the_response = r
 

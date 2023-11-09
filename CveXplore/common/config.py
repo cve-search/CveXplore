@@ -62,6 +62,9 @@ class Configuration(object):
 
     CVE_START_YEAR = os.getenv("CVE_START_YEAR", 2002)
 
+    MONGODB_HOST = os.getenv("MONGODB_HOST", "127.0.0.1")
+    MONGODB_PORT = int(os.getenv("MONGODB_PORT", 27017))
+
     if os.getenv("SOURCES") is not None:
         SOURCES = getenv_dict("SOURCES", None)
     else:

@@ -12,6 +12,7 @@ from typing import List, Tuple, Union, Iterable
 from pymongo import DESCENDING
 
 from CveXplore.api.connection.api_db import ApiDatabaseSource
+from CveXplore.common.config import Configuration
 from CveXplore.common.cpe_converters import from2to3CPE
 from CveXplore.common.db_mapping import database_mapping
 from CveXplore.database.connection.mongo_db import MongoDBConnection
@@ -54,6 +55,7 @@ class CveXplore(object):
         :type api_connection_details: dict
         """
         self.__version = VERSION
+        self.config = Configuration()
 
         os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "NO"})
 
@@ -66,7 +68,9 @@ class CveXplore(object):
             )
         elif api_connection_details is None and mongodb_connection_details is None:
             # by default assume we are talking to a database
-            mongodb_connection_details = {}
+            mongodb_connection_details = {
+                "host": f"mongodb://{self.config.MONGODB_HOST}:{self.config.MONGODB_PORT}"
+            }
             os.environ["MONGODB_CON_DETAILS"] = json.dumps(mongodb_connection_details)
             self.datasource = MongoDBConnection(**mongodb_connection_details)
             self.database = MainUpdater(datasource=self.datasource)
