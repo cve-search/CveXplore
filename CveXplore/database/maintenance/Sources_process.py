@@ -24,7 +24,7 @@ from CveXplore.database.maintenance.Toolkit import sanitize
 from CveXplore.database.maintenance.api_handlers import NVDApiHandler
 from CveXplore.database.maintenance.content_handlers import CapecHandler, CWEHandler
 from CveXplore.database.maintenance.db_action import DatabaseAction
-from CveXplore.database.maintenance.file_handlers import XMLFileHandler, JSONFileHandler
+from CveXplore.database.maintenance.file_handlers import XMLFileHandler, JSONFileHandler, CSVFileHandler
 from CveXplore.errors.apis import ApiDataRetrievalFailed, ApiMaxRetryError
 
 date = datetime.datetime.now()
@@ -1024,6 +1024,80 @@ class CWEDownloads(XMLFileHandler):
         return self.update()
 
 
+class EPSSDownloads(CSVFileHandler):
+    def __init__(self):
+        self.feed_type = "EPSS"
+        self.delimiter = ","
+        super().__init__(self.feed_type, self.delimiter)
+
+        self.feed_url = Configuration.getFeedURL(self.feed_type.lower())
+        self.logger = logging.getLogger(__name__)
+        self.is_update = True
+
+    @staticmethod
+    def process_epss_item(item=None):
+        if item is None:
+            return None
+
+        epss = {
+            "id": item[0],
+            "epss": item[1],
+            "percentile": item[2]
+        }
+
+        return epss
+
+    def process_item(self, item):
+        epss = self.process_epss_item(item)
+
+        if epss is not None:
+            if self.is_update:
+                self.queue.put(
+                    DatabaseAction(
+                        action=DatabaseAction.actions.UpdateOne,
+                        collection=self.feed_type.lower(),
+                        doc=epss
+                    )
+                )
+            else:
+                self.queue.put(
+                    DatabaseAction(
+                        action=DatabaseAction.actions.InsertOne,
+                        collection=self.feed_type.lower(),
+                        doc=epss
+                    )
+                )
+
+    def update(self, **kwargs):
+        self.logger.info("EPSS database update started")
+
+        if self.feed_type.lower() not in self.getTableNames():
+            self.is_update = False
+
+        self.process_downloads([self.feed_url])
+
+        self.logger.info("Finished EPSS database update")
+
+        return self.last_modified
+
+    def populate(self, **kwargs):
+        self.logger.info("EPSS Database population started")
+
+        self.queue.clear()
+
+        self.dropCollection(self.feed_type.lower())
+
+        DatabaseIndexer.create_indexes(collection=self.feed_type.lower())
+
+        self.is_update = False
+
+        self.process_downloads([self.feed_url])
+
+        self.logger.info("Finished EPSS database population")
+
+        return self.last_modified
+
+
 MongoUniqueIndex = namedtuple("MongoUniqueIndex", "index name unique")
 MongoAddIndex = namedtuple("MongoAddIndex", "index name")
 
@@ -1101,6 +1175,9 @@ class DatabaseIndexer(object):
                 MongoAddIndex(index=[("name", ASCENDING)], name="name"),
                 MongoAddIndex(index=[("status", ASCENDING)], name="status"),
             ],
+            "epss": [
+                MongoUniqueIndex(index=[("id", ASCENDING)], name="id", unique=True),
+            ]
         }
 
         self.logger = logging.getLogger(__name__)

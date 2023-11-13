@@ -47,6 +47,7 @@ class CveSearchCursor(Cursor):
         from CveXplore.objects.cves import Cves
         from CveXplore.objects.cwe import Cwe
         from CveXplore.objects.via4 import Via4
+        from CveXplore.objects.epss import Epss
 
         self.database_objects_mapping = {
             "capec": Capec,
@@ -54,6 +55,7 @@ class CveSearchCursor(Cursor):
             "cwe": Cwe,
             "via4": Via4,
             "cves": Cves,
+            "epss": Epss,
         }
 
     @property

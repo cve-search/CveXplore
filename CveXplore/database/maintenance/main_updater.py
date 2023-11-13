@@ -13,6 +13,7 @@ from CveXplore.database.maintenance.Sources_process import (
     CWEDownloads,
     CAPECDownloads,
     VIADownloads,
+    EPSSDownloads,
     DatabaseIndexer,
 )
 from CveXplore.errors import UpdateSourceNotFound
@@ -38,6 +39,7 @@ class MainUpdater(object):
             {"name": "cwe", "updater": CWEDownloads},
             {"name": "capec", "updater": CAPECDownloads},
             {"name": "via4", "updater": VIADownloads},
+            {"name": "epss", "updater": EPSSDownloads}
         ]
 
         self.posts = [
