@@ -44,10 +44,6 @@ class Cves(DatasourceConnection):
         if via4s is not None:
             setattr(self, "via4_references", via4s)
 
-        epss = self._datasource_connection.store_epss.find_one({"id": self.id})
-        if epss is not None:
-            setattr(self, "epss", float(epss.epss))
-
     def iter_vuln_configurations(self):
         """
         Generator function for iterating over vulnerable configurations for this CVE.
