@@ -1170,6 +1170,9 @@ class DatabaseIndexer(object):
                     index=[("related_weakness", ASCENDING)], name="related_weakness"
                 ),
             ],
+            "epss": [
+                MongoUniqueIndex(index=[("id", ASCENDING)], name="id", unique=True),
+            ],
             "cwe": [
                 MongoAddIndex(index=[("id", ASCENDING)], name="id"),
                 MongoAddIndex(index=[("name", ASCENDING)], name="name"),
