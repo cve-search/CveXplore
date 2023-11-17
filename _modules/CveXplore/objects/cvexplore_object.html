@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CveXplore.objects.via4 &mdash; CveXplore  documentation</title>
+  <title>CveXplore.objects.cvexplore_object &mdash; CveXplore  documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/CveExplore_icon.png"/>
@@ -72,7 +72,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">CveXplore.objects.via4</li>
+      <li class="breadcrumb-item active">CveXplore.objects.cvexplore_object</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -81,35 +81,30 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for CveXplore.objects.via4</h1><div class="highlight"><pre>
+  <h1>Source code for CveXplore.objects.cvexplore_object</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">via4</span>
-<span class="sd">====</span>
+<span class="sd">CveXploreObject</span>
+<span class="sd">===============</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">CveXplore.common.data_source_connection</span> <span class="kn">import</span> <span class="n">DatasourceConnection</span>
 
 
-<div class="viewcode-block" id="Via4">
-<a class="viewcode-back" href="../../../package/objects.html#CveXplore.objects.via4.Via4">[docs]</a>
-<span class="k">class</span> <span class="nc">Via4</span><span class="p">(</span><span class="n">DatasourceConnection</span><span class="p">):</span>
+<div class="viewcode-block" id="CveXploreObject">
+<a class="viewcode-back" href="../../../package/objects.html#CveXplore.objects.cvexplore_object.CveXploreObject">[docs]</a>
+<span class="k">class</span> <span class="nc">CveXploreObject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Via4 database object</span>
+<span class="sd">    CveXploreObject is the base object for all database collection objects</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Via4.__init__">
-<a class="viewcode-back" href="../../../package/objects.html#CveXplore.objects.via4.Via4.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;via4&quot;</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">each</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">each</span><span class="p">])</span></div>
+<div class="viewcode-block" id="CveXploreObject.__init__">
+<a class="viewcode-back" href="../../../package/objects.html#CveXplore.objects.cvexplore_object.CveXploreObject.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="Via4.__repr__">
-<a class="viewcode-back" href="../../../package/objects.html#CveXplore.objects.via4.Via4.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of object&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; Via4:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
+<div class="viewcode-block" id="CveXploreObject.__repr__">
+<a class="viewcode-back" href="../../../package/objects.html#CveXplore.objects.cvexplore_object.CveXploreObject.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CveXploreObject &gt;&gt;&quot;</span></div>
 </div>
 
 </pre></div>

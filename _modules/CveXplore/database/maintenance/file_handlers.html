@@ -11,12 +11,11 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -27,11 +26,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../../index.html" class="icon icon-home"> CveXplore
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            CveXplore
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -67,7 +70,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
       <li class="breadcrumb-item active">CveXplore.database.maintenance.file_handlers</li>
       <li class="wy-breadcrumbs-aside">
@@ -85,19 +88,24 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
 
-<span class="kn">from</span> <span class="nn">.DownloadHandler</span> <span class="kn">import</span> <span class="n">DownloadHandler</span>
-<span class="kn">from</span> <span class="nn">.IJSONHandler</span> <span class="kn">import</span> <span class="n">IJSONHandler</span>
-<span class="kn">from</span> <span class="nn">.db_action</span> <span class="kn">import</span> <span class="n">DatabaseAction</span>
+<span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.DownloadHandler</span> <span class="kn">import</span> <span class="n">DownloadHandler</span>
+<span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.IJSONHandler</span> <span class="kn">import</span> <span class="n">IJSONHandler</span>
+<span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.db_action</span> <span class="kn">import</span> <span class="n">DatabaseAction</span>
 
 
-<div class="viewcode-block" id="JSONFileHandler"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.JSONFileHandler">[docs]</a><span class="k">class</span> <span class="nc">JSONFileHandler</span><span class="p">(</span><span class="n">DownloadHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="JSONFileHandler">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.JSONFileHandler">[docs]</a>
+<span class="k">class</span> <span class="nc">JSONFileHandler</span><span class="p">(</span><span class="n">DownloadHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class handles all JSON related download processing and functions as a base class for specific JSON sources</span>
 <span class="sd">    processing and downloading</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="JSONFileHandler.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.JSONFileHandler.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feed_type</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+<div class="viewcode-block" id="JSONFileHandler.__init__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.JSONFileHandler.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feed_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">feed_type</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">True</span>
@@ -106,17 +114,20 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ijson_handler</span> <span class="o">=</span> <span class="n">IJSONHandler</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="JSONFileHandler.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.JSONFileHandler.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="JSONFileHandler.__repr__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.JSONFileHandler.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return string representation of object&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; JSONFileHandler:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="JSONFileHandler.file_to_queue"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.JSONFileHandler.file_to_queue">[docs]</a>    <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_tuple</span><span class="p">):</span>
+
+<div class="viewcode-block" id="JSONFileHandler.file_to_queue">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.JSONFileHandler.file_to_queue">[docs]</a>
+    <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_tuple</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method responsible for transferring file contents to the worker queue for further processing and inserting them</span>
 <span class="sd">        into the database</span>
-
-<span class="sd">        :param file_tuple: A tuple containing the working dir for processing and the filename of the file to process</span>
-<span class="sd">        :type file_tuple: tuple</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">file_tuple</span>
@@ -145,6 +156,7 @@
                 <span class="s2">&quot;Failed to remove working dir; error produced: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
             <span class="p">)</span></div>
 
+
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
@@ -154,26 +166,34 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
-<div class="viewcode-block" id="XMLFileHandler"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.XMLFileHandler">[docs]</a><span class="k">class</span> <span class="nc">XMLFileHandler</span><span class="p">(</span><span class="n">DownloadHandler</span><span class="p">):</span>
+
+<div class="viewcode-block" id="XMLFileHandler">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.XMLFileHandler">[docs]</a>
+<span class="k">class</span> <span class="nc">XMLFileHandler</span><span class="p">(</span><span class="n">DownloadHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class handles all XML related download processing and functions as a base class for specific XML sources</span>
 <span class="sd">    processing and downloading</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="XMLFileHandler.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.XMLFileHandler.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feed_type</span><span class="p">):</span>
+<div class="viewcode-block" id="XMLFileHandler.__init__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.XMLFileHandler.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feed_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">feed_type</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="XMLFileHandler.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.XMLFileHandler.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="XMLFileHandler.__repr__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.XMLFileHandler.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return string representation of object&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;&lt; XMLFileHandler:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="XMLFileHandler.process_item"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.XMLFileHandler.process_item">[docs]</a>    <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+
+<div class="viewcode-block" id="XMLFileHandler.process_item">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.XMLFileHandler.process_item">[docs]</a>
+    <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method responsible for putting items into the worker queue as database actions</span>
-
-<span class="sd">        :param item: Item processed from XML source and parsed into a dictionary</span>
-<span class="sd">        :type item: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span><span class="p">:</span>
@@ -193,6 +213,7 @@
                 <span class="p">)</span>
             <span class="p">)</span></div>
 
+
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
@@ -204,6 +225,7 @@
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
 </pre></div>
 
            </div>

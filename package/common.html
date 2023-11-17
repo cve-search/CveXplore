@@ -51,7 +51,21 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="core.html">Core</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Common</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#general-tools-and-converters">General tools and converters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-CveXplore.common.cpe_converters">General tools and converters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cpe-converters">CPE Converters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.common.cpe_converters.from2to3CPE"><code class="docutils literal notranslate"><span class="pre">from2to3CPE()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.common.cpe_converters.from3to2CPE"><code class="docutils literal notranslate"><span class="pre">from3to2CPE()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-source-connection">Data source connection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.common.data_source_connection.DatasourceConnection"><code class="docutils literal notranslate"><span class="pre">DatasourceConnection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.common.data_source_connection.DatasourceConnection.__eq__"><code class="docutils literal notranslate"><span class="pre">DatasourceConnection.__eq__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.common.data_source_connection.DatasourceConnection.__hash__"><code class="docutils literal notranslate"><span class="pre">DatasourceConnection.__hash__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.common.data_source_connection.DatasourceConnection.__init__"><code class="docutils literal notranslate"><span class="pre">DatasourceConnection.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.common.data_source_connection.DatasourceConnection.__ne__"><code class="docutils literal notranslate"><span class="pre">DatasourceConnection.__ne__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.common.data_source_connection.DatasourceConnection.to_dict"><code class="docutils literal notranslate"><span class="pre">DatasourceConnection.to_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">Database</a></li>
@@ -89,8 +103,78 @@
              
   <section id="common">
 <span id="id1"></span><h1>Common<a class="headerlink" href="#common" title="Link to this heading"></a></h1>
-<section id="general-tools-and-converters">
-<h2>General tools and converters<a class="headerlink" href="#general-tools-and-converters" title="Link to this heading"></a></h2>
+<section id="module-CveXplore.common.cpe_converters">
+<span id="general-tools-and-converters"></span><h2>General tools and converters<a class="headerlink" href="#module-CveXplore.common.cpe_converters" title="Link to this heading"></a></h2>
+<section id="cpe-converters">
+<h3>CPE Converters<a class="headerlink" href="#cpe-converters" title="Link to this heading"></a></h3>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="CveXplore.common.cpe_converters.from2to3CPE">
+<span class="sig-prename descclassname"><span class="pre">CveXplore.common.cpe_converters.</span></span><span class="sig-name descname"><span class="pre">from2to3CPE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autofill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/common/cpe_converters.html#from2to3CPE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.common.cpe_converters.from2to3CPE" title="Link to this definition"></a></dt>
+<dd><p>Method to transform cpe2.2 to cpe2.3 format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CveXplore.common.cpe_converters.from3to2CPE">
+<span class="sig-prename descclassname"><span class="pre">CveXplore.common.cpe_converters.</span></span><span class="sig-name descname"><span class="pre">from3to2CPE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpe</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/common/cpe_converters.html#from3to2CPE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.common.cpe_converters.from3to2CPE" title="Link to this definition"></a></dt>
+<dd><p>Method to transform cpe2.3 to cpe2.2 format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="data-source-connection">
+<span id="module-CveXplore.common.data_source_connection"></span><h3>Data source connection<a class="headerlink" href="#data-source-connection" title="Link to this heading"></a></h3>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.common.data_source_connection.DatasourceConnection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.common.data_source_connection.</span></span><span class="sig-name descname"><span class="pre">DatasourceConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/common/data_source_connection.html#DatasourceConnection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.common.data_source_connection.DatasourceConnection" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="objects.html#CveXplore.objects.cvexplore_object.CveXploreObject" title="CveXplore.objects.cvexplore_object.CveXploreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXploreObject</span></code></a></p>
+<p>The DatasourceConnection class handles the connection to the data source and is the base class for the database
+objects and generic database functions</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.common.data_source_connection.DatasourceConnection.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/common/data_source_connection.html#DatasourceConnection.__eq__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.common.data_source_connection.DatasourceConnection.__eq__" title="Link to this definition"></a></dt>
+<dd><p>Return self==value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="CveXplore.common.data_source_connection.DatasourceConnection.__hash__">
+<span class="sig-name descname"><span class="pre">__hash__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#CveXplore.common.data_source_connection.DatasourceConnection.__hash__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.common.data_source_connection.DatasourceConnection.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/common/data_source_connection.html#DatasourceConnection.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.common.data_source_connection.DatasourceConnection.__init__" title="Link to this definition"></a></dt>
+<dd><p>Create a DatasourceConnection object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.common.data_source_connection.DatasourceConnection.__ne__">
+<span class="sig-name descname"><span class="pre">__ne__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/common/data_source_connection.html#DatasourceConnection.__ne__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.common.data_source_connection.DatasourceConnection.__ne__" title="Link to this definition"></a></dt>
+<dd><p>Return self!=value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.common.data_source_connection.DatasourceConnection.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">print_keys</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/common/data_source_connection.html#DatasourceConnection.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.common.data_source_connection.DatasourceConnection.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Method to convert the entire object to a dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 

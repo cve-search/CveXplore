@@ -11,12 +11,11 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
@@ -27,11 +26,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../../index.html" class="icon icon-home"> CveXplore
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            CveXplore
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -67,7 +70,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
       <li class="breadcrumb-item active">CveXplore.database.helpers.specific_db</li>
       <li class="wy-breadcrumbs-aside">
@@ -83,41 +86,187 @@
 <span class="sd">Specific database functions</span>
 <span class="sd">===========================</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
 <span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">DESCENDING</span>
 
 <span class="kn">from</span> <span class="nn">CveXplore.database.helpers.generic_db</span> <span class="kn">import</span> <span class="n">GenericDatabaseFactory</span>
+<span class="kn">from</span> <span class="nn">CveXplore.errors.validation</span> <span class="kn">import</span> <span class="n">CveNumberValidationError</span>
+<span class="kn">from</span> <span class="nn">CveXplore.objects.cvexplore_object</span> <span class="kn">import</span> <span class="n">CveXploreObject</span>
 
 
-<div class="viewcode-block" id="CvesDatabaseFunctions"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions">[docs]</a><span class="k">class</span> <span class="nc">CvesDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
+<div class="viewcode-block" id="CvesDatabaseFunctions">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions">[docs]</a>
+<span class="k">class</span> <span class="nc">CvesDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The CvesDatabaseFunctions is a specific class that provides the cves attribute of a CveXplore instance additional</span>
 <span class="sd">    functions that only apply to the &#39;cves&#39; collection</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CvesDatabaseFunctions.__init__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">):</span>
+<div class="viewcode-block" id="CvesDatabaseFunctions.__init__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CvesDatabaseFunctions.get_cves_for_vendor"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_cves_for_vendor">[docs]</a>    <span class="k">def</span> <span class="nf">get_cves_for_vendor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vendor</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to return cves based on a given vendor. By default to result is sorted descending on th cvss field.</span>
 
-<span class="sd">        :param vendor: A vendor to search for; e.g. microsoft</span>
-<span class="sd">        :type vendor: str</span>
-<span class="sd">        :param limit: Limit the amount of returned results</span>
-<span class="sd">        :type limit: int</span>
-<span class="sd">        :return: List with cves objects</span>
-<span class="sd">        :rtype: list</span>
+<div class="viewcode-block" id="CvesDatabaseFunctions.get_cves_for_vendor">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_cves_for_vendor">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_cves_for_vendor</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">vendor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">CveXploreObject</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to return cves based on a given vendor. By default, to result is sorted descending on th cvss field.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="n">the_result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;vendors&quot;</span><span class="p">:</span> <span class="n">vendor</span><span class="p">})</span>
             <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
             <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;cvss&quot;</span><span class="p">,</span> <span class="n">DESCENDING</span><span class="p">)</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
 
-<div class="viewcode-block" id="CvesDatabaseFunctions.__repr__"><a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">the_result</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">the_result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+    <span class="k">def</span> <span class="nf">__parse_cve_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="c1"># first try to match full cve number format</span>
+        <span class="n">reg_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[cC][vV][eE]-\d</span><span class="si">{4}</span><span class="s2">-\d{4,10}&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">reg_match</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">doc_id</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">doc_id</span> <span class="o">=</span> <span class="n">doc_id</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">part_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\d</span><span class="si">{4}</span><span class="s2">-\d{4,10}&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">part_match</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">doc_id</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">doc_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;CVE-</span><span class="si">{</span><span class="n">doc_id</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">CveNumberValidationError</span><span class="p">(</span>
+                    <span class="s2">&quot;Could not validate the CVE number. The number format should be either &quot;</span>
+                    <span class="s2">&quot;CVE-2000-0001, cve-2000-0001 or 2000-0001.&quot;</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">doc_id</span>
+
+<div class="viewcode-block" id="CvesDatabaseFunctions.get_by_id">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_by_id">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to retrieve a single CVE from the database by its CVE ID number.</span>
+<span class="sd">        The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">doc_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parse_cve_id</span><span class="p">(</span><span class="n">doc_id</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">doc_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">doc_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">doc_id</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;Provided value is not a string nor can it be cast to one&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">doc_id</span><span class="p">})</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_field_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to fetch all field names from a specific collection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">doc_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parse_cve_id</span><span class="p">(</span><span class="n">doc_id</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span>
+                <span class="n">reduce</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">all_keys</span><span class="p">,</span> <span class="n">rec_keys</span><span class="p">:</span> <span class="n">all_keys</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">rec_keys</span><span class="p">),</span>
+                    <span class="nb">map</span><span class="p">(</span>
+                        <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+                        <span class="p">[</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
+                                <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">doc_id</span><span class="p">}</span>
+                            <span class="p">)</span>
+                        <span class="p">],</span>
+                    <span class="p">),</span>
+                    <span class="nb">set</span><span class="p">(),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="CvesDatabaseFunctions.__repr__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of object&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CvesDatabaseFunctions:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CvesDatabaseFunctions:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CpeDatabaseFunctions">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions">[docs]</a>
+<span class="k">class</span> <span class="nc">CpeDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The CpeDatabaseFunctions is a specific class that provides the cpe attribute of a CveXplore instance additional</span>
+<span class="sd">    functions that only apply to the &#39;cpe&#39; collection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CpeDatabaseFunctions.__init__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CpeDatabaseFunctions.search_active_cpes">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.search_active_cpes">[docs]</a>
+    <span class="k">def</span> <span class="nf">search_active_cpes</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sorting</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">CveXploreObject</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to regex search for cpe based on value in string. Only active (deprecated == false) cpe records are</span>
+<span class="sd">        returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$and&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="n">field</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$regex&quot;</span><span class="p">:</span> <span class="n">regex</span><span class="p">}},</span> <span class="p">{</span><span class="s2">&quot;deprecated&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}]}</span>
+
+        <span class="n">the_result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">sorting</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">the_result</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">the_result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="CpeDatabaseFunctions.find_active_cpes">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.find_active_cpes">[docs]</a>
+    <span class="k">def</span> <span class="nf">find_active_cpes</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sorting</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">CveXploreObject</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to find cpe based on value in string. Only active (deprecated == false) cpe records are</span>
+<span class="sd">        returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$and&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="n">field</span><span class="p">:</span> <span class="n">value</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;deprecated&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}]}</span>
+
+        <span class="n">the_result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">sorting</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">the_result</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">the_result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="CpeDatabaseFunctions.__repr__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of object&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CpeDatabaseFunctions:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
 
            </div>
