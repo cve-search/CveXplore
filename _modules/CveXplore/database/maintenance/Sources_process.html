@@ -109,7 +109,7 @@
 <span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.content_handlers</span> <span class="kn">import</span> <span class="n">CapecHandler</span><span class="p">,</span> <span class="n">CWEHandler</span>
 <span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.db_action</span> <span class="kn">import</span> <span class="n">DatabaseAction</span>
 <span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.file_handlers</span> <span class="kn">import</span> <span class="n">XMLFileHandler</span><span class="p">,</span> <span class="n">JSONFileHandler</span>
-<span class="kn">from</span> <span class="nn">CveXplore.errors.apis</span> <span class="kn">import</span> <span class="n">ApiDataRetrievalFailed</span>
+<span class="kn">from</span> <span class="nn">CveXplore.errors.apis</span> <span class="kn">import</span> <span class="n">ApiDataRetrievalFailed</span><span class="p">,</span> <span class="n">ApiMaxRetryError</span>
 
 <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 <span class="n">year</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1</span>
@@ -209,9 +209,14 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_process</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span><span class="p">:</span>
-                <span class="n">total_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">CPE</span>
-                <span class="p">)</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">total_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">CPE</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="n">ApiMaxRetryError</span><span class="p">:</span>
+                    <span class="c1"># failed to get the count; set total_results to 0 and continue</span>
+                    <span class="n">total_results</span> <span class="o">=</span> <span class="mi">0</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Preparing to download </span><span class="si">{</span><span class="n">total_results</span><span class="si">}</span><span class="s2"> CPE entries&quot;</span><span class="p">)</span>
 
@@ -256,11 +261,15 @@
                 <span class="c1"># Get datetime from runtime</span>
                 <span class="n">last_mod_end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 
-                <span class="n">total_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">CPE</span><span class="p">,</span>
-                    <span class="n">last_mod_start_date</span><span class="o">=</span><span class="n">last_mod_start_date</span><span class="p">,</span>
-                    <span class="n">last_mod_end_date</span><span class="o">=</span><span class="n">last_mod_end_date</span><span class="p">,</span>
-                <span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">total_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">CPE</span><span class="p">,</span>
+                        <span class="n">last_mod_start_date</span><span class="o">=</span><span class="n">last_mod_start_date</span><span class="p">,</span>
+                        <span class="n">last_mod_end_date</span><span class="o">=</span><span class="n">last_mod_end_date</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="n">ApiMaxRetryError</span><span class="p">:</span>
+                    <span class="c1"># failed to get the count; set total_results to 0 and continue</span>
+                    <span class="n">total_results</span> <span class="o">=</span> <span class="mi">0</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Preparing to download </span><span class="si">{</span><span class="n">total_results</span><span class="si">}</span><span class="s2"> CPE entries&quot;</span><span class="p">)</span>
 
@@ -858,9 +867,14 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_process</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span><span class="p">:</span>
-                <span class="n">total_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">CVE</span>
-                <span class="p">)</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">total_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">CVE</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="n">ApiMaxRetryError</span><span class="p">:</span>
+                    <span class="c1"># failed to get the count; set total_results to 0 and continue</span>
+                    <span class="n">total_results</span> <span class="o">=</span> <span class="mi">0</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Preparing to download </span><span class="si">{</span><span class="n">total_results</span><span class="si">}</span><span class="s2"> CVE entries&quot;</span><span class="p">)</span>
 
@@ -901,11 +915,15 @@
                 <span class="c1"># Get datetime from runtime</span>
                 <span class="n">last_mod_end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 
-                <span class="n">total_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">CVE</span><span class="p">,</span>
-                    <span class="n">last_mod_start_date</span><span class="o">=</span><span class="n">last_mod_start_date</span><span class="p">,</span>
-                    <span class="n">last_mod_end_date</span><span class="o">=</span><span class="n">last_mod_end_date</span><span class="p">,</span>
-                <span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">total_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">CVE</span><span class="p">,</span>
+                        <span class="n">last_mod_start_date</span><span class="o">=</span><span class="n">last_mod_start_date</span><span class="p">,</span>
+                        <span class="n">last_mod_end_date</span><span class="o">=</span><span class="n">last_mod_end_date</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="n">ApiMaxRetryError</span><span class="p">:</span>
+                    <span class="c1"># failed to get the count; set total_results to 0 and continue</span>
+                    <span class="n">total_results</span> <span class="o">=</span> <span class="mi">0</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Preparing to download </span><span class="si">{</span><span class="n">total_results</span><span class="si">}</span><span class="s2"> CVE entries&quot;</span><span class="p">)</span>
 

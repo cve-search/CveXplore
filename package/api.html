@@ -89,6 +89,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#CveXplore.api.nvd_nist.nvd_nist_api.NvdNistApi"><code class="docutils literal notranslate"><span class="pre">NvdNistApi</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#CveXplore.api.nvd_nist.nvd_nist_api.NvdNistApi.__init__"><code class="docutils literal notranslate"><span class="pre">NvdNistApi.__init__()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#CveXplore.api.nvd_nist.nvd_nist_api.NvdNistApi.__repr__"><code class="docutils literal notranslate"><span class="pre">NvdNistApi.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.api.nvd_nist.nvd_nist_api.NvdNistApi.get_session"><code class="docutils literal notranslate"><span class="pre">NvdNistApi.get_session()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#CveXplore.api.nvd_nist.nvd_nist_api.retry_policy"><code class="docutils literal notranslate"><span class="pre">retry_policy()</span></code></a></li>
@@ -292,6 +293,17 @@ It mimics the pymongo cursor’s behaviour to provide an ambiguous way to talk t
 <dt class="sig sig-object py" id="CveXplore.api.nvd_nist.nvd_nist_api.NvdNistApi.__repr__">
 <span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/api/nvd_nist/nvd_nist_api.html#NvdNistApi.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.api.nvd_nist.nvd_nist_api.NvdNistApi.__repr__" title="Link to this definition"></a></dt>
 <dd><p>return a string representation of the obj</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.api.nvd_nist.nvd_nist_api.NvdNistApi.get_session">
+<span class="sig-name descname"><span class="pre">get_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">retries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backoff_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backoff_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_forcelist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(403,</span> <span class="pre">429,</span> <span class="pre">500,</span> <span class="pre">502,</span> <span class="pre">503,</span> <span class="pre">504)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/api/nvd_nist/nvd_nist_api.html#NvdNistApi.get_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.api.nvd_nist.nvd_nist_api.NvdNistApi.get_session" title="Link to this definition"></a></dt>
+<dd><p>Method for returning a session object per every requesting thread</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

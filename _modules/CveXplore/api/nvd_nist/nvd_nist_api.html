@@ -98,6 +98,9 @@
 <span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">ContentTypeError</span>
 <span class="kn">from</span> <span class="nn">aioretry</span> <span class="kn">import</span> <span class="n">retry</span><span class="p">,</span> <span class="n">RetryPolicyStrategy</span><span class="p">,</span> <span class="n">RetryInfo</span>
 <span class="kn">from</span> <span class="nn">requests</span> <span class="kn">import</span> <span class="n">Response</span>
+<span class="kn">from</span> <span class="nn">requests.adapters</span> <span class="kn">import</span> <span class="n">HTTPAdapter</span><span class="p">,</span> <span class="n">Retry</span>
+<span class="kn">from</span> <span class="nn">urllib3</span> <span class="kn">import</span> <span class="n">HTTPSConnectionPool</span>
+<span class="kn">from</span> <span class="nn">urllib3.exceptions</span> <span class="kn">import</span> <span class="n">MaxRetryError</span>
 
 <span class="kn">from</span> <span class="nn">CveXplore.api.api_base_class</span> <span class="kn">import</span> <span class="n">ApiBaseClass</span>
 <span class="kn">from</span> <span class="nn">CveXplore.common.config</span> <span class="kn">import</span> <span class="n">Configuration</span>
@@ -106,6 +109,7 @@
     <span class="n">ApiErrorException</span><span class="p">,</span>
     <span class="n">ApiDataError</span><span class="p">,</span>
     <span class="n">ApiDataRetrievalFailed</span><span class="p">,</span>
+    <span class="n">ApiMaxRetryError</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">setLoggerClass</span><span class="p">(</span><span class="n">UpdateHandler</span><span class="p">)</span>
@@ -271,6 +275,35 @@
 
         <span class="k">return</span> <span class="n">resource</span>
 
+<div class="viewcode-block" id="NvdNistApi.get_session">
+<a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.nvd_nist.nvd_nist_api.NvdNistApi.get_session">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_session</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">backoff_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="n">backoff_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="n">status_forcelist</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">403</span><span class="p">,</span> <span class="mi">429</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">),</span>
+        <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method for returning a session object per every requesting thread</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">session</span> <span class="ow">or</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+        <span class="n">retry</span> <span class="o">=</span> <span class="n">Retry</span><span class="p">(</span>
+            <span class="n">total</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
+            <span class="n">read</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
+            <span class="n">connect</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
+            <span class="n">backoff_factor</span><span class="o">=</span><span class="n">backoff_factor</span><span class="p">,</span>
+            <span class="n">backoff_max</span><span class="o">=</span><span class="n">backoff_max</span><span class="p">,</span>
+            <span class="n">status_forcelist</span><span class="o">=</span><span class="n">status_forcelist</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">adapter</span> <span class="o">=</span> <span class="n">HTTPAdapter</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;http://&quot;</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;https://&quot;</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">session</span></div>
+
+
     <span class="k">def</span> <span class="nf">get_count</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">datasource</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
@@ -286,12 +319,16 @@
                 <span class="n">last_mod_end_date</span><span class="o">=</span><span class="n">last_mod_end_date</span><span class="p">,</span>
             <span class="p">)</span>
 
-        <span class="n">ret_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">GET</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">datasource</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Getting count for datasource: </span><span class="si">{</span><span class="n">datasource</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ret_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">GET</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">datasource</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ret_data</span><span class="p">,</span> <span class="n">Response</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">ret_data</span><span class="p">[</span><span class="s2">&quot;totalResults&quot;</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ApiDataRetrievalFailed</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ret_data</span><span class="p">,</span> <span class="n">Response</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">ret_data</span><span class="p">[</span><span class="s2">&quot;totalResults&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ApiDataRetrievalFailed</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ApiMaxRetryError</span>
 
     <span class="k">def</span> <span class="nf">get_all_data</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -311,11 +348,15 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Getting all </span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2">s...&quot;</span><span class="p">)</span>
 
-        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span>
-            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="n">data_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()),</span>
-            <span class="n">last_mod_start_date</span><span class="o">=</span><span class="n">last_mod_start_date</span><span class="p">,</span>
-            <span class="n">last_mod_end_date</span><span class="o">=</span><span class="n">last_mod_end_date</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="n">data_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()),</span>
+                <span class="n">last_mod_start_date</span><span class="o">=</span><span class="n">last_mod_start_date</span><span class="p">,</span>
+                <span class="n">last_mod_end_date</span><span class="o">=</span><span class="n">last_mod_end_date</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="n">ApiMaxRetryError</span><span class="p">:</span>
+            <span class="c1"># failed to get the count; set data to 0 and continue</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">each_data</span> <span class="ow">in</span> <span class="n">ApiData</span><span class="p">(</span>
