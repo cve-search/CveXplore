@@ -25,7 +25,7 @@ from CveXplore.database.maintenance.api_handlers import NVDApiHandler
 from CveXplore.database.maintenance.content_handlers import CapecHandler, CWEHandler
 from CveXplore.database.maintenance.db_action import DatabaseAction
 from CveXplore.database.maintenance.file_handlers import XMLFileHandler, JSONFileHandler
-from CveXplore.errors.apis import ApiDataRetrievalFailed
+from CveXplore.errors.apis import ApiDataRetrievalFailed, ApiMaxRetryError
 
 date = datetime.datetime.now()
 year = date.year + 1
@@ -118,9 +118,14 @@ class CPEDownloads(NVDApiHandler):
 
         if self.do_process:
             if not self.is_update:
-                total_results = self.api_handler.get_count(
-                    self.api_handler.datasource.CPE
-                )
+
+                try:
+                    total_results = self.api_handler.get_count(
+                        self.api_handler.datasource.CPE
+                    )
+                except ApiMaxRetryError:
+                    # failed to get the count; set total_results to 0 and continue
+                    total_results = 0
 
                 self.logger.info(f"Preparing to download {total_results} CPE entries")
 
@@ -165,11 +170,15 @@ class CPEDownloads(NVDApiHandler):
                 # Get datetime from runtime
                 last_mod_end_date = datetime.datetime.now()
 
-                total_results = self.api_handler.get_count(
-                    self.api_handler.datasource.CPE,
-                    last_mod_start_date=last_mod_start_date,
-                    last_mod_end_date=last_mod_end_date,
-                )
+                try:
+                    total_results = self.api_handler.get_count(
+                        self.api_handler.datasource.CPE,
+                        last_mod_start_date=last_mod_start_date,
+                        last_mod_end_date=last_mod_end_date,
+                    )
+                except ApiMaxRetryError:
+                    # failed to get the count; set total_results to 0 and continue
+                    total_results = 0
 
                 self.logger.info(f"Preparing to download {total_results} CPE entries")
 
@@ -755,9 +764,14 @@ class CVEDownloads(NVDApiHandler):
 
         if self.do_process:
             if not self.is_update:
-                total_results = self.api_handler.get_count(
-                    self.api_handler.datasource.CVE
-                )
+
+                try:
+                    total_results = self.api_handler.get_count(
+                        self.api_handler.datasource.CVE
+                    )
+                except ApiMaxRetryError:
+                    # failed to get the count; set total_results to 0 and continue
+                    total_results = 0
 
                 self.logger.info(f"Preparing to download {total_results} CVE entries")
 
@@ -798,11 +812,15 @@ class CVEDownloads(NVDApiHandler):
                 # Get datetime from runtime
                 last_mod_end_date = datetime.datetime.now()
 
-                total_results = self.api_handler.get_count(
-                    self.api_handler.datasource.CVE,
-                    last_mod_start_date=last_mod_start_date,
-                    last_mod_end_date=last_mod_end_date,
-                )
+                try:
+                    total_results = self.api_handler.get_count(
+                        self.api_handler.datasource.CVE,
+                        last_mod_start_date=last_mod_start_date,
+                        last_mod_end_date=last_mod_end_date,
+                    )
+                except ApiMaxRetryError:
+                    # failed to get the count; set total_results to 0 and continue
+                    total_results = 0
 
                 self.logger.info(f"Preparing to download {total_results} CVE entries")
 
