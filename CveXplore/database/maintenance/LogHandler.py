@@ -71,13 +71,11 @@ class HelperLogger(logging.Logger):
 
     def debug(self, msg: str, *args, **kwargs):
         """
-        Log ‘msg % args’ with severity ‘DEBUG’ and color *MAGENTA.
+        Log ‘msg % args’ with severity ‘DEBUG’ and color *MAGENTA*.
 
         To pass exception information, use the keyword argument exc_info with a true value, e.g.
 
-        .. code-block:: python
-
-            >>> logger.debug(“Houston, we have a thorny problem”)
+            >>> logger.debug('Houston, we have a thorny problem')
 
         """
 
@@ -91,9 +89,7 @@ class HelperLogger(logging.Logger):
 
         To pass exception information, use the keyword argument exc_info with a true value, e.g.
 
-        .. code-block:: python
-
-            >>> logger.info(“Houston, we have an interesting problem”)
+            >>> logger.info('Houston, we have an interesting problem')
 
         """
 
@@ -107,9 +103,7 @@ class HelperLogger(logging.Logger):
 
         To pass exception information, use the keyword argument exc_info with a true value, e.g.
 
-        .. code-block:: python
-
-            >>> logger.warning(“Houston, we have a bit of a problem”)
+            >>> logger.warning('Houston, we have a bit of a problem')
 
         """
 
@@ -125,9 +119,7 @@ class HelperLogger(logging.Logger):
 
         To pass exception information, use the keyword argument exc_info with a true value, e.g.
 
-        .. code-block:: python
-
-            >>> logger.error(“Houston, we have a major problem”)
+            >>> logger.error('Houston, we have a major problem')
 
         """
 
@@ -143,9 +135,7 @@ class HelperLogger(logging.Logger):
 
         To pass exception information, use the keyword argument exc_info with a true value, e.g.
 
-        .. code-block:: python
-
-            >>> logger.critical(“Houston, we have a hell of a problem”)
+            >>> logger.critical('Houston, we have a hell of a problem')
 
         """
 

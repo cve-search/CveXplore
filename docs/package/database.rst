@@ -71,9 +71,3 @@ Database Maintenance
     :show-inheritance:
     :special-members:
     :exclude-members: __dict__,__weakref__
-
-.. automodule:: CveXplore.database.maintenance.Config
-    :members:
-    :show-inheritance:
-    :special-members:
-    :exclude-members: __dict__,__weakref__

@@ -46,13 +46,11 @@ class CveXplore(object):
         :param mongodb_connection_details: Provide the connection details needed to establish a connection to a mongodb
                                            instance. The connection details should be in line with pymongo's
                                            documentation.
-        :type mongodb_connection_details: dict
         :param api_connection_details: Provide the connection details needed to establish a connection to a cve-search
                                        API provider. The cve-search API provider should allow access to the 'query' POST
                                        endpoint; all other API endpoints are not needed for CveXplore to function. For
                                        the connection details supported please check the :ref:`API connection <api>`
                                        documentation.
-        :type api_connection_details: dict
         """
         self.__version = VERSION
         self.config = Configuration()
@@ -148,7 +146,9 @@ class CveXplore(object):
                 - cwe;
                 - via4;
                 - cves;
+
             dict_filter is a dictionary representing a filter according to pymongo documentation.
+
             example:
                 get_single_store_entries(("cwe", {"id": "78"}))
         """
@@ -212,7 +212,9 @@ class CveXplore(object):
                 - cwe;
                 - via4;
                 - cves;
+
             dict_filter is a dictionary representing a filter according to pymongo documentation.
+
             example:
                 get_multi_store_entries([("cwe", {"id": "78"}), ("cves", {"id": "CVE-2009-0018"})])
         """

@@ -18,8 +18,3 @@ General tools and converters
     :special-members:
     :exclude-members: __dict__,__weakref__
 
-.. automodule:: CveXplore.common.generic_api
-    :members:
-    :show-inheritance:
-    :special-members:
-    :exclude-members: __dict__,__weakref__

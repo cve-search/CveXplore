@@ -265,11 +265,12 @@ def retry_policy(info: RetryInfo) -> RetryPolicyStrategy:
     - It will always retry until succeeded
     - If fails for the first time, it will retry immediately,
     - If it fails again,
-      aioretry will perform a 100ms delay before the second retry,
-      200ms delay before the 3rd retry,
-      the 4th retry immediately,
-      100ms delay before the 5th retry,
-      etc...
+
+    aioretry will perform a 100ms delay before the second retry,
+    200ms delay before the 3rd retry,
+    the 4th retry immediately,
+    100ms delay before the 5th retry,
+    etc...
     """
     max_retries = 5
     backoff_in_ms = 0.2 * 2**info.fails + random.uniform(0, 1) * 4

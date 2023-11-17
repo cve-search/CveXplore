@@ -3,6 +3,12 @@
 Objects
 #######
 
+.. automodule:: CveXplore.objects.cvexplore_object
+    :members:
+    :show-inheritance:
+    :special-members:
+    :exclude-members: __dict__,__weakref__
+
 .. automodule:: CveXplore.objects.capec
     :members:
     :show-inheritance:
