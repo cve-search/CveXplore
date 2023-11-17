@@ -16,7 +16,7 @@ class NVDApiHandler(DownloadHandler):
 
         self.is_update = True
 
-        self.api_handler = NvdNistApi()
+        self.api_handler = NvdNistApi(proxies=self.config.HTTP_PROXY_DICT)
 
     def __repr__(self):
         """return string representation of object"""

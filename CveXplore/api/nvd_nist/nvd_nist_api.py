@@ -15,8 +15,6 @@ from aiohttp import ContentTypeError
 from aioretry import retry, RetryPolicyStrategy, RetryInfo
 from requests import Response
 from requests.adapters import HTTPAdapter, Retry
-from urllib3 import HTTPSConnectionPool
-from urllib3.exceptions import MaxRetryError
 
 from CveXplore.api.api_base_class import ApiBaseClass
 from CveXplore.common.config import Configuration
@@ -36,9 +34,12 @@ class NvdNistApi(ApiBaseClass):
         self,
         baseurl: str = "https://services.nvd.nist.gov",
         api_path: str = "2.0",
+        proxies: dict = None,
         user_agent: str = "CveXplore",
     ):
-        super().__init__(baseurl, api_path=api_path, user_agent=user_agent)
+        super().__init__(
+            baseurl, api_path=api_path, user_agent=user_agent, proxies=proxies
+        )
 
         self.config = Configuration()
 
@@ -224,7 +225,8 @@ class NvdNistApi(ApiBaseClass):
                 last_mod_end_date=last_mod_end_date,
             )
 
-        self.logger.info(f"Getting count for datasource: {datasource}")
+        self.logger.debug(f"Getting count for datasource: {datasource}")
+
         try:
             ret_data = self.call(self.methods.GET, resource=resource, data=datasource)
 
@@ -347,6 +349,8 @@ class ApiDataIterator(object):
 
         self.workload = None
 
+        self.config = Configuration()
+
     def __iter__(self):
         return self
 
@@ -416,7 +420,9 @@ class ApiDataIterator(object):
     @retry(retry_policy)
     async def fetch(self, session: aiohttp.ClientSession, url: str):
         try:
-            async with session.get(url) as response:
+            async with session.get(
+                url, proxy=self.config.HTTP_PROXY_STRING
+            ) as response:
                 self.logger.debug(f"Sending request to url: {url}")
                 if response.status == 200:
                     data = await response.json()

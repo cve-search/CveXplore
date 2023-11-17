@@ -73,14 +73,14 @@ class Configuration(object):
 
     NVD_NIST_API_KEY = os.getenv("NVD_NIST_API_KEY", None)
     NVD_NIST_NO_REJECTED = getenv_bool("NVD_NIST_NO_REJECTED", "True")
+    HTTP_PROXY_DICT = getenv_dict("HTTP_PROXY_DICT", {})
+    HTTP_PROXY_STRING = os.getenv("HTTP_PROXY_STRING", "")
 
     DEFAULT_SOURCES = {
         "cwe": "https://cwe.mitre.org/data/xml/cwec_latest.xml.zip",
         "capec": "https://capec.mitre.org/data/xml/capec_latest.xml",
         "via4": "https://www.cve-search.org/feeds/via4.json",
     }
-
-    HTTP_PROXY = os.getenv("HTTP_PROXY", "")
 
     LOGGING_TO_FILE = getenv_bool("LOGGING_TO_FILE", "True")
     LOGGING_FILE_PATH = os.getenv("LOGGING_FILE_PATH", os.path.join(user_wd, "log"))
@@ -104,10 +104,6 @@ class Configuration(object):
             )
             start_year = cls.default["CVEStartYear"]
         return start_year
-
-    @classmethod
-    def getProxy(cls):
-        return cls.HTTP_PROXY
 
     @classmethod
     def getFeedURL(cls, source):

@@ -85,7 +85,7 @@ class DownloadHandler(ABC):
         Method for returning a session object per every requesting thread
         """
 
-        proxies = {"http": self.config.getProxy(), "https": self.config.getProxy()}
+        proxies = self.config.HTTP_PROXY_DICT
 
         if not hasattr(thread_local, "session"):
             session = session or requests.Session()

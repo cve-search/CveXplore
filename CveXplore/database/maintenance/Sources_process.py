@@ -155,18 +155,24 @@ class CPEDownloads(NVDApiHandler):
                     {}, {"lastModified": 1}, sort=[("lastModified", -1)]
                 )
 
-                if "lastModified" in last_mod_start_date:
-                    last_mod_start_date = last_mod_start_date[
-                        "lastModified"
-                    ] + datetime.timedelta(
-                        0, 1
-                    )  # add one second to prevent false results...
+                if last_mod_start_date is not None:
+                    if "lastModified" in last_mod_start_date:
+                        last_mod_start_date = last_mod_start_date[
+                            "lastModified"
+                        ] + datetime.timedelta(
+                            0, 1
+                        )  # add one second to prevent false results...
+                    else:
+                        raise KeyError(
+                            "Missing field 'lastModified' from database query..."
+                        )
                 else:
-                    raise KeyError(
-                        "Missing field 'lastModified' from database query..."
+                    self.logger.warning(
+                        "No records found in the mongodb cpe collection.."
                     )
+                    return
 
-                # Get datetime from runtime
+                    # Get datetime from runtime
                 last_mod_end_date = datetime.datetime.now()
 
                 try:
@@ -800,14 +806,20 @@ class CVEDownloads(NVDApiHandler):
                     {}, {"lastModified": 1}, sort=[("lastModified", -1)]
                 )
 
-                if "lastModified" in last_mod_start_date:
-                    last_mod_start_date = last_mod_start_date["lastModified"]
+                if last_mod_start_date is not None:
+                    if "lastModified" in last_mod_start_date:
+                        last_mod_start_date = last_mod_start_date["lastModified"]
+                    else:
+                        raise KeyError(
+                            "Missing field 'lastModified' from database query..."
+                        )
                 else:
-                    raise KeyError(
-                        "Missing field 'lastModified' from database query..."
+                    self.logger.warning(
+                        "No records found in the mongodb cves collection.."
                     )
+                    return
 
-                # Get datetime from runtime
+                    # Get datetime from runtime
                 last_mod_end_date = datetime.datetime.now()
 
                 try:
