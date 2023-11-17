@@ -428,7 +428,7 @@ class ApiDataIterator(object):
                 loop=loop,
                 headers=self.api_data.api_handle.headers,
                 timeout=aiohttp.ClientTimeout(
-                    total=30.0, sock_connect=30.0, sock_read=30.0, connect=30.0
+                    total=60.0, sock_connect=60.0, sock_read=60.0, connect=60.0
                 ),
             ) as session:
                 results = await asyncio.gather(

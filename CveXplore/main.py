@@ -382,3 +382,7 @@ class CveXplore(object):
     def __repr__(self):
         """String representation of object"""
         return "<< CveXplore:{} >>".format(self.version)
+
+if __name__ == '__main__':
+    cvx = CveXplore()
+    cvx.database.initialize()
