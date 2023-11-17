@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import math
+import os
 import random
 import time
 from collections import namedtuple
@@ -416,7 +417,7 @@ class ApiDataIterator(object):
     @retry(retry_policy)
     async def fetch(self, session: aiohttp.ClientSession, url: str):
         try:
-            async with session.get(url) as response:
+            async with session.get(url,proxy=os.getenv("HTTPS_PROXY", None)) as response:
                 self.logger.debug(f"Sending request to url: {url}")
                 if response.status == 200:
                     data = await response.json()
