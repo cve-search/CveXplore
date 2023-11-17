@@ -118,7 +118,6 @@ class CPEDownloads(NVDApiHandler):
 
         if self.do_process:
             if not self.is_update:
-
                 try:
                     total_results = self.api_handler.get_count(
                         self.api_handler.datasource.CPE
@@ -764,7 +763,6 @@ class CVEDownloads(NVDApiHandler):
 
         if self.do_process:
             if not self.is_update:
-
                 try:
                     total_results = self.api_handler.get_count(
                         self.api_handler.datasource.CVE
