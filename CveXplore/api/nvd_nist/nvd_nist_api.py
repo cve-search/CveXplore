@@ -14,6 +14,9 @@ import requests
 from aiohttp import ContentTypeError
 from aioretry import retry, RetryPolicyStrategy, RetryInfo
 from requests import Response
+from requests.adapters import HTTPAdapter, Retry
+from urllib3 import HTTPSConnectionPool
+from urllib3.exceptions import MaxRetryError
 
 from CveXplore.api.api_base_class import ApiBaseClass
 from CveXplore.common.config import Configuration
@@ -22,6 +25,7 @@ from CveXplore.errors.apis import (
     ApiErrorException,
     ApiDataError,
     ApiDataRetrievalFailed,
+    ApiMaxRetryError,
 )
 
 logging.setLoggerClass(UpdateHandler)
@@ -179,6 +183,32 @@ class NvdNistApi(ApiBaseClass):
 
         return resource
 
+    def get_session(
+        self,
+        retries: int = 10,
+        backoff_factor: float = 3,
+        backoff_max: float = 30,
+        status_forcelist: tuple = (403, 429, 500, 502, 503, 504),
+        session=None,
+    ) -> requests.Session:
+        """
+        Method for returning a session object per every requesting thread
+        """
+        session = session or requests.Session()
+        retry = Retry(
+            total=retries,
+            read=retries,
+            connect=retries,
+            backoff_factor=backoff_factor,
+            backoff_max=backoff_max,
+            status_forcelist=status_forcelist,
+        )
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount("http://", adapter)
+        session.mount("https://", adapter)
+
+        return session
+
     def get_count(
         self,
         datasource: int = 1,
@@ -194,12 +224,16 @@ class NvdNistApi(ApiBaseClass):
                 last_mod_end_date=last_mod_end_date,
             )
 
-        ret_data = self.call(self.methods.GET, resource=resource, data=datasource)
+        self.logger.info(f"Getting count for datasource: {datasource}")
+        try:
+            ret_data = self.call(self.methods.GET, resource=resource, data=datasource)
 
-        if not isinstance(ret_data, Response):
-            return ret_data["totalResults"]
-        else:
-            raise ApiDataRetrievalFailed
+            if not isinstance(ret_data, Response):
+                return ret_data["totalResults"]
+            else:
+                raise ApiDataRetrievalFailed
+        except Exception:
+            raise ApiMaxRetryError
 
     def get_all_data(
         self,
@@ -219,11 +253,15 @@ class NvdNistApi(ApiBaseClass):
         else:
             self.logger.debug(f"Getting all {data_type}s...")
 
-        data = self.get_count(
-            getattr(self.datasource, data_type.upper()),
-            last_mod_start_date=last_mod_start_date,
-            last_mod_end_date=last_mod_end_date,
-        )
+        try:
+            data = self.get_count(
+                getattr(self.datasource, data_type.upper()),
+                last_mod_start_date=last_mod_start_date,
+                last_mod_end_date=last_mod_end_date,
+            )
+        except ApiMaxRetryError:
+            # failed to get the count; set data to 0 and continue
+            data = 0
 
         if isinstance(data, int):
             for each_data in ApiData(

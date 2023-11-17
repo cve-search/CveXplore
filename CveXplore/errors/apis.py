@@ -12,3 +12,7 @@ class ApiDataError(ApiException):
 
 class ApiDataRetrievalFailed(ApiException):
     pass
+
+
+class ApiMaxRetryError(ApiException):
+    pass
