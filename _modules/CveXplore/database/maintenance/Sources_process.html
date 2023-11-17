@@ -246,18 +246,24 @@
                     <span class="p">{},</span> <span class="p">{</span><span class="s2">&quot;lastModified&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">sort</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;lastModified&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
                 <span class="p">)</span>
 
-                <span class="k">if</span> <span class="s2">&quot;lastModified&quot;</span> <span class="ow">in</span> <span class="n">last_mod_start_date</span><span class="p">:</span>
-                    <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="n">last_mod_start_date</span><span class="p">[</span>
-                        <span class="s2">&quot;lastModified&quot;</span>
-                    <span class="p">]</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span>
-                        <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
-                    <span class="p">)</span>  <span class="c1"># add one second to prevent false results...</span>
+                <span class="k">if</span> <span class="n">last_mod_start_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;lastModified&quot;</span> <span class="ow">in</span> <span class="n">last_mod_start_date</span><span class="p">:</span>
+                        <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="n">last_mod_start_date</span><span class="p">[</span>
+                            <span class="s2">&quot;lastModified&quot;</span>
+                        <span class="p">]</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span>
+                            <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+                        <span class="p">)</span>  <span class="c1"># add one second to prevent false results...</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                            <span class="s2">&quot;Missing field &#39;lastModified&#39; from database query...&quot;</span>
+                        <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-                        <span class="s2">&quot;Missing field &#39;lastModified&#39; from database query...&quot;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="s2">&quot;No records found in the mongodb cpe collection..&quot;</span>
                     <span class="p">)</span>
+                    <span class="k">return</span>
 
-                <span class="c1"># Get datetime from runtime</span>
+                    <span class="c1"># Get datetime from runtime</span>
                 <span class="n">last_mod_end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 
                 <span class="k">try</span><span class="p">:</span>
@@ -903,14 +909,20 @@
                     <span class="p">{},</span> <span class="p">{</span><span class="s2">&quot;lastModified&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">sort</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;lastModified&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
                 <span class="p">)</span>
 
-                <span class="k">if</span> <span class="s2">&quot;lastModified&quot;</span> <span class="ow">in</span> <span class="n">last_mod_start_date</span><span class="p">:</span>
-                    <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="n">last_mod_start_date</span><span class="p">[</span><span class="s2">&quot;lastModified&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">last_mod_start_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;lastModified&quot;</span> <span class="ow">in</span> <span class="n">last_mod_start_date</span><span class="p">:</span>
+                        <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="n">last_mod_start_date</span><span class="p">[</span><span class="s2">&quot;lastModified&quot;</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                            <span class="s2">&quot;Missing field &#39;lastModified&#39; from database query...&quot;</span>
+                        <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-                        <span class="s2">&quot;Missing field &#39;lastModified&#39; from database query...&quot;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="s2">&quot;No records found in the mongodb cves collection..&quot;</span>
                     <span class="p">)</span>
+                    <span class="k">return</span>
 
-                <span class="c1"># Get datetime from runtime</span>
+                    <span class="c1"># Get datetime from runtime</span>
                 <span class="n">last_mod_end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 
                 <span class="k">try</span><span class="p">:</span>

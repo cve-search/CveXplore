@@ -179,7 +179,7 @@
 <span class="sd">        Method for returning a session object per every requesting thread</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">proxies</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;http&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getProxy</span><span class="p">(),</span> <span class="s2">&quot;https&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getProxy</span><span class="p">()}</span>
+        <span class="n">proxies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">HTTP_PROXY_DICT</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">thread_local</span><span class="p">,</span> <span class="s2">&quot;session&quot;</span><span class="p">):</span>
             <span class="n">session</span> <span class="o">=</span> <span class="n">session</span> <span class="ow">or</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
