@@ -13,7 +13,7 @@
 
 
 The CveXplore package aims to provide an object related way to interact with the data collected or hosted by a
-cve-search instance. It provides an ambiguous way to interact either to the cve-search mongodb or to the cve-search API.
+cve-search instance. It provides an ambiguous way to interact with either the cve-search mongodb or the cve-search API.
 
 From version 0.2.5 onwards CveXplore has the possibility to initialize and update the database without the need of any of
 the cve-search binaries and thus providing the same functionality as cve-search but without the GUI components.
