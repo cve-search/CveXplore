@@ -114,7 +114,16 @@ class DownloadHandler(ABC):
 
         start_time = time.time()
 
-        thread_map(self.download_site, sites, desc="Downloading files")
+        self.logger.info(
+            f"Downloading files (max {self.config.MAX_DOWNLOAD_WORKERS} workers)"
+        )
+
+        thread_map(
+            self.download_site,
+            sites,
+            desc="Downloading files",
+            max_workers=self.config.MAX_DOWNLOAD_WORKERS,
+        )
 
         if self.do_process:
             thread_map(
@@ -319,7 +328,7 @@ class DownloadHandler(ABC):
         self.database["info"].delete_one({"db": collection})
 
     def getCPEVersionInformation(self, query: dict):
-        return sanitize(self.database["cpe"].find_one(query))
+        return sanitize(self.database["cpe"].find(query))
 
     def getInfo(self, collection: str):
         return sanitize(self.database["info"].find_one({"db": collection}))
