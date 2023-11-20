@@ -184,6 +184,30 @@ class CveXplore(object):
                         dict_filter["id"]["$in"] = [
                             self._validate_cve_id(x) for x in dict_filter["id"]["$in"]
                         ]
+            if "cvss" in dict_filter:
+                if isinstance(dict_filter["cvss"], str):
+                    dict_filter["cvss"] = float(dict_filter["cvss"])
+            if "cvss3" in dict_filter:
+                if isinstance(dict_filter["cvss3"], str):
+                    dict_filter["cvss3"] = float(dict_filter["cvss3"])
+
+            if "exploitabilityScore" in dict_filter:
+                if isinstance(dict_filter["exploitabilityScore"], str):
+                    dict_filter["exploitabilityScore"] = float(
+                        dict_filter["exploitabilityScore"]
+                    )
+            if "exploitabilityScore3" in dict_filter:
+                if isinstance(dict_filter["exploitabilityScore3"], str):
+                    dict_filter["exploitabilityScore3"] = float(
+                        dict_filter["exploitabilityScore3"]
+                    )
+
+            if "impactScore" in dict_filter:
+                if isinstance(dict_filter["impactScore"], str):
+                    dict_filter["impactScore"] = float(dict_filter["impactScore"])
+            if "impactScore3" in dict_filter:
+                if isinstance(dict_filter["impactScore3"], str):
+                    dict_filter["impactScore3"] = float(dict_filter["impactScore3"])
 
         results = (
             getattr(self.datasource, "store_{}".format(entry_type))

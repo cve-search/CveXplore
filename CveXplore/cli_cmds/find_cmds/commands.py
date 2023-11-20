@@ -26,9 +26,9 @@ from CveXplore.cli_cmds.cli_utils.utils import printer
     type=click.Choice(["json", "csv", "xml", "html"], case_sensitive=False),
 )
 @click.pass_context
-def search_cmd(ctx, collection, field, value, limit, output):
+def find_cmd(ctx, collection, field, value, limit, output):
     ret_list = ctx.obj["data_source"].get_single_store_entries(
-        (collection, {field: value.upper()}), limit=limit
+        (collection, {field: value}), limit=limit
     )
     try:
         result = [result.to_dict() for result in ret_list]

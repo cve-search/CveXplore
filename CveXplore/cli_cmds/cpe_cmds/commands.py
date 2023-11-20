@@ -89,7 +89,7 @@ def cpe_cmd(ctx):
     "--product_search",
     default=False,
     is_flag=True,
-    help="If adding CVE's search for vulnerable products and not for vulnerable configurations",
+    help="Let CveXplore search for vulnerable products and not for vulnerable configurations",
 )
 @click.option("-l", "--limit", default=10, help="Search limit")
 @click.option("-s", "--sort", is_flag=True, help="Sort DESCENDING")

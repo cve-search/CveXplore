@@ -29,7 +29,7 @@ def main(ctx, version):
         click.echo(main.get_help(ctx))
 
 
-main.add_command(group1.search_cmd)
+main.add_command(group1.find_cmd)
 main.add_command(group2.cve_cmd)
 main.add_command(group3.stats_cmd)
 main.add_command(group4.db_cmd)
