@@ -60,7 +60,7 @@ class Configuration(object):
 
     USER_HOME_DIR = user_wd
 
-    CVE_START_YEAR = os.getenv("CVE_START_YEAR", 2002)
+    CVE_START_YEAR = int(os.getenv("CVE_START_YEAR", 2002))
 
     MONGODB_HOST = os.getenv("MONGODB_HOST", "127.0.0.1")
     MONGODB_PORT = int(os.getenv("MONGODB_PORT", 27017))
@@ -89,9 +89,11 @@ class Configuration(object):
         os.mkdir(LOGGING_FILE_PATH)
 
     LOGGING_MAX_FILE_SIZE = os.getenv("LOGGING_MAX_FILE_SIZE", "100MB")
-    LOGGING_BACKLOG = os.getenv("LOGGING_BACKLOG", 5)
+    LOGGING_BACKLOG = int(os.getenv("LOGGING_BACKLOG", 5))
     LOGGING_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "./cvexplore.log")
     LOGGING_UPDATE_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "./update_populate.log")
+
+    MAX_DOWNLOAD_WORKERS = int(os.getenv("MAX_DOWNLOAD_WORKERS", 10))
 
     @classmethod
     def getCVEStartYear(cls):

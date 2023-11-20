@@ -52,7 +52,22 @@ class CPEDownloads(NVDApiHandler):
         pass
 
     @staticmethod
-    def process_the_item(item: dict = None):
+    def stem(cpe_uri: str):
+        cpe_stem = cpe_uri.split(":")
+        return ":".join(cpe_stem[:5])
+
+    @staticmethod
+    def padded_version(version: str):
+        ret_list = []
+        try:
+            for v in version.split("."):
+                ret_list.append(f"{int(v):05d}")
+        except ValueError:
+            return version
+
+        return ".".join(ret_list)
+
+    def process_the_item(self, item: dict = None):
         if item is None:
             return None
 
@@ -73,28 +88,18 @@ class CPEDownloads(NVDApiHandler):
             "cpeName": item["cpeName"],
             "vendor": item["cpeName"].split(":")[3],
             "product": item["cpeName"].split(":")[4],
+            "version": item["cpeName"].split(":")[5],
+            "padded_version": self.padded_version(item["cpeName"].split(":")[5]),
+            "stem": self.stem(item["cpeName"]),
             "cpeNameId": item["cpeNameId"],
             "lastModified": parse_datetime(item["lastModified"], ignoretz=True),
             "created": parse_datetime(item["created"], ignoretz=True),
             "deprecated": item["deprecated"],
         }
 
-        version_info = ""
-        if "versionStartExcluding" in item:
-            cpe["versionStartExcluding"] = item["versionStartExcluding"]
-            version_info += cpe["versionStartExcluding"] + "_VSE"
-        if "versionStartIncluding" in item:
-            cpe["versionStartIncluding"] = item["versionStartIncluding"]
-            version_info += cpe["versionStartIncluding"] + "_VSI"
-        if "versionEndExcluding" in item:
-            cpe["versionEndExcluding"] = item["versionEndExcluding"]
-            version_info += cpe["versionEndExcluding"] + "_VEE"
-        if "versionEndIncluding" in item:
-            cpe["versionEndIncluding"] = item["versionEndIncluding"]
-            version_info += cpe["versionEndIncluding"] + "_VEI"
-
         sha1_hash = hashlib.sha1(
-            cpe["cpeName"].encode("utf-8") + version_info.encode("utf-8")
+            cpe["cpeName"].encode("utf-8")
+            + item["cpeName"].split(":")[5].encode("utf-8")
         ).hexdigest()
 
         cpe["id"] = sha1_hash
@@ -270,29 +275,81 @@ class CVEDownloads(NVDApiHandler):
     @staticmethod
     def get_cve_year_range():
         """
-        Method to fetch the years where we need cve's for
+        Method to fetch the start year for the cve's population/initialization
         """
         for a_year in range(cveStartYear, year):
             yield a_year
 
-    @staticmethod
-    def get_cpe_info(cpeuri: str):
+    def get_cpe_info(self, cpeuri: str):
         query = {}
-        version_info = ""
+        # version_info = ""
         if "versionStartExcluding" in cpeuri:
-            query["versionStartExcluding"] = cpeuri["versionStartExcluding"]
-            version_info += query["versionStartExcluding"] + "_VSE"
-        if "versionStartIncluding" in cpeuri:
-            query["versionStartIncluding"] = cpeuri["versionStartIncluding"]
-            version_info += query["versionStartIncluding"] + "_VSI"
-        if "versionEndExcluding" in cpeuri:
-            query["versionEndExcluding"] = cpeuri["versionEndExcluding"]
-            version_info += query["versionEndExcluding"] + "_VEE"
-        if "versionEndIncluding" in cpeuri:
-            query["versionEndIncluding"] = cpeuri["versionEndIncluding"]
-            version_info += query["versionEndIncluding"] + "_VEI"
+            if "versionEndExcluding" in cpeuri:
+                query = {
+                    "stem": self.stem(cpeuri["criteria"]),
+                    "padded_version": {
+                        "$gt": self.padded_version(cpeuri["versionStartExcluding"]),
+                        "$lt": self.padded_version(cpeuri["versionEndExcluding"]),
+                    },
+                }
+            elif "versionEndIncluding" in cpeuri:
+                query = {
+                    "stem": self.stem(cpeuri["criteria"]),
+                    "padded_version": {
+                        "$gt": self.padded_version(cpeuri["versionStartExcluding"]),
+                        "$lte": self.padded_version(cpeuri["versionEndIncluding"]),
+                    },
+                }
+            else:
+                query = {
+                    "stem": self.stem(cpeuri["criteria"]),
+                    "padded_version": {
+                        "$gt": self.padded_version(cpeuri["versionStartExcluding"])
+                    },
+                }
 
-        return query, version_info
+        elif "versionStartIncluding" in cpeuri:
+            if "versionEndExcluding" in cpeuri:
+                query = {
+                    "stem": self.stem(cpeuri["criteria"]),
+                    "padded_version": {
+                        "$gte": self.padded_version(cpeuri["versionStartIncluding"]),
+                        "$lt": self.padded_version(cpeuri["versionEndExcluding"]),
+                    },
+                }
+            elif "versionEndIncluding" in cpeuri:
+                query = {
+                    "stem": self.stem(cpeuri["criteria"]),
+                    "padded_version": {
+                        "$gte": self.padded_version(cpeuri["versionStartIncluding"]),
+                        "$lte": self.padded_version(cpeuri["versionEndIncluding"]),
+                    },
+                }
+            else:
+                query = {
+                    "stem": self.stem(cpeuri["criteria"]),
+                    "padded_version": {
+                        "$gte": self.padded_version(cpeuri["versionStartIncluding"])
+                    },
+                }
+
+        elif "versionEndExcluding" in cpeuri:
+            query = {
+                "stem": self.stem(cpeuri["criteria"]),
+                "padded_version": {
+                    "$lt": self.padded_version(cpeuri["versionEndExcluding"])
+                },
+            }
+
+        elif "versionEndIncluding" in cpeuri:
+            query = {
+                "stem": self.stem(cpeuri["criteria"]),
+                "padded_version": {
+                    "$lte": self.padded_version(cpeuri["versionEndIncluding"])
+                },
+            }
+
+        return query
 
     @staticmethod
     def add_if_missing(cve: dict, key: str, value: Any):
@@ -310,6 +367,17 @@ class CVEDownloads(NVDApiHandler):
     def stem(cpeUri: str):
         cpeArr = cpeUri.split(":")
         return ":".join(cpeArr[:5])
+
+    @staticmethod
+    def padded_version(version: str):
+        ret_list = []
+        try:
+            for v in version.split("."):
+                ret_list.append(f"{int(v):05d}")
+        except ValueError:
+            return version
+
+        return ".".join(ret_list)
 
     def file_to_queue(self, *args):
         pass
@@ -483,247 +551,63 @@ class CVEDownloads(NVDApiHandler):
             cve["products"] = []
             cve["vulnerable_product_stems"] = []
             cve["vulnerable_configuration_stems"] = []
-            for cpe in item["cve"]["configurations"][0]["nodes"]:
-                if "cpeMatch" in cpe:
-                    for cpeuri in cpe["cpeMatch"]:
-                        if "criteria" not in cpeuri:
-                            continue
-                        if cpeuri["vulnerable"]:
-                            query, version_info = self.get_cpe_info(cpeuri)
-                            if query != {}:
-                                query["id"] = hashlib.sha1(
-                                    cpeuri["criteria"].encode("utf-8")
-                                    + version_info.encode("utf-8")
-                                ).hexdigest()
-                                cpe_info = self.getCPEVersionInformation(query)
-                                if cpe_info:
-                                    if cpe_info["cpeMatch"]:
-                                        for vulnerable_version in cpe_info["cpeMatch"]:
+            for node in item["cve"]["configurations"]:
+                for cpe in node["nodes"]:
+                    if "cpeMatch" in cpe:
+                        for cpeuri in cpe["cpeMatch"]:
+                            if "criteria" not in cpeuri:
+                                continue
+                            if cpeuri["vulnerable"]:
+                                query = self.get_cpe_info(cpeuri)
+                                if query != {}:
+                                    cpe_info = sorted(
+                                        self.getCPEVersionInformation(query),
+                                        key=lambda x: x["padded_version"],
+                                    )
+                                    if cpe_info:
+                                        if not isinstance(cpe_info, list):
+                                            cpe_info = [cpe_info]
+
+                                        for vulnerable_version in cpe_info:
                                             cve = self.add_if_missing(
                                                 cve,
                                                 "vulnerable_product",
-                                                vulnerable_version["criteria"],
+                                                vulnerable_version["cpeName"],
                                             )
                                             cve = self.add_if_missing(
                                                 cve,
                                                 "vulnerable_configuration",
-                                                vulnerable_version["criteria"],
+                                                vulnerable_version["cpeName"],
                                             )
                                             cve = self.add_if_missing(
                                                 cve,
                                                 "vulnerable_configuration_stems",
-                                                self.stem(
-                                                    vulnerable_version["criteria"]
-                                                ),
+                                                vulnerable_version["stem"],
                                             )
-                                            vendor, product = self.get_vendor_product(
-                                                vulnerable_version["criteria"]
-                                            )
+
                                             cve = self.add_if_missing(
-                                                cve, "vendors", vendor
+                                                cve,
+                                                "vendors",
+                                                vulnerable_version["vendor"],
                                             )
+
                                             cve = self.add_if_missing(
-                                                cve, "products", product
+                                                cve,
+                                                "products",
+                                                vulnerable_version["product"],
                                             )
+
                                             cve = self.add_if_missing(
                                                 cve,
                                                 "vulnerable_product_stems",
-                                                self.stem(
-                                                    vulnerable_version["criteria"]
-                                                ),
+                                                vulnerable_version["stem"],
                                             )
-                                    else:
-                                        cve = self.add_if_missing(
-                                            cve,
-                                            "vulnerable_product",
-                                            cpeuri["criteria"],
-                                        )
-                                        cve = self.add_if_missing(
-                                            cve,
-                                            "vulnerable_configuration",
-                                            cpeuri["criteria"],
-                                        )
-                                        cve = self.add_if_missing(
-                                            cve,
-                                            "vulnerable_configuration_stems",
-                                            self.stem(cpeuri["criteria"]),
-                                        )
-                                        vendor, product = self.get_vendor_product(
-                                            cpeuri["criteria"]
-                                        )
-                                        cve = self.add_if_missing(
-                                            cve, "vendors", vendor
-                                        )
-                                        cve = self.add_if_missing(
-                                            cve, "products", product
-                                        )
-                                        cve = self.add_if_missing(
-                                            cve,
-                                            "vulnerable_product_stems",
-                                            self.stem(cpeuri["criteria"]),
-                                        )
-                            else:
-                                # If the cpeMatch did not have any of the version start/end modifiers,
-                                # add the CPE string as it is.
-                                cve = self.add_if_missing(
-                                    cve, "vulnerable_product", cpeuri["criteria"]
-                                )
-                                cve = self.add_if_missing(
-                                    cve, "vulnerable_configuration", cpeuri["criteria"]
-                                )
-                                cve = self.add_if_missing(
-                                    cve,
-                                    "vulnerable_configuration_stems",
-                                    self.stem(cpeuri["criteria"]),
-                                )
-                                vendor, product = self.get_vendor_product(
-                                    cpeuri["criteria"]
-                                )
-                                cve = self.add_if_missing(cve, "vendors", vendor)
-                                cve = self.add_if_missing(cve, "products", product)
-                                cve = self.add_if_missing(
-                                    cve,
-                                    "vulnerable_product_stems",
-                                    self.stem(cpeuri["criteria"]),
-                                )
-                        else:
-                            cve = self.add_if_missing(
-                                cve, "vulnerable_configuration", cpeuri["criteria"]
-                            )
-                            cve = self.add_if_missing(
-                                cve,
-                                "vulnerable_configuration_stems",
-                                self.stem(cpeuri["criteria"]),
-                            )
-                if "children" in cpe:
-                    for child in cpe["children"]:
-                        if "cpeMatch" in child:
-                            for cpeuri in child["cpeMatch"]:
-                                if "criteria" not in cpeuri:
-                                    continue
-                                if cpeuri["vulnerable"]:
-                                    query, version_info = self.get_cpe_info(cpeuri)
-                                    if query != {}:
-                                        query["id"] = hashlib.sha1(
-                                            cpeuri["criteria"].encode("utf-8")
-                                            + version_info.encode("utf-8")
-                                        ).hexdigest()
-                                        cpe_info = self.getCPEVersionInformation(query)
-                                        if cpe_info:
-                                            if cpe_info["cpeMatch"]:
-                                                for vulnerable_version in cpe_info[
-                                                    "cpeMatch"
-                                                ]:
-                                                    cve = self.add_if_missing(
-                                                        cve,
-                                                        "vulnerable_product",
-                                                        vulnerable_version["criteria"],
-                                                    )
-                                                    cve = self.add_if_missing(
-                                                        cve,
-                                                        "vulnerable_configuration",
-                                                        vulnerable_version["criteria"],
-                                                    )
-                                                    cve = self.add_if_missing(
-                                                        cve,
-                                                        "vulnerable_configuration_stems",
-                                                        self.stem(
-                                                            vulnerable_version[
-                                                                "criteria"
-                                                            ]
-                                                        ),
-                                                    )
-                                                    (
-                                                        vendor,
-                                                        product,
-                                                    ) = self.get_vendor_product(
-                                                        vulnerable_version["criteria"]
-                                                    )
-                                                    cve = self.add_if_missing(
-                                                        cve, "vendors", vendor
-                                                    )
-                                                    cve = self.add_if_missing(
-                                                        cve, "products", product
-                                                    )
-                                                    cve = self.add_if_missing(
-                                                        cve,
-                                                        "vulnerable_product_stems",
-                                                        self.stem(
-                                                            vulnerable_version[
-                                                                "criteria"
-                                                            ]
-                                                        ),
-                                                    )
-                                            else:
-                                                cve = self.add_if_missing(
-                                                    cve,
-                                                    "vulnerable_product",
-                                                    cpeuri["criteria"],
-                                                )
-                                                cve = self.add_if_missing(
-                                                    cve,
-                                                    "vulnerable_configuration",
-                                                    cpeuri["criteria"],
-                                                )
-                                                cve = self.add_if_missing(
-                                                    cve,
-                                                    "vulnerable_configuration_stems",
-                                                    self.stem(cpeuri["criteria"]),
-                                                )
-                                                (
-                                                    vendor,
-                                                    product,
-                                                ) = self.get_vendor_product(
-                                                    cpeuri["criteria"]
-                                                )
-                                                cve = self.add_if_missing(
-                                                    cve, "vendors", vendor
-                                                )
-                                                cve = self.add_if_missing(
-                                                    cve, "products", product
-                                                )
-                                                cve = self.add_if_missing(
-                                                    cve,
-                                                    "vulnerable_product_stems",
-                                                    self.stem(cpeuri["criteria"]),
-                                                )
-                                    else:
-                                        # If the cpeMatch did not have any of the version start/end modifiers,
-                                        # add the CPE string as it is.
-                                        if "criteria" not in cpeuri:
-                                            continue
-                                        cve = self.add_if_missing(
-                                            cve,
-                                            "vulnerable_product",
-                                            cpeuri["criteria"],
-                                        )
-                                        cve = self.add_if_missing(
-                                            cve,
-                                            "vulnerable_configuration",
-                                            cpeuri["criteria"],
-                                        )
-                                        cve = self.add_if_missing(
-                                            cve,
-                                            "vulnerable_configuration_stems",
-                                            self.stem(cpeuri["criteria"]),
-                                        )
-                                        vendor, product = self.get_vendor_product(
-                                            cpeuri["criteria"]
-                                        )
-                                        cve = self.add_if_missing(
-                                            cve, "vendors", vendor
-                                        )
-                                        cve = self.add_if_missing(
-                                            cve, "products", product
-                                        )
-                                        cve = self.add_if_missing(
-                                            cve,
-                                            "vulnerable_product_stems",
-                                            self.stem(cpeuri["criteria"]),
-                                        )
                                 else:
-                                    if "criteria" not in cpeuri:
-                                        continue
+                                    # If the cpeMatch did not have any of the version start/end modifiers,
+                                    # add the CPE string as it is.
+                                    cve = self.add_if_missing(
+                                        cve, "vulnerable_product", cpeuri["criteria"]
+                                    )
                                     cve = self.add_if_missing(
                                         cve,
                                         "vulnerable_configuration",
@@ -734,7 +618,25 @@ class CVEDownloads(NVDApiHandler):
                                         "vulnerable_configuration_stems",
                                         self.stem(cpeuri["criteria"]),
                                     )
-
+                                    vendor, product = self.get_vendor_product(
+                                        cpeuri["criteria"]
+                                    )
+                                    cve = self.add_if_missing(cve, "vendors", vendor)
+                                    cve = self.add_if_missing(cve, "products", product)
+                                    cve = self.add_if_missing(
+                                        cve,
+                                        "vulnerable_product_stems",
+                                        self.stem(cpeuri["criteria"]),
+                                    )
+                            else:
+                                cve = self.add_if_missing(
+                                    cve, "vulnerable_configuration", cpeuri["criteria"]
+                                )
+                                cve = self.add_if_missing(
+                                    cve,
+                                    "vulnerable_configuration_stems",
+                                    self.stem(cpeuri["criteria"]),
+                                )
         if "weaknesses" in item["cve"]:
             for problem in item["cve"]["weaknesses"]:
                 for cwe in problem[
@@ -1140,10 +1042,13 @@ class DatabaseIndexer(object):
                 MongoUniqueIndex(index=[("id", ASCENDING)], name="id", unique=True),
                 MongoAddIndex(index=[("vendor", ASCENDING)], name="vendor"),
                 MongoAddIndex(index=[("product", ASCENDING)], name="product"),
-                MongoAddIndex(index=[("cpeNameId", ASCENDING)], name="cpeNameId"),
                 MongoAddIndex(index=[("deprecated", ASCENDING)], name="deprecated"),
                 MongoAddIndex(index=[("cpeName", ASCENDING)], name="cpeName"),
                 MongoAddIndex(index=[("title", ASCENDING)], name="title"),
+                MongoAddIndex(index=[("stem", ASCENDING)], name="stem"),
+                MongoAddIndex(
+                    index=[("padded_version", ASCENDING)], name="padded_version"
+                ),
             ],
             "cpeother": [
                 MongoUniqueIndex(index=[("id", ASCENDING)], name="id", unique=True)
@@ -1181,9 +1086,20 @@ class DatabaseIndexer(object):
             "mgmt_whitelist": [MongoAddIndex(index=[("id", ASCENDING)], name="id")],
             "mgmt_blacklist": [MongoAddIndex(index=[("id", ASCENDING)], name="id")],
             "capec": [
+                MongoAddIndex(index=[("id", ASCENDING)], name="id"),
+                MongoAddIndex(index=[("loa", ASCENDING)], name="loa"),
+                MongoAddIndex(
+                    index=[("typical_severity", ASCENDING)], name="typical_severity"
+                ),
+                MongoAddIndex(index=[("name", ASCENDING)], name="name"),
                 MongoAddIndex(
                     index=[("related_weakness", ASCENDING)], name="related_weakness"
-                )
+                ),
+            ],
+            "cwe": [
+                MongoAddIndex(index=[("id", ASCENDING)], name="id"),
+                MongoAddIndex(index=[("name", ASCENDING)], name="name"),
+                MongoAddIndex(index=[("status", ASCENDING)], name="status"),
             ],
         }
 
