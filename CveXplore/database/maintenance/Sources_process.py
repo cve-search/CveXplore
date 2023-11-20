@@ -223,7 +223,7 @@ class CPEDownloads(NVDApiHandler):
             self.setColUpdate(self.feed_type.lower(), self.last_modified)
 
         self.logger.info(
-            "Duration: {}".format(datetime.timedelta(seconds=time.time() - start_time))
+            f"Duration: {datetime.timedelta(seconds=time.time() - start_time)}"
         )
 
     def update(self, **kwargs):

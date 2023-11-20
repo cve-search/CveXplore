@@ -37,7 +37,7 @@ class GenericDatabaseFactory(DatasourceConnection):
                 "loa",
                 "typical_severity",
             ],
-            "cpe": ["title", "cpeName", "vendor", "product"],
+            "cpe": ["title", "cpeName", "vendor", "product", "stem"],
             "cwe": ["name", "status", "Description"],
             "cves": [
                 "cvss",
@@ -126,9 +126,19 @@ class GenericDatabaseFactory(DatasourceConnection):
 
         return ret_data
 
+    def mapped_fields(self, collection: str) -> list:
+        ret_list = []
+        try:
+            ret_list.extend(self.__fields_mapping[collection])
+        except KeyError:
+            pass
+
+        ret_list.extend(self.__default_fields)
+        return sorted(ret_list)
+
     def __repr__(self):
         """String representation of object"""
-        return "<< GenericDatabaseFactory:{} >>".format(self._collection)
+        return f"<< GenericDatabaseFactory:{self._collection} >>"
 
 
 class GenericDatabaseFieldsFunctions(DatasourceConnection):
@@ -169,4 +179,4 @@ class GenericDatabaseFieldsFunctions(DatasourceConnection):
 
     def __repr__(self):
         """String representation of object"""
-        return "<< GenericDatabaseFieldsFunctions:{} >>".format(self._collection)
+        return f"<< GenericDatabaseFieldsFunctions:{self._collection} >>"

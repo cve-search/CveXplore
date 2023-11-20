@@ -49,4 +49,4 @@ class Cwe(DatasourceConnection):
 
     def __repr__(self):
         """String representation of object"""
-        return "<< Cwe:{} >>".format(self.id)
+        return f"<< Cwe:{self.id} >>"

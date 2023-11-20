@@ -77,7 +77,7 @@ class CveXplore(object):
             self.datasource = MongoDBConnection(**mongodb_connection_details)
             self.database = MainUpdater(datasource=self.datasource)
         elif api_connection_details is not None:
-            api_connection_details["user_agent"] = "CveXplore:{}".format(self.version)
+            api_connection_details["user_agent"] = f"CveXplore:{self.version}"
             os.environ["API_CON_DETAILS"] = json.dumps(api_connection_details)
             self.datasource = ApiDatabaseSource(**api_connection_details)
 
@@ -122,14 +122,10 @@ class CveXplore(object):
 
         if entry_type not in self.database_mapping:
             raise DatabaseIllegalCollection(
-                "Illegal collection requested: only {} are allowed!".format(
-                    self.database_mapping
-                )
+                f"Illegal collection requested: only {self.database_mapping} are allowed!"
             )
 
-        result = getattr(self.datasource, "store_{}".format(entry_type)).find_one(
-            dict_filter
-        )
+        result = getattr(self.datasource, f"store_{entry_type}").find_one(dict_filter)
 
         return result
 
@@ -154,14 +150,13 @@ class CveXplore(object):
         """
         if not isinstance(query, tuple):
             raise ValueError(
-                "Wrong parameter type, received: {} expected: tuple".format(type(query))
+                f"Wrong parameter type, received: {type(query)} expected: tuple"
             )
 
         if len(query) != 2:
             raise ValueError(
-                "Query parameter does not consist of the expected amount of variables, expected: 2 received: {}".format(
-                    len(query)
-                )
+                f"Query parameter does not consist of the expected amount of variables, "
+                f"expected: 2 received: {len(query)}"
             )
 
         entry_type, dict_filter = query
@@ -170,9 +165,7 @@ class CveXplore(object):
 
         if entry_type not in self.database_mapping:
             raise DatabaseIllegalCollection(
-                "Illegal collection requested: only {} are allowed!".format(
-                    self.database_mapping
-                )
+                f"Illegal collection requested: only {self.database_mapping} are allowed!"
             )
 
         if entry_type == "cves":
@@ -184,9 +177,33 @@ class CveXplore(object):
                         dict_filter["id"]["$in"] = [
                             self._validate_cve_id(x) for x in dict_filter["id"]["$in"]
                         ]
+            if "cvss" in dict_filter:
+                if isinstance(dict_filter["cvss"], str):
+                    dict_filter["cvss"] = float(dict_filter["cvss"])
+            if "cvss3" in dict_filter:
+                if isinstance(dict_filter["cvss3"], str):
+                    dict_filter["cvss3"] = float(dict_filter["cvss3"])
+
+            if "exploitabilityScore" in dict_filter:
+                if isinstance(dict_filter["exploitabilityScore"], str):
+                    dict_filter["exploitabilityScore"] = float(
+                        dict_filter["exploitabilityScore"]
+                    )
+            if "exploitabilityScore3" in dict_filter:
+                if isinstance(dict_filter["exploitabilityScore3"], str):
+                    dict_filter["exploitabilityScore3"] = float(
+                        dict_filter["exploitabilityScore3"]
+                    )
+
+            if "impactScore" in dict_filter:
+                if isinstance(dict_filter["impactScore"], str):
+                    dict_filter["impactScore"] = float(dict_filter["impactScore"])
+            if "impactScore3" in dict_filter:
+                if isinstance(dict_filter["impactScore3"], str):
+                    dict_filter["impactScore3"] = float(dict_filter["impactScore3"])
 
         results = (
-            getattr(self.datasource, "store_{}".format(entry_type))
+            getattr(self.datasource, f"store_{entry_type}")
             .find(dict_filter)
             .limit(limit)
         )
@@ -255,7 +272,7 @@ class CveXplore(object):
             cpe_regex_string = r"^{}:".format(cpe_regex)
         else:
             # more general search on same field; e.g. microsoft:windows_7
-            cpe_regex_string = "{}".format(re.escape(cpe_string))
+            cpe_regex_string = f"{re.escape(cpe_string)}"
 
         cves = self.get_single_store_entries(
             ("cves", {"vulnerable_configuration": {"$regex": cpe_regex_string}}),
@@ -356,14 +373,14 @@ class CveXplore(object):
 
                     each["lastModified"] = str(each["lastModified"])
                     each["document count"] = getattr(
-                        self.datasource, "store_{}".format(db)
+                        self.datasource, f"store_{db}"
                     ).count_documents({})
                     stats[db] = each
 
                     for mgmtlist in ["mgmt_blacklist", "mgmt_whitelist"]:
                         stats[mgmtlist] = {
                             "document count": getattr(
-                                self.datasource, "store_{}".format(mgmtlist)
+                                self.datasource, f"store_{mgmtlist}"
                             ).count_documents({})
                         }
 
@@ -372,7 +389,7 @@ class CveXplore(object):
             else:
                 return "Database info could not be retrieved"
 
-        return "Using api endpoint: {}".format(self.datasource.baseurl)
+        return f"Using api endpoint: {self.datasource.baseurl}"
 
     @property
     def version(self):
@@ -381,4 +398,4 @@ class CveXplore(object):
 
     def __repr__(self):
         """String representation of object"""
-        return "<< CveXplore:{} >>".format(self.version)
+        return f"<< CveXplore:{self.version} >>"

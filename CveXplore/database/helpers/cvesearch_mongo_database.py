@@ -21,7 +21,7 @@ class CveSearchCollection(Collection):
 
     def __repr__(self):
         """Return string representation of this class"""
-        return "<< CveSearchCollection:{} >>".format(self.name)
+        return f"<< CveSearchCollection:{self.name} >>"
 
     def find(self, *args, **kwargs):
         """
@@ -96,4 +96,4 @@ class CveSearchCursor(Cursor):
 
     def __repr__(self):
         """Return string representation of this class"""
-        return "<< CveSearchCursor:{} >>".format(self.collection)
+        return f"<< CveSearchCursor:{self.collection} >>"

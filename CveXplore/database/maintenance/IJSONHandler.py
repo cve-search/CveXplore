@@ -19,7 +19,5 @@ class IJSONHandler(object):
                 x += 1
 
         self.logger.debug(
-            "Processed {} items from file: {}, using prefix: {}".format(
-                x, filename, prefix
-            )
+            f"Processed {x} items from file: {filename}, using prefix: {prefix}"
         )

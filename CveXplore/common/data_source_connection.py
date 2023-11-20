@@ -63,7 +63,7 @@ class DatasourceConnection(CveXploreObject):
     def _datasource_collection_connection(self):
         return getattr(
             DatasourceConnection.__DATA_SOURCE_CONNECTION,
-            "store_{}".format(self.__collection),
+            f"store_{self.__collection}",
         )
 
     @property

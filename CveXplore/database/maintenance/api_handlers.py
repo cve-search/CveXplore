@@ -20,7 +20,7 @@ class NVDApiHandler(DownloadHandler):
 
     def __repr__(self):
         """return string representation of object"""
-        return "<< NVDApiHandler:{} >>".format(self.feed_type)
+        return f"<< NVDApiHandler:{self.feed_type} >>"
 
     def process_item(self, item: dict):
         item = self.process_the_item(item)

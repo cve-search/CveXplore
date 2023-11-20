@@ -79,7 +79,7 @@ class HelperLogger(logging.Logger):
 
         """
 
-        msg = colors.color("{}".format(msg), fg=HelperLogger.level_map["debug"])
+        msg = colors.color(f"{msg}", fg=HelperLogger.level_map["debug"])
 
         return super(HelperLogger, self).debug(msg, *args, **kwargs)
 
@@ -93,7 +93,7 @@ class HelperLogger(logging.Logger):
 
         """
 
-        msg = colors.color("{}".format(msg), fg=HelperLogger.level_map["info"])
+        msg = colors.color(f"{msg}", fg=HelperLogger.level_map["info"])
 
         return super(HelperLogger, self).info(msg, *args, **kwargs)
 
@@ -107,7 +107,7 @@ class HelperLogger(logging.Logger):
 
         """
 
-        msg = colors.color("{}".format(msg), fg=HelperLogger.level_map["warning"])
+        msg = colors.color(f"{msg}", fg=HelperLogger.level_map["warning"])
 
         return super(HelperLogger, self).warning(msg, *args, **kwargs)
 
@@ -123,7 +123,7 @@ class HelperLogger(logging.Logger):
 
         """
 
-        msg = colors.color("{}".format(msg), fg=HelperLogger.level_map["error"])
+        msg = colors.color(f"{msg}", fg=HelperLogger.level_map["error"])
 
         return super(HelperLogger, self).error(msg, *args, **kwargs)
 
@@ -139,7 +139,7 @@ class HelperLogger(logging.Logger):
 
         """
 
-        msg = colors.color("{}".format(msg), fg=HelperLogger.level_map["critical"])
+        msg = colors.color(f"{msg}", fg=HelperLogger.level_map["critical"])
 
         return super(HelperLogger, self).critical(msg, *args, **kwargs)
 

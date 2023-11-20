@@ -26,7 +26,7 @@ class Cves(DatasourceConnection):
                     try:
                         if int(cwe_id):
                             results = getattr(
-                                self._datasource_connection, "store_{}".format("cwe")
+                                self._datasource_connection, "store_cwe"
                             ).find_one({"id": cwe_id})
                             if results is not None:
                                 self.cwe = results
@@ -113,4 +113,4 @@ class Cves(DatasourceConnection):
 
     def __repr__(self):
         """String representation of object"""
-        return "<< Cves:{} >>".format(self.id)
+        return f"<< Cves:{self.id} >>"

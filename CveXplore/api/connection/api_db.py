@@ -29,7 +29,7 @@ class ApiDatabaseSource(object):
         for each in self.database_mapping:
             setattr(
                 self,
-                "store_{}".format(each),
+                f"store_{each}",
                 ApiDatabaseCollection(
                     baseurl=baseurl,
                     api_path=api_path,
