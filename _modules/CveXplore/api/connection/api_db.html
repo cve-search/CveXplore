@@ -117,7 +117,7 @@
         <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_mapping</span><span class="p">:</span>
             <span class="nb">setattr</span><span class="p">(</span>
                 <span class="bp">self</span><span class="p">,</span>
-                <span class="s2">&quot;store_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">each</span><span class="p">),</span>
+                <span class="sa">f</span><span class="s2">&quot;store_</span><span class="si">{</span><span class="n">each</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="n">ApiDatabaseCollection</span><span class="p">(</span>
                     <span class="n">baseurl</span><span class="o">=</span><span class="n">baseurl</span><span class="p">,</span>
                     <span class="n">api_path</span><span class="o">=</span><span class="n">api_path</span><span class="p">,</span>

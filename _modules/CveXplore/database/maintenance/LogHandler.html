@@ -176,7 +176,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">fg</span><span class="o">=</span><span class="n">HelperLogger</span><span class="o">.</span><span class="n">level_map</span><span class="p">[</span><span class="s2">&quot;debug&quot;</span><span class="p">])</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fg</span><span class="o">=</span><span class="n">HelperLogger</span><span class="o">.</span><span class="n">level_map</span><span class="p">[</span><span class="s2">&quot;debug&quot;</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">HelperLogger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -193,7 +193,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">fg</span><span class="o">=</span><span class="n">HelperLogger</span><span class="o">.</span><span class="n">level_map</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">])</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fg</span><span class="o">=</span><span class="n">HelperLogger</span><span class="o">.</span><span class="n">level_map</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">HelperLogger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -210,7 +210,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">fg</span><span class="o">=</span><span class="n">HelperLogger</span><span class="o">.</span><span class="n">level_map</span><span class="p">[</span><span class="s2">&quot;warning&quot;</span><span class="p">])</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fg</span><span class="o">=</span><span class="n">HelperLogger</span><span class="o">.</span><span class="n">level_map</span><span class="p">[</span><span class="s2">&quot;warning&quot;</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">HelperLogger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -229,7 +229,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">fg</span><span class="o">=</span><span class="n">HelperLogger</span><span class="o">.</span><span class="n">level_map</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fg</span><span class="o">=</span><span class="n">HelperLogger</span><span class="o">.</span><span class="n">level_map</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">HelperLogger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -248,7 +248,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">fg</span><span class="o">=</span><span class="n">HelperLogger</span><span class="o">.</span><span class="n">level_map</span><span class="p">[</span><span class="s2">&quot;critical&quot;</span><span class="p">])</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fg</span><span class="o">=</span><span class="n">HelperLogger</span><span class="o">.</span><span class="n">level_map</span><span class="p">[</span><span class="s2">&quot;critical&quot;</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">HelperLogger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </div>

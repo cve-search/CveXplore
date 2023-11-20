@@ -163,14 +163,14 @@
 <a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.__repr__">[docs]</a>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return string representation of object&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; DownloadHandler:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; DownloadHandler:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
 
 
 <div class="viewcode-block" id="DownloadHandler.get_session">
 <a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.DownloadHandler.DownloadHandler.get_session">[docs]</a>
     <span class="k">def</span> <span class="nf">get_session</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
         <span class="n">backoff_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
         <span class="n">status_forcelist</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">429</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">),</span>
         <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -233,9 +233,7 @@
             <span class="k">if</span> <span class="s2">&quot;01-01-1970&quot;</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%m-%Y&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setColUpdate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;Duration: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">))</span>
-        <span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Duration: </span><span class="si">{</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DownloadHandler.chunk_list">
@@ -283,7 +281,7 @@
             <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/zip-compressed&quot;</span>
         <span class="p">):</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">wd</span><span class="p">,</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Saving file to: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving file to: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response_content</span><span class="p">))</span> <span class="k">as</span> <span class="n">zip_file</span><span class="p">:</span>
                 <span class="n">zip_file</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">wd</span><span class="p">)</span>
@@ -295,7 +293,7 @@
             <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/gzip-compressed&quot;</span>
         <span class="p">):</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">wd</span><span class="p">,</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">3</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Saving file to: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving file to: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="n">buf</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">response_content</span><span class="p">)</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -307,22 +305,20 @@
             <span class="ow">or</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;text/xml&quot;</span>
         <span class="p">):</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">wd</span><span class="p">,</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Saving file to: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving file to: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_file</span><span class="p">:</span>
                 <span class="n">output_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response_content</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/local&quot;</span><span class="p">:</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">wd</span><span class="p">,</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Saving file to: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving file to: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="n">copy</span><span class="p">(</span><span class="n">url</span><span class="p">[</span><span class="mi">7</span><span class="p">:],</span> <span class="n">filename</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;Unhandled Content-Type encountered: </span><span class="si">{}</span><span class="s2"> from url&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">content_type</span><span class="p">,</span> <span class="n">url</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;Unhandled Content-Type encountered: </span><span class="si">{</span><span class="n">content_type</span><span class="si">}</span><span class="s2"> from url: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
@@ -331,16 +327,14 @@
 
     <span class="k">def</span> <span class="nf">download_site</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">url</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;file&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scheduling local hosted file: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scheduling local hosted file: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="c1"># local file do not get last_modified header; so completely ignoring last_modified check and always asume</span>
             <span class="c1"># local file == the last modified file and set to current time.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                <span class="s2">&quot;Last </span><span class="si">{}</span><span class="s2"> modified value: </span><span class="si">{}</span><span class="s2"> for URL: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span><span class="p">,</span> <span class="n">url</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;Last </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="si">}</span><span class="s2"> modified value: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span><span class="si">}</span><span class="s2"> for URL: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
             <span class="n">wd</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">store_file</span><span class="p">(</span>
@@ -356,7 +350,7 @@
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Downloading from url: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading from url: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_session</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
@@ -367,17 +361,13 @@
                     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                             <span class="s2">&quot;Did not receive last-modified header in the response; setting to default &quot;</span>
-                            <span class="s2">&quot;(01-01-1970) and force update! Headers received: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                <span class="n">response</span><span class="o">.</span><span class="n">headers</span>
-                            <span class="p">)</span>
+                            <span class="s2">&quot;(01-01-1970) and force update! Headers received: </span><span class="si">{response.headers}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
                         <span class="c1"># setting to last_modified to default value</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span> <span class="o">=</span> <span class="n">parse_datetime</span><span class="p">(</span><span class="s2">&quot;01-01-1970&quot;</span><span class="p">)</span>
 
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                        <span class="s2">&quot;Last </span><span class="si">{}</span><span class="s2"> modified value: </span><span class="si">{}</span><span class="s2"> for URL: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span><span class="p">,</span> <span class="n">url</span>
-                        <span class="p">)</span>
+                        <span class="sa">f</span><span class="s2">&quot;Last </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="si">}</span><span class="s2"> modified value: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span><span class="si">}</span><span class="s2"> for URL: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
 
                     <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
@@ -385,9 +375,7 @@
                     <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span> <span class="o">==</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;lastModified&quot;</span><span class="p">]:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&#39;s are not modified since the last update&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span>
-                                <span class="p">)</span>
+                                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="si">}</span><span class="s2">&#39;s are not modified since the last update&quot;</span>
                             <span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">file_queue</span><span class="o">.</span><span class="n">getall</span><span class="p">()</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">do_process</span> <span class="o">=</span> <span class="kc">False</span>
@@ -395,7 +383,7 @@
                         <span class="n">content_type</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;content-type&quot;</span><span class="p">]</span>
 
                         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                            <span class="s2">&quot;URL: </span><span class="si">{}</span><span class="s2"> fetched Content-Type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
+                            <span class="sa">f</span><span class="s2">&quot;URL: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> fetched Content-Type: </span><span class="si">{</span><span class="n">content_type</span><span class="si">}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
 
                         <span class="n">wd</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">store_file</span><span class="p">(</span>
@@ -413,14 +401,10 @@
                             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="s2">&quot;Exception encountered during download from: </span><span class="si">{}</span><span class="s2">. Please check the logs for more information!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">url</span>
-                    <span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">&quot;Exception encountered during download from: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">. Please check the logs for more information!&quot;</span>
                 <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="s2">&quot;Exception encountered during the download from: </span><span class="si">{}</span><span class="s2">. Error encountered: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">url</span><span class="p">,</span> <span class="n">err</span>
-                    <span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">&quot;Exception encountered during the download from: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">. Error encountered: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">do_process</span> <span class="o">=</span> <span class="kc">False</span>
 

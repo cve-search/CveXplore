@@ -145,9 +145,7 @@
 <a class="viewcode-back" href="../../../../package/api.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.__repr__">[docs]</a>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return a string representation of the obj GenericApi&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;&lt;CveSearchApi:(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db_collection</span><span class="o">.</span><span class="n">address</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_collection</span><span class="o">.</span><span class="n">address</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt;CveSearchApi:(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_collection</span><span class="o">.</span><span class="n">address</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_collection</span><span class="o">.</span><span class="n">address</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">)&gt;&gt;&quot;</span></div>
 
 
 <div class="viewcode-block" id="CveSearchApi.query">
