@@ -23,7 +23,7 @@ class MongoDBConnection(object):
         host: str = "mongodb://127.0.0.1:27017",
         port: int = None,
         database: str = "cvedb",
-        **kwargs
+        **kwargs,
     ):
         """
         The `host` parameter can be a full `mongodb URI <http://dochub.mongodb.org/core/connections>`_, in addition to
@@ -41,13 +41,13 @@ class MongoDBConnection(object):
             collections = self._dbclient.list_collection_names()
         except ServerSelectionTimeoutError as err:
             raise DatabaseConnectionException(
-                "Connection to the database failed: {}".format(err)
+                f"Connection to the database failed: {err}"
             )
 
         if len(collections) != 0:
             for each in collections:
                 self.__setattr__(
-                    "store_{}".format(each),
+                    f"store_{each}",
                     CveSearchCollection(database=self._dbclient, name=each),
                 )
 
@@ -62,7 +62,7 @@ class MongoDBConnection(object):
             if not hasattr(self, each):
                 setattr(
                     self,
-                    "store_{}".format(each),
+                    f"store_{each}",
                     CveSearchCollection(database=self._dbclient, name=each),
                 )
 
@@ -83,4 +83,4 @@ class MongoDBConnection(object):
 
     def __repr__(self):
         """String representation of object"""
-        return "<< MongoDBConnection:{} >>".format(self._dbclient.name)
+        return f"<< MongoDBConnection:{self._dbclient.name} >>"

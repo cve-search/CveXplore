@@ -83,7 +83,7 @@ class XMLFileHandler(DownloadHandler):
 
     def __repr__(self):
         """return string representation of object"""
-        return "<< XMLFileHandler:{} >>".format(self.feed_type)
+        return f"<< XMLFileHandler:{self.feed_type} >>"
 
     def process_item(self, item: dict):
         """

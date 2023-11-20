@@ -18,4 +18,4 @@ class Via4(DatasourceConnection):
 
     def __repr__(self):
         """String representation of object"""
-        return "<< Via4:{} >>".format(self.id)
+        return f"<< Via4:{self.id} >>"

@@ -54,9 +54,7 @@ class CveSearchApi(ApiBaseClass):
 
     def __repr__(self):
         """return a string representation of the obj GenericApi"""
-        return "<<CveSearchApi:({}, {})>>".format(
-            self.db_collection.address[0], self.db_collection.address[1]
-        )
+        return f"<<CveSearchApi:({self.db_collection.address[0]}, {self.db_collection.address[1]})>>"
 
     def query(self):
         """

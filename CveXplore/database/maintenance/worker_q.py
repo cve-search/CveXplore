@@ -15,7 +15,7 @@ class WorkerQueue(Queue):
         self.qsize()
 
     def __repr__(self):
-        return "<< WorkerQueue:{} >>".format(self.name)
+        return f"<< WorkerQueue:{self.name} >>"
 
     def __iter__(self):
         return self

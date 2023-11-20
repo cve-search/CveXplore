@@ -96,7 +96,7 @@ class CvesDatabaseFunctions(GenericDatabaseFactory):
 
     def __repr__(self):
         """String representation of object"""
-        return "<< CvesDatabaseFunctions:{} >>".format(self._collection)
+        return f"<< CvesDatabaseFunctions:{self._collection} >>"
 
 
 class CpeDatabaseFunctions(GenericDatabaseFactory):
@@ -152,4 +152,4 @@ class CpeDatabaseFunctions(GenericDatabaseFactory):
 
     def __repr__(self):
         """String representation of object"""
-        return "<< CpeDatabaseFunctions:{} >>".format(self._collection)
+        return f"<< CpeDatabaseFunctions:{self._collection} >>"

@@ -31,7 +31,7 @@ def format_output(format_type, input_list):
             count = 1
             temp_dict = defaultdict(dict)
             for each in input_list:
-                temp_dict["entry_{}".format(count)] = each
+                temp_dict[f"entry_{count}"] = each
                 count += 1
             output = dicttoxml(temp_dict, custom_root="CveXplore")
         elif isinstance(input_list, dict):

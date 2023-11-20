@@ -50,4 +50,4 @@ class Capec(DatasourceConnection):
 
     def __repr__(self):
         """String representation of object"""
-        return "<< Capec:{} >>".format(self.id)
+        return f"<< Capec:{self.id} >>"
