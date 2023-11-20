@@ -13,7 +13,7 @@ from pymongo import DESCENDING
 
 from CveXplore.api.connection.api_db import ApiDatabaseSource
 from CveXplore.common.config import Configuration
-from CveXplore.common.cpe_converters import from2to3CPE
+from CveXplore.common.cpe_converters import create_cpe_regex_string
 from CveXplore.common.db_mapping import database_mapping
 from CveXplore.database.connection.mongo_db import MongoDBConnection
 from CveXplore.database.maintenance.main_updater import MainUpdater
@@ -259,20 +259,7 @@ class CveXplore(object):
         CPE string could be formatted like: ``cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*``
         """
 
-        # format to cpe2.3
-        cpe_string = from2to3CPE(cpe_string)
-
-        if cpe_string.startswith("cpe"):
-            # strict search with term starting with cpe; e.g: cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*
-
-            remove_trailing_regex_stars = r"(?:\:|\:\:|\:\*)+$"
-
-            cpe_regex = re.escape(re.sub(remove_trailing_regex_stars, "", cpe_string))
-
-            cpe_regex_string = r"^{}:".format(cpe_regex)
-        else:
-            # more general search on same field; e.g. microsoft:windows_7
-            cpe_regex_string = f"{re.escape(cpe_string)}"
+        cpe_regex_string = create_cpe_regex_string(cpe_string)
 
         cves = self.get_single_store_entries(
             ("cves", {"vulnerable_configuration": {"$regex": cpe_regex_string}}),

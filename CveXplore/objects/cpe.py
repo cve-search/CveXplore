@@ -2,11 +2,10 @@
 cpe
 ===
 """
-import re
 
 from pymongo import DESCENDING
 
-from CveXplore.common.cpe_converters import from2to3CPE
+from CveXplore.common.cpe_converters import create_cpe_regex_string
 from CveXplore.common.data_source_connection import DatasourceConnection
 
 
@@ -31,20 +30,7 @@ class Cpe(DatasourceConnection):
             "vulnerable_product" if vuln_prod_search else "vulnerable_configuration"
         )
 
-        # format to cpe2.3
-        cpe_string = from2to3CPE(self.cpeName)
-
-        if cpe_string.startswith("cpe"):
-            # strict search with term starting with cpe; e.g: cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*
-
-            remove_trailing_regex_stars = r"(?:\:|\:\:|\:\*)+$"
-
-            cpe_regex = re.escape(re.sub(remove_trailing_regex_stars, "", cpe_string))
-
-            cpe_regex_string = r"^{}:".format(cpe_regex)
-        else:
-            # more general search on same field; e.g. microsoft:windows_7
-            cpe_regex_string = f"{re.escape(cpe_string)}"
+        cpe_regex_string = create_cpe_regex_string(self.cpeName)
 
         results = self._datasource_connection.store_cves.find(
             {cpe_searchField: {"$regex": cpe_regex_string}}
