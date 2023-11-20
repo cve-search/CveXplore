@@ -56,7 +56,6 @@ from CveXplore.cli_cmds.mutex_options.mutex import Mutex
 def find_cmd(
     ctx, collection, field, value, match, regex, limit, limit_field, sort, output
 ):
-
     if not sort:
         sorting = pymongo.ASCENDING
     else:
