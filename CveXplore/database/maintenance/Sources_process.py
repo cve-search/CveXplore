@@ -1030,6 +1030,7 @@ class EPSSDownloads(CSVFileHandler):
         self.delimiter = ","
         super().__init__(self.feed_type, self.delimiter)
 
+        self.cve_collection = "cves"
         self.feed_url = Configuration.getFeedURL(self.feed_type.lower())
         self.logger = logging.getLogger(__name__)
         self.is_update = True
@@ -1042,37 +1043,33 @@ class EPSSDownloads(CSVFileHandler):
         epss = {
             "id": item[0],
             "epss": item[1],
-            "percentile": item[2]
+            "epssMetric": {
+                "percentile": item[2],
+                "lastModified": date.strftime('%Y-%m-%dT%H:%M:%SZ')
+            }
         }
 
         return epss
 
     def process_item(self, item):
+        # overwrite the feed_type, so that the correct collection is used
+        self.feed_type = self.cve_collection
+
         epss = self.process_epss_item(item)
 
         if epss is not None:
-            if self.is_update:
-                self.queue.put(
-                    DatabaseAction(
-                        action=DatabaseAction.actions.UpdateOne,
-                        collection=self.feed_type.lower(),
-                        doc=epss
-                    )
+            self.queue.put(
+                DatabaseAction(
+                    action=DatabaseAction.actions.UpdateOne,
+                    collection=self.cve_collection,
+                    doc=epss
                 )
-            else:
-                self.queue.put(
-                    DatabaseAction(
-                        action=DatabaseAction.actions.InsertOne,
-                        collection=self.feed_type.lower(),
-                        doc=epss
-                    )
-                )
+            )
 
     def update(self, **kwargs):
         self.logger.info("EPSS database update started")
 
-        if self.feed_type.lower() not in self.getTableNames():
-            self.is_update = False
+        self.queue.clear()
 
         self.process_downloads([self.feed_url])
 
@@ -1084,12 +1081,6 @@ class EPSSDownloads(CSVFileHandler):
         self.logger.info("EPSS Database population started")
 
         self.queue.clear()
-
-        self.dropCollection(self.feed_type.lower())
-
-        DatabaseIndexer.create_indexes(collection=self.feed_type.lower())
-
-        self.is_update = False
 
         self.process_downloads([self.feed_url])
 
@@ -1155,6 +1146,7 @@ class DatabaseIndexer(object):
                     index=[("vulnerable_configuration_stems", ASCENDING)],
                     name="vulnerable_configuration_stems",
                 ),
+                MongoAddIndex(index=[("epss", ASCENDING)], name="epss"),
             ],
             "via4": [MongoAddIndex(index=[("id", ASCENDING)], name="id")],
             "mgmt_whitelist": [MongoAddIndex(index=[("id", ASCENDING)], name="id")],
@@ -1169,9 +1161,6 @@ class DatabaseIndexer(object):
                 MongoAddIndex(
                     index=[("related_weakness", ASCENDING)], name="related_weakness"
                 ),
-            ],
-            "epss": [
-                MongoUniqueIndex(index=[("id", ASCENDING)], name="id", unique=True),
             ],
             "cwe": [
                 MongoAddIndex(index=[("id", ASCENDING)], name="id"),

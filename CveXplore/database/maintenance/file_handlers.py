@@ -130,7 +130,7 @@ class CSVFileHandler(DownloadHandler):
 
     def __repr__(self):
         """return string representation of object"""
-        return "<< CSVGzipFileHandler:{} >>".format(self.feed_type)
+        return "<< CSVFileHandler:{} >>".format(self.feed_type)
 
     def file_to_queue(self, file_tuple):
         working_dir, filename = file_tuple
