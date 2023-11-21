@@ -24,7 +24,11 @@ from CveXplore.database.maintenance.Toolkit import sanitize
 from CveXplore.database.maintenance.api_handlers import NVDApiHandler
 from CveXplore.database.maintenance.content_handlers import CapecHandler, CWEHandler
 from CveXplore.database.maintenance.db_action import DatabaseAction
-from CveXplore.database.maintenance.file_handlers import XMLFileHandler, JSONFileHandler, CSVFileHandler
+from CveXplore.database.maintenance.file_handlers import (
+    XMLFileHandler,
+    JSONFileHandler,
+    CSVFileHandler,
+)
 from CveXplore.errors.apis import ApiDataRetrievalFailed, ApiMaxRetryError
 
 date = datetime.datetime.now()
@@ -858,7 +862,6 @@ class VIADownloads(JSONFileHandler):
             self.queue.put(
                 DatabaseAction(
                     action=DatabaseAction.actions.UpdateOne,
-                    collection=self.feed_type.lower(),
                     doc=item,
                 )
             )
@@ -866,7 +869,6 @@ class VIADownloads(JSONFileHandler):
             self.queue.put(
                 DatabaseAction(
                     action=DatabaseAction.actions.InsertOne,
-                    collection=self.feed_type.lower(),
                     doc=item,
                 )
             )
@@ -1035,34 +1037,26 @@ class EPSSDownloads(CSVFileHandler):
         self.logger = logging.getLogger(__name__)
         self.is_update = True
 
-    @staticmethod
-    def process_epss_item(item=None):
+    def process_epss_item(self, item=None):
         if item is None:
             return None
 
         epss = {
             "id": item[0],
             "epss": item[1],
-            "epssMetric": {
-                "percentile": item[2],
-                "lastModified": date.strftime('%Y-%m-%dT%H:%M:%SZ')
-            }
+            "epssMetric": {"percentile": item[2], "lastModified": self.last_modified},
         }
 
         return epss
 
     def process_item(self, item):
-        # overwrite the feed_type, so that the correct collection is used
-        self.feed_type = self.cve_collection
-
         epss = self.process_epss_item(item)
 
         if epss is not None:
             self.queue.put(
                 DatabaseAction(
                     action=DatabaseAction.actions.UpdateOne,
-                    collection=self.cve_collection,
-                    doc=epss
+                    doc=epss,
                 )
             )
 
@@ -1166,7 +1160,7 @@ class DatabaseIndexer(object):
                 MongoAddIndex(index=[("id", ASCENDING)], name="id"),
                 MongoAddIndex(index=[("name", ASCENDING)], name="name"),
                 MongoAddIndex(index=[("status", ASCENDING)], name="status"),
-            ]
+            ],
         }
 
         self.logger = logging.getLogger(__name__)
