@@ -24,7 +24,11 @@ from CveXplore.database.maintenance.Toolkit import sanitize
 from CveXplore.database.maintenance.api_handlers import NVDApiHandler
 from CveXplore.database.maintenance.content_handlers import CapecHandler, CWEHandler
 from CveXplore.database.maintenance.db_action import DatabaseAction
-from CveXplore.database.maintenance.file_handlers import XMLFileHandler, JSONFileHandler
+from CveXplore.database.maintenance.file_handlers import (
+    XMLFileHandler,
+    JSONFileHandler,
+    CSVFileHandler,
+)
 from CveXplore.errors.apis import ApiDataRetrievalFailed, ApiMaxRetryError
 
 date = datetime.datetime.now()
@@ -858,7 +862,6 @@ class VIADownloads(JSONFileHandler):
             self.queue.put(
                 DatabaseAction(
                     action=DatabaseAction.actions.UpdateOne,
-                    collection=self.feed_type.lower(),
                     doc=item,
                 )
             )
@@ -866,7 +869,6 @@ class VIADownloads(JSONFileHandler):
             self.queue.put(
                 DatabaseAction(
                     action=DatabaseAction.actions.InsertOne,
-                    collection=self.feed_type.lower(),
                     doc=item,
                 )
             )
@@ -1024,6 +1026,62 @@ class CWEDownloads(XMLFileHandler):
         return self.update()
 
 
+class EPSSDownloads(CSVFileHandler):
+    def __init__(self):
+        self.feed_type = "EPSS"
+        self.delimiter = ","
+        super().__init__(self.feed_type, self.delimiter)
+
+        self.feed_url = Configuration.getFeedURL(self.feed_type.lower())
+        self.logger = logging.getLogger(__name__)
+        self.is_update = True
+
+    def process_epss_item(self, item=None):
+        if item is None:
+            return None
+
+        epss = {
+            "id": item[0],
+            "epss": item[1],
+            "epssMetric": {"percentile": item[2], "lastModified": self.last_modified},
+        }
+
+        return epss
+
+    def process_item(self, item):
+        epss = self.process_epss_item(item)
+
+        if epss is not None:
+            self.queue.put(
+                DatabaseAction(
+                    action=DatabaseAction.actions.UpdateOne,
+                    doc=epss,
+                )
+            )
+
+    def update(self, **kwargs):
+        self.logger.info("EPSS database update started")
+
+        self.queue.clear()
+
+        self.process_downloads([self.feed_url])
+
+        self.logger.info("Finished EPSS database update")
+
+        return self.last_modified
+
+    def populate(self, **kwargs):
+        self.logger.info("EPSS Database population started")
+
+        self.queue.clear()
+
+        self.process_downloads([self.feed_url])
+
+        self.logger.info("Finished EPSS database population")
+
+        return self.last_modified
+
+
 MongoUniqueIndex = namedtuple("MongoUniqueIndex", "index name unique")
 MongoAddIndex = namedtuple("MongoAddIndex", "index name")
 
@@ -1081,6 +1139,7 @@ class DatabaseIndexer(object):
                     index=[("vulnerable_configuration_stems", ASCENDING)],
                     name="vulnerable_configuration_stems",
                 ),
+                MongoAddIndex(index=[("epss", ASCENDING)], name="epss"),
             ],
             "via4": [MongoAddIndex(index=[("id", ASCENDING)], name="id")],
             "mgmt_whitelist": [MongoAddIndex(index=[("id", ASCENDING)], name="id")],

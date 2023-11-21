@@ -80,6 +80,7 @@ class Configuration(object):
         "cwe": "https://cwe.mitre.org/data/xml/cwec_latest.xml.zip",
         "capec": "https://capec.mitre.org/data/xml/capec_latest.xml",
         "via4": "https://www.cve-search.org/feeds/via4.json",
+        "epss": "https://epss.cyentia.com/epss_scores-current.csv.gz",  # See EPSS at https://www.first.org/epss
     }
 
     LOGGING_TO_FILE = getenv_bool("LOGGING_TO_FILE", "True")

@@ -51,6 +51,7 @@ class GenericDatabaseFactory(DatasourceConnection):
                 "status",
                 "assigner",
                 "cwe",
+                "epss",
             ],
         }
 

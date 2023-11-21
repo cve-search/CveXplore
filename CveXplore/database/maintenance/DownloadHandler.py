@@ -152,7 +152,7 @@ class DownloadHandler(ABC):
         Yield successive n-sized chunks from lst.
         """
         for i in range(0, len(lst), number):
-            yield lst[i : i + number]
+            yield lst[i: i + number]
 
     def _db_bulk_writer(self, batch: list):
         """
@@ -160,7 +160,10 @@ class DownloadHandler(ABC):
         """
 
         try:
-            self.database[self.feed_type.lower()].bulk_write(batch, ordered=False)
+            if self.feed_type.lower() == "epss":
+                self.database["cves"].bulk_write(batch, ordered=False)
+            else:
+                self.database[self.feed_type.lower()].bulk_write(batch, ordered=False)
         except BulkWriteError as err:
             self.logger.debug(f"Error during bulk write: {err}")
             pass
@@ -265,8 +268,8 @@ class DownloadHandler(ABC):
                         )
                     except KeyError:
                         self.logger.error(
-                            "Did not receive last-modified header in the response; setting to default "
-                            "(01-01-1970) and force update! Headers received: {response.headers}"
+                            f"Did not receive last-modified header in the response; setting to default "
+                            f"(01-01-1970) and force update! Headers received: {response.headers}"
                         )
                         # setting to last_modified to default value
                         self.last_modified = parse_datetime("01-01-1970")
