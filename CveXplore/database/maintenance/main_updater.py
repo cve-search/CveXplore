@@ -4,6 +4,7 @@ Main Updater
 """
 import logging
 import time
+from datetime import timedelta
 
 from CveXplore.database.maintenance.DatabaseSchemaChecker import SchemaChecker
 from CveXplore.database.maintenance.LogHandler import UpdateHandler
@@ -39,7 +40,7 @@ class MainUpdater(object):
             {"name": "cwe", "updater": CWEDownloads},
             {"name": "capec", "updater": CAPECDownloads},
             {"name": "via4", "updater": VIADownloads},
-            {"name": "epss", "updater": EPSSDownloads}
+            {"name": "epss", "updater": EPSSDownloads},
         ]
 
         self.posts = [
@@ -58,6 +59,9 @@ class MainUpdater(object):
         """
         Method used for updating the database
         """
+        self.logger.info(f"Starting Database update....")
+        start_time = time.time()
+
         if update_source is not None:
             if not isinstance(update_source, str | list):
                 raise ValueError("Wrong 'update_source' parameter type received!")
@@ -101,12 +105,16 @@ class MainUpdater(object):
 
         self.datasource.set_handlers_for_collections()
 
-        self.logger.info(f"Database update / initialization complete!")
+        self.logger.info(f"Database update complete!")
+        self.logger.info(f"Duration: {timedelta(seconds=time.time() - start_time)}")
 
     def populate(self, populate_source: str | list = None):
         """
         Method used for updating the database
         """
+        self.logger.info(f"Starting Database population....")
+        start_time = time.time()
+
         if populate_source is not None:
             if not isinstance(populate_source, str | list):
                 raise ValueError("Wrong 'populate_source' parameter type received!")
@@ -150,12 +158,16 @@ class MainUpdater(object):
 
         self.datasource.set_handlers_for_collections()
 
-        self.logger.info(f"Database update / initialization complete!")
+        self.logger.info(f"Database population complete!")
+        self.logger.info(f"Duration: {timedelta(seconds=time.time() - start_time)}")
 
     def initialize(self):
         """
         Method to initialize a new (fresh) instance of a cvedb database
         """
+
+        self.logger.info(f"Starting Database initialization....")
+        start_time = time.time()
 
         cpe_pop = CPEDownloads()
         cpe_pop.populate()
@@ -169,3 +181,6 @@ class MainUpdater(object):
         cve_pop.populate()
 
         self.update()
+
+        self.logger.info(f"Database initialization complete!")
+        self.logger.info(f"Duration: {timedelta(seconds=time.time() - start_time)}")
