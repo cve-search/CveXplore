@@ -296,6 +296,10 @@
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dict_filter</span><span class="p">[</span><span class="s2">&quot;impactScore3&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
                     <span class="n">dict_filter</span><span class="p">[</span><span class="s2">&quot;impactScore3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dict_filter</span><span class="p">[</span><span class="s2">&quot;impactScore3&quot;</span><span class="p">])</span>
 
+            <span class="k">if</span> <span class="s2">&quot;epss&quot;</span> <span class="ow">in</span> <span class="n">dict_filter</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dict_filter</span><span class="p">[</span><span class="s2">&quot;epss&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">dict_filter</span><span class="p">[</span><span class="s2">&quot;epss&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dict_filter</span><span class="p">[</span><span class="s2">&quot;epss&quot;</span><span class="p">])</span>
+
         <span class="n">results</span> <span class="o">=</span> <span class="p">(</span>
             <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;store_</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">dict_filter</span><span class="p">)</span>
