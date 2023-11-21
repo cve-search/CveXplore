@@ -95,7 +95,6 @@ class XMLFileHandler(DownloadHandler):
             self.queue.put(
                 DatabaseAction(
                     action=DatabaseAction.actions.UpdateOne,
-                    collection=self.feed_type.lower(),
                     doc=item,
                 )
             )
@@ -103,7 +102,6 @@ class XMLFileHandler(DownloadHandler):
             self.queue.put(
                 DatabaseAction(
                     action=DatabaseAction.actions.InsertOne,
-                    collection=self.feed_type.lower(),
                     doc=item,
                 )
             )
@@ -122,7 +120,7 @@ class XMLFileHandler(DownloadHandler):
 
 
 class CSVFileHandler(DownloadHandler):
-    def __init__(self, feed_type, delimiter=','):
+    def __init__(self, feed_type, delimiter=","):
         super().__init__(feed_type)
 
         self.is_update = True
@@ -144,7 +142,7 @@ class CSVFileHandler(DownloadHandler):
         x = 0
         self.logger.debug("Starting processing of file: {}".format(filename))
 
-        f = open(filename, 'r')
+        f = open(filename, "r")
 
         reader = csv.reader(f, delimiter=self.delimiter)
 
