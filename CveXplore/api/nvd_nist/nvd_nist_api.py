@@ -455,7 +455,7 @@ class ApiDataIterator(object):
                         if "message" in response.headers:
                             self.logger.debug(response.headers["message"])
                     if response.status == 403:
-                        self.logger.error(f"Request forbidden by administrative rules")
+                        self.logger.debug(f"Request forbidden by administrative rules")
                     raise ApiDataRetrievalFailed(url)
         except ApiDataError:
             raise
