@@ -152,7 +152,7 @@ class DownloadHandler(ABC):
         Yield successive n-sized chunks from lst.
         """
         for i in range(0, len(lst), number):
-            yield lst[i: i + number]
+            yield lst[i : i + number]
 
     def _db_bulk_writer(self, batch: list):
         """
