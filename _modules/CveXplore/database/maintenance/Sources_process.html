@@ -245,7 +245,9 @@
                                         <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
                                         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;products&quot;</span><span class="p">]</span>
                                     <span class="p">]</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">_db_bulk_writer</span><span class="p">(</span><span class="n">processed_items</span><span class="p">)</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">_db_bulk_writer</span><span class="p">(</span>
+                                        <span class="n">processed_items</span><span class="p">,</span> <span class="n">initialization_run</span><span class="o">=</span><span class="kc">True</span>
+                                    <span class="p">)</span>
                                     <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;products&quot;</span><span class="p">]))</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
@@ -513,7 +515,7 @@
         <span class="k">for</span> <span class="n">description</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;descriptions&quot;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">description</span><span class="p">[</span><span class="s2">&quot;lang&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;en&quot;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="s2">&quot;summary&quot;</span> <span class="ow">in</span> <span class="n">cve</span><span class="p">:</span>
-                    <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">description</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
+                    <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">description</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
 
@@ -815,7 +817,9 @@
                                         <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
                                         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;vulnerabilities&quot;</span><span class="p">]</span>
                                     <span class="p">]</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">_db_bulk_writer</span><span class="p">(</span><span class="n">processed_items</span><span class="p">)</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">_db_bulk_writer</span><span class="p">(</span>
+                                        <span class="n">processed_items</span><span class="p">,</span> <span class="n">initialization_run</span><span class="o">=</span><span class="kc">True</span>
+                                    <span class="p">)</span>
                                     <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;vulnerabilities&quot;</span><span class="p">]))</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
@@ -894,7 +898,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">setColUpdate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;Duration: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">))</span>
+            <span class="sa">f</span><span class="s2">&quot;Duration: </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span></div>
 
 
@@ -916,9 +920,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CVE database population started&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;Starting CVE database population starting from year: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">cveStartYear</span>
-            <span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;Starting CVE database population starting from year: </span><span class="si">{</span><span class="n">cveStartYear</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
@@ -971,7 +973,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">entry_dict</span><span class="p">)</span>
                 <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processed </span><span class="si">{}</span><span class="s2"> items from file: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processed </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> items from file: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">input_file</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
@@ -979,15 +981,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">setColInfo</span><span class="p">(</span><span class="s2">&quot;via4&quot;</span><span class="p">,</span> <span class="s2">&quot;sources&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;sources&quot;</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setColInfo</span><span class="p">(</span><span class="s2">&quot;via4&quot;</span><span class="p">,</span> <span class="s2">&quot;searchables&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;searchables&quot;</span><span class="p">])</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processed metadata from file: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processed metadata from file: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Removing working dir: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">working_dir</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Removing working dir: </span><span class="si">{</span><span class="n">working_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">working_dir</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;Failed to remove working dir; error produced: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
-            <span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to remove working dir; error produced: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
@@ -1063,15 +1063,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">attack</span><span class="p">)</span>
             <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processed </span><span class="si">{}</span><span class="s2"> entries from file: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processed </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> entries from file: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Removing working dir: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">working_dir</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Removing working dir: </span><span class="si">{</span><span class="n">working_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">working_dir</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;Failed to remove working dir; error produced: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to remove working dir; error produced: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CAPEC database update started&quot;</span><span class="p">)</span>
@@ -1137,15 +1135,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">cwe</span><span class="p">)</span>
             <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processed </span><span class="si">{}</span><span class="s2"> entries from file: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processed </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> entries from file: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Removing working dir: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">working_dir</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Removing working dir: </span><span class="si">{</span><span class="n">working_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">working_dir</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;Failed to remove working dir; error produced: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to remove working dir; error produced: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CWE database update started&quot;</span><span class="p">)</span>
@@ -1338,9 +1334,7 @@
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="c1"># no specific index given, continue</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;Could not find the requested collection: </span><span class="si">{}</span><span class="s2">, skipping...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">collection</span>
-                    <span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">&quot;Could not find the requested collection: </span><span class="si">{</span><span class="n">collection</span><span class="si">}</span><span class="s2">, skipping...&quot;</span>
                 <span class="p">)</span>
                 <span class="k">pass</span>
 
