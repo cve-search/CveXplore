@@ -288,7 +288,6 @@ class DownloadHandler(ABC):
                         i = self.getInfo(self.feed_type.lower())
 
                         if i is not None:
-
                             if self.last_modified == i["lastModified"]:
                                 self.logger.info(
                                     f"{self.feed_type}'s are not modified since the last update"
