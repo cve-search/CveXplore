@@ -162,6 +162,8 @@ class DownloadHandler(ABC):
         try:
             if self.feed_type.lower() == "epss":
                 self.database["cves"].bulk_write(batch, ordered=False)
+            elif self.feed_type.lower() == "cves" or self.feed_type.lower() == "cpe":
+                self.database[self.feed_type.lower()].insert_many(batch, ordered=False)
             else:
                 self.database[self.feed_type.lower()].bulk_write(batch, ordered=False)
         except BulkWriteError as err:

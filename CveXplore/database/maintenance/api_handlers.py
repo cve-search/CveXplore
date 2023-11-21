@@ -32,10 +32,11 @@ class NVDApiHandler(DownloadHandler):
                     doc=item,
                 ).entry
             else:
-                return DatabaseAction(
-                    action=DatabaseAction.actions.InsertOne,
-                    doc=item,
-                ).entry
+                # return DatabaseAction(
+                #     action=DatabaseAction.actions.InsertOne,
+                #     doc=item,
+                # ).entry
+                return item
 
     @abstractmethod
     def process_the_item(self, *args):
