@@ -106,7 +106,7 @@ class MainUpdater(object):
         self.datasource.set_handlers_for_collections()
 
         self.logger.info(f"Database update complete!")
-        self.logger.info(f"Duration: {timedelta(seconds=time.time() - start_time)}")
+        self.logger.info(f"Update Total duration: {timedelta(seconds=time.time() - start_time)}")
 
     def populate(self, populate_source: str | list = None):
         """
@@ -159,7 +159,7 @@ class MainUpdater(object):
         self.datasource.set_handlers_for_collections()
 
         self.logger.info(f"Database population complete!")
-        self.logger.info(f"Duration: {timedelta(seconds=time.time() - start_time)}")
+        self.logger.info(f"Populate total duration: {timedelta(seconds=time.time() - start_time)}")
 
     def initialize(self):
         """
@@ -183,4 +183,4 @@ class MainUpdater(object):
         self.update()
 
         self.logger.info(f"Database initialization complete!")
-        self.logger.info(f"Duration: {timedelta(seconds=time.time() - start_time)}")
+        self.logger.info(f"Initialization total duration: {timedelta(seconds=time.time() - start_time)}")
