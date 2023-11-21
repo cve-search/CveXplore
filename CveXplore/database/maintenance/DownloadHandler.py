@@ -280,15 +280,20 @@ class DownloadHandler(ABC):
                         f"Last {self.feed_type} modified value: {self.last_modified} for URL: {url}"
                     )
 
-                    i = self.getInfo(self.feed_type.lower())
+                    # epss releases on daily basis, if new cve's are inserted in the database
+                    # it might be missing epss info, so always run the epss update
+                    if self.feed_type.lower() != "epss":
+                        i = self.getInfo(self.feed_type.lower())
 
-                    if i is not None:
-                        if self.last_modified == i["lastModified"]:
-                            self.logger.info(
-                                f"{self.feed_type}'s are not modified since the last update"
-                            )
-                            self.file_queue.getall()
-                            self.do_process = False
+                        if i is not None:
+
+                            if self.last_modified == i["lastModified"]:
+                                self.logger.info(
+                                    f"{self.feed_type}'s are not modified since the last update"
+                                )
+                                self.file_queue.getall()
+                                self.do_process = False
+
                     if self.do_process:
                         content_type = response.headers["content-type"]
 
