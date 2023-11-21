@@ -202,6 +202,10 @@ class CveXplore(object):
                 if isinstance(dict_filter["impactScore3"], str):
                     dict_filter["impactScore3"] = float(dict_filter["impactScore3"])
 
+            if "epss" in dict_filter:
+                if isinstance(dict_filter["epss"], str):
+                    dict_filter["epss"] = float(dict_filter["epss"])
+
         results = (
             getattr(self.datasource, f"store_{entry_type}")
             .find(dict_filter)
