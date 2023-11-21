@@ -1107,6 +1107,7 @@ class DatabaseIndexer(object):
                 MongoAddIndex(
                     index=[("padded_version", ASCENDING)], name="padded_version"
                 ),
+                MongoAddIndex(index=[("lastModified", ASCENDING)], name="lastModified"),
             ],
             "cpeother": [
                 MongoUniqueIndex(index=[("id", ASCENDING)], name="id", unique=True)
