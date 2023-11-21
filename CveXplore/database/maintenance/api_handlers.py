@@ -29,13 +29,11 @@ class NVDApiHandler(DownloadHandler):
             if self.is_update:
                 return DatabaseAction(
                     action=DatabaseAction.actions.UpdateOne,
-                    collection=self.feed_type.lower(),
                     doc=item,
                 ).entry
             else:
                 return DatabaseAction(
                     action=DatabaseAction.actions.InsertOne,
-                    collection=self.feed_type.lower(),
                     doc=item,
                 ).entry
 
