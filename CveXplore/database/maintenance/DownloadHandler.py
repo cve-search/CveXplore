@@ -154,7 +154,7 @@ class DownloadHandler(ABC):
         for i in range(0, len(lst), number):
             yield lst[i : i + number]
 
-    def _db_bulk_writer(self, batch: list):
+    def _db_bulk_writer(self, batch: list, initialization_run: bool = False):
         """
         Method to act as worker for writing queued entries into the database
         """
@@ -162,7 +162,9 @@ class DownloadHandler(ABC):
         try:
             if self.feed_type.lower() == "epss":
                 self.database["cves"].bulk_write(batch, ordered=False)
-            elif self.feed_type.lower() == "cves" or self.feed_type.lower() == "cpe":
+            elif initialization_run and (
+                self.feed_type.lower() == "cves" or self.feed_type.lower() == "cpe"
+            ):
                 self.database[self.feed_type.lower()].insert_many(batch, ordered=False)
             else:
                 self.database[self.feed_type.lower()].bulk_write(batch, ordered=False)

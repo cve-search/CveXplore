@@ -154,7 +154,9 @@ class CPEDownloads(NVDApiHandler):
                                         self.process_item(item)
                                         for item in data_list["products"]
                                     ]
-                                    self._db_bulk_writer(processed_items)
+                                    self._db_bulk_writer(
+                                        processed_items, initialization_run=True
+                                    )
                                     pbar.update(len(data_list["products"]))
                                 else:
                                     self.logger.error(
@@ -412,7 +414,7 @@ class CVEDownloads(NVDApiHandler):
         for description in item["cve"]["descriptions"]:
             if description["lang"] == "en":
                 if "summary" in cve:
-                    cve["summary"] += " {}".format(description["value"])
+                    cve["summary"] += f" {description['value']}"
                 else:
                     cve["summary"] = description["value"]
 
@@ -712,7 +714,9 @@ class CVEDownloads(NVDApiHandler):
                                         self.process_item(item)
                                         for item in data_list["vulnerabilities"]
                                     ]
-                                    self._db_bulk_writer(processed_items)
+                                    self._db_bulk_writer(
+                                        processed_items, initialization_run=True
+                                    )
                                     pbar.update(len(data_list["vulnerabilities"]))
                                 else:
                                     self.logger.error(
@@ -791,7 +795,7 @@ class CVEDownloads(NVDApiHandler):
             self.setColUpdate(self.feed_type.lower(), self.last_modified)
 
         self.logger.info(
-            "Duration: {}".format(datetime.timedelta(seconds=time.time() - start_time))
+            f"Duration: {datetime.timedelta(seconds=time.time() - start_time)}"
         )
 
     def update(self):
@@ -812,9 +816,7 @@ class CVEDownloads(NVDApiHandler):
         self.logger.info("CVE database population started")
 
         self.logger.info(
-            "Starting CVE database population starting from year: {}".format(
-                cveStartYear
-            )
+            f"Starting CVE database population starting from year: {cveStartYear}"
         )
 
         self.is_update = False
@@ -859,7 +861,7 @@ class VIADownloads(JSONFileHandler):
                 self.process_item(item=entry_dict)
                 x += 1
 
-            self.logger.debug("Processed {} items from file: {}".format(x, filename))
+            self.logger.debug(f"Processed {x} items from file: {filename}")
 
         with open(filename, "rb") as input_file:
             data = json.loads(input_file.read().decode("utf-8"))
@@ -867,15 +869,13 @@ class VIADownloads(JSONFileHandler):
             self.setColInfo("via4", "sources", data["metadata"]["sources"])
             self.setColInfo("via4", "searchables", data["metadata"]["searchables"])
 
-            self.logger.debug("Processed metadata from file: {}".format(filename))
+            self.logger.debug(f"Processed metadata from file: {filename}")
 
         try:
-            self.logger.debug("Removing working dir: {}".format(working_dir))
+            self.logger.debug(f"Removing working dir: {working_dir}")
             shutil.rmtree(working_dir)
         except Exception as err:
-            self.logger.error(
-                "Failed to remove working dir; error produced: {}".format(err)
-            )
+            self.logger.error(f"Failed to remove working dir; error produced: {err}")
 
     def process_item(self, item: dict):
         if self.is_update:
@@ -944,15 +944,13 @@ class CAPECDownloads(XMLFileHandler):
             self.process_item(attack)
             x += 1
 
-        self.logger.debug("Processed {} entries from file: {}".format(x, filename))
+        self.logger.debug(f"Processed {x} entries from file: {filename}")
 
         try:
-            self.logger.debug("Removing working dir: {}".format(working_dir))
+            self.logger.debug(f"Removing working dir: {working_dir}")
             shutil.rmtree(working_dir)
         except Exception as err:
-            self.logger.error(
-                "Failed to remove working dir; error produced: {}".format(err)
-            )
+            self.logger.error(f"Failed to remove working dir; error produced: {err}")
 
     def update(self, **kwargs):
         self.logger.info("CAPEC database update started")
@@ -1012,15 +1010,13 @@ class CWEDownloads(XMLFileHandler):
             self.process_item(cwe)
             x += 1
 
-        self.logger.debug("Processed {} entries from file: {}".format(x, filename))
+        self.logger.debug(f"Processed {x} entries from file: {filename}")
 
         try:
-            self.logger.debug("Removing working dir: {}".format(working_dir))
+            self.logger.debug(f"Removing working dir: {working_dir}")
             shutil.rmtree(working_dir)
         except Exception as err:
-            self.logger.error(
-                "Failed to remove working dir; error produced: {}".format(err)
-            )
+            self.logger.error(f"Failed to remove working dir; error produced: {err}")
 
     def update(self, **kwargs):
         self.logger.info("CWE database update started")
@@ -1201,9 +1197,7 @@ class DatabaseIndexer(object):
             except KeyError:
                 # no specific index given, continue
                 self.logger.warning(
-                    "Could not find the requested collection: {}, skipping...".format(
-                        collection
-                    )
+                    f"Could not find the requested collection: {collection}, skipping..."
                 )
                 pass
 

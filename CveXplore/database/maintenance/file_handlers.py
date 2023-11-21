@@ -29,7 +29,7 @@ class JSONFileHandler(DownloadHandler):
 
     def __repr__(self):
         """return string representation of object"""
-        return "<< JSONFileHandler:{} >>".format(self.feed_type)
+        return f"<< JSONFileHandler:{self.feed_type} >>"
 
     def file_to_queue(self, file_tuple: Tuple[str, str]):
         """
@@ -46,22 +46,18 @@ class JSONFileHandler(DownloadHandler):
             interval = 5000
 
         x = 0
-        self.logger.debug("Starting processing of file: {}".format(filename))
+        self.logger.debug(f"Starting processing of file: {filename}")
         for cpe in self.ijson_handler.fetch(filename=filename, prefix=self.prefix):
             self.process_item(item=cpe)
             x += 1
             if x % interval == 0:
-                self.logger.debug(
-                    "Processed {} entries from file: {}".format(x, filename)
-                )
+                self.logger.debug(f"Processed {x} entries from file: {filename}")
 
         try:
-            self.logger.debug("Removing working dir: {}".format(working_dir))
+            self.logger.debug(f"Removing working dir: {working_dir}")
             shutil.rmtree(working_dir)
         except Exception as err:
-            self.logger.error(
-                "Failed to remove working dir; error produced: {}".format(err)
-            )
+            self.logger.error(f"Failed to remove working dir; error produced: {err}")
 
     @abstractmethod
     def update(self, **kwargs):
@@ -128,7 +124,7 @@ class CSVFileHandler(DownloadHandler):
 
     def __repr__(self):
         """return string representation of object"""
-        return "<< CSVFileHandler:{} >>".format(self.feed_type)
+        return f"<< CSVFileHandler:{self.feed_type} >>"
 
     def file_to_queue(self, file_tuple):
         working_dir, filename = file_tuple
@@ -140,7 +136,7 @@ class CSVFileHandler(DownloadHandler):
             interval = 5000
 
         x = 0
-        self.logger.debug("Starting processing of file: {}".format(filename))
+        self.logger.debug(f"Starting processing of file: {filename}")
 
         f = open(filename, "r")
 
@@ -153,18 +149,14 @@ class CSVFileHandler(DownloadHandler):
             self.process_item(item=row)
             x += 1
             if x % interval == 0:
-                self.logger.debug(
-                    "Processed {} entries from file: {}".format(x, filename)
-                )
+                self.logger.debug(f"Processed {x} entries from file: {filename}")
         f.close()
 
         try:
-            self.logger.debug("Removing working dir: {}".format(working_dir))
+            self.logger.debug(f"Removing working dir: {working_dir}")
             shutil.rmtree(working_dir)
         except Exception as err:
-            self.logger.error(
-                "Failed to remove working dir; error produced: {}".format(err)
-            )
+            self.logger.error(f"Failed to remove working dir; error produced: {err}")
 
     @abstractmethod
     def update(self, **kwargs):

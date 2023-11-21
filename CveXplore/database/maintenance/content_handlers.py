@@ -221,29 +221,21 @@ class CapecHandler(ContentHandler):
             if self.taxonomy_name == "ATTACK":
                 if len(cut_entry) == 1:
                     # no subtechnique use plain entry_id
-                    url = "https://attack.mitre.org/techniques/T{}".format(entry_id)
+                    url = f"https://attack.mitre.org/techniques/T{entry_id}"
                 else:
                     # attack with subtechniques use cut_entry
-                    url = "https://attack.mitre.org/techniques/T{}/{}".format(
-                        cut_entry[0], cut_entry[1]
-                    )
+                    url = f"https://attack.mitre.org/techniques/T{cut_entry[0]}/{cut_entry[1]}"
 
             elif self.taxonomy_name == "WASC":
                 if "/" in self.entry_name_ch:
-                    url = "http://projects.webappsec.org/{}".format(
-                        self.entry_name_ch.replace("/", " and ").replace(" ", "-")
-                    )
+                    url = f"http://projects.webappsec.org/{self.entry_name_ch.replace('/', ' and ').replace(' ', '-')}"
                 else:
-                    url = "http://projects.webappsec.org/{}".format(
-                        self.entry_name_ch.replace(" ", "-")
-                    )
+                    url = f"http://projects.webappsec.org/{self.entry_name_ch.replace(' ', '-')}"
 
             elif self.taxonomy_name == "OWASP Attacks":
                 entry_id = "Link"
 
-                url = "https://owasp.org/www-community/attacks/{}".format(
-                    self.entry_name_ch.replace(" ", "_")
-                )
+                url = f"https://owasp.org/www-community/attacks/{self.entry_name_ch.replace(' ', '_')}"
 
             self.taxonomy_mapping[self.taxonomy_name][
                 self.entry_id_ch.rstrip().replace(".", "_")
