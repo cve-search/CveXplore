@@ -229,12 +229,12 @@ class CPEDownloads(NVDApiHandler):
     def update(self, **kwargs):
         self.logger.info("CPE database update started")
 
+        self.process_downloads()
+
         # if collection is non-existent; assume it's not an update
         if self.feed_type.lower() not in self.getTableNames():
             DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
             self.is_update = False
-
-        self.process_downloads()
 
         self.logger.info("Finished CPE database update")
 
@@ -251,9 +251,9 @@ class CPEDownloads(NVDApiHandler):
 
         self.dropCollection(self.feed_type.lower())
 
-        DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
-
         self.process_downloads()
+
+        DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
 
         self.logger.info("Finished CPE database population")
 
@@ -773,12 +773,12 @@ class CVEDownloads(NVDApiHandler):
     def update(self):
         self.logger.info("CVE database update started")
 
+        self.process_downloads()
+
         # if collection is non-existent; assume it's not an update
         if self.feed_type.lower() not in self.getTableNames():
             DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
             self.is_update = False
-
-        self.process_downloads()
 
         self.logger.info("Finished CVE database update")
 
@@ -801,9 +801,9 @@ class CVEDownloads(NVDApiHandler):
 
         self.dropCollection(self.feed_type.lower())
 
-        DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
-
         self.process_downloads()
+
+        DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
 
         self.logger.info("Finished CVE database population")
 
