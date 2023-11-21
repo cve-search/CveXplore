@@ -1166,9 +1166,6 @@ class DatabaseIndexer(object):
                 MongoAddIndex(index=[("id", ASCENDING)], name="id"),
                 MongoAddIndex(index=[("name", ASCENDING)], name="name"),
                 MongoAddIndex(index=[("status", ASCENDING)], name="status"),
-            ],
-            "epss": [
-                MongoUniqueIndex(index=[("id", ASCENDING)], name="id", unique=True),
             ]
         }
 
