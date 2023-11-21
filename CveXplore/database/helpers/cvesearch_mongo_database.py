@@ -53,7 +53,7 @@ class CveSearchCursor(Cursor):
             "cpe": Cpe,
             "cwe": Cwe,
             "via4": Via4,
-            "cves": Cves
+            "cves": Cves,
         }
 
     @property
