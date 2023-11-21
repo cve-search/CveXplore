@@ -1032,7 +1032,6 @@ class EPSSDownloads(CSVFileHandler):
         self.delimiter = ","
         super().__init__(self.feed_type, self.delimiter)
 
-        self.cve_collection = "cves"
         self.feed_url = Configuration.getFeedURL(self.feed_type.lower())
         self.logger = logging.getLogger(__name__)
         self.is_update = True
