@@ -233,7 +233,7 @@ class NvdNistApi(ApiBaseClass):
             if not isinstance(ret_data, Response):
                 return ret_data["totalResults"]
             else:
-                raise ApiDataRetrievalFailed
+                raise ApiDataRetrievalFailed(resource)
         except Exception:
             raise ApiMaxRetryError
 
@@ -455,7 +455,7 @@ class ApiDataIterator(object):
                         if "message" in response.headers:
                             self.logger.debug(response.headers["message"])
                     if response.status == 403:
-                        self.logger.debug(f"Request forbidden by administrative rules")
+                        self.logger.error(f"Request forbidden by administrative rules")
                     raise ApiDataRetrievalFailed(url)
         except ApiDataError:
             raise

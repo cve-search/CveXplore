@@ -149,12 +149,17 @@ class CPEDownloads(NVDApiHandler):
                             entry, desc=f"Processing batch", leave=False
                         ):
                             if not isinstance(data_list, ApiDataRetrievalFailed):
-                                processed_items = [
-                                    self.process_item(item)
-                                    for item in data_list["products"]
-                                ]
-                                self._db_bulk_writer(processed_items)
-                                pbar.update(len(data_list["products"]))
+                                if not isinstance(data_list, Exception):
+                                    processed_items = [
+                                        self.process_item(item)
+                                        for item in data_list["products"]
+                                    ]
+                                    self._db_bulk_writer(processed_items)
+                                    pbar.update(len(data_list["products"]))
+                                else:
+                                    self.logger.error(
+                                        f"Retrieval of api data resulted in an Exception: {data_list}..."
+                                    )
                             else:
                                 self.logger.error(
                                     f"Retrieval of api data on url: {data_list.args[0]} failed...."
@@ -212,12 +217,17 @@ class CPEDownloads(NVDApiHandler):
                             entry, desc=f"Processing batch", leave=False
                         ):
                             if not isinstance(data_list, ApiDataRetrievalFailed):
-                                processed_items = [
-                                    self.process_item(item)
-                                    for item in data_list["products"]
-                                ]
-                                self._db_bulk_writer(processed_items)
-                                pbar.update(len(data_list["products"]))
+                                if not isinstance(data_list, Exception):
+                                    processed_items = [
+                                        self.process_item(item)
+                                        for item in data_list["products"]
+                                    ]
+                                    self._db_bulk_writer(processed_items)
+                                    pbar.update(len(data_list["products"]))
+                                else:
+                                    self.logger.error(
+                                        f"Retrieval of api data resulted in an Exception: {data_list}..."
+                                    )
                             else:
                                 self.logger.error(
                                     f"Retrieval of api data on url: {data_list.args[0]} failed...."
@@ -697,12 +707,17 @@ class CVEDownloads(NVDApiHandler):
                             entry, desc=f"Processing batch", leave=False
                         ):
                             if not isinstance(data_list, ApiDataRetrievalFailed):
-                                processed_items = [
-                                    self.process_item(item)
-                                    for item in data_list["vulnerabilities"]
-                                ]
-                                self._db_bulk_writer(processed_items)
-                                pbar.update(len(data_list["vulnerabilities"]))
+                                if not isinstance(data_list, Exception):
+                                    processed_items = [
+                                        self.process_item(item)
+                                        for item in data_list["vulnerabilities"]
+                                    ]
+                                    self._db_bulk_writer(processed_items)
+                                    pbar.update(len(data_list["vulnerabilities"]))
+                                else:
+                                    self.logger.error(
+                                        f"Retrieval of api data resulted in an Exception: {data_list}..."
+                                    )
                             else:
                                 self.logger.error(
                                     f"Retrieval of api data on url: {data_list.args[0]} failed...."
@@ -756,12 +771,17 @@ class CVEDownloads(NVDApiHandler):
                             entry, desc=f"Processing batch", leave=False
                         ):
                             if not isinstance(data_list, ApiDataRetrievalFailed):
-                                processed_items = [
-                                    self.process_item(item)
-                                    for item in data_list["vulnerabilities"]
-                                ]
-                                self._db_bulk_writer(processed_items)
-                                pbar.update(len(data_list["vulnerabilities"]))
+                                if not isinstance(data_list, Exception):
+                                    processed_items = [
+                                        self.process_item(item)
+                                        for item in data_list["vulnerabilities"]
+                                    ]
+                                    self._db_bulk_writer(processed_items)
+                                    pbar.update(len(data_list["vulnerabilities"]))
+                                else:
+                                    self.logger.error(
+                                        f"Retrieval of api data resulted in an Exception: {data_list}..."
+                                    )
                             else:
                                 self.logger.error(
                                     f"Retrieval of api data on url: {data_list.args[0]} failed...."
