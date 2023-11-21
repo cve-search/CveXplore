@@ -89,6 +89,7 @@
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">import</span> <span class="nn">csv</span>
 
 <span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.DownloadHandler</span> <span class="kn">import</span> <span class="n">DownloadHandler</span>
 <span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.IJSONHandler</span> <span class="kn">import</span> <span class="n">IJSONHandler</span>
@@ -200,7 +201,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
                 <span class="n">DatabaseAction</span><span class="p">(</span>
                     <span class="n">action</span><span class="o">=</span><span class="n">DatabaseAction</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">UpdateOne</span><span class="p">,</span>
-                    <span class="n">collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
                     <span class="n">doc</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -208,7 +208,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
                 <span class="n">DatabaseAction</span><span class="p">(</span>
                     <span class="n">action</span><span class="o">=</span><span class="n">DatabaseAction</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">InsertOne</span><span class="p">,</span>
-                    <span class="n">collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
                     <span class="n">doc</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span></div>
@@ -217,6 +216,71 @@
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+
+<div class="viewcode-block" id="CSVFileHandler">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.CSVFileHandler">[docs]</a>
+<span class="k">class</span> <span class="nc">CSVFileHandler</span><span class="p">(</span><span class="n">DownloadHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="CSVFileHandler.__init__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.CSVFileHandler.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feed_type</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">feed_type</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delimiter</span> <span class="o">=</span> <span class="n">delimiter</span></div>
+
+
+<div class="viewcode-block" id="CSVFileHandler.__repr__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.maintenance.file_handlers.CSVFileHandler.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return string representation of object&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CSVFileHandler:</span><span class="si">{}</span><span class="s2"> &gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_tuple</span><span class="p">):</span>
+        <span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">file_tuple</span>
+
+        <span class="c1"># adjust the interval counter for debug logging when updating</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span><span class="p">:</span>
+            <span class="n">interval</span> <span class="o">=</span> <span class="mi">500</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">interval</span> <span class="o">=</span> <span class="mi">5000</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Starting processing of file: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delimiter</span><span class="p">)</span>
+
+        <span class="nb">next</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+        <span class="nb">next</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">row</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="n">interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="s2">&quot;Processed </span><span class="si">{}</span><span class="s2"> entries from file: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+                <span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Removing working dir: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">working_dir</span><span class="p">))</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">working_dir</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Failed to remove working dir; error produced: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="p">)</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

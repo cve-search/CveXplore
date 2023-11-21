@@ -88,6 +88,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
 
 <span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.DatabaseSchemaChecker</span> <span class="kn">import</span> <span class="n">SchemaChecker</span>
 <span class="kn">from</span> <span class="nn">CveXplore.database.maintenance.LogHandler</span> <span class="kn">import</span> <span class="n">UpdateHandler</span>
@@ -97,6 +98,7 @@
     <span class="n">CWEDownloads</span><span class="p">,</span>
     <span class="n">CAPECDownloads</span><span class="p">,</span>
     <span class="n">VIADownloads</span><span class="p">,</span>
+    <span class="n">EPSSDownloads</span><span class="p">,</span>
     <span class="n">DatabaseIndexer</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">CveXplore.errors</span> <span class="kn">import</span> <span class="n">UpdateSourceNotFound</span>
@@ -126,6 +128,7 @@
             <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;cwe&quot;</span><span class="p">,</span> <span class="s2">&quot;updater&quot;</span><span class="p">:</span> <span class="n">CWEDownloads</span><span class="p">},</span>
             <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;capec&quot;</span><span class="p">,</span> <span class="s2">&quot;updater&quot;</span><span class="p">:</span> <span class="n">CAPECDownloads</span><span class="p">},</span>
             <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;via4&quot;</span><span class="p">,</span> <span class="s2">&quot;updater&quot;</span><span class="p">:</span> <span class="n">VIADownloads</span><span class="p">},</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;epss&quot;</span><span class="p">,</span> <span class="s2">&quot;updater&quot;</span><span class="p">:</span> <span class="n">EPSSDownloads</span><span class="p">},</span>
         <span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">posts</span> <span class="o">=</span> <span class="p">[</span>
@@ -147,6 +150,9 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method used for updating the database</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting Database update....&quot;</span><span class="p">)</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="n">update_source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">update_source</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Wrong &#39;update_source&#39; parameter type received!&quot;</span><span class="p">)</span>
@@ -190,7 +196,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">set_handlers_for_collections</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Database update / initialization complete!&quot;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Database update complete!&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Update Total duration: </span><span class="si">{</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="MainUpdater.populate">
@@ -199,6 +206,9 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method used for updating the database</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting Database population....&quot;</span><span class="p">)</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="n">populate_source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">populate_source</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Wrong &#39;populate_source&#39; parameter type received!&quot;</span><span class="p">)</span>
@@ -242,7 +252,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">set_handlers_for_collections</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Database update / initialization complete!&quot;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Database population complete!&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Populate total duration: </span><span class="si">{</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="MainUpdater.initialize">
@@ -251,6 +262,9 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to initialize a new (fresh) instance of a cvedb database</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting Database initialization....&quot;</span><span class="p">)</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
         <span class="n">cpe_pop</span> <span class="o">=</span> <span class="n">CPEDownloads</span><span class="p">()</span>
         <span class="n">cpe_pop</span><span class="o">.</span><span class="n">populate</span><span class="p">()</span>
@@ -263,7 +277,10 @@
         <span class="n">cve_pop</span> <span class="o">=</span> <span class="n">CVEDownloads</span><span class="p">()</span>
         <span class="n">cve_pop</span><span class="o">.</span><span class="n">populate</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Database initialization complete!&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Initialization total duration: </span><span class="si">{</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
