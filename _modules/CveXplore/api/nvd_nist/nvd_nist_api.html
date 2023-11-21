@@ -328,7 +328,7 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ret_data</span><span class="p">,</span> <span class="n">Response</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">ret_data</span><span class="p">[</span><span class="s2">&quot;totalResults&quot;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">ApiDataRetrievalFailed</span>
+                <span class="k">raise</span> <span class="n">ApiDataRetrievalFailed</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ApiMaxRetryError</span>
 
@@ -554,7 +554,7 @@
                         <span class="k">if</span> <span class="s2">&quot;message&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
                     <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="mi">403</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Request forbidden by administrative rules&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Request forbidden by administrative rules&quot;</span><span class="p">)</span>
                     <span class="k">raise</span> <span class="n">ApiDataRetrievalFailed</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">ApiDataError</span><span class="p">:</span>
             <span class="k">raise</span>

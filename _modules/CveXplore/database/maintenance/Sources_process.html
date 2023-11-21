@@ -240,12 +240,17 @@
                             <span class="n">entry</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Processing batch&quot;</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span>
                         <span class="p">):</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_list</span><span class="p">,</span> <span class="n">ApiDataRetrievalFailed</span><span class="p">):</span>
-                                <span class="n">processed_items</span> <span class="o">=</span> <span class="p">[</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-                                    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;products&quot;</span><span class="p">]</span>
-                                <span class="p">]</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">_db_bulk_writer</span><span class="p">(</span><span class="n">processed_items</span><span class="p">)</span>
-                                <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;products&quot;</span><span class="p">]))</span>
+                                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_list</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                                    <span class="n">processed_items</span> <span class="o">=</span> <span class="p">[</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                                        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;products&quot;</span><span class="p">]</span>
+                                    <span class="p">]</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">_db_bulk_writer</span><span class="p">(</span><span class="n">processed_items</span><span class="p">)</span>
+                                    <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;products&quot;</span><span class="p">]))</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                                        <span class="sa">f</span><span class="s2">&quot;Retrieval of api data resulted in an Exception: </span><span class="si">{</span><span class="n">data_list</span><span class="si">}</span><span class="s2">...&quot;</span>
+                                    <span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                                     <span class="sa">f</span><span class="s2">&quot;Retrieval of api data on url: </span><span class="si">{</span><span class="n">data_list</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> failed....&quot;</span>
@@ -303,12 +308,17 @@
                             <span class="n">entry</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Processing batch&quot;</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span>
                         <span class="p">):</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_list</span><span class="p">,</span> <span class="n">ApiDataRetrievalFailed</span><span class="p">):</span>
-                                <span class="n">processed_items</span> <span class="o">=</span> <span class="p">[</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-                                    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;products&quot;</span><span class="p">]</span>
-                                <span class="p">]</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">_db_bulk_writer</span><span class="p">(</span><span class="n">processed_items</span><span class="p">)</span>
-                                <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;products&quot;</span><span class="p">]))</span>
+                                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_list</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                                    <span class="n">processed_items</span> <span class="o">=</span> <span class="p">[</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                                        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;products&quot;</span><span class="p">]</span>
+                                    <span class="p">]</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">_db_bulk_writer</span><span class="p">(</span><span class="n">processed_items</span><span class="p">)</span>
+                                    <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;products&quot;</span><span class="p">]))</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                                        <span class="sa">f</span><span class="s2">&quot;Retrieval of api data resulted in an Exception: </span><span class="si">{</span><span class="n">data_list</span><span class="si">}</span><span class="s2">...&quot;</span>
+                                    <span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                                     <span class="sa">f</span><span class="s2">&quot;Retrieval of api data on url: </span><span class="si">{</span><span class="n">data_list</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> failed....&quot;</span>
@@ -800,12 +810,17 @@
                             <span class="n">entry</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Processing batch&quot;</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span>
                         <span class="p">):</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_list</span><span class="p">,</span> <span class="n">ApiDataRetrievalFailed</span><span class="p">):</span>
-                                <span class="n">processed_items</span> <span class="o">=</span> <span class="p">[</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-                                    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;vulnerabilities&quot;</span><span class="p">]</span>
-                                <span class="p">]</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">_db_bulk_writer</span><span class="p">(</span><span class="n">processed_items</span><span class="p">)</span>
-                                <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;vulnerabilities&quot;</span><span class="p">]))</span>
+                                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_list</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                                    <span class="n">processed_items</span> <span class="o">=</span> <span class="p">[</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                                        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;vulnerabilities&quot;</span><span class="p">]</span>
+                                    <span class="p">]</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">_db_bulk_writer</span><span class="p">(</span><span class="n">processed_items</span><span class="p">)</span>
+                                    <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;vulnerabilities&quot;</span><span class="p">]))</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                                        <span class="sa">f</span><span class="s2">&quot;Retrieval of api data resulted in an Exception: </span><span class="si">{</span><span class="n">data_list</span><span class="si">}</span><span class="s2">...&quot;</span>
+                                    <span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                                     <span class="sa">f</span><span class="s2">&quot;Retrieval of api data on url: </span><span class="si">{</span><span class="n">data_list</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> failed....&quot;</span>
@@ -859,12 +874,17 @@
                             <span class="n">entry</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Processing batch&quot;</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span>
                         <span class="p">):</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_list</span><span class="p">,</span> <span class="n">ApiDataRetrievalFailed</span><span class="p">):</span>
-                                <span class="n">processed_items</span> <span class="o">=</span> <span class="p">[</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-                                    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;vulnerabilities&quot;</span><span class="p">]</span>
-                                <span class="p">]</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">_db_bulk_writer</span><span class="p">(</span><span class="n">processed_items</span><span class="p">)</span>
-                                <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;vulnerabilities&quot;</span><span class="p">]))</span>
+                                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_list</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                                    <span class="n">processed_items</span> <span class="o">=</span> <span class="p">[</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                                        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;vulnerabilities&quot;</span><span class="p">]</span>
+                                    <span class="p">]</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">_db_bulk_writer</span><span class="p">(</span><span class="n">processed_items</span><span class="p">)</span>
+                                    <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_list</span><span class="p">[</span><span class="s2">&quot;vulnerabilities&quot;</span><span class="p">]))</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                                        <span class="sa">f</span><span class="s2">&quot;Retrieval of api data resulted in an Exception: </span><span class="si">{</span><span class="n">data_list</span><span class="si">}</span><span class="s2">...&quot;</span>
+                                    <span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                                     <span class="sa">f</span><span class="s2">&quot;Retrieval of api data on url: </span><span class="si">{</span><span class="n">data_list</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> failed....&quot;</span>
