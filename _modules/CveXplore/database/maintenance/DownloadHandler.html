@@ -443,7 +443,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">delete_one</span><span class="p">({</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="n">collection</span><span class="p">})</span>
 
     <span class="k">def</span> <span class="nf">getCPEVersionInformation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="n">query</span>
         <span class="k">return</span> <span class="n">sanitize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s2">&quot;cpe&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
