@@ -62,14 +62,27 @@ class CPEDownloads(NVDApiHandler):
 
     @staticmethod
     def padded_version(version: str):
-        ret_list = []
-        try:
-            for v in version.split("."):
-                ret_list.append(f"{int(v):05d}")
-        except ValueError:
+        if version == "-" or version == "":
             return version
+        else:
+            ret_list = []
+            for v in version.split("."):
+                try:
+                    ret_list.append(f"{int(v):05d}")
+                except ValueError:
+                    ret_list.append(v.rjust(5, "0"))
 
-        return ".".join(ret_list)
+            return ".".join(ret_list)
+
+    @staticmethod
+    def parse_cpe_version(cpename: str):
+        cpe_list = cpename.split(":")
+        version_stem = cpe_list[5]
+
+        if cpe_list[6] != "*" and cpe_list[6] != "-":
+            return f"{version_stem}{cpe_list[6]}"
+        else:
+            return version_stem
 
     def process_the_item(self, item: dict = None):
         if item is None:
@@ -87,13 +100,15 @@ class CPEDownloads(NVDApiHandler):
                 if t["lang"] == "en":
                     title = t["title"]
 
+        version = self.parse_cpe_version(cpename=item["cpeName"])
+
         cpe = {
             "title": title,
             "cpeName": item["cpeName"],
             "vendor": item["cpeName"].split(":")[3],
             "product": item["cpeName"].split(":")[4],
-            "version": item["cpeName"].split(":")[5],
-            "padded_version": self.padded_version(item["cpeName"].split(":")[5]),
+            "version": version,
+            "padded_version": self.padded_version(version),
             "stem": self.stem(item["cpeName"]),
             "cpeNameId": item["cpeNameId"],
             "lastModified": parse_datetime(item["lastModified"], ignoretz=True),
@@ -364,6 +379,8 @@ class CVEDownloads(NVDApiHandler):
                     "$lte": self.padded_version(cpeuri["versionEndIncluding"])
                 },
             }
+
+        query["deprecated"] = False
 
         return query
 
