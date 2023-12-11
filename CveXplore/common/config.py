@@ -62,6 +62,8 @@ class Configuration(object):
 
     CVE_START_YEAR = int(os.getenv("CVE_START_YEAR", 2002))
 
+    CPE_FILTER_DEPRECATED = getenv_bool("CPE_FILTER_DEPRECATED", "True")
+
     MONGODB_HOST = os.getenv("MONGODB_HOST", "127.0.0.1")
     MONGODB_PORT = int(os.getenv("MONGODB_PORT", 27017))
 

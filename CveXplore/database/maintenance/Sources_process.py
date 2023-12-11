@@ -88,6 +88,11 @@ class CPEDownloads(NVDApiHandler):
         if item is None:
             return None
 
+        # filter out deprecated CPE's if CPE_FILTER_DEPRECATED is set to True
+        if self.config.CPE_FILTER_DEPRECATED:
+            if item["deprecated"]:
+                return None
+
         item = item["cpe"]
 
         if "cpeName" not in item:
@@ -313,10 +318,11 @@ class CVEDownloads(NVDApiHandler):
 
     def get_cpe_info(self, cpeuri: str):
         query = {}
-        # version_info = ""
+
         if "versionStartExcluding" in cpeuri:
             if "versionEndExcluding" in cpeuri:
                 query = {
+                    "deprecated": False,
                     "stem": self.stem(cpeuri["criteria"]),
                     "padded_version": {
                         "$gt": self.padded_version(cpeuri["versionStartExcluding"]),
@@ -325,6 +331,7 @@ class CVEDownloads(NVDApiHandler):
                 }
             elif "versionEndIncluding" in cpeuri:
                 query = {
+                    "deprecated": False,
                     "stem": self.stem(cpeuri["criteria"]),
                     "padded_version": {
                         "$gt": self.padded_version(cpeuri["versionStartExcluding"]),
@@ -333,6 +340,7 @@ class CVEDownloads(NVDApiHandler):
                 }
             else:
                 query = {
+                    "deprecated": False,
                     "stem": self.stem(cpeuri["criteria"]),
                     "padded_version": {
                         "$gt": self.padded_version(cpeuri["versionStartExcluding"])
@@ -342,6 +350,7 @@ class CVEDownloads(NVDApiHandler):
         elif "versionStartIncluding" in cpeuri:
             if "versionEndExcluding" in cpeuri:
                 query = {
+                    "deprecated": False,
                     "stem": self.stem(cpeuri["criteria"]),
                     "padded_version": {
                         "$gte": self.padded_version(cpeuri["versionStartIncluding"]),
@@ -350,6 +359,7 @@ class CVEDownloads(NVDApiHandler):
                 }
             elif "versionEndIncluding" in cpeuri:
                 query = {
+                    "deprecated": False,
                     "stem": self.stem(cpeuri["criteria"]),
                     "padded_version": {
                         "$gte": self.padded_version(cpeuri["versionStartIncluding"]),
@@ -358,6 +368,7 @@ class CVEDownloads(NVDApiHandler):
                 }
             else:
                 query = {
+                    "deprecated": False,
                     "stem": self.stem(cpeuri["criteria"]),
                     "padded_version": {
                         "$gte": self.padded_version(cpeuri["versionStartIncluding"])
@@ -366,6 +377,7 @@ class CVEDownloads(NVDApiHandler):
 
         elif "versionEndExcluding" in cpeuri:
             query = {
+                "deprecated": False,
                 "stem": self.stem(cpeuri["criteria"]),
                 "padded_version": {
                     "$lt": self.padded_version(cpeuri["versionEndExcluding"])
@@ -374,13 +386,12 @@ class CVEDownloads(NVDApiHandler):
 
         elif "versionEndIncluding" in cpeuri:
             query = {
+                "deprecated": False,
                 "stem": self.stem(cpeuri["criteria"]),
                 "padded_version": {
                     "$lte": self.padded_version(cpeuri["versionEndIncluding"])
                 },
             }
-
-        query["deprecated"] = False
 
         return query
 
@@ -403,14 +414,17 @@ class CVEDownloads(NVDApiHandler):
 
     @staticmethod
     def padded_version(version: str):
-        ret_list = []
-        try:
-            for v in version.split("."):
-                ret_list.append(f"{int(v):05d}")
-        except ValueError:
+        if version == "-" or version == "":
             return version
+        else:
+            ret_list = []
+            for v in version.split("."):
+                try:
+                    ret_list.append(f"{int(v):05d}")
+                except ValueError:
+                    ret_list.append(v.rjust(5, "0"))
 
-        return ".".join(ret_list)
+            return ".".join(ret_list)
 
     def file_to_queue(self, *args):
         pass
