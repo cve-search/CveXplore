@@ -177,12 +177,12 @@
         <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
+        <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cpe&quot;</span><span class="p">]</span>
+
         <span class="c1"># filter out deprecated CPE&#39;s if CPE_FILTER_DEPRECATED is set to True</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">CPE_FILTER_DEPRECATED</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;deprecated&quot;</span><span class="p">]:</span>
                 <span class="k">return</span> <span class="kc">None</span>
-
-        <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cpe&quot;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="s2">&quot;cpeName&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
