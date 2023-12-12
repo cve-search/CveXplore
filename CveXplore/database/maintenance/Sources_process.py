@@ -91,9 +91,9 @@ class CPEDownloads(NVDApiHandler):
         item = item["cpe"]
 
         # filter out deprecated CPE's if CPE_FILTER_DEPRECATED is set to True
-        if self.config.CPE_FILTER_DEPRECATED:
-            if item["deprecated"]:
-                return None
+        # if self.config.CPE_FILTER_DEPRECATED:
+        #     if item["deprecated"]:
+        #         return None
 
         if "cpeName" not in item:
             return None
