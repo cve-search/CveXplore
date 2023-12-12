@@ -2,10 +2,10 @@
 File Handlers
 =============
 """
+import csv
 import shutil
 from abc import abstractmethod
 from typing import Tuple
-import csv
 
 from CveXplore.database.maintenance.DownloadHandler import DownloadHandler
 from CveXplore.database.maintenance.IJSONHandler import IJSONHandler
