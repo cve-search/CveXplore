@@ -165,7 +165,10 @@ class DownloadHandler(ABC):
             elif initialization_run and (
                 self.feed_type.lower() == "cves" or self.feed_type.lower() == "cpe"
             ):
-                self.database[self.feed_type.lower()].insert_many(batch, ordered=False)
+                # cves or cpe process item could yield None; so filter None from batch list
+                self.database[self.feed_type.lower()].insert_many(
+                    [x for x in batch if x is not None], ordered=False
+                )
             else:
                 self.database[self.feed_type.lower()].bulk_write(batch, ordered=False)
         except BulkWriteError as err:
