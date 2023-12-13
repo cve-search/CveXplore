@@ -80,7 +80,7 @@ class CPEDownloads(NVDApiHandler):
         version_stem = cpe_list[5]
 
         if cpe_list[6] != "*" and cpe_list[6] != "-":
-            return f"{version_stem}{cpe_list[6]}"
+            return f"{version_stem}.{cpe_list[6]}"
         else:
             return version_stem
 
@@ -91,9 +91,9 @@ class CPEDownloads(NVDApiHandler):
         item = item["cpe"]
 
         # filter out deprecated CPE's if CPE_FILTER_DEPRECATED is set to True
-        # if self.config.CPE_FILTER_DEPRECATED:
-        #     if item["deprecated"]:
-        #         return None
+        if self.config.CPE_FILTER_DEPRECATED:
+            if item["deprecated"]:
+                return None
 
         if "cpeName" not in item:
             return None
