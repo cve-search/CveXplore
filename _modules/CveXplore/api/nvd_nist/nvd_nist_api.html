@@ -410,17 +410,15 @@
 <span class="sd">    100ms delay before the 5th retry,</span>
 <span class="sd">    etc...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">max_retries</span> <span class="o">=</span> <span class="mi">5</span>
-    <span class="n">backoff_in_ms</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="n">info</span><span class="o">.</span><span class="n">fails</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
+    <span class="n">max_retries</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">backoff_in_s</span> <span class="o">=</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="n">info</span><span class="o">.</span><span class="n">fails</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">fails</span> <span class="o">!=</span> <span class="n">max_retries</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Current backoff: </span><span class="si">{</span><span class="n">backoff_in_ms</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Retrying </span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">fails</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">backoff_in_ms</span>
-
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Current backoff: </span><span class="si">{</span><span class="n">backoff_in_s</span><span class="si">}</span><span class="s2">; Retrying </span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">fails</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">backoff_in_s</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span></div>
 
