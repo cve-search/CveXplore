@@ -312,17 +312,15 @@ def retry_policy(info: RetryInfo) -> RetryPolicyStrategy:
     100ms delay before the 5th retry,
     etc...
     """
-    max_retries = 5
-    backoff_in_ms = 0.2 * 2**info.fails + random.uniform(0, 1) * 4
+    max_retries = 10
+    backoff_in_s = 0.6 * 2**info.fails + random.uniform(0, 1) * 4
     logger = logging.getLogger(__name__)
 
     if info.fails != max_retries:
-        logger.debug(f"Current backoff: {backoff_in_ms}")
-
-        logger.debug(f"Retrying {info.fails + 1}/{max_retries}")
-
-        return False, backoff_in_ms
-
+        logger.debug(
+            f"Current backoff: {backoff_in_s}; Retrying {info.fails + 1}/{max_retries}"
+        )
+        return False, backoff_in_s
     else:
         return True, 0
 
