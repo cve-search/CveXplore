@@ -1,4 +1,5 @@
 import os
+from itertools import chain
 
 from setuptools import setup, find_packages
 
@@ -17,8 +18,81 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(HERE, "README.rst")) as fid:
     README = fid.read().split("##INCLUDE_MARKER##")[1]
 
-with open(os.path.join(HERE, "requirements.txt")) as fid:
-    REQS = fid.read().splitlines()
+
+# -*- Extras -*-
+MODULES = {
+    "docs",
+    "kafka",
+    "mongodb",
+    "mysql",
+    "postgres",
+    "redis",
+    "sqlalchemy",
+    "sqllite",
+}
+
+
+# -*- Requirements -*-
+def _strip_comments(l):
+    return l.split("#", 1)[0].strip()
+
+
+def _pip_requirement(req):
+    if req.startswith("-r "):
+        _, path = req.split()
+        return reqs(*path.split("/"))
+    return [req]
+
+
+def _reqs(*f):
+    if len(f) == 2:
+        if os.getcwd().endswith("modules") and f[0] == "modules":
+            f = [f[1]]
+        if not os.getcwd().endswith("modules") and f[0] == ".":
+            f = ("modules", f[1])
+    return [
+        _pip_requirement(r)
+        for r in (
+            _strip_comments(l)
+            for l in open(os.path.join(os.getcwd(), "requirements", *f)).readlines()
+        )
+        if r
+    ]
+
+
+def reqs(*f):
+    """Parse requirement file.
+
+    Example:
+        reqs('default.txt')          # requirements/default.txt
+        reqs('modules', 'redis.txt')  # requirements/modules/redis.txt
+        reqs('.', 'loggers.txt')  # requirements/modules/loggers.txt -> this is a reference in a requirements file
+        like -r ./loggers.txt
+    Returns:
+        List[str]: list of requirements specified in the file.
+    """
+    return [req for subreq in _reqs(*f) for req in subreq]
+
+
+def extras(*p):
+    """Parse requirement in the requirements/modules/ directory."""
+    return reqs("modules", *p)
+
+
+def install_requires():
+    """Get list of requirements required for installation."""
+    return reqs("default.txt")
+
+
+def extras_require():
+    """Get map of all extra requirements."""
+    module_requirements = {x: extras(x + ".txt") for x in MODULES}
+
+    # add an 'all' value to install all requirements for all modules
+    module_requirements["all"] = list(set(chain(*module_requirements.values())))
+
+    return module_requirements
+
 
 setup(
     name="CveXplore",
@@ -58,5 +132,6 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.10",
-    install_requires=REQS,
+    install_requires=install_requires(),
+    extras_require=extras_require(),
 )

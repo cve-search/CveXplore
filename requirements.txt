@@ -1,14 +1,1 @@
-pymongo~=4.5.0
-requests==2.31.0
-urllib3~=2.0.6
-tqdm==4.66.1
-python-dateutil==2.8.2
-click==8.1.7
-click-completion==0.5.2
-ijson~=3.2.3
-ansicolors==1.1.8
-pandas~=2.1.2
-dicttoxml==1.7.16
-python-dotenv~=1.0.0
-aiohttp~=3.8.6
-aioretry~=5.0.2
+-r requirements/default.txt
