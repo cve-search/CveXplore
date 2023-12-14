@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Core &mdash; CveXplore  documentation</title>
+  <title>CORE &mdash; CveXplore  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/CveExplore_icon.png"/>
@@ -49,21 +49,30 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Package documentation</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Core</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#main">Main</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#CveXplore.main.CveXplore"><code class="docutils literal notranslate"><span class="pre">CveXplore</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.main.CveXplore.__init__"><code class="docutils literal notranslate"><span class="pre">CveXplore.__init__()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.main.CveXplore.__repr__"><code class="docutils literal notranslate"><span class="pre">CveXplore.__repr__()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.main.CveXplore.capec_by_cwe_id"><code class="docutils literal notranslate"><span class="pre">CveXplore.capec_by_cwe_id()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.main.CveXplore.cve_by_id"><code class="docutils literal notranslate"><span class="pre">CveXplore.cve_by_id()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.main.CveXplore.cves_by_id"><code class="docutils literal notranslate"><span class="pre">CveXplore.cves_by_id()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.main.CveXplore.cves_for_cpe"><code class="docutils literal notranslate"><span class="pre">CveXplore.cves_for_cpe()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.main.CveXplore.get_db_content_stats"><code class="docutils literal notranslate"><span class="pre">CveXplore.get_db_content_stats()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.main.CveXplore.get_multi_store_entries"><code class="docutils literal notranslate"><span class="pre">CveXplore.get_multi_store_entries()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.main.CveXplore.get_single_store_entries"><code class="docutils literal notranslate"><span class="pre">CveXplore.get_single_store_entries()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.main.CveXplore.get_single_store_entry"><code class="docutils literal notranslate"><span class="pre">CveXplore.get_single_store_entry()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.main.CveXplore.last_cves"><code class="docutils literal notranslate"><span class="pre">CveXplore.last_cves()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.main.CveXplore.version"><code class="docutils literal notranslate"><span class="pre">CveXplore.version</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CORE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-CveXplore.core.nvd_nist.nvd_nist_api">NIST NVD API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi"><code class="docutils literal notranslate"><span class="pre">NvdNistApi</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__init__"><code class="docutils literal notranslate"><span class="pre">NvdNistApi.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__repr__"><code class="docutils literal notranslate"><span class="pre">NvdNistApi.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.get_session"><code class="docutils literal notranslate"><span class="pre">NvdNistApi.get_session()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.core.nvd_nist.nvd_nist_api.retry_policy"><code class="docutils literal notranslate"><span class="pre">retry_policy()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-CveXplore.core.api_base_class">API Base class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass"><code class="docutils literal notranslate"><span class="pre">ApiBaseClass</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass.__init__"><code class="docutils literal notranslate"><span class="pre">ApiBaseClass.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass.__repr__"><code class="docutils literal notranslate"><span class="pre">ApiBaseClass.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass.call"><code class="docutils literal notranslate"><span class="pre">ApiBaseClass.call()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass.clear_headers"><code class="docutils literal notranslate"><span class="pre">ApiBaseClass.clear_headers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass.del_header_field"><code class="docutils literal notranslate"><span class="pre">ApiBaseClass.del_header_field()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass.get_session"><code class="docutils literal notranslate"><span class="pre">ApiBaseClass.get_session()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass.headers"><code class="docutils literal notranslate"><span class="pre">ApiBaseClass.headers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass.reset_headers"><code class="docutils literal notranslate"><span class="pre">ApiBaseClass.reset_headers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass.set_header_field"><code class="docutils literal notranslate"><span class="pre">ApiBaseClass.set_header_field()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -92,7 +101,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Core</li>
+      <li class="breadcrumb-item active">CORE</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/package/core.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -103,200 +112,144 @@
            <div itemprop="articleBody">
              
   <section id="core">
-<span id="id1"></span><h1>Core<a class="headerlink" href="#core" title="Link to this heading"></a></h1>
-<section id="main">
-<span id="module-CveXplore.main"></span><h2>Main<a class="headerlink" href="#main" title="Link to this heading"></a></h2>
-</section>
+<h1>CORE<a class="headerlink" href="#core" title="Link to this heading"></a></h1>
+<section id="module-CveXplore.core.nvd_nist.nvd_nist_api">
+<span id="nist-nvd-api"></span><h2>NIST NVD API<a class="headerlink" href="#module-CveXplore.core.nvd_nist.nvd_nist_api" title="Link to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="CveXplore.main.CveXplore">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.main.</span></span><span class="sig-name descname"><span class="pre">CveXplore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mongodb_connection_details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_connection_details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.main.CveXplore" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.core.nvd_nist.nvd_nist_api.</span></span><span class="sig-name descname"><span class="pre">NvdNistApi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseurl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://services.nvd.nist.gov'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2.0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proxies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CveXplore'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/nvd_nist/nvd_nist_api.html#NvdNistApi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass" title="CveXplore.core.api_base_class.ApiBaseClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApiBaseClass</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseurl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://services.nvd.nist.gov'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2.0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proxies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CveXplore'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/nvd_nist/nvd_nist_api.html#NvdNistApi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__init__" title="Link to this definition"></a></dt>
+<dd><p>The Generic api caller handles all communication towards an api resource.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/nvd_nist/nvd_nist_api.html#NvdNistApi.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__repr__" title="Link to this definition"></a></dt>
+<dd><p>return a string representation of the obj</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.get_session">
+<span class="sig-name descname"><span class="pre">get_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">retries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backoff_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backoff_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_forcelist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(403,</span> <span class="pre">429,</span> <span class="pre">500,</span> <span class="pre">502,</span> <span class="pre">503,</span> <span class="pre">504)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/nvd_nist/nvd_nist_api.html#NvdNistApi.get_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.get_session" title="Link to this definition"></a></dt>
+<dd><p>Method for returning a session object per every requesting thread</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="CveXplore.core.nvd_nist.nvd_nist_api.retry_policy">
+<span class="sig-prename descclassname"><span class="pre">CveXplore.core.nvd_nist.nvd_nist_api.</span></span><span class="sig-name descname"><span class="pre">retry_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/nvd_nist/nvd_nist_api.html#retry_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.nvd_nist.nvd_nist_api.retry_policy" title="Link to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>It will always retry until succeeded</p></li>
+<li><p>If fails for the first time, it will retry immediately,</p></li>
+<li><p>If it fails again,</p></li>
+</ul>
+<p>aioretry will perform a 100ms delay before the second retry,
+200ms delay before the 3rd retry,
+the 4th retry immediately,
+100ms delay before the 5th retry,
+etc…
+:rtype: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]</span></p>
+</dd></dl>
+
+</section>
+<section id="module-CveXplore.core.api_base_class">
+<span id="api-base-class"></span><h2>API Base class<a class="headerlink" href="#module-CveXplore.core.api_base_class" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.core.api_base_class.ApiBaseClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.core.api_base_class.</span></span><span class="sig-name descname"><span class="pre">ApiBaseClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseurl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proxies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ApiBaseClass'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/api_base_class.html#ApiBaseClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.api_base_class.ApiBaseClass" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Main class for CveXplore package</p>
+<p>The GenericApi class serves as a base class for all API’s used within CveXplore</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.main.CveXplore.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mongodb_connection_details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_connection_details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.main.CveXplore.__init__" title="Link to this definition"></a></dt>
-<dd><p>Create a new instance of CveXplore</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>mongodb_connection_details</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</span>) – Provide the connection details needed to establish a connection to a mongodb
-instance. The connection details should be in line with pymongo’s
-documentation.</p></li>
-<li><p><strong>api_connection_details</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</span>) – Provide the connection details needed to establish a connection to a cve-search
-API provider. The cve-search API provider should allow access to the ‘query’ POST
-endpoint; all other API endpoints are not needed for CveXplore to function. For
-the connection details supported please check the <a class="reference internal" href="api.html#api"><span class="std std-ref">API connection</span></a>
-documentation.</p></li>
-</ul>
-</dd>
-</dl>
+<dt class="sig sig-object py" id="CveXplore.core.api_base_class.ApiBaseClass.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseurl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proxies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ApiBaseClass'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/api_base_class.html#ApiBaseClass.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.api_base_class.ApiBaseClass.__init__" title="Link to this definition"></a></dt>
+<dd><p>The Generic api caller handles all communication towards an api resource.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.main.CveXplore.__repr__">
-<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.main.CveXplore.__repr__" title="Link to this definition"></a></dt>
-<dd><p>String representation of object</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.main.CveXplore.capec_by_cwe_id">
-<span class="sig-name descname"><span class="pre">capec_by_cwe_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwe_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.capec_by_cwe_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.main.CveXplore.capec_by_cwe_id" title="Link to this definition"></a></dt>
-<dd><p>Method to retrieve capecs related to a specific CWE ID</p>
+<dt class="sig sig-object py" id="CveXplore.core.api_base_class.ApiBaseClass.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/api_base_class.html#ApiBaseClass.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.api_base_class.ApiBaseClass.__repr__" title="Link to this definition"></a></dt>
+<dd><p>return a string representation of the obj</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="objects.html#CveXplore.objects.cvexplore_object.CveXploreObject" title="CveXplore.objects.cvexplore_object.CveXploreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXploreObject</span></code></a>]]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.main.CveXplore.cve_by_id">
-<span class="sig-name descname"><span class="pre">cve_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cve_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.cve_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.main.CveXplore.cve_by_id" title="Link to this definition"></a></dt>
-<dd><p>Method to retrieve a single CVE from the database by its CVE ID number.
-The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.</p>
+<dt class="sig sig-object py" id="CveXplore.core.api_base_class.ApiBaseClass.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_response_object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/api_base_class.html#ApiBaseClass.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.api_base_class.ApiBaseClass.call" title="Link to this definition"></a></dt>
+<dd><p>Method for requesting free format api resources</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<a class="reference internal" href="objects.html#CveXplore.objects.cvexplore_object.CveXploreObject" title="CveXplore.objects.cvexplore_object.CveXploreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXploreObject</span></code></a>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.main.CveXplore.cves_by_id">
-<span class="sig-name descname"><span class="pre">cves_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cve_ids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.cves_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.main.CveXplore.cves_by_id" title="Link to this definition"></a></dt>
-<dd><p>Method to retrieve a multiple CVE’s from the database by its CVE ID number.
-The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.</p>
+<dt class="sig sig-object py" id="CveXplore.core.api_base_class.ApiBaseClass.clear_headers">
+<span class="sig-name descname"><span class="pre">clear_headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/api_base_class.html#ApiBaseClass.clear_headers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.api_base_class.ApiBaseClass.clear_headers" title="Link to this definition"></a></dt>
+<dd><p>Method to clear the headers and the myheaders to None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.core.api_base_class.ApiBaseClass.del_header_field">
+<span class="sig-name descname"><span class="pre">del_header_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/api_base_class.html#ApiBaseClass.del_header_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.api_base_class.ApiBaseClass.del_header_field" title="Link to this definition"></a></dt>
+<dd><p>Method to delete a header field</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>[<a class="reference internal" href="objects.html#CveXplore.objects.cvexplore_object.CveXploreObject" title="CveXplore.objects.cvexplore_object.CveXploreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXploreObject</span></code></a>], <code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.main.CveXplore.cves_for_cpe">
-<span class="sig-name descname"><span class="pre">cves_for_cpe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpe_string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.cves_for_cpe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.main.CveXplore.cves_for_cpe" title="Link to this definition"></a></dt>
-<dd><p>Method for retrieving Cves that match a single CPE string. By default, the search will be made matching
-the configuration fields of the cves documents.
-CPE string could be formatted like: <code class="docutils literal notranslate"><span class="pre">cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*</span></code></p>
+<dt class="sig sig-object py" id="CveXplore.core.api_base_class.ApiBaseClass.get_session">
+<span class="sig-name descname"><span class="pre">get_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">retries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backoff_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_forcelist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(429,</span> <span class="pre">500,</span> <span class="pre">502,</span> <span class="pre">503,</span> <span class="pre">504)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/api_base_class.html#ApiBaseClass.get_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.api_base_class.ApiBaseClass.get_session" title="Link to this definition"></a></dt>
+<dd><p>Method for returning a session object per every requesting thread</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="objects.html#CveXplore.objects.cvexplore_object.CveXploreObject" title="CveXplore.objects.cvexplore_object.CveXploreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXploreObject</span></code></a>]]</span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.main.CveXplore.get_db_content_stats">
-<span class="sig-name descname"><span class="pre">get_db_content_stats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.get_db_content_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.main.CveXplore.get_db_content_stats" title="Link to this definition"></a></dt>
-<dd><p>Property returning the stats from the database. Stats consist of the time last modified and the document count
-per cvedb store in the database.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.main.CveXplore.get_multi_store_entries">
-<span class="sig-name descname"><span class="pre">get_multi_store_entries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">queries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.get_multi_store_entries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.main.CveXplore.get_multi_store_entries" title="Link to this definition"></a></dt>
-<dd><p>Method to perform <em>multiple</em> queries on <em>a single</em> or <em>multiple</em> collections in the data source and return the
-results.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="objects.html#CveXplore.objects.cvexplore_object.CveXploreObject" title="CveXplore.objects.cvexplore_object.CveXploreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXploreObject</span></code></a>]]</span></p>
-</dd>
-</dl>
-<dl>
-<dt>A list of tuples which contains the entry_type and the dict_filter.</dt><dd><dl class="simple">
-<dt>Choices for entry_type:</dt><dd><ul class="simple">
-<li><p>capec;</p></li>
-<li><p>cpe;</p></li>
-<li><p>cwe;</p></li>
-<li><p>via4;</p></li>
-<li><p>cves;</p></li>
-</ul>
-</dd>
-</dl>
-<p>dict_filter is a dictionary representing a filter according to pymongo documentation.</p>
-<dl class="simple">
-<dt>example:</dt><dd><p>get_multi_store_entries([(“cwe”, {“id”: “78”}), (“cves”, {“id”: “CVE-2009-0018”})])</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.main.CveXplore.get_single_store_entries">
-<span class="sig-name descname"><span class="pre">get_single_store_entries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.get_single_store_entries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.main.CveXplore.get_single_store_entries" title="Link to this definition"></a></dt>
-<dd><p>Method to perform a query on a <em>single</em> collection in the data source and return all the results.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="objects.html#CveXplore.objects.cvexplore_object.CveXploreObject" title="CveXplore.objects.cvexplore_object.CveXploreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXploreObject</span></code></a>]]</span></p>
-</dd>
-</dl>
-<dl>
-<dt>Tuple which contains the entry_type and the dict_filter in a tuple.</dt><dd><dl class="simple">
-<dt>Choices for entry_type:</dt><dd><ul class="simple">
-<li><p>capec;</p></li>
-<li><p>cpe;</p></li>
-<li><p>cwe;</p></li>
-<li><p>via4;</p></li>
-<li><p>cves;</p></li>
-</ul>
-</dd>
-</dl>
-<p>dict_filter is a dictionary representing a filter according to pymongo documentation.</p>
-<dl class="simple">
-<dt>example:</dt><dd><p>get_single_store_entries((“cwe”, {“id”: “78”}))</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.main.CveXplore.get_single_store_entry">
-<span class="sig-name descname"><span class="pre">get_single_store_entry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entry_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dict_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.get_single_store_entry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.main.CveXplore.get_single_store_entry" title="Link to this definition"></a></dt>
-<dd><p>Method to perform a query on a <em>single</em> collection in the data source and return a <em>single</em> result.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<a class="reference internal" href="objects.html#CveXplore.objects.cvexplore_object.CveXploreObject" title="CveXplore.objects.cvexplore_object.CveXploreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXploreObject</span></code></a>]</span></p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Which specific store are you querying? Choices are:</dt><dd><ul class="simple">
-<li><p>capec;</p></li>
-<li><p>cpe;</p></li>
-<li><p>cwe;</p></li>
-<li><p>via4;</p></li>
-<li><p>cves;</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.main.CveXplore.last_cves">
-<span class="sig-name descname"><span class="pre">last_cves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/main.html#CveXplore.last_cves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.main.CveXplore.last_cves" title="Link to this definition"></a></dt>
-<dd><p>Method to retrieve the last entered / changed cves. By default, limited to 10.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="objects.html#CveXplore.objects.cvexplore_object.CveXploreObject" title="CveXplore.objects.cvexplore_object.CveXploreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXploreObject</span></code></a>]]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="CveXplore.main.CveXplore.version">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version</span></span><a class="headerlink" href="#CveXplore.main.CveXplore.version" title="Link to this definition"></a></dt>
-<dd><p>Property returning current version</p>
+<dt class="sig sig-object py" id="CveXplore.core.api_base_class.ApiBaseClass.headers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">headers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#CveXplore.core.api_base_class.ApiBaseClass.headers" title="Link to this definition"></a></dt>
+<dd><p>Property to return the current headers</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.core.api_base_class.ApiBaseClass.reset_headers">
+<span class="sig-name descname"><span class="pre">reset_headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/api_base_class.html#ApiBaseClass.reset_headers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.api_base_class.ApiBaseClass.reset_headers" title="Link to this definition"></a></dt>
+<dd><p>Method to reset the headers to the default values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.core.api_base_class.ApiBaseClass.set_header_field">
+<span class="sig-name descname"><span class="pre">set_header_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/api_base_class.html#ApiBaseClass.set_header_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.api_base_class.ApiBaseClass.set_header_field" title="Link to this definition"></a></dt>
+<dd><p>Method to add a header and set it’s value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
+</section>
 </section>
 
 
