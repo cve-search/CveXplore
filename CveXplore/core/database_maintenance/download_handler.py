@@ -27,10 +27,10 @@ from tqdm.contrib.concurrent import thread_map
 from urllib3 import Retry
 
 from CveXplore.common.config import Configuration
+from CveXplore.core.general.utils import sanitize
+from CveXplore.core.worker_queue.worker_q import WorkerQueue
 from CveXplore.database.connection.mongo_db import MongoDBConnection
-from .LogHandler import UpdateHandler
-from .Toolkit import sanitize
-from .worker_q import WorkerQueue
+from .log_handler import UpdateHandler
 
 thread_local = threading.local()
 logging.setLoggerClass(UpdateHandler)

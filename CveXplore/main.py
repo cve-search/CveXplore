@@ -15,8 +15,8 @@ from CveXplore.api.connection.api_db import ApiDatabaseSource
 from CveXplore.common.config import Configuration
 from CveXplore.common.cpe_converters import create_cpe_regex_string
 from CveXplore.common.db_mapping import database_mapping
+from CveXplore.core.database_maintenance.main_updater import MainUpdater
 from CveXplore.database.connection.mongo_db import MongoDBConnection
-from CveXplore.database.maintenance.main_updater import MainUpdater
 from CveXplore.errors import DatabaseIllegalCollection
 from CveXplore.errors.validation import CveNumberValidationError
 from CveXplore.objects.cvexplore_object import CveXploreObject

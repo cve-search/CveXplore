@@ -16,9 +16,9 @@ from aioretry import retry, RetryPolicyStrategy, RetryInfo
 from requests import Response
 from requests.adapters import HTTPAdapter, Retry
 
-from CveXplore.api.api_base_class import ApiBaseClass
 from CveXplore.common.config import Configuration
-from CveXplore.database.maintenance.LogHandler import UpdateHandler
+from CveXplore.core.api_base_class import ApiBaseClass
+from CveXplore.core.database_maintenance.log_handler import UpdateHandler
 from CveXplore.errors.apis import (
     ApiErrorException,
     ApiDataError,

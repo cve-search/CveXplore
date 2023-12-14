@@ -1,8 +1,8 @@
 from abc import abstractmethod
 
-from CveXplore.api.nvd_nist.nvd_nist_api import NvdNistApi
-from CveXplore.database.maintenance.DownloadHandler import DownloadHandler
-from CveXplore.database.maintenance.db_action import DatabaseAction
+from CveXplore.core.database_actions.db_action import DatabaseAction
+from CveXplore.core.database_maintenance.download_handler import DownloadHandler
+from CveXplore.core.nvd_nist.nvd_nist_api import NvdNistApi
 
 
 class NVDApiHandler(DownloadHandler):

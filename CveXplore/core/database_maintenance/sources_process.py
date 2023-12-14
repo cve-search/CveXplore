@@ -19,16 +19,19 @@ from pymongo import TEXT, ASCENDING
 from tqdm import tqdm
 
 from CveXplore.common.config import Configuration
-from CveXplore.database.connection.mongo_db import MongoDBConnection
-from CveXplore.database.maintenance.Toolkit import sanitize
-from CveXplore.database.maintenance.api_handlers import NVDApiHandler
-from CveXplore.database.maintenance.content_handlers import CapecHandler, CWEHandler
-from CveXplore.database.maintenance.db_action import DatabaseAction
-from CveXplore.database.maintenance.file_handlers import (
+from CveXplore.core.database_actions.db_action import DatabaseAction
+from CveXplore.core.database_maintenance.api_handlers import NVDApiHandler
+from CveXplore.core.database_maintenance.content_handlers import (
+    CapecHandler,
+    CWEHandler,
+)
+from CveXplore.core.database_maintenance.file_handlers import (
     XMLFileHandler,
     JSONFileHandler,
     CSVFileHandler,
 )
+from CveXplore.core.general.utils import sanitize
+from CveXplore.database.connection.mongo_db import MongoDBConnection
 from CveXplore.errors.apis import ApiDataRetrievalFailed, ApiMaxRetryError
 
 date = datetime.datetime.now()

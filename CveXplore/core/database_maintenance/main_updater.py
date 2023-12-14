@@ -6,9 +6,8 @@ import logging
 import time
 from datetime import timedelta
 
-from CveXplore.database.maintenance.DatabaseSchemaChecker import SchemaChecker
-from CveXplore.database.maintenance.LogHandler import UpdateHandler
-from CveXplore.database.maintenance.Sources_process import (
+from CveXplore.core.database_maintenance.log_handler import UpdateHandler
+from CveXplore.core.database_maintenance.sources_process import (
     CPEDownloads,
     CVEDownloads,
     CWEDownloads,
@@ -17,6 +16,7 @@ from CveXplore.database.maintenance.Sources_process import (
     EPSSDownloads,
     DatabaseIndexer,
 )
+from CveXplore.core.database_schema.db_schema_checker import SchemaChecker
 from CveXplore.errors import UpdateSourceNotFound
 
 logging.setLoggerClass(UpdateHandler)
@@ -24,7 +24,7 @@ logging.setLoggerClass(UpdateHandler)
 
 class MainUpdater(object):
     """
-    The MainUpdater class is the main class for performing database maintenance tasks
+    The MainUpdater class is the main class for performing database database_maintenance tasks
     """
 
     def __init__(self, datasource):

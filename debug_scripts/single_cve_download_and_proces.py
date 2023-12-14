@@ -1,9 +1,10 @@
 import json
 import os
 
-from CveXplore.api.nvd_nist.nvd_nist_api import NvdNistApi
+from CveXplore.core.maintenance.Sources_process import CVEDownloads
+
 from CveXplore.common.config import Configuration
-from CveXplore.database.maintenance.Sources_process import CVEDownloads
+from CveXplore.core.nvd_nist.nvd_nist_api import NvdNistApi
 
 config = Configuration()
 

@@ -2,7 +2,7 @@ import logging
 
 import ijson
 
-from CveXplore.database.maintenance.LogHandler import UpdateHandler
+from CveXplore.core.database_maintenance.log_handler import UpdateHandler
 
 logging.setLoggerClass(UpdateHandler)
 

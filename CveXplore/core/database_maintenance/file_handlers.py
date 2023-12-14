@@ -7,9 +7,9 @@ import shutil
 from abc import abstractmethod
 from typing import Tuple
 
-from CveXplore.database.maintenance.DownloadHandler import DownloadHandler
-from CveXplore.database.maintenance.IJSONHandler import IJSONHandler
-from CveXplore.database.maintenance.db_action import DatabaseAction
+from CveXplore.core.database_actions.db_action import DatabaseAction
+from CveXplore.core.database_maintenance.download_handler import DownloadHandler
+from CveXplore.core.database_maintenance.ijson_handler import IJSONHandler
 
 
 class JSONFileHandler(DownloadHandler):

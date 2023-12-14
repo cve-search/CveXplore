@@ -4,7 +4,7 @@ Cve Search API
 """
 import pymongo
 
-from CveXplore.api.api_base_class import ApiBaseClass
+from CveXplore.core.api_base_class import ApiBaseClass
 
 
 class CveSearchApi(ApiBaseClass):
