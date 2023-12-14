@@ -39,11 +39,32 @@ please check `cve-search <https://github.com/cve-search/cve-search>`_ or
 
 Installation
 ------------
-Package is hosted on pypi, so just run:
+Package is hosted on pypi, so to install the minimal core just run:
 
 .. code-block:: bash
 
-   pip install CveXplore
+   pip install cvexplore
+
+This command will install the core logic of CveXplore and, by default, installs the mongodb module also.
+
+CveXplore is setup in a modular way and therefor has multiple modules which can be installed separately by specifying
+them as an extra requirement. To install the mysql module only, specify:
+
+.. code-block:: bash
+
+   pip install cvexplore[mysql]
+
+Or for multiple modules:
+
+.. code-block:: bash
+
+   pip install cvexplore[mysql, redis]
+
+Or simple install all modules:
+
+.. code-block:: bash
+
+   pip install cvexplore[all]
 
 Documentation
 -------------

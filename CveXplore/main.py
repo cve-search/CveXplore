@@ -356,6 +356,9 @@ class CveXplore(object):
                 for each in results:
                     each.pop("_id")
                     db = each["db"]
+                    if db == "epss":
+                        continue
+
                     each.pop("db")
 
                     if "sources" in each:
