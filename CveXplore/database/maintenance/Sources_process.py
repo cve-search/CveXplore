@@ -119,6 +119,7 @@ class CPEDownloads(NVDApiHandler):
             "lastModified": parse_datetime(item["lastModified"], ignoretz=True),
             "created": parse_datetime(item["created"], ignoretz=True),
             "deprecated": item["deprecated"],
+            "deprecatedBy": item["deprecatedBy"] if item["deprecated"] else "",
         }
 
         sha1_hash = hashlib.sha1(
