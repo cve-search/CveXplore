@@ -6,6 +6,7 @@ import logging
 import time
 from datetime import timedelta
 
+from CveXplore.core.database_indexer.db_indexer import DatabaseIndexer
 from CveXplore.core.database_maintenance.log_handler import UpdateHandler
 from CveXplore.core.database_maintenance.sources_process import (
     CPEDownloads,
@@ -14,7 +15,6 @@ from CveXplore.core.database_maintenance.sources_process import (
     CAPECDownloads,
     VIADownloads,
     EPSSDownloads,
-    DatabaseIndexer,
 )
 from CveXplore.core.database_schema.db_schema_checker import SchemaChecker
 from CveXplore.errors import UpdateSourceNotFound
