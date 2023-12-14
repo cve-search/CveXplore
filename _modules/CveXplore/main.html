@@ -471,6 +471,9 @@
                 <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
                     <span class="n">each</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">)</span>
                     <span class="n">db</span> <span class="o">=</span> <span class="n">each</span><span class="p">[</span><span class="s2">&quot;db&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">db</span> <span class="o">==</span> <span class="s2">&quot;epss&quot;</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
                     <span class="n">each</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;db&quot;</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="s2">&quot;sources&quot;</span> <span class="ow">in</span> <span class="n">each</span><span class="p">:</span>

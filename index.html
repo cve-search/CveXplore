@@ -110,8 +110,22 @@ please check <a class="reference external" href="https://github.com/cve-search/c
 </section>
 <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
-<p>Package is hosted on pypi, so just run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>CveXplore
+<p>Package is hosted on pypi, so to install the minimal core just run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>cvexplore
+</pre></div>
+</div>
+<p>This command will install the core logic of CveXplore and, by default, installs the mongodb module also.</p>
+<p>CveXplore is setup in a modular way and therefor has multiple modules which can be installed separately by specifying
+them as an extra requirement. To install the mysql module only, specify:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>cvexplore<span class="o">[</span>mysql<span class="o">]</span>
+</pre></div>
+</div>
+<p>Or for multiple modules:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>cvexplore<span class="o">[</span>mysql,<span class="w"> </span>redis<span class="o">]</span>
+</pre></div>
+</div>
+<p>Or simple install all modules:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>cvexplore<span class="o">[</span>all<span class="o">]</span>
 </pre></div>
 </div>
 </section>
