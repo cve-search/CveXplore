@@ -15,7 +15,6 @@ from xml.sax import make_parser
 from dateutil.parser import parse as parse_datetime
 from tqdm import tqdm
 
-from CveXplore.common.config import Configuration
 from CveXplore.core.database_actions.db_action import DatabaseAction
 from CveXplore.core.database_indexer.db_indexer import DatabaseIndexer
 from CveXplore.core.database_maintenance.api_handlers import NVDApiHandler
@@ -35,8 +34,6 @@ year = date.year + 1
 
 # default config
 defaultvalue = {"cwe": "Unknown"}
-
-cveStartYear = Configuration.getCVEStartYear()
 
 
 class CPEDownloads(NVDApiHandler):
@@ -307,14 +304,6 @@ class CVEDownloads(NVDApiHandler):
         super().__init__(self.feed_type)
 
         self.logger = logging.getLogger(__name__)
-
-    @staticmethod
-    def get_cve_year_range():
-        """
-        Method to fetch the start year for the cve's population/initialization
-        """
-        for a_year in range(cveStartYear, year):
-            yield a_year
 
     def get_cpe_info(self, cpeuri: str):
         query = {}
@@ -847,7 +836,7 @@ class CVEDownloads(NVDApiHandler):
         self.logger.info("CVE database population started")
 
         self.logger.info(
-            f"Starting CVE database population starting from year: {cveStartYear}"
+            f"Starting CVE database population starting from year: {self.config.CVE_START_YEAR}"
         )
 
         self.is_update = False
@@ -877,7 +866,7 @@ class VIADownloads(JSONFileHandler):
         self.prefix = "cves"
         super().__init__(self.feed_type, self.prefix)
 
-        self.feed_url = Configuration.getFeedURL(self.feed_type.lower())
+        self.feed_url = self.config.SOURCES[self.feed_type.lower()]
 
         self.logger = logging.getLogger(__name__)
 
@@ -957,7 +946,7 @@ class CAPECDownloads(XMLFileHandler):
         self.feed_type = "CAPEC"
         super().__init__(self.feed_type)
 
-        self.feed_url = Configuration.getFeedURL(self.feed_type.lower())
+        self.feed_url = self.config.SOURCES[self.feed_type.lower()]
 
         self.logger = logging.getLogger(__name__)
 
@@ -1016,7 +1005,7 @@ class CWEDownloads(XMLFileHandler):
         self.feed_type = "CWE"
         super().__init__(self.feed_type)
 
-        self.feed_url = Configuration.getFeedURL(self.feed_type.lower())
+        self.feed_url = self.config.SOURCES[self.feed_type.lower()]
 
         self.logger = logging.getLogger(__name__)
 
@@ -1079,7 +1068,7 @@ class EPSSDownloads(CSVFileHandler):
         self.delimiter = ","
         super().__init__(self.feed_type, self.delimiter)
 
-        self.feed_url = Configuration.getFeedURL(self.feed_type.lower())
+        self.feed_url = self.config.SOURCES[self.feed_type.lower()]
         self.logger = logging.getLogger(__name__)
         self.is_update = True
 

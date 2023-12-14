@@ -3,10 +3,8 @@ Configuration
 =============
 """
 import ast
-import datetime
 import json
 import os
-import re
 import shutil
 from json import JSONDecodeError
 
@@ -34,7 +32,31 @@ if not os.path.exists(os.path.join(user_wd, ".sources.ini")):
 
 def getenv_bool(name: str, default: str = "False"):
     raw = os.getenv(name, default).title()
-    return ast.literal_eval(raw)
+    try:
+        the_bool = ast.literal_eval(raw)
+
+        if not isinstance(the_bool, bool):
+            raise ValueError
+    except ValueError:
+        raise
+
+    return the_bool
+
+
+def getenv_list(name: str, default: list = None):
+    if default is None:
+        default = []
+
+    raw = os.getenv(name, default)
+
+    if not isinstance(raw, list):
+        try:
+            the_list = json.loads(raw.replace("\n", ""))
+            return the_list
+        except JSONDecodeError:
+            raise
+
+    return default
 
 
 def getenv_dict(name: str, default: dict = None):
@@ -60,7 +82,7 @@ class Configuration(object):
 
     USER_HOME_DIR = user_wd
 
-    CVE_START_YEAR = int(os.getenv("CVE_START_YEAR", 2002))
+    CVE_START_YEAR = int(os.getenv("CVE_START_YEAR", 2000))
 
     CPE_FILTER_DEPRECATED = getenv_bool("CPE_FILTER_DEPRECATED", "True")
 
@@ -91,46 +113,11 @@ class Configuration(object):
     if not os.path.exists(LOGGING_FILE_PATH):
         os.mkdir(LOGGING_FILE_PATH)
 
-    LOGGING_MAX_FILE_SIZE = os.getenv("LOGGING_MAX_FILE_SIZE", "100MB")
+    LOGGING_MAX_FILE_SIZE = (
+        int(os.getenv("LOGGING_MAX_FILE_SIZE", 100)) * 1024 * 1024
+    )  # in MB
     LOGGING_BACKLOG = int(os.getenv("LOGGING_BACKLOG", 5))
     LOGGING_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "./cvexplore.log")
-    LOGGING_UPDATE_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "./update_populate.log")
+    LOGGING_UPDATE_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "update_populate.log")
 
     MAX_DOWNLOAD_WORKERS = int(os.getenv("MAX_DOWNLOAD_WORKERS", 10))
-
-    @classmethod
-    def getCVEStartYear(cls):
-        next_year = datetime.datetime.now().year + 1
-        start_year = cls.CVE_START_YEAR
-        if start_year < cls.CVE_START_YEAR or start_year > next_year:
-            print(
-                "The year %i is not a valid year.\ndefault year %i will be used."
-                % (start_year, cls.default["CVEStartYear"])
-            )
-            start_year = cls.default["CVEStartYear"]
-        return start_year
-
-    @classmethod
-    def getFeedURL(cls, source):
-        return cls.SOURCES[source]
-
-    @classmethod
-    def getUpdateLogFile(cls):
-        return os.path.join(cls.LOGGING_FILE_PATH, cls.LOGGING_UPDATE_FILE_NAME)
-
-    @classmethod
-    def getMaxLogSize(cls):
-        size = cls.LOGGING_MAX_FILE_SIZE
-        split = re.findall("\d+|\D+", size)
-        multipliers = {"KB": 1024, "MB": 1024 * 1024, "GB": 1024 * 1024 * 1024}
-        if len(split) == 2:
-            base = int(split[0])
-            unit = split[1].strip().upper()
-            return base * multipliers.get(unit, 1024 * 1024)
-        # if size is not a correctly defined set it to 100MB
-        else:
-            return 100 * 1024 * 1024
-
-    @classmethod
-    def getBacklog(cls):
-        return cls.LOGGING_BACKLOG

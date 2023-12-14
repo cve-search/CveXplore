@@ -159,9 +159,9 @@ class UpdateHandler(HelperLogger):
 
         if self.config.LOGGING_TO_FILE:
             crf = RotatingFileHandler(
-                filename=self.config.getUpdateLogFile(),
-                maxBytes=self.config.getMaxLogSize(),
-                backupCount=self.config.getBacklog(),
+                filename=f"{self.config.LOGGING_FILE_PATH}/{self.config.LOGGING_UPDATE_FILE_NAME}",
+                maxBytes=self.config.LOGGING_MAX_FILE_SIZE,
+                backupCount=self.config.LOGGING_BACKLOG,
             )
             crf.setLevel(logging.DEBUG)
             crf.setFormatter(formatter)
