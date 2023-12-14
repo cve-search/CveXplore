@@ -43,7 +43,7 @@ Package is hosted on pypi, so to install the minimal core just run:
 
 .. code-block:: bash
 
-   pip install cvexplore
+   pip install CveXplore
 
 This command will install the core logic of CveXplore and, by default, installs the mongodb module also.
 
@@ -52,19 +52,19 @@ them as an extra requirement. To install the mysql module only, specify:
 
 .. code-block:: bash
 
-   pip install cvexplore[mysql]
+   pip install CveXplore[mysql]
 
 Or for multiple modules:
 
 .. code-block:: bash
 
-   pip install cvexplore[mysql, redis]
+   pip install CveXplore[mysql, redis]
 
 Or simple install all modules:
 
 .. code-block:: bash
 
-   pip install cvexplore[all]
+   pip install CveXplore[all]
 
 Documentation
 -------------
