@@ -50,16 +50,7 @@
 <p class="caption" role="heading"><span class="caption-text">Package documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CORE</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-CveXplore.core.nvd_nist.nvd_nist_api">NIST NVD API</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi"><code class="docutils literal notranslate"><span class="pre">NvdNistApi</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__init__"><code class="docutils literal notranslate"><span class="pre">NvdNistApi.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__repr__"><code class="docutils literal notranslate"><span class="pre">NvdNistApi.__repr__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.get_session"><code class="docutils literal notranslate"><span class="pre">NvdNistApi.get_session()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.core.nvd_nist.nvd_nist_api.retry_policy"><code class="docutils literal notranslate"><span class="pre">retry_policy()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#nist-nvd-api">NIST NVD API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-CveXplore.core.api_base_class">API Base class</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass"><code class="docutils literal notranslate"><span class="pre">ApiBaseClass</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass.__init__"><code class="docutils literal notranslate"><span class="pre">ApiBaseClass.__init__()</span></code></a></li>
@@ -113,53 +104,8 @@
              
   <section id="core">
 <h1>CORE<a class="headerlink" href="#core" title="Link to this heading"></a></h1>
-<section id="module-CveXplore.core.nvd_nist.nvd_nist_api">
-<span id="nist-nvd-api"></span><h2>NIST NVD API<a class="headerlink" href="#module-CveXplore.core.nvd_nist.nvd_nist_api" title="Link to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.core.nvd_nist.nvd_nist_api.</span></span><span class="sig-name descname"><span class="pre">NvdNistApi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseurl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://services.nvd.nist.gov'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2.0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proxies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CveXplore'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/nvd_nist/nvd_nist_api.html#NvdNistApi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#CveXplore.core.api_base_class.ApiBaseClass" title="CveXplore.core.api_base_class.ApiBaseClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApiBaseClass</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseurl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://services.nvd.nist.gov'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2.0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proxies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CveXplore'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/nvd_nist/nvd_nist_api.html#NvdNistApi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__init__" title="Link to this definition"></a></dt>
-<dd><p>The Generic api caller handles all communication towards an api resource.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__repr__">
-<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/nvd_nist/nvd_nist_api.html#NvdNistApi.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__repr__" title="Link to this definition"></a></dt>
-<dd><p>return a string representation of the obj</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.get_session">
-<span class="sig-name descname"><span class="pre">get_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">retries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backoff_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backoff_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_forcelist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(403,</span> <span class="pre">429,</span> <span class="pre">500,</span> <span class="pre">502,</span> <span class="pre">503,</span> <span class="pre">504)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/nvd_nist/nvd_nist_api.html#NvdNistApi.get_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.get_session" title="Link to this definition"></a></dt>
-<dd><p>Method for returning a session object per every requesting thread</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="CveXplore.core.nvd_nist.nvd_nist_api.retry_policy">
-<span class="sig-prename descclassname"><span class="pre">CveXplore.core.nvd_nist.nvd_nist_api.</span></span><span class="sig-name descname"><span class="pre">retry_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/core/nvd_nist/nvd_nist_api.html#retry_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.core.nvd_nist.nvd_nist_api.retry_policy" title="Link to this definition"></a></dt>
-<dd><ul class="simple">
-<li><p>It will always retry until succeeded</p></li>
-<li><p>If fails for the first time, it will retry immediately,</p></li>
-<li><p>If it fails again,</p></li>
-</ul>
-<p>aioretry will perform a 100ms delay before the second retry,
-200ms delay before the 3rd retry,
-the 4th retry immediately,
-100ms delay before the 5th retry,
-etc…
-:rtype: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]</span></p>
-</dd></dl>
-
+<section id="nist-nvd-api">
+<h2>NIST NVD API<a class="headerlink" href="#nist-nvd-api" title="Link to this heading"></a></h2>
 </section>
 <section id="module-CveXplore.core.api_base_class">
 <span id="api-base-class"></span><h2>API Base class<a class="headerlink" href="#module-CveXplore.core.api_base_class" title="Link to this heading"></a></h2>
