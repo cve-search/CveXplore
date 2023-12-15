@@ -19,8 +19,6 @@ from CveXplore.core.database_maintenance.sources_process import (
 from CveXplore.core.database_schema.db_schema_checker import SchemaChecker
 from CveXplore.errors import UpdateSourceNotFound
 
-logging.setLoggerClass(UpdateHandler)
-
 
 class MainUpdater(object):
     """
@@ -31,6 +29,7 @@ class MainUpdater(object):
         """
         Init a new MainUpdater class
         """
+        logging.setLoggerClass(UpdateHandler)
 
         self.datasource = datasource
 

@@ -7,14 +7,15 @@ import atexit
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
 
+from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
 from CveXplore.database.helpers.cvesearch_mongo_database import CveSearchCollection
 from CveXplore.errors import DatabaseConnectionException
 
 
-class MongoDBConnection(object):
+class MongoDBConnection(DatabaseConnectionBase):
     """
     The MongoDBConnection class serves as a shell that functions as uniform way to connect to the mongodb backend.
-    By default it will try to establish a connection towards a mongodb running on localhost (default port 27017) and
+    By default, it will try to establish a connection towards a mongodb running on localhost (default port 27017) and
     database 'cvedb' (as per defaults of cve_search)
     """
 
@@ -29,6 +30,7 @@ class MongoDBConnection(object):
         The `host` parameter can be a full `mongodb URI <http://dochub.mongodb.org/core/connections>`_, in addition to
         a simple hostname.
         """
+        super().__init__()
 
         self.client = None
         self._dbclient = None
@@ -53,10 +55,6 @@ class MongoDBConnection(object):
 
         atexit.register(self.disconnect)
 
-    def get_collections_details(self):
-        for each in self._dbclient.list_collections():
-            yield each
-
     def set_handlers_for_collections(self):
         for each in self._dbclient.list_collection_names():
             if not hasattr(self, each):
@@ -65,10 +63,6 @@ class MongoDBConnection(object):
                     f"store_{each}",
                     CveSearchCollection(database=self._dbclient, name=each),
                 )
-
-    @property
-    def get_collection_names(self):
-        return self._dbclient.list_collection_names()
 
     def disconnect(self):
         """
@@ -80,7 +74,3 @@ class MongoDBConnection(object):
     def __del__(self):
         """Called when the class is garbage collected."""
         self.disconnect()
-
-    def __repr__(self):
-        """String representation of object"""
-        return f"<< MongoDBConnection:{self._dbclient.name} >>"
