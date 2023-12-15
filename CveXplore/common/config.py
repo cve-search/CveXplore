@@ -119,7 +119,7 @@ class Configuration(object):
     LOGGING_BACKLOG = int(os.getenv("LOGGING_BACKLOG", 5))
     LOGGING_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "./cvexplore.log")
     LOGGING_UPDATE_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "update_populate.log")
-    LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO")
+    LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "DEBUG")
 
     SYSLOG_ENABLE = getenv_bool("SYSLOG_ENABLE", "False")
     SYSLOG_SERVER = os.getenv("SYSLOG_SERVER", "172.16.1.1")

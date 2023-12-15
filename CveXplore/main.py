@@ -10,16 +10,17 @@ import re
 from collections import defaultdict
 from typing import List, Tuple, Union, Iterable
 
+from pymongo import DESCENDING
+
 from CveXplore.api.connection.api_db import ApiDatabaseSource
 from CveXplore.common.config import Configuration
 from CveXplore.common.cpe_converters import create_cpe_regex_string
 from CveXplore.common.db_mapping import database_mapping
-from CveXplore.database.connection.mongo_db import MongoDBConnection
 from CveXplore.core.database_maintenance.main_updater import MainUpdater
+from CveXplore.database.connection.mongo_db import MongoDBConnection
 from CveXplore.errors import DatabaseIllegalCollection
 from CveXplore.errors.validation import CveNumberValidationError
 from CveXplore.objects.cvexplore_object import CveXploreObject
-from pymongo import DESCENDING
 
 try:
     from version import VERSION
@@ -54,6 +55,7 @@ class CveXplore(object):
         """
         self.__version = VERSION
         self.config = Configuration()
+        self.logger = logging.getLogger(__name__)
 
         os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "NO"})
 
@@ -100,6 +102,8 @@ class CveXplore(object):
             except KeyError:
                 # no specific or generic methods configured, skipping
                 continue
+
+        self.logger.info(f"Initialized CveXplore version: {self.version}")
 
     def get_single_store_entry(
         self, entry_type: str, dict_filter: dict = None

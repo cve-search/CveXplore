@@ -30,7 +30,7 @@ class MongoDBConnection(DatabaseConnectionBase):
         The `host` parameter can be a full `mongodb URI <http://dochub.mongodb.org/core/connections>`_, in addition to
         a simple hostname.
         """
-        super().__init__()
+        super().__init__(logger_name=__name__)
 
         self.client = None
         self._dbclient = None

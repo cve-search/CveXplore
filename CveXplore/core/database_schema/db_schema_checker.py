@@ -1,23 +1,22 @@
 import json
-import logging
 import os
 
+from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
 from CveXplore.database.connection.mongo_db import MongoDBConnection
 from CveXplore.errors import DatabaseSchemaError
 
 runPath = os.path.dirname(os.path.realpath(__file__))
 
 
-class SchemaChecker(object):
+class SchemaChecker(UpdateBaseClass):
     def __init__(self):
+        super().__init__(__name__)
         with open(os.path.join(runPath, "../../.schema_version")) as f:
             self.schema_version = json.loads(f.read())
 
         database = MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
 
         self.dbh = database._dbclient["schema"]
-
-        self.logger = logging.getLogger(__name__)
 
     def validate_schema(self):
         try:

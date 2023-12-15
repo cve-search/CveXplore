@@ -1,6 +1,5 @@
 import logging
 import os
-import sys
 from logging.handlers import RotatingFileHandler
 
 import colors
@@ -37,7 +36,7 @@ class AppLogger(logging.Logger):
 
         root = logging.getLogger()
 
-        root.setLevel(self.config.LOGGING_LEVEL)
+        root.setLevel(logging.DEBUG)
 
         root_null_handler = logging.NullHandler()
         root.handlers.clear()
@@ -47,19 +46,14 @@ class AppLogger(logging.Logger):
 
         self.propagate = False
 
-        log_file_path = self.config.LOGGING_FILE_PATH
-
-        if log_file_path != "":
-            if not os.path.exists(log_file_path):
-                os.makedirs(log_file_path)
+        if self.config.LOGGING_FILE_PATH != "":
+            if not os.path.exists(self.config.LOGGING_FILE_PATH):
+                os.makedirs(self.config.LOGGING_FILE_PATH)
 
             crf = RotatingFileHandler(
-                filename=os.path.join(
-                    log_file_path,
-                    self.config.LOGGING_FILE_NAME,
-                ),
+                filename=f"{self.config.LOGGING_FILE_PATH}/{self.config.LOGGING_FILE_NAME}",
                 maxBytes=self.config.LOGGING_MAX_FILE_SIZE,
-                backupCount=5,
+                backupCount=self.config.LOGGING_BACKLOG,
             )
             crf.setLevel(self.config.LOGGING_LEVEL)
             crf.setFormatter(self.formatter)
@@ -78,7 +72,7 @@ class AppLogger(logging.Logger):
                     debug=True,
                     **self.config.GELF_SYSLOG_ADDITIONAL_FIELDS
                     if self.config.GELF_SYSLOG_ADDITIONAL_FIELDS is not None
-                    else {}
+                    else {},
                 )
             else:
                 syslog = FullSysLogHandler(

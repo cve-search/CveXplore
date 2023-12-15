@@ -16,6 +16,7 @@ from abc import ABC, abstractmethod
 from datetime import timedelta
 from io import BytesIO
 from itertools import islice
+from logging.handlers import RotatingFileHandler
 from shutil import copy
 from typing import Tuple
 
@@ -30,10 +31,10 @@ from CveXplore.common.config import Configuration
 from CveXplore.core.general.utils import sanitize
 from CveXplore.core.worker_queue.worker_q import WorkerQueue
 from CveXplore.database.connection.mongo_db import MongoDBConnection
-from .log_handler import UpdateHandler
+from ..logging.logger_class import AppLogger
 
 thread_local = threading.local()
-logging.setLoggerClass(UpdateHandler)
+logging.setLoggerClass(AppLogger)
 
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
@@ -44,7 +45,7 @@ class DownloadHandler(ABC):
     Each download script has a derived class which handles specifics for that type of content / download.
     """
 
-    def __init__(self, feed_type: str, prefix: str = None):
+    def __init__(self, feed_type: str, logger_name: str, prefix: str = None):
         self._end = None
 
         self.feed_type = feed_type
@@ -66,13 +67,44 @@ class DownloadHandler(ABC):
 
         self.database = database._dbclient
 
-        self.logger = logging.getLogger(__name__)
-
         self.config = Configuration()
+
+        self.logger = logging.getLogger(logger_name)
+
+        self.logger.removeHandler(self.logger.handlers[0])
+
+        self.logger.propagate = False
+
+        self.formatter = logging.Formatter(
+            "%(asctime)s - %(name)-8s - %(levelname)-8s - %(message)s"
+        )
+
+        crf = None
+
+        cli = logging.StreamHandler(stream=sys.stdout)
+        cli.setFormatter(self.formatter)
+        cli.setLevel(logging.INFO)
+
+        if self.config.LOGGING_FILE_PATH != "":
+            if not os.path.exists(self.config.LOGGING_FILE_PATH):
+                os.makedirs(self.config.LOGGING_FILE_PATH)
+
+            crf = RotatingFileHandler(
+                filename=f"{self.config.LOGGING_FILE_PATH}/{self.config.LOGGING_UPDATE_FILE_NAME}",
+                maxBytes=self.config.LOGGING_MAX_FILE_SIZE,
+                backupCount=self.config.LOGGING_BACKLOG,
+            )
+            crf.setLevel(logging.DEBUG)
+            crf.setFormatter(self.formatter)
+
+        if not len(self.logger.handlers):
+            if crf is not None:
+                self.logger.addHandler(crf)
+            self.logger.addHandler(cli)
 
     def __repr__(self):
         """return string representation of object"""
-        return f"<< DownloadHandler:{self.feed_type} >>"
+        return f"<< {self.__class__.__name__}:{self.feed_type} >>"
 
     def get_session(
         self,
@@ -170,7 +202,9 @@ class DownloadHandler(ABC):
                     [x for x in batch if x is not None], ordered=False
                 )
             else:
-                self.database[self.feed_type.lower()].bulk_write(batch, ordered=False)
+                self.database[self.feed_type.lower()].bulk_write(
+                    [x for x in batch if x is not None], ordered=False
+                )
         except BulkWriteError as err:
             self.logger.debug(f"Error during bulk write: {err}")
             pass
