@@ -4,6 +4,7 @@ Main
 """
 import functools
 import json
+import logging
 import os
 import re
 from collections import defaultdict
@@ -54,6 +55,7 @@ class CveXplore(object):
         """
         self.__version = VERSION
         self.config = Configuration()
+        self.logger = logging.getLogger(__name__)
 
         os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "NO"})
 
@@ -100,6 +102,8 @@ class CveXplore(object):
             except KeyError:
                 # no specific or generic methods configured, skipping
                 continue
+
+        self.logger.info(f"Initialized CveXplore version: {self.version}")
 
     def get_single_store_entry(
         self, entry_type: str, dict_filter: dict = None

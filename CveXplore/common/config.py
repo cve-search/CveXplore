@@ -119,5 +119,17 @@ class Configuration(object):
     LOGGING_BACKLOG = int(os.getenv("LOGGING_BACKLOG", 5))
     LOGGING_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "./cvexplore.log")
     LOGGING_UPDATE_FILE_NAME = os.getenv("LOGGING_FILE_NAME", "update_populate.log")
+    LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "DEBUG")
+
+    SYSLOG_ENABLE = getenv_bool("SYSLOG_ENABLE", "False")
+    SYSLOG_SERVER = os.getenv("SYSLOG_SERVER", "172.16.1.1")
+    SYSLOG_PORT = int(os.getenv("SYSLOG_PORT", 5140))
+    SYSLOG_LEVEL = os.getenv("SYSLOG_LEVEL", "DEBUG")
+
+    GELF_SYSLOG = getenv_bool("GELF_SYSLOG", "True")
+    # GELF format allows for additional fields to be submitted with each log record; Key values of this dict should
+    # start with underscores; e.g. {"_environment": "SPECIAL"} would append an environment field with the value of
+    # 'SPECIAL' to each log record.
+    GELF_SYSLOG_ADDITIONAL_FIELDS = getenv_dict("GELF_SYSLOG_ADDITIONAL_FIELDS", None)
 
     MAX_DOWNLOAD_WORKERS = int(os.getenv("MAX_DOWNLOAD_WORKERS", 10))

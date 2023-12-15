@@ -6,7 +6,6 @@ import datetime
 import glob
 import hashlib
 import json
-import logging
 import shutil
 import time
 from typing import Any, Tuple
@@ -44,9 +43,7 @@ class CPEDownloads(NVDApiHandler):
     def __init__(self):
         self.feed_type = "CPE"
 
-        super().__init__(self.feed_type)
-
-        self.logger = logging.getLogger(__name__)
+        super().__init__(feed_type=self.feed_type, logger_name=__name__)
 
     def file_to_queue(self, *args):
         pass
@@ -301,9 +298,7 @@ class CVEDownloads(NVDApiHandler):
     def __init__(self):
         self.feed_type = "CVES"
 
-        super().__init__(self.feed_type)
-
-        self.logger = logging.getLogger(__name__)
+        super().__init__(feed_type=self.feed_type, logger_name=__name__)
 
     def get_cpe_info(self, cpeuri: str):
         query = {}
@@ -864,11 +859,11 @@ class VIADownloads(JSONFileHandler):
     def __init__(self):
         self.feed_type = "VIA4"
         self.prefix = "cves"
-        super().__init__(self.feed_type, self.prefix)
+        super().__init__(
+            feed_type=self.feed_type, prefix=self.prefix, logger_name=__name__
+        )
 
         self.feed_url = self.config.SOURCES[self.feed_type.lower()]
-
-        self.logger = logging.getLogger(__name__)
 
     def file_to_queue(self, file_tuple: Tuple[str, str]):
         working_dir, filename = file_tuple
@@ -944,11 +939,9 @@ class CAPECDownloads(XMLFileHandler):
 
     def __init__(self):
         self.feed_type = "CAPEC"
-        super().__init__(self.feed_type)
+        super().__init__(feed_type=self.feed_type, logger_name=__name__)
 
         self.feed_url = self.config.SOURCES[self.feed_type.lower()]
-
-        self.logger = logging.getLogger(__name__)
 
         # make parser
         self.parser = make_parser()
@@ -1003,11 +996,9 @@ class CWEDownloads(XMLFileHandler):
 
     def __init__(self):
         self.feed_type = "CWE"
-        super().__init__(self.feed_type)
+        super().__init__(feed_type=self.feed_type, logger_name=__name__)
 
         self.feed_url = self.config.SOURCES[self.feed_type.lower()]
-
-        self.logger = logging.getLogger(__name__)
 
         # make parser
         self.parser = make_parser()
@@ -1066,10 +1057,12 @@ class EPSSDownloads(CSVFileHandler):
     def __init__(self):
         self.feed_type = "EPSS"
         self.delimiter = ","
-        super().__init__(self.feed_type, self.delimiter)
+        super().__init__(
+            feed_type=self.feed_type, logger_name=__name__, delimiter=self.delimiter
+        )
 
         self.feed_url = self.config.SOURCES[self.feed_type.lower()]
-        self.logger = logging.getLogger(__name__)
+
         self.is_update = True
 
     def process_epss_item(self, item=None):

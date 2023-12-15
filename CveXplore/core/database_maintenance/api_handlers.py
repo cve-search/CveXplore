@@ -11,16 +11,12 @@ class NVDApiHandler(DownloadHandler):
     processing and downloading
     """
 
-    def __init__(self, feed_type: str):
-        super().__init__(feed_type)
+    def __init__(self, feed_type: str, logger_name: str):
+        super().__init__(feed_type=feed_type, logger_name=logger_name)
 
         self.is_update = True
 
         self.api_handler = NvdNistApi(proxies=self.config.HTTP_PROXY_DICT)
-
-    def __repr__(self):
-        """return string representation of object"""
-        return f"<< NVDApiHandler:{self.feed_type} >>"
 
     def process_item(self, item: dict):
         item = self.process_the_item(item)

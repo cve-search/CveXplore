@@ -18,18 +18,14 @@ class JSONFileHandler(DownloadHandler):
     processing and downloading
     """
 
-    def __init__(self, feed_type: str, prefix: str):
-        super().__init__(feed_type)
+    def __init__(self, feed_type: str, prefix: str, logger_name: str):
+        super().__init__(feed_type=feed_type, prefix=prefix, logger_name=logger_name)
 
         self.is_update = True
 
         self.prefix = prefix
 
         self.ijson_handler = IJSONHandler()
-
-    def __repr__(self):
-        """return string representation of object"""
-        return f"<< JSONFileHandler:{self.feed_type} >>"
 
     def file_to_queue(self, file_tuple: Tuple[str, str]):
         """
@@ -74,13 +70,9 @@ class XMLFileHandler(DownloadHandler):
     processing and downloading
     """
 
-    def __init__(self, feed_type: str):
-        super().__init__(feed_type)
+    def __init__(self, feed_type: str, logger_name: str):
+        super().__init__(feed_type=feed_type, logger_name=logger_name)
         self.is_update = True
-
-    def __repr__(self):
-        """return string representation of object"""
-        return f"<< XMLFileHandler:{self.feed_type} >>"
 
     def process_item(self, item: dict):
         """
@@ -116,15 +108,11 @@ class XMLFileHandler(DownloadHandler):
 
 
 class CSVFileHandler(DownloadHandler):
-    def __init__(self, feed_type, delimiter=","):
-        super().__init__(feed_type)
+    def __init__(self, feed_type, logger_name: str, delimiter=","):
+        super().__init__(feed_type=feed_type, logger_name=logger_name)
 
         self.is_update = True
         self.delimiter = delimiter
-
-    def __repr__(self):
-        """return string representation of object"""
-        return f"<< CSVFileHandler:{self.feed_type} >>"
 
     def file_to_queue(self, file_tuple):
         working_dir, filename = file_tuple

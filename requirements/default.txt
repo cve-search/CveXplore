@@ -6,6 +6,7 @@ click==8.1.7
 click-completion==0.5.2
 ijson~=3.2.3
 ansicolors==1.1.8
+pygelf~=0.4.2
 pandas~=2.1.2
 dicttoxml==1.7.16
 python-dotenv~=1.0.0

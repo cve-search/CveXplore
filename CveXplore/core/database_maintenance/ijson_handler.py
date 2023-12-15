@@ -2,14 +2,15 @@ import logging
 
 import ijson
 
-from CveXplore.core.database_maintenance.log_handler import UpdateHandler
+from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
+from CveXplore.core.logging.logger_class import AppLogger
 
-logging.setLoggerClass(UpdateHandler)
+logging.setLoggerClass(AppLogger)
 
 
-class IJSONHandler(object):
+class IJSONHandler(UpdateBaseClass):
     def __init__(self):
-        self.logger = logging.getLogger(__name__)
+        super().__init__(__name__)
 
     def fetch(self, filename: str, prefix: str):
         x = 0

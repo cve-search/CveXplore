@@ -7,7 +7,6 @@ import time
 from datetime import timedelta
 
 from CveXplore.core.database_indexer.db_indexer import DatabaseIndexer
-from CveXplore.core.database_maintenance.log_handler import UpdateHandler
 from CveXplore.core.database_maintenance.sources_process import (
     CPEDownloads,
     CVEDownloads,
@@ -16,13 +15,15 @@ from CveXplore.core.database_maintenance.sources_process import (
     VIADownloads,
     EPSSDownloads,
 )
+from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
 from CveXplore.core.database_schema.db_schema_checker import SchemaChecker
+from CveXplore.core.logging.logger_class import AppLogger
 from CveXplore.errors import UpdateSourceNotFound
 
-logging.setLoggerClass(UpdateHandler)
+logging.setLoggerClass(AppLogger)
 
 
-class MainUpdater(object):
+class MainUpdater(UpdateBaseClass):
     """
     The MainUpdater class is the main class for performing database database_maintenance tasks
     """
@@ -31,6 +32,7 @@ class MainUpdater(object):
         """
         Init a new MainUpdater class
         """
+        super().__init__(__name__)
 
         self.datasource = datasource
 
@@ -49,8 +51,6 @@ class MainUpdater(object):
         ]
 
         self.schema_checker = SchemaChecker()
-
-        self.logger = logging.getLogger(__name__)
 
     def validate_schema(self):
         return self.schema_checker.validate_schema()

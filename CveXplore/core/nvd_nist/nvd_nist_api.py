@@ -18,7 +18,8 @@ from requests.adapters import HTTPAdapter, Retry
 
 from CveXplore.common.config import Configuration
 from CveXplore.core.api_base_class import ApiBaseClass
-from CveXplore.core.database_maintenance.log_handler import UpdateHandler
+from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
+from CveXplore.core.logging.logger_class import AppLogger
 from CveXplore.errors.apis import (
     ApiErrorException,
     ApiDataError,
@@ -26,10 +27,10 @@ from CveXplore.errors.apis import (
     ApiMaxRetryError,
 )
 
-logging.setLoggerClass(UpdateHandler)
+logging.setLoggerClass(AppLogger)
 
 
-class NvdNistApi(ApiBaseClass):
+class NvdNistApi(ApiBaseClass, UpdateBaseClass):
     def __init__(
         self,
         baseurl: str = "https://services.nvd.nist.gov",
@@ -37,13 +38,15 @@ class NvdNistApi(ApiBaseClass):
         proxies: dict = None,
         user_agent: str = "CveXplore",
     ):
-        super().__init__(
-            baseurl, api_path=api_path, user_agent=user_agent, proxies=proxies
+        ApiBaseClass.__init__(
+            self,
+            baseurl=baseurl,
+            api_path=api_path,
+            user_agent=user_agent,
+            proxies=proxies,
         )
 
-        self.config = Configuration()
-
-        self.logger = logging.getLogger(__name__)
+        UpdateBaseClass.__init__(self, logger_name=__name__)
 
         if self.config.NVD_NIST_API_KEY is not None:
             self.api_key = self.config.NVD_NIST_API_KEY

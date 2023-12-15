@@ -1,10 +1,10 @@
 import json
-import logging
 import os
 from collections import namedtuple
 
 from pymongo import TEXT, ASCENDING
 
+from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
 from CveXplore.core.general.utils import sanitize
 from CveXplore.database.connection.mongo_db import MongoDBConnection
 
@@ -12,12 +12,14 @@ MongoUniqueIndex = namedtuple("MongoUniqueIndex", "index name unique")
 MongoAddIndex = namedtuple("MongoAddIndex", "index name")
 
 
-class DatabaseIndexer(object):
+class DatabaseIndexer(UpdateBaseClass):
     """
     Class processing the Mongodb indexes
     """
 
     def __init__(self):
+        super().__init__(__name__)
+
         database = MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
         self.database = database._dbclient
 
@@ -88,8 +90,6 @@ class DatabaseIndexer(object):
                 MongoAddIndex(index=[("status", ASCENDING)], name="status"),
             ],
         }
-
-        self.logger = logging.getLogger(__name__)
 
     def getInfo(self, collection: str):
         return sanitize(self.database["info"].find_one({"db": collection}))
