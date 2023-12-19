@@ -94,10 +94,6 @@ class CvesDatabaseFunctions(GenericDatabaseFactory):
             )
         )
 
-    def __repr__(self):
-        """String representation of object"""
-        return f"<< CvesDatabaseFunctions:{self._collection} >>"
-
 
 class CpeDatabaseFunctions(GenericDatabaseFactory):
     """
@@ -150,6 +146,22 @@ class CpeDatabaseFunctions(GenericDatabaseFactory):
         else:
             return None
 
-    def __repr__(self):
-        """String representation of object"""
-        return f"<< CpeDatabaseFunctions:{self._collection} >>"
+
+class CapecDatabaseFunctions(GenericDatabaseFactory):
+    """
+    The CapecDatabaseFunctions is a specific class that provides the capec attribute of a CveXplore instance additional
+    functions that only apply to the 'capec' collection
+    """
+
+    def __init__(self, collection: str):
+        super().__init__(collection)
+
+
+class CWEDatabaseFunctions(GenericDatabaseFactory):
+    """
+    The CWEDatabaseFunctions is a specific class that provides the cwe attribute of a CveXplore instance additional
+    functions that only apply to the 'cwe' collection
+    """
+
+    def __init__(self, collection: str):
+        super().__init__(collection)

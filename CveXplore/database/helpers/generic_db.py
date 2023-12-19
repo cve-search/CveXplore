@@ -38,7 +38,7 @@ class GenericDatabaseFactory(DatasourceConnection):
                 "typical_severity",
             ],
             "cpe": ["title", "cpeName", "vendor", "product", "stem"],
-            "cwe": ["name", "status", "Description"],
+            "cwe": ["name", "status", "description"],
             "cves": [
                 "cvss",
                 "cvss3",
@@ -139,7 +139,7 @@ class GenericDatabaseFactory(DatasourceConnection):
 
     def __repr__(self):
         """String representation of object"""
-        return f"<< GenericDatabaseFactory:{self._collection} >>"
+        return f"<< {self.__class__.__name__}:{self._collection} >>"
 
 
 class GenericDatabaseFieldsFunctions(DatasourceConnection):

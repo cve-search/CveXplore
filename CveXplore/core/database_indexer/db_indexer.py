@@ -1,12 +1,9 @@
-import json
-import os
 from collections import namedtuple
 
 from pymongo import TEXT, ASCENDING
 
 from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
 from CveXplore.core.general.utils import sanitize
-from CveXplore.database.connection.mongo_db import MongoDBConnection
 
 MongoUniqueIndex = namedtuple("MongoUniqueIndex", "index name unique")
 MongoAddIndex = namedtuple("MongoAddIndex", "index name")
@@ -17,10 +14,10 @@ class DatabaseIndexer(UpdateBaseClass):
     Class processing the Mongodb indexes
     """
 
-    def __init__(self):
+    def __init__(self, datasource):
         super().__init__(__name__)
 
-        database = MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
+        database = datasource
         self.database = database._dbclient
 
         self.indexes = {

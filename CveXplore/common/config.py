@@ -86,6 +86,17 @@ class Configuration(object):
 
     CPE_FILTER_DEPRECATED = getenv_bool("CPE_FILTER_DEPRECATED", "True")
 
+    DATASOURCE = os.getenv("DATASOURCE", "mongodb")
+
+    DATASOURCE_PROTOCOL = os.getenv("DATASOURCE_PROTOCOL", "mongodb")
+    DATASOURCE_HOST = os.getenv(
+        "DATASOURCE_HOST", os.getenv("MONGODB_HOST", "127.0.0.1")
+    )
+    DATASOURCE_PORT = int(
+        os.getenv("DATASOURCE_PORT", int(os.getenv("MONGODB_PORT", 27017)))
+    )
+
+    # keep these for now to maintain backwards compatibility
     MONGODB_HOST = os.getenv("MONGODB_HOST", "127.0.0.1")
     MONGODB_PORT = int(os.getenv("MONGODB_PORT", 27017))
 

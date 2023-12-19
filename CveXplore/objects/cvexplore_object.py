@@ -13,4 +13,4 @@ class CveXploreObject(object):
         pass
 
     def __repr__(self) -> str:
-        return "<< CveXploreObject >>"
+        return f"<< {self.__class__.__name__} >>"
