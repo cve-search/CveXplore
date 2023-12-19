@@ -28,6 +28,7 @@ class CpeDatabaseFunctions:
     def __init__(self, collection: str): ...
 
 class CapecDatabaseFunctions:
+    id: GenericDatabaseFieldsFunctions
     name: GenericDatabaseFieldsFunctions
     summary: GenericDatabaseFieldsFunctions
     prerequisites: GenericDatabaseFieldsFunctions
@@ -38,6 +39,7 @@ class CapecDatabaseFunctions:
     def __init__(self, collection: str): ...
 
 class CWEDatabaseFunctions:
+    id: GenericDatabaseFieldsFunctions
     name: GenericDatabaseFieldsFunctions
     status: GenericDatabaseFieldsFunctions
     description: GenericDatabaseFieldsFunctions
