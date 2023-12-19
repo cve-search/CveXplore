@@ -15,7 +15,6 @@ from dateutil.parser import parse as parse_datetime
 from tqdm import tqdm
 
 from CveXplore.core.database_actions.db_action import DatabaseAction
-from CveXplore.core.database_indexer.db_indexer import DatabaseIndexer
 from CveXplore.core.database_maintenance.api_handlers import NVDApiHandler
 from CveXplore.core.database_maintenance.content_handlers import (
     CapecHandler,
@@ -263,7 +262,7 @@ class CPEDownloads(NVDApiHandler):
 
         # if collection is non-existent; assume it's not an update
         if self.feed_type.lower() not in self.getTableNames():
-            DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
+            self.database_indexer.create_indexes(collection=self.feed_type.lower())
             self.is_update = False
 
         self.logger.info("Finished CPE database update")
@@ -283,7 +282,7 @@ class CPEDownloads(NVDApiHandler):
 
         self.process_downloads()
 
-        DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
+        self.database_indexer.create_indexes(collection=self.feed_type.lower())
 
         self.logger.info("Finished CPE database population")
 
@@ -820,7 +819,7 @@ class CVEDownloads(NVDApiHandler):
 
         # if collection is non-existent; assume it's not an update
         if self.feed_type.lower() not in self.getTableNames():
-            DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
+            self.database_indexer.create_indexes(collection=self.feed_type.lower())
             self.is_update = False
 
         self.logger.info("Finished CVE database update")
@@ -844,7 +843,7 @@ class CVEDownloads(NVDApiHandler):
 
         self.process_downloads()
 
-        DatabaseIndexer().create_indexes(collection=self.feed_type.lower())
+        self.database_indexer.create_indexes(collection=self.feed_type.lower())
 
         self.logger.info("Finished CVE database population")
 
@@ -1016,6 +1015,8 @@ class CWEDownloads(XMLFileHandler):
         for cwe in self.ch.cwe:
             try:
                 cwe["related_weaknesses"] = list(set(cwe["related_weaknesses"]))
+                cwe["description"] = cwe["Description"]
+                cwe.pop("Description")
             except KeyError:
                 pass
             self.process_item(cwe)

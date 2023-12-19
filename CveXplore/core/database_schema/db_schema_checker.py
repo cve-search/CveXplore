@@ -2,19 +2,18 @@ import json
 import os
 
 from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
-from CveXplore.database.connection.mongo_db import MongoDBConnection
 from CveXplore.errors import DatabaseSchemaError
 
 runPath = os.path.dirname(os.path.realpath(__file__))
 
 
 class SchemaChecker(UpdateBaseClass):
-    def __init__(self):
+    def __init__(self, datasource):
         super().__init__(__name__)
         with open(os.path.join(runPath, "../../.schema_version")) as f:
             self.schema_version = json.loads(f.read())
 
-        database = MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
+        database = datasource
 
         self.dbh = database._dbclient["schema"]
 
@@ -40,13 +39,9 @@ class SchemaChecker(UpdateBaseClass):
                 "Database schema is not up to date; please re-populate the database!"
             )
 
-    def create_indexes(self):
-        # hack for db_updater.py to put this class in the posts variable and run the update method
-        self.logger.info("Updating schema version")
-        self.update()
-        self.logger.info("Update schema version done!")
-
     def update(self):
+        self.logger.info("Updating schema version")
+
         try:
             current_record = list(self.dbh.find({}))
 
@@ -72,3 +67,5 @@ class SchemaChecker(UpdateBaseClass):
                 "rebuild_needed": self.schema_version["rebuild_needed"],
             }
             self.dbh.insert_one(current_record)
+
+        self.logger.info("Update schema version done!")

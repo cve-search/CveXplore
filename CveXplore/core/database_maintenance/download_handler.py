@@ -30,8 +30,9 @@ from urllib3 import Retry
 from CveXplore.common.config import Configuration
 from CveXplore.core.general.utils import sanitize
 from CveXplore.core.worker_queue.worker_q import WorkerQueue
-from CveXplore.database.connection.mongo_db import MongoDBConnection
+from ..database_indexer.db_indexer import DatabaseIndexer
 from ..logging.logger_class import AppLogger
+from ...database.connection.database_connection import DatabaseConnection
 
 thread_local = threading.local()
 logging.setLoggerClass(AppLogger)
@@ -63,9 +64,14 @@ class DownloadHandler(ABC):
 
         self.do_process = True
 
-        database = MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
+        database = DatabaseConnection(
+            database_type=os.getenv("DATASOURCE_TYPE"),
+            database_init_parameters=json.loads(os.getenv("DATASOURCE_CON_DETAILS")),
+        ).database_connection
 
         self.database = database._dbclient
+
+        self.database_indexer = DatabaseIndexer(datasource=database)
 
         self.config = Configuration()
 
