@@ -45,12 +45,8 @@ class MainUpdater(UpdateBaseClass):
             {"name": "epss", "updater": EPSSDownloads},
         ]
 
-        self.posts = [
-            {"name": "ensureindex", "updater": DatabaseIndexer},
-            {"name": "schema", "updater": SchemaChecker},
-        ]
-
-        self.schema_checker = SchemaChecker()
+        self.database_indexer = DatabaseIndexer(datasource=datasource)
+        self.schema_checker = SchemaChecker(datasource=datasource)
 
     def validate_schema(self):
         return self.schema_checker.validate_schema()
@@ -98,10 +94,10 @@ class MainUpdater(UpdateBaseClass):
                     )
         except UpdateSourceNotFound:
             raise
-        else:
-            for post in self.posts:
-                indexer = post["updater"]()
-                indexer.create_indexes()
+
+        self.database_indexer.create_indexes()
+
+        self.schema_checker.update()
 
         self.datasource.set_handlers_for_collections()
 
@@ -153,10 +149,10 @@ class MainUpdater(UpdateBaseClass):
                     )
         except UpdateSourceNotFound:
             raise
-        else:
-            for post in self.posts:
-                indexer = post["updater"]()
-                indexer.create_indexes()
+
+        self.database_indexer.create_indexes()
+
+        self.schema_checker.update()
 
         self.datasource.set_handlers_for_collections()
 
