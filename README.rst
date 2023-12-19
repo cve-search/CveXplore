@@ -132,7 +132,7 @@ To let CveXplore connect to an mongodb with specific parameters:
 .. code-block:: python
 
    >>> from CveXplore import CveXplore
-   >>> cvx = CveXplore(mongodb_connection_details={"host": "192.168.1.1", "port": 27017})
+   >>> cvx = CveXplore(datasource_type="mongodb", datasource_connection_details={"host": "mongodb://127.0.0.1:27017"})
    >>> cvx.version
    '0.1.2'
 
@@ -141,7 +141,7 @@ And to let CveXplore talk to an Cve Search API (only query POST endpoint needed)
 .. code-block:: python
 
    >>> from CveXplore import CveXplore
-   >>> cvx = CveXplore(api_connection_details={"address": ("mylocal.cve-search.int", 443), "api_path": "api"})
+   >>> cvx = CveXplore(datasource_type="api", datasource_connection_details={"address": ("mylocal.cve-search.int", 443), "api_path": "api"})
    >>> cvx.version
    '0.1.2'
 
