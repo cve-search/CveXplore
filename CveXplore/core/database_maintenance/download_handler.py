@@ -47,6 +47,8 @@ class DownloadHandler(ABC):
     """
 
     def __init__(self, feed_type: str, logger_name: str, prefix: str = None):
+        self.config = Configuration()
+
         self._end = None
 
         self.feed_type = feed_type
@@ -65,15 +67,13 @@ class DownloadHandler(ABC):
         self.do_process = True
 
         database = DatabaseConnection(
-            database_type=os.getenv("DATASOURCE_TYPE"),
+            database_type=self.config.DATASOURCE,
             database_init_parameters=json.loads(os.getenv("DATASOURCE_CON_DETAILS")),
         ).database_connection
 
-        self.database = database._dbclient
+        self.database = database.dbclient
 
         self.database_indexer = DatabaseIndexer(datasource=database)
-
-        self.config = Configuration()
 
         self.logger = logging.getLogger(logger_name)
 
