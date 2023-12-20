@@ -2,16 +2,15 @@ import os
 import sys
 from logging.config import fileConfig
 
+from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-
-from alembic import context
 
 folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 sys.path.insert(0, folder)
 
 from CveXplore.common.config import Configuration
-from CveXplore.core.database_models.dec_base import Base
+from CveXplore.core.database_models.models import CveXploreBase
 
 app_config = Configuration()
 # this is the Alembic Config object, which provides
@@ -29,7 +28,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = Base.metadata
+target_metadata = CveXploreBase.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -75,9 +74,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()
