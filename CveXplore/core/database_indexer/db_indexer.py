@@ -18,7 +18,7 @@ class DatabaseIndexer(UpdateBaseClass):
         super().__init__(__name__)
 
         database = datasource
-        self.database = database._dbclient
+        self.database = database.dbclient
 
         self.indexes = {
             "cpe": [

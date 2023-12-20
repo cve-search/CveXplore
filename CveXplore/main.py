@@ -18,9 +18,12 @@ from CveXplore.common.config import Configuration
 from CveXplore.common.cpe_converters import create_cpe_regex_string
 from CveXplore.common.db_mapping import database_mapping
 from CveXplore.core.database_maintenance.main_updater import MainUpdater
+from CveXplore.core.database_migration.database_migrator import DatabaseMigrator
+from CveXplore.core.general.datasources import supported_datasources
 from CveXplore.database.connection.database_connection import DatabaseConnection
 from CveXplore.database.connection.mongodb.mongo_db import MongoDBConnection
 from CveXplore.errors import DatabaseIllegalCollection
+from CveXplore.errors.datasource import UnsupportedDatasourceException
 from CveXplore.errors.validation import CveNumberValidationError
 from CveXplore.objects.cvexplore_object import CveXploreObject
 
@@ -40,16 +43,14 @@ class CveXplore(object):
 
     def __init__(
         self,
-        datasource_type: str = "mongodb",
+        datasource_type: str = None,
         datasource_connection_details: dict = None,
         mongodb_connection_details: dict = None,
         api_connection_details: dict = None,
     ):
         """
         Create a new instance of CveXplore
-        :param datasource_type: Which datasource to query. Currently supported options include:
-                                - mongodb
-                                - api
+        :param datasource_type: Which datasource to query.
         :param datasource_connection_details: Provide the connection details needed to establish a connection to the
                                               datasource. The connection details should be in line with the datasource
                                               it's documentation.
@@ -66,13 +67,29 @@ class CveXplore(object):
         self.config = Configuration()
         self.logger = logging.getLogger(__name__)
 
-        self._datasource_type = datasource_type
+        self.datasource_type = (
+            datasource_type if datasource_type is not None else self.config.DATASOURCE
+        )
         self._datasource_connection_details = datasource_connection_details
 
         self._mongodb_connection_details = mongodb_connection_details
         self._api_connection_details = api_connection_details
 
         os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "NO"})
+
+        self.logger.info(
+            f"Using {self.datasource_type} as datasource, connection details: {self.datasource_connection_details}"
+        )
+
+        if self.datasource_type not in supported_datasources:
+            raise UnsupportedDatasourceException(
+                f"Unsupported datasource selected: '{self.datasource_type}'; currently supported: {supported_datasources}"
+            )
+
+        if self.datasource_type == "api" and self.datasource_connection_details is None:
+            raise ValueError(
+                "Missing datasource_connection_details for selected datasource ('api')"
+            )
 
         if self.mongodb_connection_details is not None:
             self.logger.warning(
@@ -108,6 +125,8 @@ class CveXplore(object):
             ).database_connection
             self.database = MainUpdater(datasource=self.datasource)
 
+        self.database_migrator = DatabaseMigrator()
+
         self._database_mapping = database_mapping
 
         from CveXplore.database.helpers.specific_db import (
@@ -123,10 +142,6 @@ class CveXplore(object):
         self.cwe = CWEDatabaseFunctions(collection="cwe")
 
         self.logger.info(f"Initialized CveXplore version: {self.version}")
-
-    @property
-    def datasource_type(self):
-        return self._datasource_type
 
     @property
     def datasource_connection_details(self):

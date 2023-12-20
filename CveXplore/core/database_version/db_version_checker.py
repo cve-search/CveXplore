@@ -2,12 +2,12 @@ import json
 import os
 
 from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
-from CveXplore.errors import DatabaseSchemaError
+from CveXplore.errors import DatabaseSchemaVersionError
 
 runPath = os.path.dirname(os.path.realpath(__file__))
 
 
-class SchemaChecker(UpdateBaseClass):
+class DatabaseVersionChecker(UpdateBaseClass):
     def __init__(self, datasource):
         super().__init__(__name__)
         with open(os.path.join(runPath, "../../.schema_version")) as f:
@@ -15,7 +15,7 @@ class SchemaChecker(UpdateBaseClass):
 
         database = datasource
 
-        self.dbh = database._dbclient["schema"]
+        self.dbh = database.dbclient["schema"]
 
     def validate_schema(self):
         try:
@@ -24,18 +24,18 @@ class SchemaChecker(UpdateBaseClass):
                 == list(self.dbh.find({}))[0]["version"]
             ):
                 if not self.schema_version["rebuild_needed"]:
-                    raise DatabaseSchemaError(
+                    raise DatabaseSchemaVersionError(
                         "Database is not on the latest schema version; please update the database!"
                     )
                 else:
-                    raise DatabaseSchemaError(
+                    raise DatabaseSchemaVersionError(
                         "Database schema is not up to date; please re-populate the database!"
                     )
             else:
                 return True
         except IndexError:
             # something went wrong fetching the result from the database; assume re-populate is needed
-            raise DatabaseSchemaError(
+            raise DatabaseSchemaVersionError(
                 "Database schema is not up to date; please re-populate the database!"
             )
 

@@ -86,6 +86,9 @@ class Configuration(object):
 
     CPE_FILTER_DEPRECATED = getenv_bool("CPE_FILTER_DEPRECATED", "True")
 
+    # Which datasource to query.Currently supported options include:
+    # - mongodb
+    # - api
     DATASOURCE = os.getenv("DATASOURCE", "mongodb")
 
     DATASOURCE_PROTOCOL = os.getenv("DATASOURCE_PROTOCOL", "mongodb")

@@ -16,7 +16,7 @@ from CveXplore.core.database_maintenance.sources_process import (
     EPSSDownloads,
 )
 from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
-from CveXplore.core.database_schema.db_schema_checker import SchemaChecker
+from CveXplore.core.database_version.db_version_checker import DatabaseVersionChecker
 from CveXplore.core.logging.logger_class import AppLogger
 from CveXplore.errors import UpdateSourceNotFound
 
@@ -46,7 +46,7 @@ class MainUpdater(UpdateBaseClass):
         ]
 
         self.database_indexer = DatabaseIndexer(datasource=datasource)
-        self.schema_checker = SchemaChecker(datasource=datasource)
+        self.schema_checker = DatabaseVersionChecker(datasource=datasource)
 
     def validate_schema(self):
         return self.schema_checker.validate_schema()
