@@ -1,6 +1,6 @@
 from CveXplore.api.connection.api_db import ApiDatabaseSource
 from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
-from CveXplore.database.connection.mongo_db import MongoDBConnection
+from CveXplore.database.connection.mongodb.mongo_db import MongoDBConnection
 
 
 class DatabaseConnection(object):

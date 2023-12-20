@@ -7,7 +7,7 @@ import os
 
 from CveXplore.api.connection.api_db import ApiDatabaseSource
 from CveXplore.database.connection.database_connection import DatabaseConnection
-from CveXplore.database.connection.mongo_db import MongoDBConnection
+from CveXplore.database.connection.mongodb.mongo_db import MongoDBConnection
 from CveXplore.objects.cvexplore_object import CveXploreObject
 
 
