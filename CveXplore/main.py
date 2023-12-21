@@ -33,7 +33,7 @@ import logging
 import re
 import warnings
 from collections import defaultdict
-from typing import List, Tuple, Union, Iterable
+from typing import List, Tuple, Union, Iterable, Type
 
 from pymongo import DESCENDING
 
@@ -182,7 +182,7 @@ class CveXplore(object):
         self.logger.info(f"Initialized CveXplore version: {self.version}")
 
     @property
-    def config(self):
+    def config(self) -> Type[Configuration]:
         return self._config
 
     @property
@@ -190,15 +190,15 @@ class CveXplore(object):
         return self._datasource_type
 
     @property
-    def datasource_connection_details(self):
+    def datasource_connection_details(self) -> dict:
         return self._datasource_connection_details
 
     @property
-    def database_mapping(self):
+    def database_mapping(self) -> dict:
         return self._database_mapping
 
     @property
-    def mongodb_connection_details(self):
+    def mongodb_connection_details(self) -> dict:
         warnings.warn(
             "The use of mongodb_connection_details is deprecated and will be removed in the 0.4 release, "
             "please use datasource_connection_details instead",
@@ -207,7 +207,7 @@ class CveXplore(object):
         return self._mongodb_connection_details
 
     @property
-    def api_connection_details(self):
+    def api_connection_details(self) -> dict:
         warnings.warn(
             "The use of api_connection_details is deprecated and will be removed in the 0.4 release, please "
             "use datasource_connection_details instead",
@@ -500,7 +500,7 @@ class CveXplore(object):
         return f"Using api endpoint: {self.datasource.baseurl}"
 
     @property
-    def version(self):
+    def version(self) -> str:
         """Property returning current version"""
         return self.__version
 
