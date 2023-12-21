@@ -5,7 +5,7 @@ from CveXplore.common.config import Configuration
 from CveXplore.core.database_maintenance.sources_process import CVEDownloads
 from CveXplore.core.nvd_nist.nvd_nist_api import NvdNistApi
 
-config = Configuration()
+config = Configuration
 
 os.environ["MONGODB_CON_DETAILS"] = json.dumps(
     {

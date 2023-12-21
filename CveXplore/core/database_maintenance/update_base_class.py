@@ -8,7 +8,7 @@ from CveXplore.common.config import Configuration
 
 class UpdateBaseClass(object):
     def __init__(self, logger_name: str):
-        self.config = Configuration()
+        self.config = Configuration
         self.logger = logging.getLogger(logger_name)
 
         self.logger.removeHandler(self.logger.handlers[0])

@@ -4,6 +4,7 @@ from pymongo import TEXT, ASCENDING
 
 from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
 from CveXplore.core.general.utils import sanitize
+from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
 
 MongoUniqueIndex = namedtuple("MongoUniqueIndex", "index name unique")
 MongoAddIndex = namedtuple("MongoAddIndex", "index name")
@@ -14,8 +15,8 @@ class DatabaseIndexer(UpdateBaseClass):
     Class processing the Mongodb indexes
     """
 
-    def __init__(self, datasource):
-        super().__init__(__name__)
+    def __init__(self, datasource: DatabaseConnectionBase):
+        super().__init__(logger_name=__name__)
 
         database = datasource
         self.database = database.dbclient

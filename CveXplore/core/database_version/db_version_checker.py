@@ -2,14 +2,16 @@ import json
 import os
 
 from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
+from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
 from CveXplore.errors import DatabaseSchemaVersionError
 
 runPath = os.path.dirname(os.path.realpath(__file__))
 
 
 class DatabaseVersionChecker(UpdateBaseClass):
-    def __init__(self, datasource):
-        super().__init__(__name__)
+    def __init__(self, datasource: DatabaseConnectionBase):
+        super().__init__(logger_name=__name__)
+
         with open(os.path.join(runPath, "../../.schema_version")) as f:
             self.schema_version = json.loads(f.read())
 

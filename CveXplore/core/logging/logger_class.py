@@ -32,7 +32,7 @@ class AppLogger(logging.Logger):
         self.formatter = TaskFormatter(
             "%(asctime)s - %(task_name)s - %(name)-8s - %(levelname)-8s - [%(task_id)s] %(message)s"
         )
-        self.config = Configuration()
+        self.config = Configuration
 
         root = logging.getLogger()
 

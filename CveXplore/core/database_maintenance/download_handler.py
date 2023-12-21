@@ -4,7 +4,6 @@ Download Handler
 """
 import datetime
 import gzip
-import json
 import logging
 import os
 import sys
@@ -46,8 +45,13 @@ class DownloadHandler(ABC):
     Each download script has a derived class which handles specifics for that type of content / download.
     """
 
-    def __init__(self, feed_type: str, logger_name: str, prefix: str = None):
-        self.config = Configuration()
+    def __init__(
+        self,
+        feed_type: str,
+        logger_name: str,
+        prefix: str = None,
+    ):
+        self.config = Configuration
 
         self._end = None
 
@@ -67,8 +71,8 @@ class DownloadHandler(ABC):
         self.do_process = True
 
         database = DatabaseConnection(
-            database_type=self.config.DATASOURCE,
-            database_init_parameters=json.loads(os.getenv("DATASOURCE_CON_DETAILS")),
+            database_type=self.config.DATASOURCE_TYPE,
+            database_init_parameters=self.config.DATASOURCE_CONNECTION_DETAILS,
         ).database_connection
 
         self.database = database.dbclient

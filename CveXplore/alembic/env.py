@@ -12,7 +12,7 @@ sys.path.insert(0, folder)
 from CveXplore.common.config import Configuration
 from CveXplore.core.database_models.models import CveXploreBase
 
-app_config = Configuration()
+app_config = Configuration
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

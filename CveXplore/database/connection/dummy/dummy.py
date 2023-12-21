@@ -1,7 +1,7 @@
 from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
 
 
-class SQLBaseConnection(DatabaseConnectionBase):
+class DummyConnection(DatabaseConnectionBase):
     def __init__(self, **kwargs):
         super().__init__(logger_name=__name__)
 

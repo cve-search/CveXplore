@@ -1,7 +1,8 @@
 from CveXplore.api.connection.api_db import ApiDatabaseSource
 from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
+from CveXplore.database.connection.dummy.dummy import DummyConnection
 from CveXplore.database.connection.mongodb.mongo_db import MongoDBConnection
-from CveXplore.database.connection.sqlbase.sql_base import SQLBase
+from CveXplore.database.connection.sqlbase.sql_base import SQLBaseConnection
 
 
 class DatabaseConnection(object):
@@ -12,7 +13,8 @@ class DatabaseConnection(object):
         self._database_connnections = {
             "mongodb": MongoDBConnection,
             "api": ApiDatabaseSource,
-            "mysql": SQLBase,
+            "mysql": SQLBaseConnection,
+            "dummy": DummyConnection,
         }
 
         self._database_connection = self._database_connnections[self.database_type](

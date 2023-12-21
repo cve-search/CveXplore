@@ -331,6 +331,7 @@ def retry_policy(info: RetryInfo) -> RetryPolicyStrategy:
 class ApiDataIterator(object):
     def __init__(self, api_data: ApiData):
         self.logger = logging.getLogger(__name__)
+        self.config = Configuration
 
         self._page_length = api_data.results_per_page
         self._total_results = api_data.total_results
@@ -349,8 +350,6 @@ class ApiDataIterator(object):
         self.last_stop_time = 0
 
         self.workload = None
-
-        self.config = Configuration()
 
     def __iter__(self):
         return self

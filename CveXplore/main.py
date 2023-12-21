@@ -2,10 +2,34 @@
 Main
 ====
 """
+import os
+import shutil
+
+from dotenv import load_dotenv
+
+if not os.path.exists(os.path.expanduser("~/.cvexplore")):
+    os.mkdir(os.path.expanduser("~/.cvexplore"))
+
+user_wd = os.path.expanduser("~/.cvexplore")
+
+if not os.path.exists(os.path.join(user_wd, ".env")):
+    shutil.copyfile(
+        os.path.join(os.path.dirname(__file__), ".env_example"),
+        os.path.join(user_wd, ".env"),
+    )
+
+load_dotenv(os.path.join(user_wd, ".env"))
+
+if not os.path.exists(os.path.join(user_wd, ".sources.ini")):
+    shutil.copyfile(
+        os.path.join(os.path.dirname(__file__), ".sources.ini"),
+        os.path.join(user_wd, ".sources.ini"),
+    )
+
 import functools
 import json
 import logging
-import os
+
 import re
 import warnings
 from collections import defaultdict
@@ -21,11 +45,11 @@ from CveXplore.core.database_maintenance.main_updater import MainUpdater
 from CveXplore.core.database_migration.database_migrator import DatabaseMigrator
 from CveXplore.core.general.datasources import supported_datasources
 from CveXplore.database.connection.database_connection import DatabaseConnection
-from CveXplore.database.connection.mongodb.mongo_db import MongoDBConnection
 from CveXplore.errors import DatabaseIllegalCollection
 from CveXplore.errors.datasource import UnsupportedDatasourceException
 from CveXplore.errors.validation import CveNumberValidationError
 from CveXplore.objects.cvexplore_object import CveXploreObject
+
 
 try:
     from version import VERSION
@@ -41,13 +65,7 @@ class CveXplore(object):
     Main class for CveXplore package
     """
 
-    def __init__(
-        self,
-        datasource_type: str = None,
-        datasource_connection_details: dict = None,
-        mongodb_connection_details: dict = None,
-        api_connection_details: dict = None,
-    ):
+    def __init__(self, **kwargs):
         """
         Create a new instance of CveXplore
         :param datasource_type: Which datasource to query.
@@ -64,16 +82,20 @@ class CveXplore(object):
                                        documentation.
         """
         self.__version = VERSION
-        self.config = Configuration()
+        self._config = Configuration
         self.logger = logging.getLogger(__name__)
 
-        self.datasource_type = (
-            datasource_type if datasource_type is not None else self.config.DATASOURCE
-        )
-        self._datasource_connection_details = datasource_connection_details
+        # adjust self.config with kwargs parameters; lower case parameters are converted to uppercase and then changed
+        # in the self.config object
+        for each in kwargs:
+            setattr(self.config, each.upper(), kwargs[each])
 
-        self._mongodb_connection_details = mongodb_connection_details
-        self._api_connection_details = api_connection_details
+        self._datasource_type = self.config.DATASOURCE_TYPE
+
+        self._datasource_connection_details = self.config.DATASOURCE_CONNECTION_DETAILS
+
+        self._mongodb_connection_details = self.config.MONGODB_CONNECTION_DETAILS
+        self._api_connection_details = self.config.API_CONNECTION_DETAILS
 
         os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "NO"})
 
@@ -90,40 +112,56 @@ class CveXplore(object):
             raise ValueError(
                 "Missing datasource_connection_details for selected datasource ('api')"
             )
+        elif self.datasource_type == "api":
+            self.datasource_connection_details[
+                "user_agent"
+            ] = f"CveXplore:{self.version}"
 
-        if self.mongodb_connection_details is not None:
+        if (
+            self.mongodb_connection_details is not None
+            and self.datasource_type == "mongodb"
+        ):
             self.logger.warning(
                 "The use of mongodb_connection_details is deprecated and will be removed in the 0.4 release, please "
                 "use datasource_connection_details instead"
             )
-            os.environ["MONGODB_CON_DETAILS"] = json.dumps(
-                self.mongodb_connection_details
-            )
-            self.datasource = MongoDBConnection(**self.mongodb_connection_details)
-            self.database = MainUpdater(datasource=self.datasource)
-        elif self.api_connection_details is not None:
+            self._datasource_connection_details = self.mongodb_connection_details
+        elif self.api_connection_details is not None and self.datasource_type == "api":
             self.logger.warning(
                 "The use of api_connection_details is deprecated and will be removed in the 0.4 release, please "
                 "use datasource_connection_details instead"
             )
-            self.api_connection_details["user_agent"] = f"CveXplore:{self.version}"
-            os.environ["API_CON_DETAILS"] = json.dumps(self.api_connection_details)
-            self.datasource = ApiDatabaseSource(**self.api_connection_details)
+            self._datasource_connection_details = self.api_connection_details
         else:
-            # by default assume we are talking to a mongodb database
-            datasource_connection_details = {
-                "host": f"{self.config.DATASOURCE_PROTOCOL}://{self.config.DATASOURCE_HOST}:{self.config.DATASOURCE_PORT}"
-            }
-            os.environ["DATASOURCE_TYPE"] = self.datasource_type
-            os.environ["DATASOURCE_CON_DETAILS"] = json.dumps(
-                datasource_connection_details
+            if self.datasource_type == "mongodb":
+                self._datasource_connection_details = {
+                    "host": f"{self.config.DATASOURCE_PROTOCOL}://{self.config.DATASOURCE_HOST}:{self.config.DATASOURCE_PORT}"
+                }
+            elif self.datasource_type == "mysql":
+                self._datasource_connection_details = {
+                    "sql_uri": self.config.SQLALCHEMY_DATABASE_URI
+                }
+            elif self.datasource_type == "api":
+                self._datasource_connection_details = {
+                    "address": (
+                        f"{self.config.DATASOURCE_HOST}",
+                        int(f"{self.config.DATASOURCE_PORT}"),
+                    ),
+                    "api_path": "api",
+                }
+
+            setattr(
+                self.config,
+                "DATASOURCE_CONNECTION_DETAILS",
+                self.datasource_connection_details,
             )
 
             self.datasource = DatabaseConnection(
                 database_type=self.datasource_type,
-                database_init_parameters=datasource_connection_details,
+                database_init_parameters=self.datasource_connection_details,
             ).database_connection
-            self.database = MainUpdater(datasource=self.datasource)
+            if self.datasource_type != "api":
+                self.database = MainUpdater(datasource=self.datasource)
 
         self.database_migrator = DatabaseMigrator()
 
@@ -142,6 +180,14 @@ class CveXplore(object):
         self.cwe = CWEDatabaseFunctions(collection="cwe")
 
         self.logger.info(f"Initialized CveXplore version: {self.version}")
+
+    @property
+    def config(self):
+        return self._config
+
+    @property
+    def datasource_type(self) -> str:
+        return self._datasource_type
 
     @property
     def datasource_connection_details(self):

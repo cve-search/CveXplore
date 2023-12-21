@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from CveXplore.common.config import Configuration
 
-config = Configuration()
+config = Configuration
 
 engine = create_engine(config.SQLALCHEMY_DATABASE_URI, echo=True)
 

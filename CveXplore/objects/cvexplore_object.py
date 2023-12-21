@@ -2,7 +2,6 @@
 CveXploreObject
 ===============
 """
-from CveXplore.common.config import Configuration
 
 
 class CveXploreObject(object):
@@ -11,7 +10,7 @@ class CveXploreObject(object):
     """
 
     def __init__(self):
-        self.config = Configuration()
+        pass
 
     def __repr__(self) -> str:
         return f"<< {self.__class__.__name__} >>"
