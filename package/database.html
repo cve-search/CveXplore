@@ -53,23 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="common.html">Common</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Database</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#database-connection">Database connection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-CveXplore.database.helpers.cvesearch_mongo_database">Database helpers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#mongodb-specific">Mongodb specific</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection"><code class="docutils literal notranslate"><span class="pre">CveSearchCollection</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__init__"><code class="docutils literal notranslate"><span class="pre">CveSearchCollection.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__repr__"><code class="docutils literal notranslate"><span class="pre">CveSearchCollection.__repr__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.find"><code class="docutils literal notranslate"><span class="pre">CveSearchCollection.find()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__init__"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__next__"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor.__next__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__repr__"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor.__repr__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.next"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor.next()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#database-helpers">Database helpers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#database-maintenance">Database Maintenance</a></li>
 </ul>
 </li>
@@ -110,69 +94,8 @@
 <section id="database-connection">
 <h2>Database connection<a class="headerlink" href="#database-connection" title="Link to this heading"></a></h2>
 </section>
-<section id="module-CveXplore.database.helpers.cvesearch_mongo_database">
-<span id="database-helpers"></span><h2>Database helpers<a class="headerlink" href="#module-CveXplore.database.helpers.cvesearch_mongo_database" title="Link to this heading"></a></h2>
-<section id="mongodb-specific">
-<h3>Mongodb specific<a class="headerlink" href="#mongodb-specific" title="Link to this heading"></a></h3>
-</section>
-<dl class="py class">
-<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.cvesearch_mongo_database.</span></span><span class="sig-name descname"><span class="pre">CveSearchCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCollection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code></p>
-<p>The CveSearchCollection is a custom Collection based on the pymongo Collection class which has been altered to
-return a CveSearchCursor reference on the find method.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCollection.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__init__" title="Link to this definition"></a></dt>
-<dd><p>Get / create a custon cve-search Mongo collection.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__repr__">
-<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCollection.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__repr__" title="Link to this definition"></a></dt>
-<dd><p>Return string representation of this class</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.find">
-<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCollection.find"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.find" title="Link to this definition"></a></dt>
-<dd><p>Query the database as you would do so with a pymongo Collection.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.cvesearch_mongo_database.</span></span><span class="sig-name descname"><span class="pre">CveSearchCursor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCursor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Cursor</span></code></p>
-<p>The CveSearchCursor is a custom cursor based on the pymongo cursor which will return database objects instead of
-the raw data from the mongodb database.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCursor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__init__" title="Link to this definition"></a></dt>
-<dd><p>Create a new cve-search cursor.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__next__">
-<span class="sig-name descname"><span class="pre">__next__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__next__" title="Link to this definition"></a></dt>
-<dd><p>Advance the cursor and return CveXplore objects</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__repr__">
-<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCursor.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__repr__" title="Link to this definition"></a></dt>
-<dd><p>Return string representation of this class</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.next">
-<span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCursor.next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.next" title="Link to this definition"></a></dt>
-<dd><p>Advance the cursor and return CveXplore objects</p>
-</dd></dl>
-
-</dd></dl>
-
+<section id="database-helpers">
+<h2>Database helpers<a class="headerlink" href="#database-helpers" title="Link to this heading"></a></h2>
 </section>
 <section id="database-maintenance">
 <h2>Database Maintenance<a class="headerlink" href="#database-maintenance" title="Link to this heading"></a></h2>
