@@ -5,9 +5,7 @@ Data source connection
 import json
 import os
 
-from CveXplore.api.connection.api_db import ApiDatabaseSource
 from CveXplore.database.connection.database_connection import DatabaseConnection
-from CveXplore.database.connection.mongodb.mongo_db import MongoDBConnection
 from CveXplore.objects.cvexplore_object import CveXploreObject
 
 
@@ -19,19 +17,10 @@ class DatasourceConnection(CveXploreObject):
 
     # hack for documentation building
     if json.loads(os.getenv("DOC_BUILD"))["DOC_BUILD"] != "YES":
-        try:
-            __DATA_SOURCE_CONNECTION = (
-                ApiDatabaseSource(**json.loads(os.getenv("API_CON_DETAILS")))
-                if os.getenv("API_CON_DETAILS")
-                else MongoDBConnection(**json.loads(os.getenv("MONGODB_CON_DETAILS")))
-            )
-        except TypeError:
-            __DATA_SOURCE_CONNECTION = DatabaseConnection(
-                database_type=os.getenv("DATASOURCE_TYPE"),
-                database_init_parameters=json.loads(
-                    os.getenv("DATASOURCE_CON_DETAILS")
-                ),
-            ).database_connection
+        __DATA_SOURCE_CONNECTION = DatabaseConnection(
+            database_type="dummy",
+            database_init_parameters={},
+        ).database_connection
 
     def to_dict(self, *print_keys: str) -> dict:
         """

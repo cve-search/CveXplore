@@ -5,29 +5,7 @@ Configuration
 import ast
 import json
 import os
-import shutil
 from json import JSONDecodeError
-
-from dotenv import load_dotenv
-
-if not os.path.exists(os.path.expanduser("~/.cvexplore")):
-    os.mkdir(os.path.expanduser("~/.cvexplore"))
-
-user_wd = os.path.expanduser("~/.cvexplore")
-
-if not os.path.exists(os.path.join(user_wd, ".env")):
-    shutil.copyfile(
-        os.path.join(os.path.dirname(__file__), ".env_example"),
-        os.path.join(user_wd, ".env"),
-    )
-
-load_dotenv(os.path.join(user_wd, ".env"))
-
-if not os.path.exists(os.path.join(user_wd, ".sources.ini")):
-    shutil.copyfile(
-        os.path.join(os.path.dirname(__file__), ".sources.ini"),
-        os.path.join(user_wd, ".sources.ini"),
-    )
 
 
 def getenv_bool(name: str, default: str = "False"):
@@ -80,7 +58,7 @@ class Configuration(object):
     Class holding the configuration
     """
 
-    USER_HOME_DIR = user_wd
+    USER_HOME_DIR = os.path.expanduser("~/.cvexplore")
 
     CVE_START_YEAR = int(os.getenv("CVE_START_YEAR", 2000))
 
@@ -89,7 +67,7 @@ class Configuration(object):
     # Which datasource to query.Currently supported options include:
     # - mongodb
     # - api
-    DATASOURCE = os.getenv("DATASOURCE", "mongodb")
+    DATASOURCE_TYPE = os.getenv("DATASOURCE_TYPE", "mongodb")
 
     DATASOURCE_PROTOCOL = os.getenv("DATASOURCE_PROTOCOL", "mongodb")
     DATASOURCE_DBAPI = os.getenv("DATASOURCE_DBAPI", None)
@@ -103,6 +81,8 @@ class Configuration(object):
     DATASOURCE_USER = os.getenv("DATASOURCE_USER", "cvexplore")
     DATASOURCE_PASSWORD = os.getenv("DATASOURCE_PASSWORD", "cvexplore")
     DATASOURCE_DBNAME = os.getenv("DATASOURCE_DBNAME", "cvexplore")
+
+    DATASOURCE_CONNECTION_DETAILS = None
 
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "SQLALCHEMY_DATABASE_URI",
@@ -118,13 +98,15 @@ class Configuration(object):
     )
 
     # keep these for now to maintain backwards compatibility
+    API_CONNECTION_DETAILS = None
+    MONGODB_CONNECTION_DETAILS = None
     MONGODB_HOST = os.getenv("MONGODB_HOST", "127.0.0.1")
     MONGODB_PORT = int(os.getenv("MONGODB_PORT", 27017))
 
     if os.getenv("SOURCES") is not None:
         SOURCES = getenv_dict("SOURCES", None)
     else:
-        with open(os.path.join(user_wd, ".sources.ini")) as f:
+        with open(os.path.join(USER_HOME_DIR, ".sources.ini")) as f:
             SOURCES = json.loads(f.read())
 
     NVD_NIST_API_KEY = os.getenv("NVD_NIST_API_KEY", None)
@@ -140,7 +122,9 @@ class Configuration(object):
     }
 
     LOGGING_TO_FILE = getenv_bool("LOGGING_TO_FILE", "True")
-    LOGGING_FILE_PATH = os.getenv("LOGGING_FILE_PATH", os.path.join(user_wd, "log"))
+    LOGGING_FILE_PATH = os.getenv(
+        "LOGGING_FILE_PATH", os.path.join(USER_HOME_DIR, "log")
+    )
 
     if not os.path.exists(LOGGING_FILE_PATH):
         os.mkdir(LOGGING_FILE_PATH)
@@ -165,3 +149,6 @@ class Configuration(object):
     GELF_SYSLOG_ADDITIONAL_FIELDS = getenv_dict("GELF_SYSLOG_ADDITIONAL_FIELDS", None)
 
     MAX_DOWNLOAD_WORKERS = int(os.getenv("MAX_DOWNLOAD_WORKERS", 10))
+
+    def __repr__(self):
+        return f"<< CveXploreConfiguration >>"

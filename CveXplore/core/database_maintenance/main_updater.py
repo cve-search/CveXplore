@@ -18,6 +18,7 @@ from CveXplore.core.database_maintenance.sources_process import (
 from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
 from CveXplore.core.database_version.db_version_checker import DatabaseVersionChecker
 from CveXplore.core.logging.logger_class import AppLogger
+from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
 from CveXplore.errors import UpdateSourceNotFound
 
 logging.setLoggerClass(AppLogger)
@@ -28,11 +29,11 @@ class MainUpdater(UpdateBaseClass):
     The MainUpdater class is the main class for performing database database_maintenance tasks
     """
 
-    def __init__(self, datasource):
+    def __init__(self, datasource: DatabaseConnectionBase):
         """
         Init a new MainUpdater class
         """
-        super().__init__(__name__)
+        super().__init__(logger_name=__name__)
 
         self.datasource = datasource
 

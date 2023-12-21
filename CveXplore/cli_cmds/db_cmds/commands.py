@@ -38,7 +38,7 @@ def sources_cmd(ctx):
 @sources_cmd.group("show", invoke_without_command=True, help="Show sources")
 @click.pass_context
 def show_cmd(ctx):
-    config = Configuration()
+    config = Configuration
 
     if ctx.invoked_subcommand is None:
         printer(input_data=[config.SOURCES])
@@ -56,7 +56,7 @@ def show_cmd(ctx):
 @click.option("-v", "--value", help="Set the source key value")
 @click.pass_context
 def set_cmd(ctx, key, value):
-    config = Configuration()
+    config = Configuration
 
     sources = config.SOURCES
 
@@ -71,7 +71,7 @@ def set_cmd(ctx, key, value):
 @sources_cmd.group("reset", invoke_without_command=True, help="Set sources")
 @click.pass_context
 def reset_cmd(ctx):
-    config = Configuration()
+    config = Configuration
 
     sources = config.DEFAULT_SOURCES
 
