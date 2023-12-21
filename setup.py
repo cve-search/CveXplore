@@ -117,6 +117,9 @@ setup(
             ".schema_version",
             "common/.sources.ini",
             "common/.env_example",
+            "alembic/*",
+            "alembic/**/*",
+            "alembic.ini",
         ]
     },
     entry_points="""
