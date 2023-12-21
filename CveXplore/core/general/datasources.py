@@ -1,1 +1,1 @@
-supported_datasources = {"mongodb", "api"}
+supported_datasources = {"mongodb", "api", "mysql"}

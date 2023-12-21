@@ -1,1 +1,3 @@
 -r ./sqlalchemy.txt
+
+PyMySQL>=1.1.0

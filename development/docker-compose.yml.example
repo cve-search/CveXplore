@@ -1,0 +1,32 @@
+version: '3.5'
+
+services:
+  mysql:
+    image: cvexplore-mysql
+    build:
+      context: .
+      dockerfile: .docker/images/mysql/dockerfile-mysql
+    hostname: mysql
+    restart: always
+    env_file:
+      - .env
+    expose:
+      - 3306
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      backend:
+        ipv4_address: 172.16.50.5
+
+networks:
+  backend:
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "172.16.50.1"
+    ipam:
+      config:
+        - subnet: 172.16.50.0/24
+
+volumes:
+  mysql_data:

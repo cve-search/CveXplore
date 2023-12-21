@@ -92,11 +92,29 @@ class Configuration(object):
     DATASOURCE = os.getenv("DATASOURCE", "mongodb")
 
     DATASOURCE_PROTOCOL = os.getenv("DATASOURCE_PROTOCOL", "mongodb")
+    DATASOURCE_DBAPI = os.getenv("DATASOURCE_DBAPI", None)
     DATASOURCE_HOST = os.getenv(
         "DATASOURCE_HOST", os.getenv("MONGODB_HOST", "127.0.0.1")
     )
     DATASOURCE_PORT = int(
         os.getenv("DATASOURCE_PORT", int(os.getenv("MONGODB_PORT", 27017)))
+    )
+
+    DATASOURCE_USER = os.getenv("DATASOURCE_USER", "cvexplore")
+    DATASOURCE_PASSWORD = os.getenv("DATASOURCE_PASSWORD", "cvexplore")
+    DATASOURCE_DBNAME = os.getenv("DATASOURCE_DBNAME", "cvexplore")
+
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "SQLALCHEMY_DATABASE_URI",
+        f"{DATASOURCE_PROTOCOL}://{DATASOURCE_USER}:{DATASOURCE_PASSWORD}@{DATASOURCE_HOST}:{DATASOURCE_PORT}/{DATASOURCE_DBNAME}"
+        if DATASOURCE_DBAPI is None
+        else f"{DATASOURCE_PROTOCOL}+{DATASOURCE_DBAPI}://{DATASOURCE_USER}:{DATASOURCE_PASSWORD}@{DATASOURCE_HOST}:{DATASOURCE_PORT}/{DATASOURCE_DBNAME}",
+    )
+    SQLALCHEMY_TRACK_MODIFICATIONS = getenv_bool(
+        "SQLALCHEMY_TRACK_MODIFICATIONS", "False"
+    )
+    SQLALCHEMY_ENGINE_OPTIONS = getenv_dict(
+        "SQLALCHEMY_ENGINE_OPTIONS", {"pool_recycle": 299, "pool_timeout": 20}
     )
 
     # keep these for now to maintain backwards compatibility

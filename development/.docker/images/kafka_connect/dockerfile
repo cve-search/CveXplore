@@ -1,0 +1,3 @@
+FROM confluentinc/cp-kafka-connect
+
+RUN confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:10.7.4

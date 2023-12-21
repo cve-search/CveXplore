@@ -2,10 +2,10 @@ from CveXplore.database.connection.base.db_connection_base import DatabaseConnec
 
 
 class SQLBase(DatabaseConnectionBase):
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__(logger_name=__name__)
 
-        self._dbclient = None
+        self._dbclient = {"schema": "test"}
 
     @property
     def dbclient(self):

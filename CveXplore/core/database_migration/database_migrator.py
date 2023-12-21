@@ -18,9 +18,7 @@ class DatabaseMigrator(object):
             cwd
             if cwd is not None
             else os.path.dirname(
-                os.path.dirname(
-                    os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-                )
+                os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
             )
         )
 
@@ -62,7 +60,7 @@ class DatabaseMigrator(object):
 
     def __parse_command_output(self, cmd_output: CompletedProcess) -> None:
         if cmd_output.returncode != 0:
-            self.logger.error(cmd_output.stdout.split("\n")[0])
+            self.logger.error(cmd_output.stdout)
         else:
             output_list = cmd_output.stdout.split("\n")
 
@@ -84,7 +82,7 @@ class DatabaseMigrator(object):
 
         command_mapping = {
             1: f"alembic init alembic",
-            2: f"alembic revision -m {message}",
+            2: f'alembic revision --autogenerate -m "{message}"',
             3: f"alembic upgrade head",
             4: f"alembic current",
             5: f"alembic history --verbose",
