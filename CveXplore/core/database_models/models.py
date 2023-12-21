@@ -1,4 +1,14 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, Float, JSON, Text, BigInteger
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    DateTime,
+    Boolean,
+    Float,
+    JSON,
+    Text,
+    BigInteger,
+)
 
 from sqlalchemy.orm import declarative_base
 
