@@ -42,7 +42,6 @@ from CveXplore.common.config import Configuration
 from CveXplore.common.cpe_converters import create_cpe_regex_string
 from CveXplore.common.db_mapping import database_mapping
 from CveXplore.core.database_maintenance.main_updater import MainUpdater
-from CveXplore.core.database_migration.database_migrator import DatabaseMigrator
 from CveXplore.core.general.datasources import supported_datasources
 from CveXplore.database.connection.database_connection import DatabaseConnection
 from CveXplore.errors import DatabaseIllegalCollection
@@ -162,8 +161,6 @@ class CveXplore(object):
             ).database_connection
             if self.datasource_type != "api":
                 self.database = MainUpdater(datasource=self.datasource)
-
-        self.database_migrator = DatabaseMigrator()
 
         self._database_mapping = database_mapping
 

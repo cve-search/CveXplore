@@ -16,6 +16,7 @@ from CveXplore.core.database_maintenance.sources_process import (
     EPSSDownloads,
 )
 from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
+from CveXplore.core.database_migration.database_migrator import DatabaseMigrator
 from CveXplore.core.database_version.db_version_checker import DatabaseVersionChecker
 from CveXplore.core.logging.logger_class import AppLogger
 from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
@@ -48,6 +49,9 @@ class MainUpdater(UpdateBaseClass):
 
         self.database_indexer = DatabaseIndexer(datasource=datasource)
         self.schema_checker = DatabaseVersionChecker(datasource=datasource)
+        self.database_migrator = DatabaseMigrator()
+
+        self.do_initialize = False
 
     def validate_schema(self):
         return self.schema_checker.validate_schema()
@@ -58,6 +62,13 @@ class MainUpdater(UpdateBaseClass):
         """
         self.logger.info(f"Starting Database update....")
         start_time = time.time()
+
+        if not self.do_initialize:
+            if self.datasource != "api" or self.datasource != "mongodb":
+                self.logger.info(
+                    f"Upgrading database schema to latest head, if needed..."
+                )
+                self.database_migrator.db_upgrade()
 
         if update_source is not None:
             if not isinstance(update_source, str | list):
@@ -114,6 +125,10 @@ class MainUpdater(UpdateBaseClass):
         self.logger.info(f"Starting Database population....")
         start_time = time.time()
 
+        if self.datasource != "api" or self.datasource != "mongodb":
+            self.logger.info(f"Upgrading database schema to latest head, if needed...")
+            self.database_migrator.db_upgrade()
+
         if populate_source is not None:
             if not isinstance(populate_source, str | list):
                 raise ValueError("Wrong 'populate_source' parameter type received!")
@@ -169,6 +184,12 @@ class MainUpdater(UpdateBaseClass):
 
         self.logger.info(f"Starting Database initialization....")
         start_time = time.time()
+
+        self.do_initialize = True
+
+        if self.datasource != "api" or self.datasource != "mongodb":
+            self.logger.info(f"Upgrading database schema to latest head, if needed...")
+            self.database_migrator.db_upgrade()
 
         cpe_pop = CPEDownloads()
         cpe_pop.populate()

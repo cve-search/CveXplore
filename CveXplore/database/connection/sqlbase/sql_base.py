@@ -10,3 +10,6 @@ class SQLBaseConnection(DatabaseConnectionBase):
     @property
     def dbclient(self):
         return self._dbclient
+
+    def set_handlers_for_collections(self):
+        pass
