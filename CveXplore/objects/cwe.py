@@ -26,7 +26,7 @@ class Cwe(DatasourceConnection):
         if hasattr(self, "related_weaknesses"):
             if len(self.related_weaknesses) != 0:
                 for each in self.related_weaknesses:
-                    cwe_doc = self._datasource_connection.store_cwe.find_one(
+                    cwe_doc = self.datasource_connection.store_cwe.find_one(
                         {"id": each}
                     )
 
@@ -40,7 +40,7 @@ class Cwe(DatasourceConnection):
         :rtype: Capec
         """
 
-        related_capecs = self._datasource_connection.store_capec.find(
+        related_capecs = self.datasource_connection.store_capec.find(
             {"related_weakness": self.id}
         )
 

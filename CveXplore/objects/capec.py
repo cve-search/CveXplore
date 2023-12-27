@@ -26,7 +26,7 @@ class Capec(DatasourceConnection):
         if hasattr(self, "related_weakness"):
             if len(self.related_weakness) != 0:
                 for each in self.related_weakness:
-                    cwe_doc = self._datasource_connection.store_cwe.find_one(
+                    cwe_doc = self.datasource_connection.store_cwe.find_one(
                         {"id": each}
                     )
 
@@ -42,7 +42,7 @@ class Capec(DatasourceConnection):
         if hasattr(self, "related_capecs"):
             if len(self.related_capecs) != 0:
                 for each in self.related_capecs:
-                    capec_doc = self._datasource_connection.store_capec.find_one(
+                    capec_doc = self.datasource_connection.store_capec.find_one(
                         {"id": each}
                     )
 

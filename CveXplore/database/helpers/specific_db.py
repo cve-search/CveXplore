@@ -30,7 +30,7 @@ class CvesDatabaseFunctions(GenericDatabaseFactory):
         """
 
         the_result = list(
-            self._datasource_collection_connection.find({"vendors": vendor})
+            self.datasource_collection_connection.find({"vendors": vendor})
             .limit(limit)
             .sort("cvss", DESCENDING)
         )
@@ -69,7 +69,7 @@ class CvesDatabaseFunctions(GenericDatabaseFactory):
             except ValueError:
                 return "Provided value is not a string nor can it be cast to one"
 
-        return self._datasource_collection_connection.find_one({"id": doc_id})
+        return self.datasource_collection_connection.find_one({"id": doc_id})
 
     def _field_list(self, doc_id: str) -> list:
         """
@@ -84,7 +84,7 @@ class CvesDatabaseFunctions(GenericDatabaseFactory):
                     map(
                         lambda d: d.to_dict(),
                         [
-                            self._datasource_collection_connection.find_one(
+                            self.datasource_collection_connection.find_one(
                                 {"id": doc_id}
                             )
                         ],
@@ -116,7 +116,7 @@ class CpeDatabaseFunctions(GenericDatabaseFactory):
         query = {"$and": [{field: {"$regex": regex}}, {"deprecated": False}]}
 
         the_result = list(
-            self._datasource_collection_connection.find(query)
+            self.datasource_collection_connection.find(query)
             .limit(limit)
             .sort(field, sorting)
         )
@@ -136,7 +136,7 @@ class CpeDatabaseFunctions(GenericDatabaseFactory):
         query = {"$and": [{field: value}, {"deprecated": False}]}
 
         the_result = list(
-            self._datasource_collection_connection.find(query)
+            self.datasource_collection_connection.find(query)
             .limit(limit)
             .sort(field, sorting)
         )
