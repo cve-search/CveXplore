@@ -26,20 +26,20 @@ class Cves(DatasourceConnection):
                     try:
                         if int(cwe_id):
                             results = getattr(
-                                self._datasource_connection, "store_cwe"
+                                self.datasource_connection, "store_cwe"
                             ).find_one({"id": cwe_id})
                             if results is not None:
                                 self.cwe = results
                     except ValueError:
                         pass
 
-                    capecs = self._datasource_connection.store_capec.find(
+                    capecs = self.datasource_connection.store_capec.find(
                         {"related_weakness": {"$in": [cwe_id]}}
                     )
 
                     setattr(self, "capec", list(capecs))
 
-        via4s = self._datasource_connection.store_via4.find_one({"id": self.id})
+        via4s = self.datasource_connection.store_via4.find_one({"id": self.id})
 
         if via4s is not None:
             setattr(self, "via4_references", via4s)
