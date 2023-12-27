@@ -4,6 +4,7 @@ import logging
 import math
 import random
 import time
+import uuid
 from collections import namedtuple
 from datetime import datetime, timedelta
 from json import JSONDecodeError
@@ -422,11 +423,12 @@ class ApiDataIterator(object):
 
     @retry(retry_policy)
     async def fetch(self, session: aiohttp.ClientSession, url: str):
+        request_id = uuid.uuid4()
         try:
             async with session.get(
                 url, proxy=self.config.HTTP_PROXY_STRING
             ) as response:
-                self.logger.debug(f"Sending request to url: {url}")
+                self.logger.debug(f"[{request_id}] Sending request to url: {url}")
                 if response.status == 200:
                     data = await response.json()
                     if "format" in data:
@@ -465,15 +467,15 @@ class ApiDataIterator(object):
         except ContentTypeError:
             return ApiDataRetrievalFailed(url)
         finally:
-            self.logger.debug(f"Finished request to url: {url}")
             random_sleep = round(
                 random.SystemRandom().uniform(
                     self.config.DOWNLOAD_SLEEP_MIN, self.config.DOWNLOAD_SLEEP_MAX
                 ),
                 1,
             )
-            self.logger.debug(f"Sleeping for {random_sleep} secs...")
+            self.logger.debug(f"[{request_id}] Sleeping for {random_sleep} secs...")
             await asyncio.sleep(random_sleep)
+            self.logger.debug(f"[{request_id}] Finished request")
 
     async def fetch_all(self, loop):
         sem = asyncio.Semaphore(math.ceil(30 / self.sem_factor))
