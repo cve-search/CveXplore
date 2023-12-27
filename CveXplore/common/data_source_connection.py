@@ -15,18 +15,39 @@ class DatasourceConnection(CveXploreObject):
     objects and generic database functions
     """
 
-    # hack for documentation building
-    if json.loads(os.getenv("DOC_BUILD"))["DOC_BUILD"] != "YES":
-        __DATA_SOURCE_CONNECTION = DatabaseConnection(
-            database_type="dummy",
-            database_init_parameters={},
-        ).database_connection
+    def __init__(self, collection: str):
+        """
+        Create a DatasourceConnection object
+        """
+        super().__init__()
+        self._collection = collection
+
+    @property
+    def datasource_connection(self):
+        # hack for documentation building
+        if json.loads(os.getenv("DOC_BUILD"))["DOC_BUILD"] == "YES":
+            return DatabaseConnection(
+                database_type="dummy",
+                database_init_parameters={},
+            ).database_connection
+        else:
+            return DatabaseConnection(
+                database_type=self.config.DATASOURCE_TYPE,
+                database_init_parameters=self.config.DATASOURCE_CONNECTION_DETAILS,
+            ).database_connection
+
+    @property
+    def datasource_collection_connection(self):
+        return getattr(self.datasource_connection, f"store_{self.collection}")
+
+    @property
+    def collection(self):
+        return self._collection
 
     def to_dict(self, *print_keys: str) -> dict:
         """
         Method to convert the entire object to a dictionary
         """
-
         if len(print_keys) != 0:
             full_dict = {
                 k: v
@@ -40,30 +61,8 @@ class DatasourceConnection(CveXploreObject):
 
         return full_dict
 
-    def __init__(self, collection: str):
-        """
-        Create a DatasourceConnection object
-        """
-        super().__init__()
-        self.__collection = collection
-
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other):
         return self.__dict__ != other.__dict__
-
-    @property
-    def _datasource_connection(self):
-        return DatasourceConnection.__DATA_SOURCE_CONNECTION
-
-    @property
-    def _datasource_collection_connection(self):
-        return getattr(
-            DatasourceConnection.__DATA_SOURCE_CONNECTION,
-            f"store_{self.__collection}",
-        )
-
-    @property
-    def _collection(self):
-        return self.__collection
