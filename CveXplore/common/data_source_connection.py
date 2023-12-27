@@ -25,7 +25,7 @@ class DatasourceConnection(CveXploreObject):
     @property
     def datasource_connection(self):
         # hack for documentation building
-        if json.loads(os.getenv("DOC_BUILD"))["DOC_BUILD"] != "YES":
+        if json.loads(os.getenv("DOC_BUILD"))["DOC_BUILD"] == "YES":
             return DatabaseConnection(
                 database_type="dummy",
                 database_init_parameters={},
