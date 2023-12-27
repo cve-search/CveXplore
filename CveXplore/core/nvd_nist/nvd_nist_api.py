@@ -338,10 +338,13 @@ class ApiDataIterator(object):
         self._current_index = api_data.start_index
         self.api_data = api_data
 
-        self.sem_factor = 6
+        if self.config.DOWNLOAD_SEM_FACTOR != 0.0:
+            self.sem_factor = self.config.DOWNLOAD_SEM_FACTOR
+        else:
+            self.sem_factor = 6
 
-        if not self.api_data.api_handle.api_key_limit:
-            self.sem_factor = 0.6
+            if not self.api_data.api_handle.api_key_limit:
+                self.sem_factor = 0.6
 
         self.logger.debug(f"Using sem factor: {self.sem_factor}")
 
@@ -463,7 +466,14 @@ class ApiDataIterator(object):
             return ApiDataRetrievalFailed(url)
         finally:
             self.logger.debug(f"Finished request to url: {url}")
-            time.sleep(self.sem_factor / 2)
+            random_sleep = round(
+                random.SystemRandom().uniform(
+                    self.config.DOWNLOAD_SLEEP_MIN, self.config.DOWNLOAD_SLEEP_MAX
+                ),
+                1,
+            )
+            self.logger.debug(f"Sleeping for {random_sleep} secs...")
+            await asyncio.sleep(random_sleep)
 
     async def fetch_all(self, loop):
         sem = asyncio.Semaphore(math.ceil(30 / self.sem_factor))
