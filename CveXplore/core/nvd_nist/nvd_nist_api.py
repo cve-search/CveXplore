@@ -379,10 +379,20 @@ class ApiDataIterator(object):
 
             self.workload = []
 
-            if self.api_data.api_handle.api_key_limit:
-                batch_range = 5
+            if self.config.DOWNLOAD_BATCH_RANGE is None:
+                if self.api_data.api_handle.api_key_limit:
+                    batch_range = 5
+                else:
+                    batch_range = 45
             else:
-                batch_range = 45
+                try:
+                    batch_range = int(self.config.DOWNLOAD_BATCH_RANGE)
+                except ValueError:
+                    self.logger.error(
+                        f"Invalid value for DOWNLOAD_BATCH_RANGE, {self.config.DOWNLOAD_BATCH_RANGE} "
+                        f"cannot be converted into an integer..."
+                    )
+                    raise
 
             for i in range(batch_range):
                 if not self.first_iteration:

@@ -158,6 +158,7 @@ class Configuration(object):
     )  # if set, should be set >=0.6
     DOWNLOAD_SLEEP_MIN = float(os.getenv("DOWNLOAD_SLEEP_MIN", 0.5))
     DOWNLOAD_SLEEP_MAX = float(os.getenv("DOWNLOAD_SLEEP_MAX", 2.5))
+    DOWNLOAD_BATCH_RANGE = os.getenv("DOWNLOAD_BATCH_RANGE", None)
 
     def __repr__(self):
         return f"<< CveXploreConfiguration >>"
