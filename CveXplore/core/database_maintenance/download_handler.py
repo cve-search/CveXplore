@@ -82,7 +82,8 @@ class DownloadHandler(ABC):
 
         self.logger = logging.getLogger(logger_name)
 
-        self.logger.removeHandler(self.logger.handlers[0])
+        if len(self.logger.handlers) == 1:
+            self.logger.removeHandler(self.logger.handlers[0])
 
         self.logger.propagate = False
 
@@ -109,10 +110,11 @@ class DownloadHandler(ABC):
             for handler in self.logger.handlers:
                 # add the handlers to the logger
                 # makes sure no duplicate handlers are added
-                if not isinstance(handler, CveExploreUpdateRfhHandler):
+                if not isinstance(
+                    handler, CveExploreUpdateRfhHandler
+                ) and not isinstance(handler, CveExploreUpdateStreamHandler):
                     if crf is not None:
                         self.logger.addHandler(crf)
-                if not isinstance(handler, CveExploreUpdateStreamHandler):
                     self.logger.addHandler(cli)
         else:
             if crf is not None:
