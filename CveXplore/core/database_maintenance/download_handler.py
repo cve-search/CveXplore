@@ -15,7 +15,6 @@ from abc import ABC, abstractmethod
 from datetime import timedelta
 from io import BytesIO
 from itertools import islice
-from logging.handlers import RotatingFileHandler
 from shutil import copy
 from typing import Tuple
 
@@ -30,6 +29,8 @@ from CveXplore.common.config import Configuration
 from CveXplore.core.general.utils import sanitize
 from CveXplore.core.worker_queue.worker_q import WorkerQueue
 from ..database_indexer.db_indexer import DatabaseIndexer
+from ..logging.handlers.cve_explore_rfh import CveExploreUpdateRfhHandler
+from ..logging.handlers.cve_explore_stream import CveExploreUpdateStreamHandler
 from ..logging.logger_class import AppLogger
 from ...database.connection.database_connection import DatabaseConnection
 
@@ -81,7 +82,8 @@ class DownloadHandler(ABC):
 
         self.logger = logging.getLogger(logger_name)
 
-        self.logger.removeHandler(self.logger.handlers[0])
+        if len(self.logger.handlers) == 1:
+            self.logger.removeHandler(self.logger.handlers[0])
 
         self.logger.propagate = False
 
@@ -91,15 +93,12 @@ class DownloadHandler(ABC):
 
         crf = None
 
-        cli = logging.StreamHandler(stream=sys.stdout)
+        cli = CveExploreUpdateStreamHandler(stream=sys.stdout)
         cli.setFormatter(self.formatter)
         cli.setLevel(logging.INFO)
 
-        if self.config.LOGGING_FILE_PATH != "":
-            if not os.path.exists(self.config.LOGGING_FILE_PATH):
-                os.makedirs(self.config.LOGGING_FILE_PATH)
-
-            crf = RotatingFileHandler(
+        if self.config.LOGGING_TO_FILE:
+            crf = CveExploreUpdateRfhHandler(
                 filename=f"{self.config.LOGGING_FILE_PATH}/{self.config.LOGGING_UPDATE_FILE_NAME}",
                 maxBytes=self.config.LOGGING_MAX_FILE_SIZE,
                 backupCount=self.config.LOGGING_BACKLOG,
@@ -107,7 +106,17 @@ class DownloadHandler(ABC):
             crf.setLevel(logging.DEBUG)
             crf.setFormatter(self.formatter)
 
-        if not len(self.logger.handlers):
+        if len(self.logger.handlers) > 0:
+            for handler in self.logger.handlers:
+                # add the handlers to the logger
+                # makes sure no duplicate handlers are added
+                if not isinstance(
+                    handler, CveExploreUpdateRfhHandler
+                ) and not isinstance(handler, CveExploreUpdateStreamHandler):
+                    if crf is not None:
+                        self.logger.addHandler(crf)
+                    self.logger.addHandler(cli)
+        else:
             if crf is not None:
                 self.logger.addHandler(crf)
             self.logger.addHandler(cli)

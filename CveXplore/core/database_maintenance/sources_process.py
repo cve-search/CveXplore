@@ -48,25 +48,6 @@ class CPEDownloads(NVDApiHandler):
         pass
 
     @staticmethod
-    def stem(cpe_uri: str):
-        cpe_stem = cpe_uri.split(":")
-        return ":".join(cpe_stem[:5])
-
-    @staticmethod
-    def padded_version(version: str):
-        if version == "-" or version == "":
-            return version
-        else:
-            ret_list = []
-            for v in version.split("."):
-                try:
-                    ret_list.append(f"{int(v):05d}")
-                except ValueError:
-                    ret_list.append(v.rjust(5, "0"))
-
-            return ".".join(ret_list)
-
-    @staticmethod
     def parse_cpe_version(cpename: str):
         cpe_list = cpename.split(":")
         version_stem = cpe_list[5]
@@ -389,25 +370,6 @@ class CVEDownloads(NVDApiHandler):
         vendor = cpeUri.split(":")[3]
         product = cpeUri.split(":")[4]
         return vendor, product
-
-    @staticmethod
-    def stem(cpeUri: str):
-        cpeArr = cpeUri.split(":")
-        return ":".join(cpeArr[:5])
-
-    @staticmethod
-    def padded_version(version: str):
-        if version == "-" or version == "":
-            return version
-        else:
-            ret_list = []
-            for v in version.split("."):
-                try:
-                    ret_list.append(f"{int(v):05d}")
-                except ValueError:
-                    ret_list.append(v.rjust(5, "0"))
-
-            return ".".join(ret_list)
 
     def file_to_queue(self, *args):
         pass

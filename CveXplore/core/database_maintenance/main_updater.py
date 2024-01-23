@@ -53,6 +53,9 @@ class MainUpdater(UpdateBaseClass):
 
         self.do_initialize = False
 
+    def __repr__(self):
+        return f"<<MainUpdater>>"
+
     def validate_schema(self):
         return self.schema_checker.validate_schema()
 
