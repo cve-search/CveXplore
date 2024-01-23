@@ -4,6 +4,7 @@ import logging
 import math
 import random
 import time
+import uuid
 from collections import namedtuple
 from datetime import datetime, timedelta
 from json import JSONDecodeError
@@ -338,10 +339,13 @@ class ApiDataIterator(object):
         self._current_index = api_data.start_index
         self.api_data = api_data
 
-        self.sem_factor = 6
+        if self.config.DOWNLOAD_SEM_FACTOR != 0.0:
+            self.sem_factor = self.config.DOWNLOAD_SEM_FACTOR
+        else:
+            self.sem_factor = 6
 
-        if not self.api_data.api_handle.api_key_limit:
-            self.sem_factor = 0.6
+            if not self.api_data.api_handle.api_key_limit:
+                self.sem_factor = 0.6
 
         self.logger.debug(f"Using sem factor: {self.sem_factor}")
 
@@ -375,10 +379,20 @@ class ApiDataIterator(object):
 
             self.workload = []
 
-            if self.api_data.api_handle.api_key_limit:
-                batch_range = 5
+            if self.config.DOWNLOAD_BATCH_RANGE is None:
+                if self.api_data.api_handle.api_key_limit:
+                    batch_range = 5
+                else:
+                    batch_range = 45
             else:
-                batch_range = 45
+                try:
+                    batch_range = int(self.config.DOWNLOAD_BATCH_RANGE)
+                except ValueError:
+                    self.logger.error(
+                        f"Invalid value for DOWNLOAD_BATCH_RANGE, {self.config.DOWNLOAD_BATCH_RANGE} "
+                        f"cannot be converted into an integer..."
+                    )
+                    raise
 
             for i in range(batch_range):
                 if not self.first_iteration:
@@ -419,11 +433,12 @@ class ApiDataIterator(object):
 
     @retry(retry_policy)
     async def fetch(self, session: aiohttp.ClientSession, url: str):
+        request_id = uuid.uuid4()
         try:
             async with session.get(
                 url, proxy=self.config.HTTP_PROXY_STRING
             ) as response:
-                self.logger.debug(f"Sending request to url: {url}")
+                self.logger.debug(f"[{request_id}] Sending request to url: {url}")
                 if response.status == 200:
                     data = await response.json()
                     if "format" in data:
@@ -462,8 +477,15 @@ class ApiDataIterator(object):
         except ContentTypeError:
             return ApiDataRetrievalFailed(url)
         finally:
-            self.logger.debug(f"Finished request to url: {url}")
-            time.sleep(self.sem_factor / 2)
+            random_sleep = round(
+                random.SystemRandom().uniform(
+                    self.config.DOWNLOAD_SLEEP_MIN, self.config.DOWNLOAD_SLEEP_MAX
+                ),
+                1,
+            )
+            self.logger.debug(f"[{request_id}] Sleeping for {random_sleep} secs...")
+            await asyncio.sleep(random_sleep)
+            self.logger.debug(f"[{request_id}] Finished request")
 
     async def fetch_all(self, loop):
         sem = asyncio.Semaphore(math.ceil(30 / self.sem_factor))
