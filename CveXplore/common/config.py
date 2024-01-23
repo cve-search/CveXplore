@@ -150,5 +150,15 @@ class Configuration(object):
 
     MAX_DOWNLOAD_WORKERS = int(os.getenv("MAX_DOWNLOAD_WORKERS", 10))
 
+    # This factor determines the amount of simultaneous requests made towards the NIST API;
+    # The set amount of client requests (30) get divided with the sem factor, so the lower
+    # it is set, the more simultaneous requests are made.
+    DOWNLOAD_SEM_FACTOR = float(
+        os.getenv("DOWNLOAD_SEM_FACTOR", 0.0)
+    )  # if set, should be set >=0.6
+    DOWNLOAD_SLEEP_MIN = float(os.getenv("DOWNLOAD_SLEEP_MIN", 0.5))
+    DOWNLOAD_SLEEP_MAX = float(os.getenv("DOWNLOAD_SLEEP_MAX", 2.5))
+    DOWNLOAD_BATCH_RANGE = os.getenv("DOWNLOAD_BATCH_RANGE", None)
+
     def __repr__(self):
         return f"<< CveXploreConfiguration >>"
