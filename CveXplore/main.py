@@ -149,18 +149,18 @@ class CveXplore(object):
                     "api_path": "api",
                 }
 
-            setattr(
-                self.config,
-                "DATASOURCE_CONNECTION_DETAILS",
-                self.datasource_connection_details,
-            )
+        setattr(
+            self.config,
+            "DATASOURCE_CONNECTION_DETAILS",
+            self.datasource_connection_details,
+        )
 
-            self.datasource = DatabaseConnection(
-                database_type=self.datasource_type,
-                database_init_parameters=self.datasource_connection_details,
-            ).database_connection
-            if self.datasource_type != "api":
-                self.database = MainUpdater(datasource=self.datasource)
+        self.datasource = DatabaseConnection(
+            database_type=self.datasource_type,
+            database_init_parameters=self.datasource_connection_details,
+        ).database_connection
+        if self.datasource_type != "api":
+            self.database = MainUpdater(datasource=self.datasource)
 
         self._database_mapping = database_mapping
 
