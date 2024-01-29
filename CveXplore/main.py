@@ -14,7 +14,7 @@ user_wd = os.path.expanduser("~/.cvexplore")
 
 if not os.path.exists(os.path.join(user_wd, ".env")):
     shutil.copyfile(
-        os.path.join(os.path.dirname(__file__), ".env_example"),
+        os.path.join(os.path.dirname(__file__), "common/.env_example"),
         os.path.join(user_wd, ".env"),
     )
 
@@ -22,7 +22,7 @@ load_dotenv(os.path.join(user_wd, ".env"))
 
 if not os.path.exists(os.path.join(user_wd, ".sources.ini")):
     shutil.copyfile(
-        os.path.join(os.path.dirname(__file__), ".sources.ini"),
+        os.path.join(os.path.dirname(__file__), "common/.sources.ini"),
         os.path.join(user_wd, ".sources.ini"),
     )
 
