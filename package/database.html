@@ -53,7 +53,60 @@
 <li class="toctree-l1"><a class="reference internal" href="common.html">Common</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Database</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#database-connection">Database connection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#database-helpers">Database helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-CveXplore.database.helpers.generic_db">Database helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generic-database-functions">Generic database functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFactory</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.__init__"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFactory.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.__repr__"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFactory.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.field_list"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFactory.field_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.get_by_id"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFactory.get_by_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.mget_by_id"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFactory.mget_by_id()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFieldsFunctions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.__init__"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFieldsFunctions.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.__repr__"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFieldsFunctions.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.find"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFieldsFunctions.find()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.search"><code class="docutils literal notranslate"><span class="pre">GenericDatabaseFieldsFunctions.search()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#specific-database-functions">Specific database functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CWEDatabaseFunctions"><code class="docutils literal notranslate"><span class="pre">CWEDatabaseFunctions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CWEDatabaseFunctions.__init__"><code class="docutils literal notranslate"><span class="pre">CWEDatabaseFunctions.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CapecDatabaseFunctions"><code class="docutils literal notranslate"><span class="pre">CapecDatabaseFunctions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CapecDatabaseFunctions.__init__"><code class="docutils literal notranslate"><span class="pre">CapecDatabaseFunctions.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions"><code class="docutils literal notranslate"><span class="pre">CpeDatabaseFunctions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.__init__"><code class="docutils literal notranslate"><span class="pre">CpeDatabaseFunctions.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.find_active_cpes"><code class="docutils literal notranslate"><span class="pre">CpeDatabaseFunctions.find_active_cpes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.search_active_cpes"><code class="docutils literal notranslate"><span class="pre">CpeDatabaseFunctions.search_active_cpes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions"><code class="docutils literal notranslate"><span class="pre">CvesDatabaseFunctions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__init__"><code class="docutils literal notranslate"><span class="pre">CvesDatabaseFunctions.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_by_id"><code class="docutils literal notranslate"><span class="pre">CvesDatabaseFunctions.get_by_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_cves_for_vendor"><code class="docutils literal notranslate"><span class="pre">CvesDatabaseFunctions.get_cves_for_vendor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mongodb-specific">Mongodb specific</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection"><code class="docutils literal notranslate"><span class="pre">CveSearchCollection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__init__"><code class="docutils literal notranslate"><span class="pre">CveSearchCollection.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__repr__"><code class="docutils literal notranslate"><span class="pre">CveSearchCollection.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.find"><code class="docutils literal notranslate"><span class="pre">CveSearchCollection.find()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__init__"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__next__"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor.__next__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__repr__"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.next"><code class="docutils literal notranslate"><span class="pre">CveSearchCursor.next()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#database-maintenance">Database Maintenance</a></li>
 </ul>
 </li>
@@ -94,8 +147,257 @@
 <section id="database-connection">
 <h2>Database connection<a class="headerlink" href="#database-connection" title="Link to this heading"></a></h2>
 </section>
-<section id="database-helpers">
-<h2>Database helpers<a class="headerlink" href="#database-helpers" title="Link to this heading"></a></h2>
+<section id="module-CveXplore.database.helpers.generic_db">
+<span id="database-helpers"></span><h2>Database helpers<a class="headerlink" href="#module-CveXplore.database.helpers.generic_db" title="Link to this heading"></a></h2>
+<section id="generic-database-functions">
+<h3>Generic database functions<a class="headerlink" href="#generic-database-functions" title="Link to this heading"></a></h3>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFactory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.generic_db.</span></span><span class="sig-name descname"><span class="pre">GenericDatabaseFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFactory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="common.html#CveXplore.common.data_source_connection.DatasourceConnection" title="CveXplore.common.data_source_connection.DatasourceConnection"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasourceConnection</span></code></a></p>
+<p>The GenericDatabaseFactory handles the creation of general, collection based, functions which provide an instance
+of CveXplore functions that apply to the given collection.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFactory.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFactory.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.__init__" title="Link to this definition"></a></dt>
+<dd><p>Create a new GenericDatabaseFactory and create field specific functions based on the __default_fields and
+the __fields_mapping.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFactory.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFactory.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.__repr__" title="Link to this definition"></a></dt>
+<dd><p>String representation of object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFactory.field_list">
+<span class="sig-name descname"><span class="pre">field_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">doc_ids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFactory.field_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.field_list" title="Link to this definition"></a></dt>
+<dd><p>Method to fetch all field names from a specific collection</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFactory.get_by_id">
+<span class="sig-name descname"><span class="pre">get_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFactory.get_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.get_by_id" title="Link to this definition"></a></dt>
+<dd><p>Method to fetch a specific collection entry via it’s id number</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFactory.mget_by_id">
+<span class="sig-name descname"><span class="pre">mget_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">doc_ids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFactory.mget_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory.mget_by_id" title="Link to this definition"></a></dt>
+<dd><p>Method to fetch a specific collection entry via it’s id number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>[<a class="reference internal" href="objects.html#CveXplore.objects.cvexplore_object.CveXploreObject" title="CveXplore.objects.cvexplore_object.CveXploreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXploreObject</span></code></a>], <code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.generic_db.</span></span><span class="sig-name descname"><span class="pre">GenericDatabaseFieldsFunctions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFieldsFunctions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="common.html#CveXplore.common.data_source_connection.DatasourceConnection" title="CveXplore.common.data_source_connection.DatasourceConnection"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasourceConnection</span></code></a></p>
+<p>The GenericDatabaseFieldsFunctions handles the creation of general, field based, functions</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFieldsFunctions.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.__init__" title="Link to this definition"></a></dt>
+<dd><p>Create a new GenericDatabaseFieldsFunctions and create field specific functions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFieldsFunctions.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.__repr__" title="Link to this definition"></a></dt>
+<dd><p>String representation of object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.find">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFieldsFunctions.find"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.find" title="Link to this definition"></a></dt>
+<dd><p>Method to find a given value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/generic_db.html#GenericDatabaseFieldsFunctions.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFieldsFunctions.search" title="Link to this definition"></a></dt>
+<dd><p>Method for searching for a given value. The value shall be converted to a regex.</p>
+</dd></dl>
+
+</dd></dl>
+
+<section id="specific-database-functions">
+<span id="module-CveXplore.database.helpers.specific_db"></span><h3>Specific database functions<a class="headerlink" href="#specific-database-functions" title="Link to this heading"></a></h3>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CWEDatabaseFunctions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.specific_db.</span></span><span class="sig-name descname"><span class="pre">CWEDatabaseFunctions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CWEDatabaseFunctions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CWEDatabaseFunctions" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory" title="CveXplore.database.helpers.generic_db.GenericDatabaseFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericDatabaseFactory</span></code></a></p>
+<p>The CWEDatabaseFunctions is a specific class that provides the cwe attribute of a CveXplore instance additional
+functions that only apply to the ‘cwe’ collection</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CWEDatabaseFunctions.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CWEDatabaseFunctions.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CWEDatabaseFunctions.__init__" title="Link to this definition"></a></dt>
+<dd><p>Create a new GenericDatabaseFactory and create field specific functions based on the __default_fields and
+the __fields_mapping.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CapecDatabaseFunctions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.specific_db.</span></span><span class="sig-name descname"><span class="pre">CapecDatabaseFunctions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CapecDatabaseFunctions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CapecDatabaseFunctions" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory" title="CveXplore.database.helpers.generic_db.GenericDatabaseFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericDatabaseFactory</span></code></a></p>
+<p>The CapecDatabaseFunctions is a specific class that provides the capec attribute of a CveXplore instance additional
+functions that only apply to the ‘capec’ collection</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CapecDatabaseFunctions.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CapecDatabaseFunctions.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CapecDatabaseFunctions.__init__" title="Link to this definition"></a></dt>
+<dd><p>Create a new GenericDatabaseFactory and create field specific functions based on the __default_fields and
+the __fields_mapping.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CpeDatabaseFunctions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.specific_db.</span></span><span class="sig-name descname"><span class="pre">CpeDatabaseFunctions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CpeDatabaseFunctions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory" title="CveXplore.database.helpers.generic_db.GenericDatabaseFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericDatabaseFactory</span></code></a></p>
+<p>The CpeDatabaseFunctions is a specific class that provides the cpe attribute of a CveXplore instance additional
+functions that only apply to the ‘cpe’ collection</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CpeDatabaseFunctions.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.__init__" title="Link to this definition"></a></dt>
+<dd><p>Create a new GenericDatabaseFactory and create field specific functions based on the __default_fields and
+the __fields_mapping.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.find_active_cpes">
+<span class="sig-name descname"><span class="pre">find_active_cpes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sorting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CpeDatabaseFunctions.find_active_cpes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.find_active_cpes" title="Link to this definition"></a></dt>
+<dd><p>Function to find cpe based on value in string. Only active (deprecated == false) cpe records are
+returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="objects.html#CveXplore.objects.cvexplore_object.CveXploreObject" title="CveXplore.objects.cvexplore_object.CveXploreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXploreObject</span></code></a>]]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.search_active_cpes">
+<span class="sig-name descname"><span class="pre">search_active_cpes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sorting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CpeDatabaseFunctions.search_active_cpes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.search_active_cpes" title="Link to this definition"></a></dt>
+<dd><p>Function to regex search for cpe based on value in string. Only active (deprecated == false) cpe records are
+returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="objects.html#CveXplore.objects.cvexplore_object.CveXploreObject" title="CveXplore.objects.cvexplore_object.CveXploreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXploreObject</span></code></a>]]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CvesDatabaseFunctions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.specific_db.</span></span><span class="sig-name descname"><span class="pre">CvesDatabaseFunctions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CvesDatabaseFunctions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#CveXplore.database.helpers.generic_db.GenericDatabaseFactory" title="CveXplore.database.helpers.generic_db.GenericDatabaseFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericDatabaseFactory</span></code></a></p>
+<p>The CvesDatabaseFunctions is a specific class that provides the cves attribute of a CveXplore instance additional
+functions that only apply to the ‘cves’ collection</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CvesDatabaseFunctions.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__init__" title="Link to this definition"></a></dt>
+<dd><p>Create a new GenericDatabaseFactory and create field specific functions based on the __default_fields and
+the __fields_mapping.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_by_id">
+<span class="sig-name descname"><span class="pre">get_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CvesDatabaseFunctions.get_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_by_id" title="Link to this definition"></a></dt>
+<dd><p>Method to retrieve a single CVE from the database by its CVE ID number.
+The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_cves_for_vendor">
+<span class="sig-name descname"><span class="pre">get_cves_for_vendor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vendor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/specific_db.html#CvesDatabaseFunctions.get_cves_for_vendor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_cves_for_vendor" title="Link to this definition"></a></dt>
+<dd><p>Function to return cves based on a given vendor. By default, to result is sorted descending on th cvss field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="objects.html#CveXplore.objects.cvexplore_object.CveXploreObject" title="CveXplore.objects.cvexplore_object.CveXploreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CveXploreObject</span></code></a>]]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<section id="mongodb-specific">
+<span id="module-CveXplore.database.helpers.cvesearch_mongo_database"></span><h3>Mongodb specific<a class="headerlink" href="#mongodb-specific" title="Link to this heading"></a></h3>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.cvesearch_mongo_database.</span></span><span class="sig-name descname"><span class="pre">CveSearchCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCollection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code></p>
+<p>The CveSearchCollection is a custom Collection based on the pymongo Collection class which has been altered to
+return a CveSearchCursor reference on the find method.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCollection.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__init__" title="Link to this definition"></a></dt>
+<dd><p>Get / create a custon cve-search Mongo collection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCollection.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__repr__" title="Link to this definition"></a></dt>
+<dd><p>Return string representation of this class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.find">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCollection.find"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.find" title="Link to this definition"></a></dt>
+<dd><p>Query the database as you would do so with a pymongo Collection.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.cvesearch_mongo_database.</span></span><span class="sig-name descname"><span class="pre">CveSearchCursor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCursor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Cursor</span></code></p>
+<p>The CveSearchCursor is a custom cursor based on the pymongo cursor which will return database objects instead of
+the raw data from the mongodb database.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCursor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__init__" title="Link to this definition"></a></dt>
+<dd><p>Create a new cve-search cursor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__next__">
+<span class="sig-name descname"><span class="pre">__next__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__next__" title="Link to this definition"></a></dt>
+<dd><p>Advance the cursor and return CveXplore objects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCursor.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__repr__" title="Link to this definition"></a></dt>
+<dd><p>Return string representation of this class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.next">
+<span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/CveXplore/database/helpers/cvesearch_mongo_database.html#CveSearchCursor.next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.next" title="Link to this definition"></a></dt>
+<dd><p>Advance the cursor and return CveXplore objects</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="database-maintenance">
 <h2>Database Maintenance<a class="headerlink" href="#database-maintenance" title="Link to this heading"></a></h2>

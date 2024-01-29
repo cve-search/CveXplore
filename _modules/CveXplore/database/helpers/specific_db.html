@@ -121,7 +121,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">the_result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;vendors&quot;</span><span class="p">:</span> <span class="n">vendor</span><span class="p">})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datasource_collection_connection</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s2">&quot;vendors&quot;</span><span class="p">:</span> <span class="n">vendor</span><span class="p">})</span>
             <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
             <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;cvss&quot;</span><span class="p">,</span> <span class="n">DESCENDING</span><span class="p">)</span>
         <span class="p">)</span>
@@ -163,7 +163,7 @@
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                 <span class="k">return</span> <span class="s2">&quot;Provided value is not a string nor can it be cast to one&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">doc_id</span><span class="p">})</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasource_collection_connection</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">doc_id</span><span class="p">})</span></div>
 
 
     <span class="k">def</span> <span class="nf">_field_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
@@ -179,7 +179,7 @@
                     <span class="nb">map</span><span class="p">(</span>
                         <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
                         <span class="p">[</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">datasource_collection_connection</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
                                 <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">doc_id</span><span class="p">}</span>
                             <span class="p">)</span>
                         <span class="p">],</span>
@@ -187,14 +187,7 @@
                     <span class="nb">set</span><span class="p">(),</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-        <span class="p">)</span>
-
-<div class="viewcode-block" id="CvesDatabaseFunctions.__repr__">
-<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of object&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; CvesDatabaseFunctions:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
-</div>
+        <span class="p">)</span></div>
 
 
 
@@ -226,7 +219,7 @@
         <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$and&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="n">field</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$regex&quot;</span><span class="p">:</span> <span class="n">regex</span><span class="p">}},</span> <span class="p">{</span><span class="s2">&quot;deprecated&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}]}</span>
 
         <span class="n">the_result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datasource_collection_connection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
             <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
             <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">sorting</span><span class="p">)</span>
         <span class="p">)</span>
@@ -249,7 +242,7 @@
         <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$and&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="n">field</span><span class="p">:</span> <span class="n">value</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;deprecated&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}]}</span>
 
         <span class="n">the_result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_collection_connection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datasource_collection_connection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
             <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
             <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">sorting</span><span class="p">)</span>
         <span class="p">)</span>
@@ -258,13 +251,38 @@
             <span class="k">return</span> <span class="n">the_result</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span></div>
+</div>
 
 
-<div class="viewcode-block" id="CpeDatabaseFunctions.__repr__">
-<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of object&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; CpeDatabaseFunctions:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
+
+<div class="viewcode-block" id="CapecDatabaseFunctions">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CapecDatabaseFunctions">[docs]</a>
+<span class="k">class</span> <span class="nc">CapecDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The CapecDatabaseFunctions is a specific class that provides the capec attribute of a CveXplore instance additional</span>
+<span class="sd">    functions that only apply to the &#39;capec&#39; collection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CapecDatabaseFunctions.__init__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CapecDatabaseFunctions.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CWEDatabaseFunctions">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CWEDatabaseFunctions">[docs]</a>
+<span class="k">class</span> <span class="nc">CWEDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The CWEDatabaseFunctions is a specific class that provides the cwe attribute of a CveXplore instance additional</span>
+<span class="sd">    functions that only apply to the &#39;cwe&#39; collection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CWEDatabaseFunctions.__init__">
+<a class="viewcode-back" href="../../../../package/database.html#CveXplore.database.helpers.specific_db.CWEDatabaseFunctions.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

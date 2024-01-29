@@ -86,6 +86,7 @@
 <span class="sd">CveXploreObject</span>
 <span class="sd">===============</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">CveXplore.common.config</span> <span class="kn">import</span> <span class="n">Configuration</span>
 
 
 <div class="viewcode-block" id="CveXploreObject">
@@ -98,13 +99,13 @@
 <div class="viewcode-block" id="CveXploreObject.__init__">
 <a class="viewcode-back" href="../../../package/objects.html#CveXplore.objects.cvexplore_object.CveXploreObject.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">Configuration</span></div>
 
 
 <div class="viewcode-block" id="CveXploreObject.__repr__">
 <a class="viewcode-back" href="../../../package/objects.html#CveXplore.objects.cvexplore_object.CveXploreObject.__repr__">[docs]</a>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;&lt; CveXploreObject &gt;&gt;&quot;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
 </div>
 
 </pre></div>

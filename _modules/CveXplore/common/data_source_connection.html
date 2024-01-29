@@ -89,8 +89,7 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.api.connection.api_db</span> <span class="kn">import</span> <span class="n">ApiDatabaseSource</span>
-<span class="kn">from</span> <span class="nn">CveXplore.database.connection.mongo_db</span> <span class="kn">import</span> <span class="n">MongoDBConnection</span>
+<span class="kn">from</span> <span class="nn">CveXplore.database.connection.database_connection</span> <span class="kn">import</span> <span class="n">DatabaseConnection</span>
 <span class="kn">from</span> <span class="nn">CveXplore.objects.cvexplore_object</span> <span class="kn">import</span> <span class="n">CveXploreObject</span>
 
 
@@ -102,13 +101,37 @@
 <span class="sd">    objects and generic database functions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># hack for documentation building</span>
-    <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DOC_BUILD&quot;</span><span class="p">))[</span><span class="s2">&quot;DOC_BUILD&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;YES&quot;</span><span class="p">:</span>
-        <span class="n">__DATA_SOURCE_CONNECTION</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">ApiDatabaseSource</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;API_CON_DETAILS&quot;</span><span class="p">)))</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;API_CON_DETAILS&quot;</span><span class="p">)</span>
-            <span class="k">else</span> <span class="n">MongoDBConnection</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MONGODB_CON_DETAILS&quot;</span><span class="p">)))</span>
-        <span class="p">)</span>
+<div class="viewcode-block" id="DatasourceConnection.__init__">
+<a class="viewcode-back" href="../../../package/common.html#CveXplore.common.data_source_connection.DatasourceConnection.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a DatasourceConnection object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span> <span class="o">=</span> <span class="n">collection</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">datasource_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># hack for documentation building</span>
+        <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DOC_BUILD&quot;</span><span class="p">))[</span><span class="s2">&quot;DOC_BUILD&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;YES&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DatabaseConnection</span><span class="p">(</span>
+                <span class="n">database_type</span><span class="o">=</span><span class="s2">&quot;dummy&quot;</span><span class="p">,</span>
+                <span class="n">database_init_parameters</span><span class="o">=</span><span class="p">{},</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">database_connection</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DatabaseConnection</span><span class="p">(</span>
+                <span class="n">database_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DATASOURCE_TYPE</span><span class="p">,</span>
+                <span class="n">database_init_parameters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DATASOURCE_CONNECTION_DETAILS</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">database_connection</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">datasource_collection_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource_connection</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;store_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">collection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span>
 
 <div class="viewcode-block" id="DatasourceConnection.to_dict">
 <a class="viewcode-back" href="../../../package/common.html#CveXplore.common.data_source_connection.DatasourceConnection.to_dict">[docs]</a>
@@ -116,7 +139,6 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to convert the entire object to a dictionary</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">print_keys</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">full_dict</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
@@ -131,16 +153,6 @@
         <span class="k">return</span> <span class="n">full_dict</span></div>
 
 
-<div class="viewcode-block" id="DatasourceConnection.__init__">
-<a class="viewcode-back" href="../../../package/common.html#CveXplore.common.data_source_connection.DatasourceConnection.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a DatasourceConnection object</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__collection</span> <span class="o">=</span> <span class="n">collection</span></div>
-
-
 <div class="viewcode-block" id="DatasourceConnection.__eq__">
 <a class="viewcode-back" href="../../../package/common.html#CveXplore.common.data_source_connection.DatasourceConnection.__eq__">[docs]</a>
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
@@ -151,22 +163,7 @@
 <a class="viewcode-back" href="../../../package/common.html#CveXplore.common.data_source_connection.DatasourceConnection.__ne__">[docs]</a>
     <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="vm">__dict__</span></div>
-
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_datasource_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">DatasourceConnection</span><span class="o">.</span><span class="n">__DATA_SOURCE_CONNECTION</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_datasource_collection_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span>
-            <span class="n">DatasourceConnection</span><span class="o">.</span><span class="n">__DATA_SOURCE_CONNECTION</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;store_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__collection</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__collection</span></div>
+</div>
 
 </pre></div>
 

@@ -88,6 +88,7 @@
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 <span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span>
@@ -102,7 +103,8 @@
 
 <span class="kn">from</span> <span class="nn">CveXplore.common.config</span> <span class="kn">import</span> <span class="n">Configuration</span>
 <span class="kn">from</span> <span class="nn">CveXplore.core.api_base_class</span> <span class="kn">import</span> <span class="n">ApiBaseClass</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_maintenance.log_handler</span> <span class="kn">import</span> <span class="n">UpdateHandler</span>
+<span class="kn">from</span> <span class="nn">CveXplore.core.database_maintenance.update_base_class</span> <span class="kn">import</span> <span class="n">UpdateBaseClass</span>
+<span class="kn">from</span> <span class="nn">CveXplore.core.logging.logger_class</span> <span class="kn">import</span> <span class="n">AppLogger</span>
 <span class="kn">from</span> <span class="nn">CveXplore.errors.apis</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">ApiErrorException</span><span class="p">,</span>
     <span class="n">ApiDataError</span><span class="p">,</span>
@@ -110,12 +112,12 @@
     <span class="n">ApiMaxRetryError</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">setLoggerClass</span><span class="p">(</span><span class="n">UpdateHandler</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">setLoggerClass</span><span class="p">(</span><span class="n">AppLogger</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="NvdNistApi">
 <a class="viewcode-back" href="../../../../package/core.html#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi">[docs]</a>
-<span class="k">class</span> <span class="nc">NvdNistApi</span><span class="p">(</span><span class="n">ApiBaseClass</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">NvdNistApi</span><span class="p">(</span><span class="n">ApiBaseClass</span><span class="p">,</span> <span class="n">UpdateBaseClass</span><span class="p">):</span>
 <div class="viewcode-block" id="NvdNistApi.__init__">
 <a class="viewcode-back" href="../../../../package/core.html#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -125,13 +127,15 @@
         <span class="n">proxies</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">user_agent</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;CveXplore&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">baseurl</span><span class="p">,</span> <span class="n">api_path</span><span class="o">=</span><span class="n">api_path</span><span class="p">,</span> <span class="n">user_agent</span><span class="o">=</span><span class="n">user_agent</span><span class="p">,</span> <span class="n">proxies</span><span class="o">=</span><span class="n">proxies</span>
+        <span class="n">ApiBaseClass</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">baseurl</span><span class="o">=</span><span class="n">baseurl</span><span class="p">,</span>
+            <span class="n">api_path</span><span class="o">=</span><span class="n">api_path</span><span class="p">,</span>
+            <span class="n">user_agent</span><span class="o">=</span><span class="n">user_agent</span><span class="p">,</span>
+            <span class="n">proxies</span><span class="o">=</span><span class="n">proxies</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">Configuration</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="n">UpdateBaseClass</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger_name</span><span class="o">=</span><span class="vm">__name__</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">NVD_NIST_API_KEY</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">NVD_NIST_API_KEY</span>
@@ -139,7 +143,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">api_key_limit</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Could not find a NIST API Key in the &#39;~/.cvexplore/.env&#39; file; &quot;</span>
+                <span class="s2">&quot;Could not find a NIST API Key in the environment variable &#39;NVD_NIST_API_KEY&#39; &quot;</span>
+                <span class="s2">&quot;(e.g. from the &#39;~/.cvexplore/.env&#39; file); &quot;</span>
                 <span class="s2">&quot;you could request one at: https://nvd.nist.gov/developers/request-an-api-key&quot;</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">api_key_limit</span> <span class="o">=</span> <span class="kc">True</span>
@@ -427,16 +432,20 @@
 <span class="k">class</span> <span class="nc">ApiDataIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_data</span><span class="p">:</span> <span class="n">ApiData</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">Configuration</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_page_length</span> <span class="o">=</span> <span class="n">api_data</span><span class="o">.</span><span class="n">results_per_page</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_total_results</span> <span class="o">=</span> <span class="n">api_data</span><span class="o">.</span><span class="n">total_results</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_index</span> <span class="o">=</span> <span class="n">api_data</span><span class="o">.</span><span class="n">start_index</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api_data</span> <span class="o">=</span> <span class="n">api_data</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">sem_factor</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DOWNLOAD_SEM_FACTOR</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sem_factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DOWNLOAD_SEM_FACTOR</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sem_factor</span> <span class="o">=</span> <span class="mi">6</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_data</span><span class="o">.</span><span class="n">api_handle</span><span class="o">.</span><span class="n">api_key_limit</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sem_factor</span> <span class="o">=</span> <span class="mf">0.6</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_data</span><span class="o">.</span><span class="n">api_handle</span><span class="o">.</span><span class="n">api_key_limit</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sem_factor</span> <span class="o">=</span> <span class="mf">0.6</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using sem factor: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sem_factor</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -445,8 +454,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">last_stop_time</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">workload</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">Configuration</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -472,10 +479,20 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">workload</span> <span class="o">=</span> <span class="p">[]</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_data</span><span class="o">.</span><span class="n">api_handle</span><span class="o">.</span><span class="n">api_key_limit</span><span class="p">:</span>
-                <span class="n">batch_range</span> <span class="o">=</span> <span class="mi">5</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DOWNLOAD_BATCH_RANGE</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_data</span><span class="o">.</span><span class="n">api_handle</span><span class="o">.</span><span class="n">api_key_limit</span><span class="p">:</span>
+                    <span class="n">batch_range</span> <span class="o">=</span> <span class="mi">5</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">batch_range</span> <span class="o">=</span> <span class="mi">45</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">batch_range</span> <span class="o">=</span> <span class="mi">45</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">batch_range</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DOWNLOAD_BATCH_RANGE</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Invalid value for DOWNLOAD_BATCH_RANGE, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DOWNLOAD_BATCH_RANGE</span><span class="si">}</span><span class="s2"> &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;cannot be converted into an integer...&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">raise</span>
 
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_range</span><span class="p">):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_iteration</span><span class="p">:</span>
@@ -516,11 +533,12 @@
 
     <span class="nd">@retry</span><span class="p">(</span><span class="n">retry_policy</span><span class="p">)</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">request_id</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
                 <span class="n">url</span><span class="p">,</span> <span class="n">proxy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">HTTP_PROXY_STRING</span>
             <span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sending request to url: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">request_id</span><span class="si">}</span><span class="s2">] Sending request to url: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
                     <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
                     <span class="k">if</span> <span class="s2">&quot;format&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
@@ -559,8 +577,15 @@
         <span class="k">except</span> <span class="n">ContentTypeError</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">ApiDataRetrievalFailed</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finished request to url: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sem_factor</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">random_sleep</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
+                <span class="n">random</span><span class="o">.</span><span class="n">SystemRandom</span><span class="p">()</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DOWNLOAD_SLEEP_MIN</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DOWNLOAD_SLEEP_MAX</span>
+                <span class="p">),</span>
+                <span class="mi">1</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">request_id</span><span class="si">}</span><span class="s2">] Sleeping for </span><span class="si">{</span><span class="n">random_sleep</span><span class="si">}</span><span class="s2"> secs...&quot;</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">random_sleep</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">request_id</span><span class="si">}</span><span class="s2">] Finished request&quot;</span><span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">fetch_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loop</span><span class="p">):</span>
         <span class="n">sem</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="mi">30</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sem_factor</span><span class="p">))</span>
