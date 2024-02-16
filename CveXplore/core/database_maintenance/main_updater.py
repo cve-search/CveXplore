@@ -30,13 +30,14 @@ class MainUpdater(UpdateBaseClass):
     The MainUpdater class is the main class for performing database database_maintenance tasks
     """
 
-    def __init__(self, datasource: DatabaseConnectionBase):
+    def __init__(self, datasource: DatabaseConnectionBase, datasource_type: str):
         """
         Init a new MainUpdater class
         """
         super().__init__(logger_name=__name__)
 
         self.datasource = datasource
+        self.datasource_type = datasource_type
 
         self.sources = [
             {"name": "cpe", "updater": CPEDownloads},
@@ -67,7 +68,7 @@ class MainUpdater(UpdateBaseClass):
         start_time = time.time()
 
         if not self.do_initialize:
-            if self.datasource != "api" or self.datasource != "mongodb":
+            if self.datasource_type != "api" and self.datasource_type != "mongodb":
                 self.logger.info(
                     f"Upgrading database schema to latest head, if needed..."
                 )
@@ -128,7 +129,7 @@ class MainUpdater(UpdateBaseClass):
         self.logger.info(f"Starting Database population....")
         start_time = time.time()
 
-        if self.datasource != "api" or self.datasource != "mongodb":
+        if self.datasource_type != "api" and self.datasource_type != "mongodb":
             self.logger.info(f"Upgrading database schema to latest head, if needed...")
             self.database_migrator.db_upgrade()
 
@@ -190,7 +191,7 @@ class MainUpdater(UpdateBaseClass):
 
         self.do_initialize = True
 
-        if self.datasource != "api" or self.datasource != "mongodb":
+        if self.datasource_type != "api" and self.datasource_type != "mongodb":
             self.logger.info(f"Upgrading database schema to latest head, if needed...")
             self.database_migrator.db_upgrade()
 

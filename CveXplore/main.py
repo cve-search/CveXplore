@@ -160,7 +160,7 @@ class CveXplore(object):
             database_init_parameters=self.datasource_connection_details,
         ).database_connection
         if self.datasource_type != "api":
-            self.database = MainUpdater(datasource=self.datasource)
+            self.database = MainUpdater(datasource=self.datasource, datasource_type=self.datasource_type)
 
         self._database_mapping = database_mapping
 
