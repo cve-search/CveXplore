@@ -141,6 +141,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">NVD_NIST_API_KEY</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_header_field</span><span class="p">(</span><span class="s2">&quot;apiKey&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">api_key_limit</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;NVD NIST API found!&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="s2">&quot;Could not find a NIST API Key in the environment variable &#39;NVD_NIST_API_KEY&#39; &quot;</span>
