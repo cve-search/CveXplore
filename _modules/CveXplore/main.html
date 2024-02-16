@@ -248,7 +248,7 @@
             <span class="n">database_init_parameters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource_connection_details</span><span class="p">,</span>
         <span class="p">)</span><span class="o">.</span><span class="n">database_connection</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasource_type</span> <span class="o">!=</span> <span class="s2">&quot;api&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">MainUpdater</span><span class="p">(</span><span class="n">datasource</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">MainUpdater</span><span class="p">(</span><span class="n">datasource</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="n">datasource_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource_type</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_database_mapping</span> <span class="o">=</span> <span class="n">database_mapping</span>
 
