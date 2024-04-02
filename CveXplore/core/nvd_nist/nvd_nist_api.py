@@ -53,7 +53,7 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
             self.api_key = self.config.NVD_NIST_API_KEY
             self.set_header_field("apiKey", self.api_key)
             self.api_key_limit = False
-            self.logger.info("NVD NIST API found!")
+            self.logger.info("NVD NIST API Key found!")
         else:
             self.logger.warning(
                 "Could not find a NIST API Key in the environment variable 'NVD_NIST_API_KEY' "
