@@ -332,7 +332,7 @@ def retry_policy(info: RetryInfo) -> RetryPolicyStrategy:
     etc...
     """
     max_retries = 10
-    backoff_in_s = 0.6 * 2**info.fails + random.uniform(0, 1) * 4
+    backoff_in_s = 0.6 * 2 ** info.fails + random.uniform(0, 1) * 4
     logger = logging.getLogger(__name__)
 
     if info.fails != max_retries:
