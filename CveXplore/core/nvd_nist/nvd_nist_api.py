@@ -53,7 +53,7 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
             self.api_key = self.config.NVD_NIST_API_KEY
             self.set_header_field("apiKey", self.api_key)
             self.api_key_limit = False
-            self.logger.info("NVD NIST API found!")
+            self.logger.info("NVD NIST API Key found!")
         else:
             self.logger.warning(
                 "Could not find a NIST API Key in the environment variable 'NVD_NIST_API_KEY' "
@@ -202,14 +202,27 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
         Method for returning a session object per every requesting thread
         """
         session = session or requests.Session()
-        retry = Retry(
-            total=retries,
-            read=retries,
-            connect=retries,
-            backoff_factor=backoff_factor,
-            backoff_max=backoff_max,
-            status_forcelist=status_forcelist,
-        )
+        try:
+            retry = Retry(
+                total=retries,
+                read=retries,
+                connect=retries,
+                backoff_factor=backoff_factor,
+                backoff_max=backoff_max,
+                status_forcelist=status_forcelist,
+            )
+        except TypeError:
+            self.logger.info(
+                f"urllib3.util.retry did not support configurable backoff_max; "
+                f"falling back to default for urllib3 1.x compatibility"
+            )
+            retry = Retry(
+                total=retries,
+                read=retries,
+                connect=retries,
+                backoff_factor=backoff_factor,
+                status_forcelist=status_forcelist,
+            )
         adapter = HTTPAdapter(max_retries=retry)
         session.mount("http://", adapter)
         session.mount("https://", adapter)
@@ -319,7 +332,7 @@ def retry_policy(info: RetryInfo) -> RetryPolicyStrategy:
     etc...
     """
     max_retries = 10
-    backoff_in_s = 0.6 * 2**info.fails + random.uniform(0, 1) * 4
+    backoff_in_s = 0.6 * 2 ** info.fails + random.uniform(0, 1) * 4
     logger = logging.getLogger(__name__)
 
     if info.fails != max_retries:
