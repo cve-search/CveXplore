@@ -202,14 +202,27 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
         Method for returning a session object per every requesting thread
         """
         session = session or requests.Session()
-        retry = Retry(
-            total=retries,
-            read=retries,
-            connect=retries,
-            backoff_factor=backoff_factor,
-            backoff_max=backoff_max,
-            status_forcelist=status_forcelist,
-        )
+        try:
+            retry = Retry(
+                total=retries,
+                read=retries,
+                connect=retries,
+                backoff_factor=backoff_factor,
+                backoff_max=backoff_max,
+                status_forcelist=status_forcelist,
+            )
+        except TypeError:
+            self.logger.info(
+                f"urllib3.util.retry did not support configurable backoff_max; "
+                f"falling back to default for urllib3 1.x compatibility"
+            )
+            retry = Retry(
+                total=retries,
+                read=retries,
+                connect=retries,
+                backoff_factor=backoff_factor,
+                status_forcelist=status_forcelist,
+            )
         adapter = HTTPAdapter(max_retries=retry)
         session.mount("http://", adapter)
         session.mount("https://", adapter)
