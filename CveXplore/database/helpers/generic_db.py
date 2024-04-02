@@ -2,6 +2,7 @@
 Generic database functions
 ==========================
 """
+
 import re
 from functools import reduce
 from typing import Union, Iterable

@@ -2,6 +2,7 @@
 Mongo DB connection
 ===================
 """
+
 import atexit
 
 from pymongo import MongoClient

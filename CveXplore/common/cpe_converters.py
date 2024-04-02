@@ -2,6 +2,7 @@
 CPE Converters
 ==============
 """
+
 import re
 
 from CveXplore.database.helpers.cpe_conversion import cpe_uri_to_fs, cpe_fs_to_uri
