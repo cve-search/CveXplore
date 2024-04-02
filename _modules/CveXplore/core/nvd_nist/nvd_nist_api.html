@@ -141,7 +141,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">NVD_NIST_API_KEY</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_header_field</span><span class="p">(</span><span class="s2">&quot;apiKey&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">api_key_limit</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;NVD NIST API found!&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;NVD NIST API Key found!&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="s2">&quot;Could not find a NIST API Key in the environment variable &#39;NVD_NIST_API_KEY&#39; &quot;</span>
@@ -296,14 +296,27 @@
 <span class="sd">        Method for returning a session object per every requesting thread</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">session</span> <span class="o">=</span> <span class="n">session</span> <span class="ow">or</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
-        <span class="n">retry</span> <span class="o">=</span> <span class="n">Retry</span><span class="p">(</span>
-            <span class="n">total</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
-            <span class="n">read</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
-            <span class="n">connect</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
-            <span class="n">backoff_factor</span><span class="o">=</span><span class="n">backoff_factor</span><span class="p">,</span>
-            <span class="n">backoff_max</span><span class="o">=</span><span class="n">backoff_max</span><span class="p">,</span>
-            <span class="n">status_forcelist</span><span class="o">=</span><span class="n">status_forcelist</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">retry</span> <span class="o">=</span> <span class="n">Retry</span><span class="p">(</span>
+                <span class="n">total</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
+                <span class="n">read</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
+                <span class="n">connect</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
+                <span class="n">backoff_factor</span><span class="o">=</span><span class="n">backoff_factor</span><span class="p">,</span>
+                <span class="n">backoff_max</span><span class="o">=</span><span class="n">backoff_max</span><span class="p">,</span>
+                <span class="n">status_forcelist</span><span class="o">=</span><span class="n">status_forcelist</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;urllib3.util.retry did not support configurable backoff_max; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;falling back to default for urllib3 1.x compatibility&quot;</span>
+            <span class="p">)</span>
+            <span class="n">retry</span> <span class="o">=</span> <span class="n">Retry</span><span class="p">(</span>
+                <span class="n">total</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
+                <span class="n">read</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
+                <span class="n">connect</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
+                <span class="n">backoff_factor</span><span class="o">=</span><span class="n">backoff_factor</span><span class="p">,</span>
+                <span class="n">status_forcelist</span><span class="o">=</span><span class="n">status_forcelist</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="n">adapter</span> <span class="o">=</span> <span class="n">HTTPAdapter</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
         <span class="n">session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;http://&quot;</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
         <span class="n">session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;https://&quot;</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
@@ -417,7 +430,7 @@
 <span class="sd">    etc...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">max_retries</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="n">backoff_in_s</span> <span class="o">=</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="n">info</span><span class="o">.</span><span class="n">fails</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
+    <span class="n">backoff_in_s</span> <span class="o">=</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">info</span><span class="o">.</span><span class="n">fails</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">fails</span> <span class="o">!=</span> <span class="n">max_retries</span><span class="p">:</span>
