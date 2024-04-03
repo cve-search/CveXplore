@@ -2,6 +2,7 @@
 API connection
 ==============
 """
+
 from CveXplore.api.helpers.cve_search_api import CveSearchApi
 from CveXplore.common.db_mapping import database_mapping
 

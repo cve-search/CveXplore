@@ -2,6 +2,7 @@
 XML Content Handlers
 ====================
 """
+
 from collections import defaultdict
 from xml.sax.handler import ContentHandler
 

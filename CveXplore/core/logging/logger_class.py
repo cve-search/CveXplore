@@ -70,9 +70,11 @@ class AppLogger(logging.Logger):
                     _application_name="CveXplore",
                     include_extra_fields=True,
                     debug=True,
-                    **self.config.GELF_SYSLOG_ADDITIONAL_FIELDS
-                    if self.config.GELF_SYSLOG_ADDITIONAL_FIELDS is not None
-                    else {},
+                    **(
+                        self.config.GELF_SYSLOG_ADDITIONAL_FIELDS
+                        if self.config.GELF_SYSLOG_ADDITIONAL_FIELDS is not None
+                        else {}
+                    ),
                 )
             else:
                 syslog = FullSysLogHandler(
