@@ -430,7 +430,7 @@
 <span class="sd">    etc...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">max_retries</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="n">backoff_in_s</span> <span class="o">=</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">info</span><span class="o">.</span><span class="n">fails</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
+    <span class="n">backoff_in_s</span> <span class="o">=</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="n">info</span><span class="o">.</span><span class="n">fails</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">fails</span> <span class="o">!=</span> <span class="n">max_retries</span><span class="p">:</span>
