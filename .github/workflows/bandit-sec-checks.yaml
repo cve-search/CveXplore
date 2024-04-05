@@ -14,7 +14,7 @@ jobs:
     name: Python ${{ matrix.python-version }} ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Security check - Bandit
       uses: Joel-hanson/bandit-report-artifacts@V1
@@ -24,7 +24,7 @@ jobs:
         ignore_failure: true
 
     - name: Security check report artifacts
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       # if: failure()
       with:
         name: Security report
