@@ -1,3 +1,4 @@
+import re
 from abc import abstractmethod
 
 from CveXplore.core.database_actions.db_action import DatabaseAction
@@ -35,8 +36,15 @@ class NVDApiHandler(DownloadHandler):
                 return item
 
     @staticmethod
+    def split_cpe_name(cpename: str):
+        """Split CPE name into its components, accounting for escaped colons."""
+        non_escaped_colon = r"(?<!\\):"
+        split_name = re.split(non_escaped_colon, cpename)
+        return split_name
+
+    @staticmethod
     def stem(cpe_uri: str):
-        cpe_stem = cpe_uri.split(":")
+        cpe_stem = NVDApiHandler.split_cpe_name(cpe_uri)
         return ":".join(cpe_stem[:5])
 
     @staticmethod
