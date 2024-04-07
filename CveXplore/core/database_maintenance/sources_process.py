@@ -98,8 +98,7 @@ class CPEDownloads(NVDApiHandler):
         }
 
         sha1_hash = hashlib.sha1(
-            cpe["cpeName"].encode("utf-8")
-            + split_cpe_name[5].encode("utf-8")
+            cpe["cpeName"].encode("utf-8") + split_cpe_name[5].encode("utf-8")
         ).hexdigest()
 
         cpe["id"] = sha1_hash
