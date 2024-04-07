@@ -48,9 +48,8 @@ class CPEDownloads(NVDApiHandler):
     def file_to_queue(self, *args):
         pass
 
-    @staticmethod
-    def parse_cpe_version(cpename: str):
-        cpe_list = super(CPEDownloads, CPEDownloads).split_cpe_name(cpename)
+    def parse_cpe_version(self, cpename: str):
+        cpe_list = self.split_cpe_name(cpename)
         version_stem = cpe_list[5]
 
         if cpe_list[6] != "*" and cpe_list[6] != "-":
@@ -366,9 +365,8 @@ class CVEDownloads(NVDApiHandler):
             cve[key].append(value)
         return cve
 
-    @staticmethod
-    def get_vendor_product(cpeUri: str):
-        split_cpe_uri = super(CVEDownloads, CVEDownloads).split_cpe_name(cpeUri)
+    def get_vendor_product(self, cpeUri: str):
+        split_cpe_uri = self.split_cpe_name(cpeUri)
         vendor = split_cpe_uri[3]
         product = split_cpe_uri[4]
         return vendor, product
