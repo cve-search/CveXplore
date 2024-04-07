@@ -17,7 +17,6 @@ def split_cpe_name(cpename: str) -> list[str]:
     return split_name
 
 
-
 def from2to3CPE(cpe: str, autofill: bool = False) -> str:
     """
     Method to transform cpe2.2 to cpe2.3 format
