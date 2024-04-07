@@ -37,8 +37,8 @@ class NVDApiHandler(DownloadHandler):
                 return item
 
     @staticmethod
-    def split_cpe_name(cpename: str):
-        return split_cpe_name
+    def split_cpe_name(cpename: str) -> list[str]:
+        return split_cpe_name(cpename)
 
     def stem(self, cpe_uri: str):
         cpe_stem = self.split_cpe_name(cpe_uri)
