@@ -1,5 +1,7 @@
+import re
 from abc import abstractmethod
 
+from CveXplore.common.cpe_converters import split_cpe_name
 from CveXplore.core.database_actions.db_action import DatabaseAction
 from CveXplore.core.database_maintenance.download_handler import DownloadHandler
 from CveXplore.core.nvd_nist.nvd_nist_api import NvdNistApi
@@ -35,8 +37,11 @@ class NVDApiHandler(DownloadHandler):
                 return item
 
     @staticmethod
-    def stem(cpe_uri: str):
-        cpe_stem = cpe_uri.split(":")
+    def split_cpe_name(cpename: str) -> list[str]:
+        return split_cpe_name(cpename)
+
+    def stem(self, cpe_uri: str):
+        cpe_stem = self.split_cpe_name(cpe_uri)
         return ":".join(cpe_stem[:5])
 
     @staticmethod

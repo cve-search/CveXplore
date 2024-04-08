@@ -48,9 +48,8 @@ class CPEDownloads(NVDApiHandler):
     def file_to_queue(self, *args):
         pass
 
-    @staticmethod
-    def parse_cpe_version(cpename: str):
-        cpe_list = cpename.split(":")
+    def parse_cpe_version(self, cpename: str):
+        cpe_list = self.split_cpe_name(cpename)
         version_stem = cpe_list[5]
 
         if cpe_list[6] != "*" and cpe_list[6] != "-":
@@ -81,11 +80,12 @@ class CPEDownloads(NVDApiHandler):
 
         version = self.parse_cpe_version(cpename=item["cpeName"])
 
+        split_cpe_name = self.split_cpe_name(item["cpeName"])
         cpe = {
             "title": title,
             "cpeName": item["cpeName"],
-            "vendor": item["cpeName"].split(":")[3],
-            "product": item["cpeName"].split(":")[4],
+            "vendor": split_cpe_name[3],
+            "product": split_cpe_name[4],
             "version": version,
             "padded_version": self.padded_version(version),
             "stem": self.stem(item["cpeName"]),
@@ -97,15 +97,14 @@ class CPEDownloads(NVDApiHandler):
         }
 
         sha1_hash = hashlib.sha1(
-            cpe["cpeName"].encode("utf-8")
-            + item["cpeName"].split(":")[5].encode("utf-8")
+            cpe["cpeName"].encode("utf-8") + split_cpe_name[5].encode("utf-8")
         ).hexdigest()
 
         cpe["id"] = sha1_hash
 
         return cpe
 
-    def process_downloads(self, sites: list = None):
+    def process_downloads(self, sites: list | None = None):
         """
         Method to download and process files
         """
@@ -366,10 +365,10 @@ class CVEDownloads(NVDApiHandler):
             cve[key].append(value)
         return cve
 
-    @staticmethod
-    def get_vendor_product(cpeUri: str):
-        vendor = cpeUri.split(":")[3]
-        product = cpeUri.split(":")[4]
+    def get_vendor_product(self, cpeUri: str):
+        split_cpe_uri = self.split_cpe_name(cpeUri)
+        vendor = split_cpe_uri[3]
+        product = split_cpe_uri[4]
         return vendor, product
 
     def file_to_queue(self, *args):
