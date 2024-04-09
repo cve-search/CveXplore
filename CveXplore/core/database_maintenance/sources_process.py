@@ -877,9 +877,11 @@ class VIADownloads(JSONFileHandler):
         if self.feed_type.lower() not in self.getTableNames():
             self.is_update = False
 
-        self.process_downloads([self.feed_url])
-
-        self.logger.info("Finished VIA4 database update")
+        if self.source_changed(self.feed_url):
+            self.process_downloads([self.feed_url])
+            self.logger.info("Finished VIA4 database update")
+        else:
+            self.logger.info("Skipped VIA4 database update")
 
         return self.last_modified
 
@@ -934,9 +936,11 @@ class CAPECDownloads(XMLFileHandler):
         if self.feed_type.lower() not in self.getTableNames():
             self.is_update = False
 
-        self.process_downloads([self.feed_url])
-
-        self.logger.info("Finished CAPEC database update")
+        if self.source_changed(self.feed_url):
+            self.process_downloads([self.feed_url])
+            self.logger.info("Finished CAPEC database update")
+        else:
+            self.logger.info("Skipped CAPEC database update")
 
         return self.last_modified
 
@@ -1000,9 +1004,11 @@ class CWEDownloads(XMLFileHandler):
         if self.feed_type.lower() not in self.getTableNames():
             self.is_update = False
 
-        self.process_downloads([self.feed_url])
-
-        self.logger.info("Finished CWE database update")
+        if self.source_changed(self.feed_url):
+            self.process_downloads([self.feed_url])
+            self.logger.info("Finished CWE database update")
+        else:
+            self.logger.info("Skipped CWE database update")
 
         return self.last_modified
 
