@@ -294,6 +294,60 @@ class DownloadHandler(ABC):
 
         return wd, filename
 
+    def source_changed(self, url: str) -> bool:
+        """
+        Method to check whether the source file has changed since last update using HEAD instead of GET.
+        """
+
+        # Always assume a file has changed; only compare last-modified for HTTP resources
+        if url[:4] == "file":
+            return True
+        else:
+            i = self.getInfo(self.feed_type.lower())
+
+            if i is None:
+                self.logger.info(
+                    f"Cached last-modified for {self.feed_type}'s not found; update"
+                )
+                return True
+            else:
+                self.logger.info(
+                    f"Comparing cached last-modified of {self.feed_type} ({i['lastModified']}) with URL {url}"
+                )
+                session = self.get_session()
+
+                try:
+                    with session.head(url) as response:
+                        try:
+                            self.last_modified = parse_datetime(
+                                response.headers["last-modified"], ignoretz=True
+                            )
+                            self.logger.debug(
+                                f"Last {self.feed_type} modified value: {self.last_modified} for URL: {url}"
+                            )
+                        except KeyError:
+                            self.logger.info(
+                                f"Did not receive last-modified header in the response; assuming {self.feed_type}'s have changed"
+                            )
+                            return True
+
+                        if self.last_modified == i["lastModified"]:
+                            self.logger.info(
+                                f"{self.feed_type}'s are not modified since the last update; skipping update"
+                            )
+                            return False
+                        else:
+                            self.logger.info(
+                                f"{self.feed_type}'s last-modified changed ({self.last_modified}); update"
+                            )
+                            return True
+
+                except Exception:
+                    self.logger.warning(
+                        f"Exception encountered during comparison; assuming {self.feed_type}'s have changed"
+                    )
+                    return True
+
     def download_site(self, url: str):
         if url[:4] == "file":
             self.logger.info(f"Scheduling local hosted file: {url}")
