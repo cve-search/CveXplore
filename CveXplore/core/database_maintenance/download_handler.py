@@ -307,7 +307,7 @@ class DownloadHandler(ABC):
 
             if i is None:
                 self.logger.info(
-                    f"Cached last-modified for {self.feed_type}'s not found; update"
+                    f"Cached last-modified for {self.feed_type}'s not found; should update"
                 )
                 return True
             else:
@@ -333,12 +333,12 @@ class DownloadHandler(ABC):
 
                         if self.last_modified == i["lastModified"]:
                             self.logger.info(
-                                f"{self.feed_type}'s are not modified since the last update; skipping update"
+                                f"{self.feed_type}'s are not modified since the last update"
                             )
                             return False
                         else:
                             self.logger.info(
-                                f"{self.feed_type}'s last-modified changed ({self.last_modified}); update"
+                                f"{self.feed_type}'s last-modified changed ({self.last_modified}); should update"
                             )
                             return True
 
