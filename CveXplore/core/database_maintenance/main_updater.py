@@ -2,8 +2,9 @@
 Main Updater
 ============
 """
-
+import json
 import logging
+import os
 import time
 from datetime import timedelta
 
@@ -60,6 +61,14 @@ class MainUpdater(UpdateBaseClass):
 
     def validate_schema(self):
         return self.schema_checker.validate_schema()
+
+    def reset_download_sources_to_default(self):
+        sources = self.config.DEFAULT_SOURCES
+
+        with open(os.path.join(self.config.USER_HOME_DIR, ".sources.ini"), "w") as f:
+            f.write(json.dumps(sources))
+
+        return True
 
     def update(self, update_source: str | list = None):
         """

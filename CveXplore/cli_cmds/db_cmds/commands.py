@@ -75,7 +75,6 @@ def reset_cmd(ctx):
 
     sources = config.DEFAULT_SOURCES
 
-    with open(os.path.join(config.USER_HOME_DIR, ".sources.ini"), "w") as f:
-        f.write(json.dumps(sources))
+    ctx.obj["data_source"].database.reset_download_sources_to_default()
 
     printer(input_data=[{"SOURCES RESET TO": sources}])

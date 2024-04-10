@@ -113,9 +113,9 @@ class CveXplore(object):
                 "Missing datasource_connection_details for selected datasource ('api')"
             )
         elif self.datasource_type == "api":
-            self.datasource_connection_details["user_agent"] = (
-                f"CveXplore:{self.version}"
-            )
+            self.datasource_connection_details[
+                "user_agent"
+            ] = f"CveXplore:{self.version}"
 
         if (
             self.mongodb_connection_details is not None
