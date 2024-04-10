@@ -201,9 +201,9 @@
                 <span class="s2">&quot;Missing datasource_connection_details for selected datasource (&#39;api&#39;)&quot;</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasource_type</span> <span class="o">==</span> <span class="s2">&quot;api&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">datasource_connection_details</span><span class="p">[</span><span class="s2">&quot;user_agent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;CveXplore:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datasource_connection_details</span><span class="p">[</span>
+                <span class="s2">&quot;user_agent&quot;</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;CveXplore:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
 
         <span class="k">if</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mongodb_connection_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
