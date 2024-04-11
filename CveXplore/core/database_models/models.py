@@ -57,18 +57,18 @@ class Cpe(CveXploreBase):
     __tablename__ = "cpe"
     _id = Column(BigInteger, primary_key=True, unique=True, index=True)
     id = Column(String(50), unique=True, index=True)
-    cpeName = Column(String(50), index=True)
+    cpeName = Column(String(250), index=True)
     cpeNameId = Column(String(50))
     created = Column(DateTime)
     deprecated = Column(Boolean, default=False, index=True)
-    deprecatedBy = Column(String(50))
+    deprecatedBy = Column(String(250))
     lastModified = Column(DateTime, index=True)
-    padded_version = Column(String(50), index=True)
-    product = Column(String(50), index=True)
-    stem = Column(String(50), index=True)
-    title = Column(String(150), index=True)
-    vendor = Column(String(50), index=True)
-    version = Column(String(50))
+    padded_version = Column(String(250), index=True)
+    product = Column(String(250), index=True)
+    stem = Column(String(250), index=True)
+    title = Column(String(500), index=True)
+    vendor = Column(String(250), index=True)
+    version = Column(String(250))
 
     def __repr__(self):
         return f"<< Cpe: {self.id} >>"
