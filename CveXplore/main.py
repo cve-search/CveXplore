@@ -3,7 +3,7 @@ Main
 ====
 """
 
-VERSION = __version__ = "0.3.27"
+VERSION = __version__ = "0.3.28"
 
 import os
 import shutil
