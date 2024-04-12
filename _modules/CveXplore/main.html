@@ -87,8 +87,6 @@
 <span class="sd">====</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">VERSION</span> <span class="o">=</span> <span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.3.28&quot;</span>
-
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 
@@ -135,6 +133,16 @@
 <span class="kn">from</span> <span class="nn">CveXplore.errors.datasource</span> <span class="kn">import</span> <span class="n">UnsupportedDatasourceException</span>
 <span class="kn">from</span> <span class="nn">CveXplore.errors.validation</span> <span class="kn">import</span> <span class="n">CveNumberValidationError</span>
 <span class="kn">from</span> <span class="nn">CveXplore.objects.cvexplore_object</span> <span class="kn">import</span> <span class="n">CveXploreObject</span>
+
+
+<span class="k">def</span> <span class="nf">_version</span><span class="p">():</span>
+    <span class="n">_PKG_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+    <span class="n">version_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_PKG_DIR</span><span class="p">,</span> <span class="s2">&quot;VERSION&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">version_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fdsec</span><span class="p">:</span>
+        <span class="n">VERSION</span> <span class="o">=</span> <span class="n">fdsec</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+
+<span class="n">VERSION</span> <span class="o">=</span> <span class="n">__version__</span> <span class="o">=</span> <span class="n">_version</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="CveXplore">
