@@ -133,7 +133,9 @@ class MainUpdater(UpdateBaseClass):
             f"Update Total duration: {timedelta(seconds=time.time() - start_time)}"
         )
 
-    def populate(self, populate_source: str | list = None):
+    def populate(
+        self, populate_source: str | list = None, limit: int = None, get_id: str = None
+    ):
         """
         Method used for updating the database
         """
@@ -173,7 +175,12 @@ class MainUpdater(UpdateBaseClass):
                         x for x in self.sources if x["name"] == populate_source
                     ][0]
                     up = update_this_source["updater"]()
-                    up.populate()
+                    # this method could be used for testing purposes and is able to limit the amount of entries
+                    # that are going to be fetched from the cves and cpe NIST API endpoints, either by count or by id
+                    if populate_source == "cpe" or populate_source == "cve":
+                        up.populate(limit=limit, get_id=get_id)
+                    else:
+                        up.update()
                 except IndexError:
                     raise UpdateSourceNotFound(
                         f"Provided source: {populate_source} could not be found...."

@@ -104,7 +104,9 @@ class CPEDownloads(NVDApiHandler):
 
         return cpe
 
-    def process_downloads(self, sites: list | None = None):
+    def process_downloads(
+        self, sites: list | None = None, limit: int = None, get_id: str = None
+    ):
         """
         Method to download and process files
         """
@@ -121,13 +123,20 @@ class CPEDownloads(NVDApiHandler):
 
         if self.do_process:
             if not self.is_update:
-                try:
-                    total_results = self.api_handler.get_count(
-                        self.api_handler.datasource.CPE
-                    )
-                except ApiMaxRetryError:
-                    # failed to get the count; set total_results to 0 and continue
-                    total_results = 0
+                if limit is None and get_id is None:
+                    try:
+                        total_results = self.api_handler.get_count(
+                            self.api_handler.datasource.CPE
+                        )
+                    except ApiMaxRetryError:
+                        # failed to get the count; set total_results to 0 and continue
+                        total_results = 0
+                else:
+                    if get_id is None:
+                        total_results = limit
+                    else:
+                        limit = 1
+                        total_results = 1
 
                 self.logger.info(f"Preparing to download {total_results} CPE entries")
 
@@ -137,7 +146,9 @@ class CPEDownloads(NVDApiHandler):
                     position=0,
                     leave=True,
                 ) as pbar:
-                    for entry in self.api_handler.get_all_data(data_type="cpe"):
+                    for entry in self.api_handler.get_all_data(
+                        data_type="cpe", limit=limit, get_id=get_id
+                    ):
                         # do something here with the results...
                         for data_list in tqdm(
                             entry, desc=f"Processing batch", leave=False
@@ -261,7 +272,7 @@ class CPEDownloads(NVDApiHandler):
 
         self.dropCollection(self.feed_type.lower())
 
-        self.process_downloads()
+        self.process_downloads(**kwargs)
 
         self.database_indexer.create_indexes(collection=self.feed_type.lower())
 

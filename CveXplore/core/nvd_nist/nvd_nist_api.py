@@ -261,8 +261,16 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
         data_type: str,
         last_mod_start_date: datetime = None,
         last_mod_end_date: datetime = None,
+        limit: int = None,
+        get_id: str = None,
     ):
         resource = {}
+
+        if get_id is not None:
+            if self.datasource.CVE:
+                resource = {"cveId": get_id}
+            if self.datasource.CPE:
+                resource = {"cpeNameId": get_id}
 
         if last_mod_start_date is not None and last_mod_end_date is not None:
             self.logger.debug(f"Getting all updated {data_type}s....")
@@ -274,15 +282,20 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
         else:
             self.logger.debug(f"Getting all {data_type}s...")
 
-        try:
-            data = self.get_count(
-                getattr(self.datasource, data_type.upper()),
-                last_mod_start_date=last_mod_start_date,
-                last_mod_end_date=last_mod_end_date,
-            )
-        except ApiMaxRetryError:
-            # failed to get the count; set data to 0 and continue
-            data = 0
+        if limit is None:
+            try:
+                data = self.get_count(
+                    getattr(self.datasource, data_type.upper()),
+                    last_mod_start_date=last_mod_start_date,
+                    last_mod_end_date=last_mod_end_date,
+                )
+            except ApiMaxRetryError:
+                # failed to get the count; set data to 0 and continue
+                data = 0
+        else:
+            data = limit
+            if get_id is None:
+                resource = {"resultsPerPage": limit}
 
         if isinstance(data, int):
             for each_data in ApiData(
