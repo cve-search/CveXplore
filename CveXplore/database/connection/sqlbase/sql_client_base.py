@@ -18,6 +18,10 @@ class SQLClientBase(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def insert_one(self, *args, **kwargs):
+        raise NotImplementedError
+
+    @abstractmethod
     def delete_one(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -27,4 +31,12 @@ class SQLClientBase(ABC):
 
     @abstractmethod
     def update_one(self, *args, **kwargs):
+        raise NotImplementedError
+
+    @abstractmethod
+    def find(self, *args, **kwargs):
+        raise NotImplementedError
+
+    @abstractmethod
+    def find_one(self, *args, **kwargs):
         raise NotImplementedError

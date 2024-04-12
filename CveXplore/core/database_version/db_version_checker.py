@@ -2,6 +2,7 @@ import json
 import os
 
 from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
+from CveXplore.core.database_models.models import CveXploreModel
 from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
 from CveXplore.errors import DatabaseSchemaVersionError
 
@@ -21,10 +22,7 @@ class DatabaseVersionChecker(UpdateBaseClass):
 
     def validate_schema(self):
         try:
-            if (
-                not self.schema_version["version"]
-                == list(self.dbh.find({}))[0]["version"]
-            ):
+            if not self.schema_version["version"] == self.dbh.find_one({})["version"]:
                 if not self.schema_version["rebuild_needed"]:
                     raise DatabaseSchemaVersionError(
                         "Database is not on the latest schema version; please update the database!"
@@ -45,16 +43,21 @@ class DatabaseVersionChecker(UpdateBaseClass):
         self.logger.info("Updating schema version")
 
         try:
-            current_record = list(self.dbh.find({}))
+            current_record = self.dbh.find_one({})
+
+            if current_record is None:
+                # empty schema set; set to schema version from file by raising an AttributeError
+                raise AttributeError
+
+            if isinstance(current_record, CveXploreModel):
+                current_record = current_record.to_dict()
 
             if len(current_record) != 0:
-                current_record[0]["version"] = self.schema_version["version"]
-                current_record[0]["rebuild_needed"] = self.schema_version[
-                    "rebuild_needed"
-                ]
+                current_record["version"] = self.schema_version["version"]
+                current_record["rebuild_needed"] = self.schema_version["rebuild_needed"]
 
                 self.dbh.update_one(
-                    {"_id": current_record[0]["_id"]}, {"$set": current_record[0]}
+                    {"_id": current_record["_id"]}, {"$set": current_record}
                 )
             else:
                 current_record = {

@@ -9,7 +9,7 @@ class SQLBaseConnection(DatabaseConnectionBase):
         self._dbclient = {
             "info": SQLClient("info"),
             "cpe": SQLClient("cpe"),
-            "schema": "test",
+            "schema": SQLClient("schema"),
         }
 
     @property

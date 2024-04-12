@@ -15,29 +15,55 @@ from sqlalchemy.orm import declarative_base
 CveXploreBase = declarative_base()
 
 
-class Info(CveXploreBase):
+class CveXploreModel(CveXploreBase):
+    __abstract__ = True
+
+    def to_dict(self, *print_keys: str) -> dict:
+        """
+        Method to convert the entire object to a dictionary
+        """
+        if len(print_keys) != 0:
+            full_dict = {
+                k: v
+                for (k, v) in self.__dict__.items()
+                if (not k.startswith("_") and k in print_keys) or k == "_id"
+            }
+        else:
+            full_dict = {
+                k: v
+                for (k, v) in self.__dict__.items()
+                if not k.startswith("_") or k == "_id"
+            }
+
+        return full_dict
+
+
+class Info(CveXploreModel):
     __tablename__ = "info"
-    id = Column(Integer, primary_key=True)
-    db = Column(String(25))
+    _id = Column(Integer, primary_key=True)
+    db = Column(String(25), unique=True, nullable=False)
     lastModified = Column(DateTime)
 
     def __repr__(self):
         return f"<< Info: {self.db} >>"
 
 
-class Schema(CveXploreBase):
+class Schema(CveXploreModel):
     __tablename__ = "schema"
-    id = Column(Integer, primary_key=True)
+    _id = Column(
+        Integer,
+        primary_key=True,
+    )
     rebuild_needed = Column(Boolean, default=False)
-    version = Column(Float)
+    version = Column(Float, unique=True, nullable=False)
 
     def __repr__(self):
-        return f"<< Schema: {self.id} >>"
+        return f"<< Schema: {self._id} >>"
 
 
-class Capec(CveXploreBase):
+class Capec(CveXploreModel):
     __tablename__ = "capec"
-    id = Column(Integer, primary_key=True, unique=True, index=True)
+    _id = Column(Integer, primary_key=True)
     loa = Column(String(25), index=True)
     name = Column(String(250), index=True)
     prerequisites = Column(Text)
@@ -50,12 +76,12 @@ class Capec(CveXploreBase):
     taxonomy = Column(JSON, default=[])
 
     def __repr__(self):
-        return f"<< Capec: {self.id} >>"
+        return f"<< Capec: {self._id} >>"
 
 
-class Cpe(CveXploreBase):
+class Cpe(CveXploreModel):
     __tablename__ = "cpe"
-    _id = Column(BigInteger, primary_key=True, unique=True, index=True)
+    _id = Column(BigInteger, primary_key=True)
     id = Column(String(50), unique=True, index=True)
     cpeName = Column(String(250), index=True)
     cpeNameId = Column(String(50))
@@ -74,9 +100,9 @@ class Cpe(CveXploreBase):
         return f"<< Cpe: {self.id} >>"
 
 
-class Cves(CveXploreBase):
+class Cves(CveXploreModel):
     __tablename__ = "cves"
-    _id = Column(BigInteger, primary_key=True, unique=True, index=True)
+    _id = Column(BigInteger, primary_key=True)
     id = Column(String(50), unique=True, index=True)
     access = Column(JSON, default={})
     assigner = Column(String(50), index=True)
@@ -109,9 +135,9 @@ class Cves(CveXploreBase):
         return f"<< Cves: {self.id} >>"
 
 
-class Cwe(CveXploreBase):
+class Cwe(CveXploreModel):
     __tablename__ = "cwe"
-    id = Column(Integer, primary_key=True, unique=True, index=True)
+    _id = Column(Integer, primary_key=True)
     description = Column(Text)
     name = Column(String(250), index=True)
     status = Column(String(25), index=True)
@@ -119,12 +145,12 @@ class Cwe(CveXploreBase):
     related_weaknesses = Column(JSON, default=[])
 
     def __repr__(self):
-        return f"<< Cwe: {self.id} >>"
+        return f"<< Cwe: {self._id} >>"
 
 
-class Via4(CveXploreBase):
+class Via4(CveXploreModel):
     __tablename__ = "via4"
-    _id = Column(Integer, primary_key=True, unique=True, index=True)
+    _id = Column(Integer, primary_key=True)
     id = Column(String(50), index=True)
     db = Column(String(25))
     searchables = Column(JSON, default=[])
@@ -137,25 +163,25 @@ class Via4(CveXploreBase):
         return f"<< Via4: {self.db} >>"
 
 
-class Cpeother(CveXploreBase):
+class Cpeother(CveXploreModel):
     __tablename__ = "cpeother"
-    id = Column(Integer, primary_key=True, unique=True, index=True)
+    _id = Column(Integer, primary_key=True)
 
     def __repr__(self):
-        return f"<< Cpeother: {self.id} >>"
+        return f"<< Cpeother: {self._id} >>"
 
 
-class MgmtBlacklist(CveXploreBase):
+class MgmtBlacklist(CveXploreModel):
     __tablename__ = "mgmt_blacklist"
-    id = Column(Integer, primary_key=True, unique=True, index=True)
+    _id = Column(Integer, primary_key=True)
 
     def __repr__(self):
-        return f"<< MgmtBlacklist: {self.id} >>"
+        return f"<< MgmtBlacklist: {self._id} >>"
 
 
-class MgmtWhitelist(CveXploreBase):
+class MgmtWhitelist(CveXploreModel):
     __tablename__ = "mgmt_whitelist"
-    id = Column(Integer, primary_key=True, unique=True, index=True)
+    _id = Column(Integer, primary_key=True)
 
     def __repr__(self):
-        return f"<< MgmtWhitelist: {self.id} >>"
+        return f"<< MgmtWhitelist: {self._id} >>"

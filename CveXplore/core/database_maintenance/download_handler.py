@@ -195,7 +195,11 @@ class DownloadHandler(ABC):
 
             # checking if last-modified was in the response headers and not set to default
             if "01-01-1970" != self.last_modified.strftime("%d-%m-%Y"):
-                self.setColUpdate(self.feed_type.lower(), self.last_modified)
+                self.database["info"].update_one(
+                    {"db": self.feed_type.lower()},
+                    {"$set": {"lastModified": self.last_modified}},
+                    upsert=True,
+                )
 
         self.logger.info(f"Duration: {timedelta(seconds=time.time() - start_time)}")
 
@@ -303,7 +307,7 @@ class DownloadHandler(ABC):
         if url[:4] == "file":
             return True
         else:
-            i = self.getInfo(self.feed_type.lower())
+            i = self.get_col_info(self.feed_type.lower())
 
             if i is None:
                 self.logger.info(
@@ -396,7 +400,7 @@ class DownloadHandler(ABC):
                     # epss releases on daily basis, if new cve's are inserted in the database
                     # it might be missing epss info, so always run the epss update
                     if self.feed_type.lower() != "epss":
-                        i = self.getInfo(self.feed_type.lower())
+                        i = self.get_col_info(self.feed_type.lower())
 
                         if i is not None:
                             if self.last_modified == i["lastModified"]:
@@ -435,30 +439,25 @@ class DownloadHandler(ABC):
                 )
                 self.do_process = False
 
-    def dropCollection(self, col: str):
+    def drop_collection(self, col: str):
         return self.database[col].drop()
 
-    def getTableNames(self):
+    def get_table_names(self):
         return self.database.list_collection_names()
 
-    def setColInfo(self, collection: str, field: str, data: dict):
+    def set_col_field(self, collection: str, field: str, data: dict):
         self.database[collection].update_one(
             {"db": collection}, {"$set": {field: data}}, upsert=True
         )
 
-    def delColInfo(self, collection: str):
+    def del_col_info(self, collection: str):
         self.database["info"].delete_one({"db": collection})
 
-    def getCPEVersionInformation(self, query: dict):
+    def get_cpe_version_information(self, query: dict):
         return sanitize(self.database["cpe"].find(query))
 
-    def getInfo(self, collection: str):
+    def get_col_info(self, collection: str):
         return sanitize(self.database["info"].find_one({"db": collection}))
-
-    def setColUpdate(self, collection: str, date: datetime):
-        self.database["info"].update_one(
-            {"db": collection}, {"$set": {"lastModified": date}}, upsert=True
-        )
 
     @abstractmethod
     def process_item(self, **kwargs):

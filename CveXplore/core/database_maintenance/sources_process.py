@@ -241,7 +241,11 @@ class CPEDownloads(NVDApiHandler):
                                 )
 
             # Set the last update time in the info collection
-            self.setColUpdate(self.feed_type.lower(), self.last_modified)
+            self.database["info"].update_one(
+                {"db": self.feed_type.lower()},
+                {"$set": {"lastModified": self.last_modified}},
+                upsert=True,
+            )
 
         self.logger.info(
             f"Duration: {datetime.timedelta(seconds=time.time() - start_time)}"
@@ -253,7 +257,7 @@ class CPEDownloads(NVDApiHandler):
         self.process_downloads()
 
         # if collection is non-existent; assume it's not an update
-        if self.feed_type.lower() not in self.getTableNames():
+        if self.feed_type.lower() not in self.get_table_names():
             self.database_indexer.create_indexes(collection=self.feed_type.lower())
             self.is_update = False
 
@@ -268,13 +272,14 @@ class CPEDownloads(NVDApiHandler):
 
         self.queue.clear()
 
-        self.delColInfo(self.feed_type.lower())
+        self.del_col_info(self.feed_type.lower())
 
-        self.dropCollection(self.feed_type.lower())
+        self.drop_collection(self.feed_type.lower())
 
         self.process_downloads(**kwargs)
 
-        self.database_indexer.create_indexes(collection=self.feed_type.lower())
+        if self.config.DATASOURCE_TYPE == "mongodb":
+            self.database_indexer.create_indexes(collection=self.feed_type.lower())
 
         self.logger.info("Finished CPE database population")
 
@@ -565,7 +570,7 @@ class CVEDownloads(NVDApiHandler):
                                 query = self.get_cpe_info(cpeuri)
                                 if query != {}:
                                     cpe_info = sorted(
-                                        self.getCPEVersionInformation(query),
+                                        self.get_cpe_version_information(query),
                                         key=lambda x: x["padded_version"],
                                     )
                                     if cpe_info:
@@ -780,19 +785,23 @@ class CVEDownloads(NVDApiHandler):
                                 )
 
             # Set the last update time in the info collection
-            self.setColUpdate(self.feed_type.lower(), self.last_modified)
+            self.database["info"].update_one(
+                {"db": self.feed_type.lower()},
+                {"$set": {"lastModified": self.last_modified}},
+                upsert=True,
+            )
 
         self.logger.info(
             f"Duration: {datetime.timedelta(seconds=time.time() - start_time)}"
         )
 
-    def update(self):
+    def update(self, **kwargs):
         self.logger.info("CVE database update started")
 
         self.process_downloads()
 
         # if collection is non-existent; assume it's not an update
-        if self.feed_type.lower() not in self.getTableNames():
+        if self.feed_type.lower() not in self.get_table_names():
             self.database_indexer.create_indexes(collection=self.feed_type.lower())
             self.is_update = False
 
@@ -800,7 +809,7 @@ class CVEDownloads(NVDApiHandler):
 
         return self.last_modified
 
-    def populate(self):
+    def populate(self, **kwargs):
         self.logger.info("CVE database population started")
 
         self.logger.info(
@@ -811,13 +820,14 @@ class CVEDownloads(NVDApiHandler):
 
         self.queue.clear()
 
-        self.delColInfo(self.feed_type.lower())
+        self.del_col_info(self.feed_type.lower())
 
-        self.dropCollection(self.feed_type.lower())
+        self.drop_collection(self.feed_type.lower())
 
         self.process_downloads()
 
-        self.database_indexer.create_indexes(collection=self.feed_type.lower())
+        if self.config.DATASOURCE_TYPE == "mongodb":
+            self.database_indexer.create_indexes(collection=self.feed_type.lower())
 
         self.logger.info("Finished CVE database population")
 
@@ -854,8 +864,8 @@ class VIADownloads(JSONFileHandler):
         with open(filename, "rb") as input_file:
             data = json.loads(input_file.read().decode("utf-8"))
 
-            self.setColInfo("via4", "sources", data["metadata"]["sources"])
-            self.setColInfo("via4", "searchables", data["metadata"]["searchables"])
+            self.set_col_field("via4", "sources", data["metadata"]["sources"])
+            self.set_col_field("via4", "searchables", data["metadata"]["searchables"])
 
             self.logger.debug(f"Processed metadata from file: {filename}")
 
@@ -885,7 +895,7 @@ class VIADownloads(JSONFileHandler):
         self.logger.info("VIA4 database update started")
 
         # if collection is non-existent; assume it's not an update
-        if self.feed_type.lower() not in self.getTableNames():
+        if self.feed_type.lower() not in self.get_table_names():
             self.is_update = False
 
         if self.source_changed(self.feed_url):
@@ -900,9 +910,9 @@ class VIADownloads(JSONFileHandler):
         self.is_update = False
         self.queue.clear()
 
-        self.delColInfo(self.feed_type.lower())
+        self.del_col_info(self.feed_type.lower())
 
-        self.dropCollection(self.feed_type.lower())
+        self.drop_collection(self.feed_type.lower())
 
         return self.update()
 
@@ -944,7 +954,7 @@ class CAPECDownloads(XMLFileHandler):
         self.logger.info("CAPEC database update started")
 
         # if collection is non-existent; assume it's not an update
-        if self.feed_type.lower() not in self.getTableNames():
+        if self.feed_type.lower() not in self.get_table_names():
             self.is_update = False
 
         if self.source_changed(self.feed_url):
@@ -959,9 +969,9 @@ class CAPECDownloads(XMLFileHandler):
         self.is_update = False
         self.queue.clear()
 
-        self.delColInfo(self.feed_type.lower())
+        self.del_col_info(self.feed_type.lower())
 
-        self.dropCollection(self.feed_type.lower())
+        self.drop_collection(self.feed_type.lower())
 
         return self.update()
 
@@ -1012,7 +1022,7 @@ class CWEDownloads(XMLFileHandler):
         self.logger.info("CWE database update started")
 
         # if collection is non-existent; assume it's not an update
-        if self.feed_type.lower() not in self.getTableNames():
+        if self.feed_type.lower() not in self.get_table_names():
             self.is_update = False
 
         if self.source_changed(self.feed_url):
@@ -1027,9 +1037,9 @@ class CWEDownloads(XMLFileHandler):
         self.is_update = False
         self.queue.clear()
 
-        self.delColInfo(self.feed_type.lower())
+        self.del_col_info(self.feed_type.lower())
 
-        self.dropCollection(self.feed_type.lower())
+        self.drop_collection(self.feed_type.lower())
 
         return self.update()
 

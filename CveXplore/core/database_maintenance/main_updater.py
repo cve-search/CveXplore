@@ -180,7 +180,7 @@ class MainUpdater(UpdateBaseClass):
                     if populate_source == "cpe" or populate_source == "cve":
                         up.populate(limit=limit, get_id=get_id)
                     else:
-                        up.update()
+                        up.populate()
                 except IndexError:
                     raise UpdateSourceNotFound(
                         f"Provided source: {populate_source} could not be found...."
@@ -188,7 +188,8 @@ class MainUpdater(UpdateBaseClass):
         except UpdateSourceNotFound:
             raise
 
-        self.database_indexer.create_indexes()
+        if self.datasource_type == "mongodb":
+            self.database_indexer.create_indexes()
 
         self.schema_checker.update()
 
