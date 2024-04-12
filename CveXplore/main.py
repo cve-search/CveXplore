@@ -3,8 +3,6 @@ Main
 ====
 """
 
-VERSION = __version__ = "0.3.28"
-
 import os
 import shutil
 
@@ -51,6 +49,15 @@ from CveXplore.errors import DatabaseIllegalCollection
 from CveXplore.errors.datasource import UnsupportedDatasourceException
 from CveXplore.errors.validation import CveNumberValidationError
 from CveXplore.objects.cvexplore_object import CveXploreObject
+
+
+try:
+    from version import VERSION
+except ModuleNotFoundError:
+    _PKG_DIR = os.path.dirname(__file__)
+    version_file = os.path.join(_PKG_DIR, "VERSION")
+    with open(version_file, "r") as fdsec:
+        VERSION = fdsec.read()
 
 
 class CveXplore(object):
