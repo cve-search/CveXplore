@@ -9,7 +9,6 @@ ansicolors==1.1.8
 pygelf>=0.4.2
 pandas>=2.1.2
 dicttoxml==1.7.16
-python-dotenv~=1.0.0
 aiohttp>=3.8.6
 aioretry>=5.0.2
 python-dotenv>=1.0.1
