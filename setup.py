@@ -1,5 +1,4 @@
 import os
-import re
 from itertools import chain
 
 from setuptools import setup, find_packages
@@ -16,7 +15,6 @@ def _version():
 
 
 VERSION = __version__ = _version()
-VERSION_MAIN = re.search(r"[0-9.]+", VERSION).group()
 
 # The directory containing this file
 HERE = os.path.abspath(os.path.dirname(__file__))
