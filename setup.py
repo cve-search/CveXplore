@@ -4,10 +4,13 @@ from itertools import chain
 from setuptools import setup, find_packages
 
 
+# The directory containing this file
+HERE = os.path.abspath(os.path.dirname(__file__))
+
+
 # Get static version from CveXplore/VERSION
 def _version():
-    _PKG_DIR = os.path.dirname(__file__)
-    version_file = os.path.join(_PKG_DIR, "CveXplore/VERSION")
+    version_file = os.path.join(HERE, "CveXplore/VERSION")
 
     with open(version_file, "r") as fdsec:
         tag = fdsec.read()
@@ -15,9 +18,6 @@ def _version():
 
 
 VERSION = __version__ = _version()
-
-# The directory containing this file
-HERE = os.path.abspath(os.path.dirname(__file__))
 
 # The text of the README file
 with open(os.path.join(HERE, "README.rst")) as fid:
