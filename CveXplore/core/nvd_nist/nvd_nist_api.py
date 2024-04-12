@@ -267,9 +267,9 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
         resource = {}
 
         if get_id is not None:
-            if self.datasource.CVE:
+            if getattr(self.datasource, data_type.upper()) == self.datasource.CVE:
                 resource = {"cveId": get_id}
-            if self.datasource.CPE:
+            if getattr(self.datasource, data_type.upper()) == self.datasource.CPE:
                 resource = {"cpeNameId": get_id}
 
         if last_mod_start_date is not None and last_mod_end_date is not None:
