@@ -15,7 +15,7 @@ class CveSearchCollection(Collection):
 
     def __init__(self, database, name: str, **kwargs):
         """
-        Get / create a custon cve-search Mongo collection.
+        Get / create a custom cve-search Mongo collection.
         """
 
         super().__init__(database, name, **kwargs)

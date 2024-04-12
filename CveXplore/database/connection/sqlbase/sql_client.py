@@ -1,7 +1,18 @@
 from sqlalchemy import insert, text
 from sqlalchemy.exc import IntegrityError
 
-from CveXplore.core.database_models.models import Cpe, Info, Schema
+from CveXplore.core.database_models.models import (
+    Cpe,
+    Info,
+    Schema,
+    Cwe,
+    Capec,
+    Cves,
+    Via4,
+    Cpeother,
+    MgmtBlacklist,
+    MgmtWhitelist,
+)
 from CveXplore.database.connection.sqlbase.connection import Session
 from CveXplore.database.connection.sqlbase.sql_client_base import SQLClientBase
 
@@ -12,7 +23,18 @@ class SQLClient(SQLClientBase):
         self.session = Session
         self.collection_name = collection_name
 
-        self.model_mapping = {"info": Info, "cpe": Cpe, "schema": Schema}
+        self.model_mapping = {
+            "info": Info,
+            "cpe": Cpe,
+            "cves": Cves,
+            "schema": Schema,
+            "cwe": Cwe,
+            "capec": Capec,
+            "via4": Via4,
+            "cpeother": Cpeother,
+            "mgmt_blacklist": MgmtBlacklist,
+            "mgmt_whitelist": MgmtWhitelist,
+        }
 
         self.obj_ref = self.model_mapping[self.collection_name]
 
@@ -75,16 +97,25 @@ class SQLClient(SQLClientBase):
                 session.commit()
 
     def find(self, query_dict: dict, *args, **kwargs):
-        if len(query_dict) == 0:
-            data = self.obj_ref.query().all()
-            return data
+        with self.session() as session:
+            if len(query_dict) == 0:
+                data = session.query(self.obj_ref).all()
+                return data
+            elif len(query_dict) == 1:
+                query_key, query_value = list(query_dict.items())[0]
+                data = (
+                    session.query(self.obj_ref)
+                    .filter(getattr(self.obj_ref, query_key) == query_value)
+                    .all()
+                )
+                return data
 
     def find_one(self, query_dict: dict, *args, **kwargs):
         with self.session() as session:
             if len(query_dict) == 0:
                 data = session.query(self.obj_ref).first()
                 return data
-            else:
+            elif len(query_dict) == 1:
                 query_key, query_value = list(query_dict.items())[0]
                 data = (
                     session.query(self.obj_ref)

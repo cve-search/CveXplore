@@ -9,7 +9,7 @@ from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
 
 from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
-from CveXplore.database.helpers.cvesearch_mongo_database import CveSearchCollection
+from CveXplore.database.helpers.mongo_database import CveSearchCollection
 from CveXplore.errors import DatabaseConnectionException
 
 

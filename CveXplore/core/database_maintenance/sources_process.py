@@ -663,7 +663,9 @@ class CVEDownloads(NVDApiHandler):
 
         return cve
 
-    def process_downloads(self, sites: list = None):
+    def process_downloads(
+        self, sites: list = None, limit: int = None, get_id: str = None
+    ):
         """
         Method to download and process files
         """
@@ -824,7 +826,7 @@ class CVEDownloads(NVDApiHandler):
 
         self.drop_collection(self.feed_type.lower())
 
-        self.process_downloads()
+        self.process_downloads(**kwargs)
 
         if self.config.DATASOURCE_TYPE == "mongodb":
             self.database_indexer.create_indexes(collection=self.feed_type.lower())

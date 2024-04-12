@@ -64,6 +64,7 @@ class Schema(CveXploreModel):
 class Capec(CveXploreModel):
     __tablename__ = "capec"
     _id = Column(Integer, primary_key=True)
+    id = Column(Integer, unique=True, index=True)
     loa = Column(String(25), index=True)
     name = Column(String(250), index=True)
     prerequisites = Column(Text)
@@ -138,6 +139,7 @@ class Cves(CveXploreModel):
 class Cwe(CveXploreModel):
     __tablename__ = "cwe"
     _id = Column(Integer, primary_key=True)
+    id = Column(Integer, unique=True, index=True)
     description = Column(Text)
     name = Column(String(250), index=True)
     status = Column(String(25), index=True)
