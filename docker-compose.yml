@@ -1,0 +1,62 @@
+version: '3.5'
+
+services:
+
+  redis:
+    image: cvexplore-redis
+    hostname: redis
+    restart: always
+    build:
+      context: .
+      dockerfile: backend/.docker/images/dockerfile-redis
+    volumes:
+      - redis_data:/data
+    ports:
+      - "127.0.0.1:6379:6379"
+    networks:
+      - backend
+
+  celery_daemon:
+    image: cvexplore-celery_daemon
+    build:
+      context: .
+      dockerfile: backend/.docker/images/dockerfile-celery_daemon
+    depends_on:
+      - redis
+    env_file:
+      - ${HOME}/.cvexplore/.env
+    deploy:
+      replicas: 2
+    restart: always
+    environment:
+      - PYTHONUNBUFFERED=TRUE
+    volumes:
+      - celery_data:/app/data
+    networks:
+      - backend
+
+  celery_beat:
+    image: cvexplore-celery_beat
+    build:
+      context: .
+      dockerfile: backend/.docker/images/dockerfile-celery_beat
+    depends_on:
+      - redis
+    env_file:
+      - ${HOME}/.cvexplore/.env
+    restart: always
+    environment:
+      - PYTHONUNBUFFERED=TRUE
+    volumes:
+      - celery_data:/app/data
+    networks:
+      - backend
+
+volumes:
+  celery_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  backend:

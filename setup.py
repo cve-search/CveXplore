@@ -26,6 +26,7 @@ with open(os.path.join(HERE, "README.rst")) as fid:
 
 # -*- Extras -*-
 MODULES = {
+    "celery",
     "docs",
     "kafka",
     "mongodb",
@@ -125,6 +126,9 @@ setup(
             "alembic/*",
             "alembic/**/*",
             "alembic.ini",
+            "backend/*",
+            "backend/**/*",
+            "backend/**/**/*",
         ]
     },
     entry_points="""
