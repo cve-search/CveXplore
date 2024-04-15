@@ -85,6 +85,7 @@ class Cves(CveXploreBase):
     cvssSource = Column(String(50))
     cvssTime = Column(DateTime)
     cvssVector = Column(String(100))
+    configurations = Column(JSON)
     cwe = Column(String(50), index=True)
     epss = Column(Float, index=True)
     epssMetric = Column(JSON)
