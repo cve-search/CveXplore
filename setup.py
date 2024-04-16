@@ -3,7 +3,6 @@ from itertools import chain
 
 from setuptools import setup, find_packages
 
-
 # The directory containing this file
 HERE = os.path.abspath(os.path.dirname(__file__))
 

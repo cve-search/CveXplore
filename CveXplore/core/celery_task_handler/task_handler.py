@@ -131,7 +131,7 @@ class Task(object):
         else:
             raise Exception("type not handled: " + type(src))
 
-    def get_all_job_results(self):
+    def get_all_task_results(self):
         for keybatch in self.batcher(
             self.redis_backend.scan_iter(f"{self.name}_*"), 500
         ):
@@ -146,13 +146,30 @@ class Task(object):
 
             yield data
 
-    def purge_task_results(self):
+    def get_sorted_task_results(self, limit: int, desc: bool = True):
+        task_results = self.redis_backend.zrange(
+            f"sortresults_{self.name}", 0, limit, desc=desc, withscores=True
+        )
+        # fetch the keys
+        key_list = [x[0] for x in task_results]
+
+        my_pipeline = self.redis_backend.pipeline()
+        cleaned_keybatch = [x.decode("utf-8") for x in key_list if x is not None]
+        for key in cleaned_keybatch:
+            my_pipeline.hgetall(key)
+        data = []
+        for d in my_pipeline.execute():
+            cleaned_data = self.decode_redis_output(d)
+            data.append(cleaned_data)
+
+        return data
+
+    def purge_task_results(self) -> bool:
         count = 0
 
         for keybatch in self.batcher(
             self.redis_backend.scan_iter(f"{self.name}_*"), 500
         ):
-            # my_pipeline = self.redis_backend.pipeline()
             cleaned_keybatch = [x for x in keybatch if x is not None]
             count += len(cleaned_keybatch)
             self.redis_backend.delete(*cleaned_keybatch)
@@ -160,7 +177,9 @@ class Task(object):
         self.total_run_count = 0
         self.upsert_task()
 
-        self.redis_backend.delete(*self.redis_backend.keys(f"runresult_{self.name}*"))
+        self.redis_backend.unlink(*self.redis_backend.keys(f"runresult_{self.name}*"))
+
+        self.redis_backend.unlink(f"sortresults_{self.name}")
 
         entry = self.redis_broker.hgetall("redbeat:{}".format(self.name))
 
@@ -175,6 +194,8 @@ class Task(object):
         self.logger.info(
             f"Purged {self.name} database entries, deleting: {count} records"
         )
+
+        return True
 
     def upsert_task(self) -> bool:
         """
@@ -429,6 +450,30 @@ class TaskHandler(object):
         ret_list = sorted(ret_list, key=lambda x: x.name.lower())
 
         return ret_list
+
+    def delete_scheduled_task(self, task_id: int) -> bool:
+        all_tasks = self.show_scheduled_tasks()
+        the_task = all_tasks[task_id - 1]
+        return the_task.delete_task()
+
+    def toggle_scheduled_task(self, task_id: int) -> bool:
+        all_tasks = self.show_scheduled_tasks()
+        the_task = all_tasks[task_id - 1]
+        if the_task.enabled:
+            return the_task.disable()
+        else:
+            return the_task.enable()
+
+    def purge_scheduled_task(self, task_id: int) -> bool:
+        all_tasks = self.show_scheduled_tasks()
+        the_task = all_tasks[task_id - 1]
+        return the_task.purge_task_results()
+
+    def get_scheduled_tasks_results(self, task_id: int, limit: int = 10) -> list[dict]:
+        all_tasks = self.show_scheduled_tasks()
+        the_task = all_tasks[task_id - 1]
+        task_results = the_task.get_sorted_task_results(limit=limit)
+        return sorted(task_results, key=lambda x: x["inserted"], reverse=True)
 
     def get_scheduled_task_by_name(self, task_name: str) -> Task:
         """

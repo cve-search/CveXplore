@@ -8,4 +8,6 @@ task_status_list = [
     if not x.startswith("_") and x not in ["index", "count"]
 ]
 
-task_status_rev_types = {getattr(task_status_codes, x.upper()): x for x in task_status_list}
+task_status_rev_types = {
+    getattr(task_status_codes, x.upper()): x for x in task_status_list
+}

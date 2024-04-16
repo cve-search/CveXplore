@@ -1,4 +1,3 @@
-import re
 from abc import abstractmethod
 
 from CveXplore.common.cpe_converters import split_cpe_name

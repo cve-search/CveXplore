@@ -3,8 +3,6 @@ import os
 
 from dotenv import load_dotenv
 
-from CveXplore.core.general.constants import task_status_codes
-
 user_wd = os.path.expanduser("~/.cvexplore")
 
 load_dotenv(os.path.join(user_wd, ".env"))
@@ -26,6 +24,7 @@ from celery.utils.log import get_task_logger
 
 from CveXplore.common.config import Configuration
 from CveXplore.core.logging.logger_class import AppLogger
+from CveXplore.core.general.constants import task_status_codes
 
 logging.setLoggerClass(AppLogger)
 
@@ -96,6 +95,10 @@ def general_task_post_run_config(task_id, task, retval, state, *args, **kwargs):
             config.CELERY_TASK_FAILED_ERROR_CODE,
             ex=86400,
         )
+        insert_time = int(time.time())
+        task.backend.client.zadd(
+            f"sortresults_{task_slug}", {f"{task_slug}_{task_id}": insert_time}
+        )
         task.backend.client.hset(
             f"{task_slug}_{task_id}",
             mapping={
@@ -107,7 +110,7 @@ def general_task_post_run_config(task_id, task, retval, state, *args, **kwargs):
                         "data": {"out": "", "err": f"{type(retval)}"},
                     }
                 ),
-                "inserted": int(time.time()),
+                "inserted": insert_time,
                 "task_id": task_id,
             },
         )
@@ -117,13 +120,17 @@ def general_task_post_run_config(task_id, task, retval, state, *args, **kwargs):
         )
     else:
         task.backend.client.set(f"runresult_{task_slug}", retval["status"], ex=86400)
+        insert_time = int(time.time())
+        task.backend.client.zadd(
+            f"sortresults_{task_slug}", {f"{task_slug}_{task_id}": insert_time}
+        )
         task.backend.client.hset(
             f"{task_slug}_{task_id}",
             mapping={
                 "state": state,
                 "cost": cost,
                 "returns": json.dumps(retval),
-                "inserted": int(time.time()),
+                "inserted": insert_time,
                 "task_id": task_id,
             },
         )
@@ -176,8 +183,15 @@ def get_db_session():
     ignore_result=True,
 )
 def crt_test(task_slug: str, *args, **kwargs):
-    """General test task"""
-    logger = get_task_logger(__name__)
-    logger.info("Testing with OK response")
+    """General test task with random response"""
+    import random
 
-    return {"status": task_status_codes.OK}
+    logger = get_task_logger(__name__)
+    logger.info("Testing with OK / NOK response")
+
+    a = random.randrange(20)
+
+    if a % 2 == 0:
+        return {"status": task_status_codes.OK}
+    else:
+        return {"status": task_status_codes.NOK}
