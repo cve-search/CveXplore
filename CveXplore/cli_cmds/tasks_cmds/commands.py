@@ -8,6 +8,7 @@ from CveXplore.core.general.utils import (
     set_ansi_color_green,
     set_ansi_color_magenta,
     set_ansi_color_yellow,
+    timestampTOdatetimestring,
 )
 
 
@@ -29,7 +30,7 @@ def tasks_cmd(ctx):
 )
 @click.pass_context
 def list_cmd(ctx):
-    header_list = ["#", "Task name", "Task description"]
+    header_list = ["ID", "Task name", "Task description"]
     x = 1
     table_list = [header_list]
     for k, v in ctx.obj["data_source"].task_handler.show_available_tasks().items():
@@ -49,18 +50,40 @@ def list_cmd(ctx):
     is_flag=True,
     help="List tasks that are scheduled.",
 )
+@click.option(
+    "-d",
+    "--delete",
+    type=int,
+    help="Delete scheduled tasks by task id (id taken from -l / --list command).",
+)
+@click.option(
+    "-t",
+    "--toggle",
+    type=int,
+    help="Toggle scheduled tasks by task id (id taken from -l / --list command) between the enabled and disabled states.",
+)
+@click.option(
+    "-p",
+    "--purge",
+    type=int,
+    help="Purge the scheduled tasks results by task id (id taken from -l / --list command).",
+)
+@click.option(
+    "-r",
+    "--results",
+    type=int,
+    help="Show the (last 10) scheduled task results by task id (id taken from -l / --list command).",
+)
 @click.pass_context
-def scheduled_cmd(ctx, list):
+def scheduled_cmd(ctx, list, delete, toggle, purge, results):
 
     if list:
         header_list = [
-            "#",
+            "ID",
             "Task slug",
             "Task name",
             "Task description",
-            "Type",
             "Schedule",
-            "Args/Kwargs",
             "Enabled",
             "Last run at [Result] [Total]",
             "Next run at",
@@ -70,22 +93,30 @@ def scheduled_cmd(ctx, list):
         scheduled_tasks = ctx.obj["data_source"].task_handler.show_scheduled_tasks()
         for each in scheduled_tasks:
             task = each.to_dict()
+
+            try:
+                result = task_status_rev_types[task["last_run_result"]].upper()
+                if result == "OK":
+                    last_run_result = f"[{set_ansi_color_green(result)}]"
+                else:
+                    last_run_result = f"[{set_ansi_color_red(result)}]"
+            except KeyError:
+                last_run_result = "N/A"
+
             table_list.append(
                 [
                     x,
                     task["name"],
                     task["task"].replace("CveXplore.celery_app.", ""),
                     task["description"],
-                    "Crontab" if task["crontab"] else "Interval",
                     task["run"],
-                    f"{task['args']} / {task['kwargs']}",
                     (
                         set_ansi_color_green(task["enabled"])
                         if task["enabled"]
                         else set_ansi_color_red(task["enabled"])
                     ),
                     f"{set_ansi_color_magenta(datetimeToTimestring(task['last_run_at']))} "
-                    f"[{set_ansi_color_red(task_status_rev_types[task['last_run_result']].upper()) if task['last_run_result'] == ctx.obj['data_source'].config.CELERY_TASK_FAILED_ERROR_CODE else set_ansi_color_green(task_status_rev_types[task['last_run_result']].upper())}] "
+                    f"{last_run_result} "
                     f"[{set_ansi_color_yellow(task['total_run_count'])}]",
                     set_ansi_color_magenta(datetimeToTimestring(task["next_run_at"])),
                 ]
@@ -93,7 +124,40 @@ def scheduled_cmd(ctx, list):
             x += 1
 
         click.echo(tabulate(table_list, headers="firstrow", tablefmt="fancy_grid"))
+    elif delete:
+        click.echo(ctx.obj["data_source"].task_handler.delete_scheduled_task(delete))
+    elif toggle:
+        click.echo(ctx.obj["data_source"].task_handler.toggle_scheduled_task(toggle))
+    elif purge:
+        click.echo(ctx.obj["data_source"].task_handler.purge_scheduled_task(purge))
+    elif results:
+        header_list = [
+            "ID",
+            "Executed at",
+            "Task id",
+            "Task state",
+            "Returned",
+            "Task cost",
+        ]
+        x = 1
+        table_list = [header_list]
+        task_results = ctx.obj["data_source"].task_handler.get_scheduled_tasks_results(
+            results
+        )
+        for each in task_results:
+            table_list.append(
+                [
+                    x,
+                    set_ansi_color_magenta(timestampTOdatetimestring(each["inserted"])),
+                    each["task_id"],
+                    each["state"],
+                    each["returns"],
+                    set_ansi_color_yellow(each["cost"]),
+                ]
+            )
+            x += 1
 
+        click.echo(tabulate(table_list, headers="firstrow", tablefmt="fancy_grid"))
     else:
         if ctx.invoked_subcommand is None:
             click.echo(tasks_cmd.get_help(ctx))
