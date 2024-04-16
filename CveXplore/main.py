@@ -49,6 +49,7 @@ from CveXplore.errors import DatabaseIllegalCollection
 from CveXplore.errors.datasource import UnsupportedDatasourceException
 from CveXplore.errors.validation import CveNumberValidationError
 from CveXplore.objects.cvexplore_object import CveXploreObject
+from CveXplore.core.celery_task_handler.task_handler import TaskHandler
 
 
 def _version():
@@ -56,6 +57,8 @@ def _version():
     version_file = os.path.join(_PKG_DIR, "VERSION")
     with open(version_file, "r") as fdsec:
         VERSION = fdsec.read()
+
+    return VERSION
 
 
 VERSION = __version__ = _version()
@@ -179,6 +182,8 @@ class CveXplore(object):
         self.cpe = CpeDatabaseFunctions(collection="cpe")
         self.capec = CapecDatabaseFunctions(collection="capec")
         self.cwe = CWEDatabaseFunctions(collection="cwe")
+
+        self.task_handler = TaskHandler()
 
         self.logger.info(f"Initialized CveXplore version: {self.version}")
 

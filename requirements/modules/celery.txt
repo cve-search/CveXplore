@@ -1,4 +1,4 @@
 celery[redis]>=5.3.6
 celery-redbeat>=2.2.0
 
--r ./sqlalchemy.txt
+-r ./all-db.txt

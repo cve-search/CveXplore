@@ -26,6 +26,7 @@ with open(os.path.join(HERE, "README.rst")) as fid:
 
 # -*- Extras -*-
 MODULES = {
+    "all-db",
     "celery",
     "docs",
     "kafka",

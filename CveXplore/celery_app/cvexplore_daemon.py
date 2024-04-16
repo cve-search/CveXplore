@@ -1,3 +1,14 @@
+import json
+import os
+
+from dotenv import load_dotenv
+
+from CveXplore.core.general.constants import task_status_codes
+
+user_wd = os.path.expanduser("~/.cvexplore")
+
+load_dotenv(os.path.join(user_wd, ".env"))
+
 import contextlib
 import logging
 import time
@@ -68,7 +79,58 @@ def general_task_post_run_config(task_id, task, retval, state, *args, **kwargs):
     except KeyError:
         cost = -1
 
+    logger.info(
+        f"Task post run cost: {cost}, State: {state}, Task: {task}, RetVal: {retval}"
+    )
+
     task.request.update(task_execution_time=cost)
+
+    if "task_slug" in task.request.kwargs:
+        task_slug = task.request.kwargs["task_slug"]
+    else:
+        task_slug = task.name
+
+    if isinstance(retval, Exception) or retval is None:
+        task.backend.client.set(
+            f"runresult_{task_slug}",
+            config.CELERY_TASK_FAILED_ERROR_CODE,
+            ex=86400,
+        )
+        task.backend.client.hset(
+            f"{task_slug}_{task_id}",
+            mapping={
+                "state": state,
+                "cost": cost,
+                "returns": json.dumps(
+                    {
+                        "status": config.CELERY_TASK_FAILED_ERROR_CODE,
+                        "data": {"out": "", "err": f"{type(retval)}"},
+                    }
+                ),
+                "inserted": int(time.time()),
+                "task_id": task_id,
+            },
+        )
+        task.backend.client.expire(
+            name=f"{task_slug}_{task_id}",
+            time=config.CELERY_KEEP_TASK_RESULT * 60 * 60 * 24,
+        )
+    else:
+        task.backend.client.set(f"runresult_{task_slug}", retval["status"], ex=86400)
+        task.backend.client.hset(
+            f"{task_slug}_{task_id}",
+            mapping={
+                "state": state,
+                "cost": cost,
+                "returns": json.dumps(retval),
+                "inserted": int(time.time()),
+                "task_id": task_id,
+            },
+        )
+        task.backend.client.expire(
+            name=f"{task_slug}_{task_id}",
+            time=config.CELERY_KEEP_TASK_RESULT * 60 * 60 * 24,
+        )
 
     logger.info("Task execution completed!")
 
@@ -83,7 +145,8 @@ def general_task_failure_config(task_id, exception, traceback, einfo, *args, **k
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     # do tasks every xx seconds
-    sender.add_periodic_task(5.0, test.s())
+    # sender.add_periodic_task(5.0, crt_test.s())
+    pass
 
 
 @contextlib.contextmanager
@@ -104,6 +167,17 @@ def get_db_session():
         session.close()
 
 
-@app.task()
-def test():
-    print("Test")
+@app.task(
+    autoretry_for=(Exception,),
+    max_retries=5,
+    retry_backoff=True,
+    retry_backoff_max=700,
+    retry_jitter=True,
+    ignore_result=True,
+)
+def crt_test(task_slug: str, *args, **kwargs):
+    """General test task"""
+    logger = get_task_logger(__name__)
+    logger.info("Testing with OK response")
+
+    return {"status": task_status_codes.OK}
