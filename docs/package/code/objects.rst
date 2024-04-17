@@ -1,7 +1,7 @@
 .. _objects:
 
 Objects
-#######
+-------
 
 .. automodule:: CveXplore.objects.cvexplore_object
     :members:

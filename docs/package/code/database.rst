@@ -1,10 +1,10 @@
 .. _database:
 
 Database
-########
+--------
 
 Database connection
--------------------
+*******************
 
 .. automodule:: CveXplore.database.connection.mongo_db
     :members:
@@ -13,7 +13,7 @@ Database connection
     :exclude-members: __dict__,__weakref__
 
 Database helpers
-----------------
+****************
 
 .. automodule:: CveXplore.database.helpers.generic_db
     :members:
@@ -34,7 +34,7 @@ Database helpers
     :exclude-members: __dict__,__weakref__
 
 Database Maintenance
---------------------
+********************
 
 .. automodule:: CveXplore.database.maintenance.main_updater
     :members:

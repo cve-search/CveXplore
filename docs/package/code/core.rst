@@ -1,8 +1,10 @@
-CORE
-####
+.. _core:
 
-NIST NVD API
-------------
+Core
+----
+
+NIST NVD Api
+************
 
 .. automodule:: CveXplore.core.nvd_nist.nvd_nist_api
     :members:
@@ -10,8 +12,8 @@ NIST NVD API
     :special-members:
     :exclude-members: __dict__,__weakref__
 
-API Base class
---------------
+Api Base class
+**************
 
 .. automodule:: CveXplore.core.api_base_class
     :members:

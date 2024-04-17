@@ -13,11 +13,8 @@
    :maxdepth: 2
    :caption: Package documentation
 
-   /package/core
-   /package/common
-   /package/database
-   /package/api
-   /package/objects
+   /package/general
+   /package/package
 
 .. toctree::
    :maxdepth: 2

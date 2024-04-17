@@ -1,18 +1,21 @@
-.. _common:
+.. _api:
 
-Common
-######
+Api
+---
 
-General tools and converters
-----------------------------
+API connection
+**************
 
-.. automodule:: CveXplore.common.cpe_converters
+.. automodule:: CveXplore.api.connection.api_db
     :members:
     :show-inheritance:
     :special-members:
     :exclude-members: __dict__,__weakref__
 
-.. automodule:: CveXplore.common.data_source_connection
+API helpers
+************
+
+.. automodule:: CveXplore.api.helpers.cve_search_api
     :members:
     :show-inheritance:
     :special-members:
