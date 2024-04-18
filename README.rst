@@ -31,7 +31,7 @@ As stated you will need to have one of two things; in order to fully use this pa
 
 OR
 
-* A cve-search API instance
+* A cve-search API instance (will be retired in the 0.4 release)
 
 Both of them can be easily created on a physical machine or via a docker instance of cve-search;
 please check `cve-search <https://github.com/cve-search/cve-search>`_ or
