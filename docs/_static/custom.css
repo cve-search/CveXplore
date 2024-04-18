@@ -20,8 +20,9 @@ a.reference.internal span.viewcode-link span.pre:hover,
     color: #b0eb00;
 }
 
-em.sig-param a.n.reference.internal span.n span.pre {
-    color: #ff9575;
+em.sig-param a.n.reference.internal span.n span.pre,
+dt[id^='p-'] span.n.sig-name {
+    color: #4567f1 !important;
     font-weight: normal;
 }
 

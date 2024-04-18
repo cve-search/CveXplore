@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "CveXplore"
-copyright = "2024, Paul Tikken"
+copyright = "2020, Paul Tikken"
 author = "Paul Tikken"
 
 # -- General configuration ---------------------------------------------------
@@ -47,6 +47,10 @@ python_apigen_default_order = [
     (r".*\.__(init|new)__", -5),
     (r".*\.__(str|repr)__", 5),
 ]
+
+python_type_aliases = {
+    "CveXplore.api.helpers.cve_search_api.ApiBaseClass": "ApiBaseClass",
+}
 
 python_apigen_order_tiebreaker = "alphabetical"
 

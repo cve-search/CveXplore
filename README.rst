@@ -145,12 +145,12 @@ And to let CveXplore talk to an Cve Search API (only query POST endpoint needed)
    >>> cvx.version
    '0.1.2'
 
-For More options please check the full documentation
+For More options please check the package documentation
 
 Command line usage
 ------------------
 
-CveXplore has a 'Python Click' (`Documentation <https://click.palletsprojects.com/en/8.0.x/>`_) command line interpreter
+CveXplore has a 'Python Click' (`Documentation <https://click.palletsprojects.com/en/>`_) command line interpreter
 available. Click provides an extensive help function to guide you through the different options; also check the full
 documentation for examples and usage instructions
 

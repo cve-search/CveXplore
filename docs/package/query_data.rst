@@ -79,7 +79,9 @@ iterate over the requested results):
    ...
    << Capec:1 >>
 
-**WARNING The collection specific find method does not adhere to the default limit of 10**
+
+.. warning::
+    The collection specific find method does not adhere to the default limit of 10
 
 If you would limit (or sort / skip) the returned results you could append additional commands to your original query:
 

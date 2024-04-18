@@ -60,6 +60,13 @@ VERSION = __version__ = _version()
 
 
 class CveXplore(object):
+    """
+    The CveXplore class is the main entry point for CveXplore. All functionality is available from straight from this
+    class or via the different subclasses / attributes.
+
+    Group:
+        Main
+    """
     def __init__(self, **kwargs):
         """
         Create a new instance of CveXplore
@@ -329,6 +336,12 @@ class CveXplore(object):
            << Cves:CVE-2017-14445 >>,
            << Cves:CVE-2016-2354 >>]
 
+           >>> from CveXplore import CveXplore
+           >>> cvx = CveXplore()
+           >>> result = cvx.get_single_store_entries(("cves", {"cvss": {"$eq": 8}}), limit=0)
+           >>> len(result)
+           32
+
         Args:
             query: Tuple which contains the entry_type and the dict_filter in a tuple. Choices for entry_type:
 
@@ -422,18 +435,28 @@ class CveXplore(object):
         Method to perform *multiple* queries on *a single* or *multiple* collections in the data source and return the
         results.
 
-        A list of tuples which contains the entry_type and the dict_filter.
-            Choices for entry_type:
-                - capec;
-                - cpe;
-                - cwe;
-                - via4;
-                - cves;
+        Examples:
 
-            dict_filter is a dictionary representing a filter according to pymongo documentation.
+            >>> from CveXplore import CveXplore
+            >>> cvx = CveXplore()
+            >>> result = cvx.get_multi_store_entries([("CWE", {"id": "78"}), ("cves", {"id": "CVE-2009-0018"})])
+            >>> result
+            [<< Cwe:78 >>, << Cves:CVE-2009-0018 >>]
 
-            example:
-                get_multi_store_entries([("cwe", {"id": "78"}), ("cves", {"id": "CVE-2009-0018"})])
+        Args:
+            queries: A list of tuples which contains the entry_type and the dict_filter. Choices for entry_type:
+
+                    - capec;
+                    - cpe;
+                    - cwe;
+                    - via4;
+                    - cves;
+
+                    dict_filter is a dictionary representing a filter according to pymongo documentation.
+            limit: Limit the number of results to return.
+
+        Returns:
+            A list with CveXploreObject's or None
         """
 
         results = map(
@@ -456,7 +479,18 @@ class CveXplore(object):
         """
         Method for retrieving Cves that match a single CPE string. By default, the search will be made matching
         the configuration fields of the cves documents.
-        CPE string could be formatted like: ``cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*``
+
+        Examples:
+
+            >>> from CveXplore import CveXplore
+            >>> cvx = CveXplore()
+            >>> cves = cvx.cves_for_cpe("cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*")
+
+        Args:
+            cpe_string: CPE string to search for.
+
+        Returns:
+            A list with CveXploreObject's or None
         """
 
         cpe_regex_string = create_cpe_regex_string(cpe_string)
@@ -468,7 +502,16 @@ class CveXplore(object):
 
         return cves
 
-    def _validate_cve_id(self, cve_id: str):
+    def _validate_cve_id(self, cve_id: str) -> str:
+        """
+        Method for validating a CVE ID.
+
+        Args:
+            cve_id: The CVE ID to validate.
+
+        Returns:
+            A validated CVE ID.
+        """
         reg_match = re.compile(r"[cC][vV][eE]-\d{4}-\d{4,10}")
         if reg_match.match(cve_id) is not None:
             cve_id = cve_id.upper()
@@ -487,7 +530,12 @@ class CveXplore(object):
     def cve_by_id(self, cve_id: str) -> CveXploreObject | None:
         """
         Method to retrieve a single CVE from the database by its CVE ID number.
-        The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.
+
+        Args:
+            cve_id: The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.
+
+        Returns:
+            A CveXploreObject or None
         """
         cve_id = self._validate_cve_id(cve_id=cve_id)
 
@@ -495,8 +543,13 @@ class CveXplore(object):
 
     def cves_by_id(self, *cve_ids: str) -> Union[Iterable[CveXploreObject], Iterable]:
         """
-        Method to retrieve a multiple CVE's from the database by its CVE ID number.
-        The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.
+        Method to retrieve multiple CVE's from the database by their CVE ID numbers.
+
+        Args:
+            cve_ids: The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.
+
+        Returns:
+            A list with CveXploreObject's or empty list
         """
         ret_data = []
         for cve_id in cve_ids:
@@ -509,9 +562,14 @@ class CveXplore(object):
 
     def capec_by_cwe_id(self, cwe_id: int) -> List[CveXploreObject] | None:
         """
-        Method to retrieve capecs related to a specific CWE ID
-        """
+        Method to retrieve CAPEC's related to a specific CWE ID
 
+        Args:
+            cwe_id: The CWE ID to retrieve CAPEC for.
+
+        Returns:
+            A list with CveXploreObject's or None
+        """
         cwe = self.get_single_store_entry("cwe", {"id": cwe_id})
 
         if cwe is not None:
@@ -521,9 +579,14 @@ class CveXplore(object):
 
     def last_cves(self, limit: int = 10) -> List[CveXploreObject] | None:
         """
-        Method to retrieve the last entered / changed cves. By default, limited to 10.
-        """
+        Method to retrieve the last entered / changed cves.
 
+        Args:
+            limit: The amount of results to return; defaults to 10.
+
+        Returns:
+            A list with CveXploreObject's or None
+        """
         results = (
             getattr(self.datasource, "store_cves")
             .find()
@@ -540,10 +603,12 @@ class CveXplore(object):
 
     def get_db_content_stats(self) -> dict | str:
         """
-        Properties returning the stats from the database. Stats consist of the time last modified and the document count
+        This method request the statistics from the database and consist of the time last modified and the document count
         per cvedb store in the database.
-        """
 
+        Returns:
+            The stats from the database.
+        """
         stats = defaultdict(dict)
 
         if not isinstance(self.datasource, ApiDatabaseSource):
@@ -581,6 +646,11 @@ class CveXplore(object):
 
         return f"Using api endpoint: {self.datasource.baseurl}"
 
-    def __repr__(self):
-        """String representation of object"""
+    def __repr__(self) -> str:
+        """
+        String representation of object
+
+        Returns:
+            String representation of object
+        """
         return f"<< CveXplore:{self.version} >>"
