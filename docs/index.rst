@@ -11,6 +11,7 @@ Welcome to CveXplore's documentation!
    :hidden:
 
    /general/general
+   /general/settings
 
 .. toctree::
    :caption: Package:
@@ -24,3 +25,10 @@ Welcome to CveXplore's documentation!
    :hidden:
 
    /cli/general
+
+.. toctree::
+   :caption: Backend:
+   :hidden:
+
+   /backend/general
+   /backend/installation

@@ -67,6 +67,7 @@ class CveXplore(object):
     Group:
         Main
     """
+
     def __init__(self, **kwargs):
         """
         Create a new instance of CveXplore
