@@ -31,7 +31,7 @@ If you want to auto-start the cvexplore-backend.service upon reboot; then run:
 
     $ sudo systemctl enable cvexplore-backend.service
 
-If all went well; you can look at the cli *or* package section of this documentation for the commands to check the
+If all went well; you can look at the :ref:`cli <cli/cli:tasks>` *or* package section of this documentation for the commands to check the
 tasks backend.
 
 Systemd

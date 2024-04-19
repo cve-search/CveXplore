@@ -13,6 +13,9 @@ class MongoDBConnection(DatabaseConnectionBase):
     The MongoDBConnection class serves as a shell that functions as uniform way to connect to the mongodb backend.
     By default, it will try to establish a connection towards a mongodb running on localhost (default port 27017) and
     database 'cvedb' (as per defaults of cve_search)
+
+    Group:
+        database
     """
 
     def __init__(

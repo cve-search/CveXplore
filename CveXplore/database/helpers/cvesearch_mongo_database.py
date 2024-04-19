@@ -1,8 +1,3 @@
-"""
-Mongodb specific
-================
-"""
-
 from pymongo.collection import Collection
 from pymongo.cursor import Cursor
 

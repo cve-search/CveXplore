@@ -5,6 +5,10 @@ Main
 ####
 .. python-apigen-group:: main
 
-Other
-#####
-.. python-apigen-group:: classes
+Common
+######
+.. python-apigen-group:: common
+
+Database
+########
+.. python-apigen-group:: database

@@ -1,8 +1,3 @@
-"""
-Configuration
-=============
-"""
-
 import ast
 import json
 import os

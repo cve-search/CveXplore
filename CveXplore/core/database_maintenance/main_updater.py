@@ -1,8 +1,3 @@
-"""
-Main Updater
-============
-"""
-
 import json
 import logging
 import os

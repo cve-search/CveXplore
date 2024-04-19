@@ -2,6 +2,8 @@
 #
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
+import collections
+import json
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -9,7 +11,6 @@ import os
 import string
 import sys
 import typing
-import json
 
 sys.path.insert(0, os.path.abspath("."))
 sys.path.insert(0, os.path.abspath(".."))
@@ -24,6 +25,10 @@ from sphinx.util.docutils import SphinxRole
 from sphinx_immaterial.apidoc import (
     object_description_options as _object_description_options,
 )
+from setuptools import find_packages
+from pkgutil import iter_modules
+
+import CveXplore
 
 os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "YES"})
 
@@ -57,28 +62,40 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
 }
 
+# python_apigen_modules = {
+#     "CveXplore": "CveXplore/main/",
+#     "CveXplore.api.connection.api_db": "CveXplore/api/",
+#     "CveXplore.api.helpers.cve_search_api": "CveXplore/api/",
+#     "CveXplore.objects.cvexplore_object": "CveXplore/objects/",
+# }
+
 python_apigen_modules = {
     "CveXplore": "CveXplore/main/",
-    "CveXplore.api.connection.api_db": "CveXplore/api/",
-    "CveXplore.api.helpers.cve_search_api": "CveXplore/api/",
-    "CveXplore.objects.cvexplore_object": "CveXplore/objects/",
 }
+
+python_apigen_ban_list = ["cli_cmds", "celery_app"]
 
 python_apigen_default_groups = [
     ("class:.*", "Classes"),
     (r".*:.*\.__(init|new)__", "Constructors"),
-    (r".*:.*\.__eq__", "Comparison operators"),
+    (r".*:.*\.__(eq|ne)__", "Comparison operators"),
+    (r".*:.*\.__(next|iter)__", "Iterators"),
     (r".*:.*\.__(str|repr)__", "String representation"),
 ]
 
 python_apigen_default_order = [
     ("class:.*", -10),
     (r".*\.__(init|new)__", -5),
-    (r".*\.__(str|repr)__", 5),
+    (r".*\.__(eq|ne)__", 8),
+    (r".*\.__(next|iter)__", 9),
+    (r".*\.__(str|repr)__", 10),
 ]
 
 python_type_aliases = {
     "CveXplore.api.helpers.cve_search_api.ApiBaseClass": "ApiBaseClass",
+    "CveXplore.database.connection.base.db_connection_base.DatabaseConnectionBase": "DatabaseConnectionBase",
+    "CveXplore.core.database_maintenance.download_handler.ABC": "ABC",
+    "CveXplore.objects.cvexplore_object.CveXploreObject": "CveXploreObject",
 }
 
 python_apigen_order_tiebreaker = "alphabetical"
@@ -192,6 +209,47 @@ html_theme_options = {
         },
     ],
 }
+
+
+def _find_modules(module_name):
+    module_path = os.path.dirname(module_name.__file__)
+    pkg_name = module_path.split(os.path.sep)[-1]
+    modules = set()
+    for pkg in find_packages(module_path):
+        modules.add(pkg)
+        pkgpath = module_path + "/" + pkg.replace(".", "/")
+        if sys.version_info.major == 2 or (
+            sys.version_info.major == 3 and sys.version_info.minor < 6
+        ):
+            for _, name, ispkg in iter_modules([pkgpath]):
+                if not ispkg:
+                    modules.add(pkg + "." + name)
+        else:
+            for info in iter_modules([pkgpath]):
+                if not info.ispkg:
+                    modules.add(pkg + "." + info.name)
+    # return pkg_name, modules
+    # pkg_name, packages = find_modules(CveXplore)
+    data = sorted(modules)
+
+    ret_dict = collections.defaultdict(list)
+
+    for each in data:
+        if "." in each:
+            ret_dict[each.split(".")[0]].append(f"{pkg_name}.{each}")
+        else:
+            continue
+
+    ret_dict = dict(ret_dict)
+
+    package_dict = {}
+
+    for k, v in ret_dict.items():
+        if k not in python_apigen_ban_list:
+            for mod_name in v:
+                package_dict[mod_name] = f"{pkg_name}/{k}/"
+
+    return package_dict
 
 
 def _validate_parallel_build(app):
@@ -330,6 +388,8 @@ class TestColorScheme(TestColor):
 
 
 def setup(app):
+    python_apigen_modules.update(_find_modules(CveXplore))
+
     app.add_role("test-color-primary", TestColorPrimary())
     app.add_role("test-color-accent", TestColorAccent())
     app.add_role("test-color-scheme", TestColorScheme())
