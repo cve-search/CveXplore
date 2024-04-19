@@ -195,3 +195,26 @@ def crt_test(task_slug: str, *args, **kwargs):
         return {"status": task_status_codes.OK}
     else:
         return {"status": task_status_codes.NOK}
+
+
+@app.task(
+    autoretry_for=(Exception,),
+    max_retries=5,
+    retry_backoff=True,
+    retry_backoff_max=700,
+    retry_jitter=True,
+    ignore_result=True,
+)
+def crt_atest(task_slug: str, *args, **kwargs):
+    """General test task with A random response"""
+    import random
+
+    logger = get_task_logger(__name__)
+    logger.info("Testing with OK / NOK response")
+
+    a = random.randrange(20)
+
+    if a % 2 == 0:
+        return {"status": task_status_codes.OK}
+    else:
+        return {"status": task_status_codes.NOK}

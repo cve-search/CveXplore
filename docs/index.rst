@@ -1,5 +1,3 @@
-.. _index:
-
 Welcome to CveXplore's documentation!
 =====================================
 

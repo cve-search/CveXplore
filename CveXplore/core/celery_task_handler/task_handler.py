@@ -1,4 +1,5 @@
 import ast
+import collections
 import inspect
 import json
 import logging
@@ -177,7 +178,9 @@ class Task(object):
         self.total_run_count = 0
         self.upsert_task()
 
-        self.redis_backend.unlink(*self.redis_backend.keys(f"runresult_{self.name}*"))
+        all_run_results = self.redis_backend.keys(f"runresult_{self.name}*")
+        if len(all_run_results) != 0:
+            self.redis_backend.unlink(*all_run_results)
 
         self.redis_backend.unlink(f"sortresults_{self.name}")
 
@@ -422,8 +425,36 @@ class TaskHandler(object):
 
         self.logger = logging.getLogger(__name__)
 
-    def show_available_tasks(self):
-        return task_descriptions
+    def show_available_tasks(self) -> collections.OrderedDict:
+
+        ordered_dict = collections.OrderedDict()
+
+        sorted_tasks = sorted(task_descriptions.keys())
+
+        for each in sorted_tasks:
+            ordered_dict[each] = task_descriptions[each]
+
+        return ordered_dict
+
+    def create_task_by_number(
+        self,
+        task_number: int,
+        task_slug: str,
+        task_interval: int = None,
+        task_crontab: dict = None,
+    ):
+        all_tasks = self.show_available_tasks()
+        try:
+            task_name = list(all_tasks.keys())[task_number - 1]
+
+            return self.schedule_task(
+                task_slug=task_slug,
+                task_name=task_name,
+                task_interval=task_interval,
+                task_crontab=task_crontab,
+            )
+        except IndexError:
+            return "Task number not found; did you specify the correct task number?"
 
     def show_scheduled_tasks(self) -> list[Task]:
         tasks = self.redis.zrange("redbeat::schedule", 0, -1, withscores=True)

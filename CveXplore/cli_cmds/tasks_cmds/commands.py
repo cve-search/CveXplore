@@ -1,6 +1,7 @@
 import click
 from tabulate import tabulate
 
+from CveXplore.cli_cmds.mutex_options.mutex import Mutex
 from CveXplore.core.general.constants import task_status_rev_types
 from CveXplore.core.general.utils import (
     datetimeToTimestring,
@@ -158,6 +159,76 @@ def scheduled_cmd(ctx, list, delete, toggle, purge, results):
             x += 1
 
         click.echo(tabulate(table_list, headers="firstrow", tablefmt="fancy_grid"))
+    else:
+        if ctx.invoked_subcommand is None:
+            click.echo(tasks_cmd.get_help(ctx))
+
+
+@tasks_cmd.group(
+    "create",
+    invoke_without_command=True,
+    help="Perform action on tasks that are currently scheduled.",
+)
+@click.option(
+    "-n",
+    "--number",
+    type=int,
+    required=True,
+    help="Create new task of type referred to by task id (id taken from 'cvexplore tasks list' command).",
+)
+@click.option(
+    "-s",
+    "--slug",
+    required=True,
+    help="Slug of the task to create.",
+)
+@click.option(
+    "-i",
+    "--interval",
+    help="Use interval as tasks schedule; interval is in seconds.",
+    type=int,
+    cls=Mutex,
+    not_required_if=["crontab"],
+)
+@click.option(
+    "-c",
+    "--crontab",
+    help="Use crontab as tasks schedule; use csv value in format 'minute,hour,day_of_week,day_of_month,month_of_year'"
+    "The crontab entry will be processed from left to right (from minute to month_of_year) with a '*' as a "
+    "default entry. That means that is you only need to set the minute value to every minute -c */1 will suffice.",
+    cls=Mutex,
+    not_required_if=["interval"],
+)
+@click.pass_context
+def scheduled_cmd(ctx, number, slug, interval, crontab):
+    if interval:
+        click.echo(ctx.obj["data_source"].task_handler.create_task_by_number(
+            task_number=number, task_slug=slug, task_interval=interval
+        ))
+    elif crontab:
+
+        the_crontab = {
+            "minute": "*",
+            "hour": "*",
+            "day_of_week": "*",
+            "day_of_month": "*",
+            "month_of_year": "*",
+        }
+
+        crontab_list = crontab.split(",")
+        try:
+            i = 0
+            for each in crontab_list:
+                the_crontab[list(the_crontab.keys())[i]] = each
+                i += 1
+
+            click.echo(ctx.obj["data_source"].task_handler.create_task_by_number(
+                task_number=number, task_slug=slug, task_crontab=the_crontab
+            ))
+        except Exception as err:
+            click.echo(
+                f"Could not insert crontab; error: {err}",
+            )
     else:
         if ctx.invoked_subcommand is None:
             click.echo(tasks_cmd.get_help(ctx))
