@@ -2,7 +2,7 @@ FROM python:3.11
 
 RUN pip install --upgrade pip
 
-COPY ./backend/.docker/files/install.sh .
+COPY ./files/install.sh .
 RUN sed -i -e 's/\r$//' ./install.sh
 
 RUN ./install.sh
@@ -17,11 +17,9 @@ USER basicuser
 
 ENV PATH="/home/basicuser/.local/bin:${PATH}"
 
-COPY --chown=basicuser:basicuser . /app
-WORKDIR /app
+RUN pip install cvexplore[all]
 
-RUN pip install -r requirements.txt
-RUN pip install -r requirements/modules/celery.txt
+WORKDIR /home/basicuser/.local/bin
 
 # run the command to start the celery beat
 CMD ["/home/basicuser/.local/bin/celery", "-A", "CveXplore.celery_app.cvexplore_daemon", "beat", "-S", "redbeat.RedBeatScheduler", "--loglevel=INFO"]

@@ -23,6 +23,7 @@ Welcome to CveXplore's documentation!
    :hidden:
 
    /cli/general
+   /cli/cli
 
 .. toctree::
    :caption: Backend:

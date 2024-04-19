@@ -20,7 +20,9 @@ logging.getLogger("dicttoxml").setLevel("ERROR")
 
 @click.group(invoke_without_command=True)
 @click.option("-v", "--version", is_flag=True, help="Show the current version and exit")
-@click.option("-w", "--where", is_flag=True, help="Show the path where CveXplore is installed")
+@click.option(
+    "-w", "--where", is_flag=True, help="Show the path where CveXplore is installed"
+)
 @click.pass_context
 def main(ctx, version, where):
     ctx.obj = {"data_source": CveXplore()}

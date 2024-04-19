@@ -11,6 +11,7 @@ from CveXplore.core.general.utils import (
     set_ansi_color_yellow,
     timestampTOdatetimestring,
 )
+from CveXplore.errors.tasks import TaskNotFoundError
 
 
 @click.group(
@@ -34,10 +35,13 @@ def list_cmd(ctx):
     header_list = ["ID", "Task name", "Task description"]
     x = 1
     table_list = [header_list]
-    for k, v in ctx.obj["data_source"].task_handler.show_available_tasks().items():
-        table_list.append([x, k, v])
-        x += 1
-    click.echo(tabulate(table_list, headers="firstrow", tablefmt="fancy_grid"))
+    try:
+        for k, v in ctx.obj["data_source"].task_handler.show_available_tasks().items():
+            table_list.append([x, k, v])
+            x += 1
+        click.echo(tabulate(table_list, headers="firstrow", tablefmt="fancy_grid"))
+    except Exception as e:
+        click.echo(e)
 
 
 @tasks_cmd.group(
@@ -91,46 +95,70 @@ def scheduled_cmd(ctx, list, delete, toggle, purge, results):
         ]
         x = 1
         table_list = [header_list]
-        scheduled_tasks = ctx.obj["data_source"].task_handler.show_scheduled_tasks()
-        for each in scheduled_tasks:
-            task = each.to_dict()
+        try:
+            scheduled_tasks = ctx.obj["data_source"].task_handler.show_scheduled_tasks()
+            for each in scheduled_tasks:
+                task = each.to_dict()
 
-            try:
-                result = task_status_rev_types[task["last_run_result"]].upper()
-                if result == "OK":
-                    last_run_result = f"[{set_ansi_color_green(result)}]"
-                else:
-                    last_run_result = f"[{set_ansi_color_red(result)}]"
-            except KeyError:
-                last_run_result = "N/A"
+                try:
+                    result = task_status_rev_types[task["last_run_result"]].upper()
+                    if result == "OK":
+                        last_run_result = f"[{set_ansi_color_green(result)}]"
+                    else:
+                        last_run_result = f"[{set_ansi_color_red(result)}]"
+                except KeyError:
+                    last_run_result = "N/A"
 
-            table_list.append(
-                [
-                    x,
-                    task["name"],
-                    task["task"].replace("CveXplore.celery_app.", ""),
-                    task["description"],
-                    task["run"],
-                    (
-                        set_ansi_color_green(task["enabled"])
-                        if task["enabled"]
-                        else set_ansi_color_red(task["enabled"])
-                    ),
-                    f"{set_ansi_color_magenta(datetimeToTimestring(task['last_run_at']))} "
-                    f"{last_run_result} "
-                    f"[{set_ansi_color_yellow(task['total_run_count'])}]",
-                    set_ansi_color_magenta(datetimeToTimestring(task["next_run_at"])),
-                ]
-            )
-            x += 1
+                table_list.append(
+                    [
+                        x,
+                        task["name"],
+                        task["task"].replace("CveXplore.celery_app.", ""),
+                        task["description"],
+                        task["run"],
+                        (
+                            set_ansi_color_green(task["enabled"])
+                            if task["enabled"]
+                            else set_ansi_color_red(task["enabled"])
+                        ),
+                        f"{set_ansi_color_magenta(datetimeToTimestring(task['last_run_at']))} "
+                        f"{last_run_result} "
+                        f"[{set_ansi_color_yellow(task['total_run_count'])}]",
+                        set_ansi_color_magenta(
+                            datetimeToTimestring(task["next_run_at"])
+                        ),
+                    ]
+                )
+                x += 1
 
-        click.echo(tabulate(table_list, headers="firstrow", tablefmt="fancy_grid"))
+            click.echo(tabulate(table_list, headers="firstrow", tablefmt="fancy_grid"))
+        except Exception as e:
+            click.echo(e)
     elif delete:
-        click.echo(ctx.obj["data_source"].task_handler.delete_scheduled_task(delete))
+        try:
+            click.echo(
+                ctx.obj["data_source"].task_handler.delete_scheduled_task(delete)
+            )
+        except TaskNotFoundError:
+            click.echo("Task not found; did you specify the correct task number?")
+        except Exception as e:
+            click.echo(e)
     elif toggle:
-        click.echo(ctx.obj["data_source"].task_handler.toggle_scheduled_task(toggle))
+        try:
+            click.echo(
+                ctx.obj["data_source"].task_handler.toggle_scheduled_task(toggle)
+            )
+        except TaskNotFoundError:
+            click.echo("Task not found; did you specify the correct task number?")
+        except Exception as e:
+            click.echo(e)
     elif purge:
-        click.echo(ctx.obj["data_source"].task_handler.purge_scheduled_task(purge))
+        try:
+            click.echo(ctx.obj["data_source"].task_handler.purge_scheduled_task(purge))
+        except TaskNotFoundError:
+            click.echo("Task not found; did you specify the correct task number?")
+        except Exception as e:
+            click.echo(e)
     elif results:
         header_list = [
             "ID",
@@ -142,23 +170,30 @@ def scheduled_cmd(ctx, list, delete, toggle, purge, results):
         ]
         x = 1
         table_list = [header_list]
-        task_results = ctx.obj["data_source"].task_handler.get_scheduled_tasks_results(
-            results
-        )
-        for each in task_results:
-            table_list.append(
-                [
-                    x,
-                    set_ansi_color_magenta(timestampTOdatetimestring(each["inserted"])),
-                    each["task_id"],
-                    each["state"],
-                    each["returns"],
-                    set_ansi_color_yellow(each["cost"]),
-                ]
-            )
-            x += 1
+        try:
+            task_results = ctx.obj[
+                "data_source"
+            ].task_handler.get_scheduled_tasks_results(results)
+            for each in task_results:
+                table_list.append(
+                    [
+                        x,
+                        set_ansi_color_magenta(
+                            timestampTOdatetimestring(each["inserted"])
+                        ),
+                        each["task_id"],
+                        each["state"],
+                        each["returns"],
+                        set_ansi_color_yellow(each["cost"]),
+                    ]
+                )
+                x += 1
 
-        click.echo(tabulate(table_list, headers="firstrow", tablefmt="fancy_grid"))
+            click.echo(tabulate(table_list, headers="firstrow", tablefmt="fancy_grid"))
+        except TaskNotFoundError:
+            click.echo("Task not found; did you specify the correct task number?")
+        except Exception as e:
+            click.echo(e)
     else:
         if ctx.invoked_subcommand is None:
             click.echo(tasks_cmd.get_help(ctx))
@@ -200,13 +235,18 @@ def scheduled_cmd(ctx, list, delete, toggle, purge, results):
     not_required_if=["interval"],
 )
 @click.pass_context
-def scheduled_cmd(ctx, number, slug, interval, crontab):
+def create_cmd(ctx, number, slug, interval, crontab):
     if interval:
-        click.echo(
-            ctx.obj["data_source"].task_handler.create_task_by_number(
-                task_number=number, task_slug=slug, task_interval=interval
+        try:
+            click.echo(
+                ctx.obj["data_source"].task_handler.create_task_by_number(
+                    task_number=number, task_slug=slug, task_interval=interval
+                )
             )
-        )
+        except TaskNotFoundError:
+            click.echo("Task not found; did you specify the correct task number?")
+        except Exception as e:
+            click.echo(e)
     elif crontab:
 
         the_crontab = {

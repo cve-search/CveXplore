@@ -2,7 +2,7 @@ FROM python:3.11
 
 RUN pip install --upgrade pip
 
-COPY ./backend/.docker/files/install.sh .
+COPY ./backend/docker/from_git/files/install.sh .
 RUN sed -i -e 's/\r$//' ./install.sh
 
 RUN ./install.sh

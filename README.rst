@@ -37,8 +37,6 @@ Both of them can be easily created on a physical machine or via a docker instanc
 please check `cve-search <https://github.com/cve-search/cve-search>`_ or
 `CVE-Search-Docker <https://github.com/cve-search/CVE-Search-Docker>`_ for further details.
 
-.. _basic installation:
-
 Installation
 ------------
 Package is hosted on pypi, so to install the minimal core just run:

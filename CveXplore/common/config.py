@@ -163,6 +163,8 @@ class Configuration(object):
     DOWNLOAD_SLEEP_MAX = float(os.getenv("DOWNLOAD_SLEEP_MAX", 2.5))
     DOWNLOAD_BATCH_RANGE = os.getenv("DOWNLOAD_BATCH_RANGE", None)
 
+    REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/")
+
     # CELERY SETTINGS
     CELERY_REDIS_URL = os.getenv("CELERY_REDIS_URL", "redis://redis:6379/")
     CELERY_REDIS_BROKER_DB = int(os.getenv("CELERY_REDIS_BROKER_DB", 5))

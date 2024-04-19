@@ -10,7 +10,10 @@ from urllib.parse import urlparse
 import pytz
 from celery.schedules import schedule, crontab
 from redbeat import RedBeatSchedulerEntry
+from redbeat.decoder import RedBeatJSONEncoder
+from redbeat.schedulers import ensure_conf
 from redis import Redis
+from redis.exceptions import ConnectionError as RedisConnectionError
 
 from CveXplore.celery_app.cvexplore_daemon import app
 from CveXplore.common.config import Configuration
@@ -28,6 +31,59 @@ task_descriptions = {
     for (k, v) in app.tasks.items()
     if k.startswith(TASK_START_STRING)
 }
+
+
+class CveXploreEntry(RedBeatSchedulerEntry):
+
+    def __init__(
+        self,
+        name=None,
+        task=None,
+        schedule=None,
+        args=None,
+        kwargs=None,
+        enabled=True,
+        options=None,
+        redis_broker=None,
+        **clsargs,
+    ):
+        super().__init__(
+            name=str(name),
+            task=task,
+            schedule=schedule,
+            args=args,
+            kwargs=kwargs,
+            options=options,
+            **clsargs,
+        )
+
+        self.enabled = enabled
+        ensure_conf(self.app)
+
+        self.redis_broker = redis_broker
+
+    def save(self):
+        definition = {
+            "name": self.name,
+            "task": self.task,
+            "args": self.args,
+            "kwargs": self.kwargs,
+            "options": self.options,
+            "schedule": self.schedule,
+            "enabled": self.enabled,
+        }
+        meta = {
+            "last_run_at": self.last_run_at,
+        }
+        with self.redis_broker.pipeline() as pipe:
+            pipe.hset(
+                self.key, "definition", json.dumps(definition, cls=RedBeatJSONEncoder)
+            )
+            pipe.hsetnx(self.key, "meta", json.dumps(meta, cls=RedBeatJSONEncoder))
+            pipe.zadd(self.app.redbeat_conf.schedule_key, {self.key: self.score})
+            pipe.execute()
+
+        return self
 
 
 class Task(object):
@@ -74,7 +130,7 @@ class Task(object):
 
         self.config = Configuration
 
-        parsed_url = urlparse(self.config.CELERY_REDIS_URL)
+        parsed_url = urlparse(self.config.REDIS_URL)
 
         self.redis_broker = Redis(
             host=parsed_url.hostname,
@@ -204,7 +260,7 @@ class Task(object):
         """
         Method to create or update a scheduled interval task
         """
-        entry = RedBeatSchedulerEntry(
+        entry = CveXploreEntry(
             name=self.name,
             task=self.task,
             schedule=self.run,
@@ -212,6 +268,7 @@ class Task(object):
             kwargs=self.kwargs,
             enabled=self.enabled,
             app=app,
+            redis_broker=self.redis_broker,
         )
         entry.save()
 
@@ -415,7 +472,7 @@ class TaskHandler(object):
     def __init__(self):
         self.config = Configuration
 
-        parsed_url = urlparse(self.config.CELERY_REDIS_URL)
+        parsed_url = urlparse(self.config.REDIS_URL)
 
         self.redis = Redis(
             host=parsed_url.hostname,
@@ -443,8 +500,8 @@ class TaskHandler(object):
         task_interval: int = None,
         task_crontab: dict = None,
     ):
-        all_tasks = self.show_available_tasks()
         try:
+            all_tasks = self.show_available_tasks()
             task_name = list(all_tasks.keys())[task_number - 1]
 
             return self.schedule_task(
@@ -454,57 +511,103 @@ class TaskHandler(object):
                 task_crontab=task_crontab,
             )
         except IndexError:
-            return "Task number not found; did you specify the correct task number?"
+            raise TaskNotFoundError
+        except Exception as err:
+            self.logger.error(
+                f"Uncaught exception while retrieving scheduled tasks: {err}"
+            )
+            raise
 
     def show_scheduled_tasks(self) -> list[Task]:
-        tasks = self.redis.zrange("redbeat::schedule", 0, -1, withscores=True)
+        try:
+            tasks = self.redis.zrange("redbeat::schedule", 0, -1, withscores=True)
 
-        ret_list = []
+            ret_list = []
 
-        for task_details in tasks:
-            task, next_run = task_details
+            for task_details in tasks:
+                task, next_run = task_details
 
-            entry = self.redis.hgetall(task)
+                entry = self.redis.hgetall(task)
 
-            for each in entry:
-                entry[each] = json.loads(entry[each])
+                for each in entry:
+                    entry[each] = json.loads(entry[each])
 
-            task_data = TaskData(entry)
+                task_data = TaskData(entry)
 
-            ret_list.append(
-                Task(
-                    **task_data.to_dict(),
-                    next_run_at=timestampTOdatetime(int(next_run)),
+                ret_list.append(
+                    Task(
+                        **task_data.to_dict(),
+                        next_run_at=timestampTOdatetime(int(next_run)),
+                    )
                 )
+
+            ret_list = sorted(ret_list, key=lambda x: x.name.lower())
+
+            return ret_list
+        except RedisConnectionError as err:
+            self.logger.error(f"Redis connection error; {err}")
+            raise
+        except Exception as err:
+            self.logger.error(
+                f"Uncaught exception while retrieving scheduled tasks: {err}"
             )
-
-        ret_list = sorted(ret_list, key=lambda x: x.name.lower())
-
-        return ret_list
+            raise
 
     def delete_scheduled_task(self, task_id: int) -> bool:
-        all_tasks = self.show_scheduled_tasks()
-        the_task = all_tasks[task_id - 1]
-        return the_task.delete_task()
+        try:
+            all_tasks = self.show_scheduled_tasks()
+            the_task = all_tasks[task_id - 1]
+            return the_task.delete_task()
+        except IndexError:
+            raise TaskNotFoundError
+        except Exception as err:
+            self.logger.error(
+                f"Uncaught exception while retrieving scheduled tasks: {err}"
+            )
+            raise
 
     def toggle_scheduled_task(self, task_id: int) -> bool:
-        all_tasks = self.show_scheduled_tasks()
-        the_task = all_tasks[task_id - 1]
-        if the_task.enabled:
-            return the_task.disable()
-        else:
-            return the_task.enable()
+        try:
+            all_tasks = self.show_scheduled_tasks()
+            the_task = all_tasks[task_id - 1]
+            if the_task.enabled:
+                return the_task.disable()
+            else:
+                return the_task.enable()
+        except IndexError:
+            raise TaskNotFoundError
+        except Exception as err:
+            self.logger.error(
+                f"Uncaught exception while retrieving scheduled tasks: {err}"
+            )
+            raise
 
     def purge_scheduled_task(self, task_id: int) -> bool:
-        all_tasks = self.show_scheduled_tasks()
-        the_task = all_tasks[task_id - 1]
-        return the_task.purge_task_results()
+        try:
+            all_tasks = self.show_scheduled_tasks()
+            the_task = all_tasks[task_id - 1]
+            return the_task.purge_task_results()
+        except IndexError:
+            raise TaskNotFoundError
+        except Exception as err:
+            self.logger.error(
+                f"Uncaught exception while retrieving scheduled tasks: {err}"
+            )
+            raise
 
     def get_scheduled_tasks_results(self, task_id: int, limit: int = 10) -> list[dict]:
-        all_tasks = self.show_scheduled_tasks()
-        the_task = all_tasks[task_id - 1]
-        task_results = the_task.get_sorted_task_results(limit=limit)
-        return sorted(task_results, key=lambda x: x["inserted"], reverse=True)
+        try:
+            all_tasks = self.show_scheduled_tasks()
+            the_task = all_tasks[task_id - 1]
+            task_results = the_task.get_sorted_task_results(limit=limit)
+            return sorted(task_results, key=lambda x: x["inserted"], reverse=True)
+        except IndexError:
+            raise TaskNotFoundError
+        except Exception as err:
+            self.logger.error(
+                f"Uncaught exception while retrieving scheduled tasks: {err}"
+            )
+            raise
 
     def get_scheduled_task_by_name(self, task_name: str) -> Task:
         """
@@ -551,6 +654,7 @@ class TaskHandler(object):
             return my_task.upsert_task()
         except Exception as e:
             self.logger.error(f"Error creating task: {e}")
+            raise
 
     def __repr__(self):
         return "<< TaskHandler >>"
