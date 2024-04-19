@@ -272,6 +272,16 @@ class CveXplore(object):
         """
         return self.__version
 
+    @staticmethod
+    def where() -> str:
+        """
+        Request the path where CveXplore is installed
+
+        Returns:
+            Path where CveXplore is installed
+        """
+        return os.path.dirname(__file__)
+
     def get_single_store_entry(
         self, entry_type: str, dict_filter: dict = None
     ) -> CveXploreObject | None:

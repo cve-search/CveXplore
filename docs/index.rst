@@ -30,3 +30,4 @@ Welcome to CveXplore's documentation!
 
    /backend/general
    /backend/installation
+   /backend/settings
