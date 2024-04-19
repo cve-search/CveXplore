@@ -425,4 +425,4 @@ def setup(app):
         objname="Sphinx event",
         indextemplate="pair: %s; event",
     )
-    app.connect("builder-inited", _validate_parallel_build)
+    # app.connect("builder-inited", _validate_parallel_build)
