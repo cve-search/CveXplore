@@ -202,9 +202,11 @@ def scheduled_cmd(ctx, list, delete, toggle, purge, results):
 @click.pass_context
 def scheduled_cmd(ctx, number, slug, interval, crontab):
     if interval:
-        click.echo(ctx.obj["data_source"].task_handler.create_task_by_number(
-            task_number=number, task_slug=slug, task_interval=interval
-        ))
+        click.echo(
+            ctx.obj["data_source"].task_handler.create_task_by_number(
+                task_number=number, task_slug=slug, task_interval=interval
+            )
+        )
     elif crontab:
 
         the_crontab = {
@@ -222,9 +224,11 @@ def scheduled_cmd(ctx, number, slug, interval, crontab):
                 the_crontab[list(the_crontab.keys())[i]] = each
                 i += 1
 
-            click.echo(ctx.obj["data_source"].task_handler.create_task_by_number(
-                task_number=number, task_slug=slug, task_crontab=the_crontab
-            ))
+            click.echo(
+                ctx.obj["data_source"].task_handler.create_task_by_number(
+                    task_number=number, task_slug=slug, task_crontab=the_crontab
+                )
+            )
         except Exception as err:
             click.echo(
                 f"Could not insert crontab; error: {err}",
