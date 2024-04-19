@@ -10,6 +10,10 @@ Docker
 
 Please ensure that you have docker and docker-compose installed before processing with the rest of this paragraph.
 
+.. warning::
+
+   The steps below (creating docker containers from package) are only available for versions >= 0.3.31
+
 Retrieve the files which are present in the ``CveXplore/backend/docker/from_package`` folder; and save them to your home
 folder. Navigate into the ``CveXplore/backend/docker/from_package`` folder. Run the following command:
 
