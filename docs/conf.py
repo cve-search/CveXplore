@@ -28,8 +28,6 @@ from sphinx_immaterial.apidoc import (
 from setuptools import find_packages
 from pkgutil import iter_modules
 
-import CveXplore
-
 os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "YES"})
 
 
