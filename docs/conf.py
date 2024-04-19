@@ -379,7 +379,7 @@ class TestColorScheme(TestColor):
 
 
 def setup(app):
-    python_apigen_modules.update(_find_modules("./CveXplore"))
+    python_apigen_modules.update(_find_modules("../CveXplore"))
 
     app.add_role("test-color-primary", TestColorPrimary())
     app.add_role("test-color-accent", TestColorAccent())
