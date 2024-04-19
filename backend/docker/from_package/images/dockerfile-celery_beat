@@ -1,0 +1,25 @@
+FROM python:3.11
+
+RUN pip install --upgrade pip
+
+COPY ./files/install.sh .
+RUN sed -i -e 's/\r$//' ./install.sh
+
+RUN ./install.sh
+
+RUN rm ./install.sh
+
+RUN groupadd -g 1000 basicuser && useradd -r -u 1000 -g basicuser basicuser
+
+RUN mkdir -p /home/basicuser && chown basicuser:basicuser -R /home/basicuser
+
+USER basicuser
+
+ENV PATH="/home/basicuser/.local/bin:${PATH}"
+
+RUN pip install cvexplore[all]
+
+WORKDIR /home/basicuser/.local/bin
+
+# run the command to start the celery beat
+CMD ["/home/basicuser/.local/bin/celery", "-A", "CveXplore.celery_app.cvexplore_daemon", "beat", "-S", "redbeat.RedBeatScheduler", "--loglevel=INFO"]

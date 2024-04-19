@@ -1,0 +1,35 @@
+.reference.external {
+    color: var(--md-code-hl-special-color);
+}
+
+a.reference.internal span.pre {
+    color: #ff9575;
+    font-weight: bold;
+}
+
+/*a.reference.internal span.pre*/
+
+a.reference.internal span.viewcode-link span.pre,
+.pseudo-toc-entry {
+    color: #ff9575;
+    font-weight: normal;
+}
+
+a.reference.internal span.viewcode-link span.pre:hover,
+.pseudo-toc-entry:hover {
+    color: #b0eb00;
+}
+
+em.sig-param a.n.reference.internal span.n span.pre,
+dt[id^='p-'] span.n.sig-name {
+    color: #4567f1 !important;
+    font-weight: normal;
+}
+
+em.sig-param a.n.reference.internal span.n span.pre:hover {
+    color: #b0eb00
+}
+
+.default_value {
+    color: #9383e2
+}

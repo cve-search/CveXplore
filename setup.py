@@ -3,7 +3,6 @@ from itertools import chain
 
 from setuptools import setup, find_packages
 
-
 # The directory containing this file
 HERE = os.path.abspath(os.path.dirname(__file__))
 
@@ -26,6 +25,8 @@ with open(os.path.join(HERE, "README.rst")) as fid:
 
 # -*- Extras -*-
 MODULES = {
+    "all-db",
+    "celery",
     "docs",
     "kafka",
     "mongodb",
@@ -125,6 +126,9 @@ setup(
             "alembic/*",
             "alembic/**/*",
             "alembic.ini",
+            "backend/*",
+            "backend/**/*",
+            "backend/**/**/*",
         ]
     },
     entry_points="""

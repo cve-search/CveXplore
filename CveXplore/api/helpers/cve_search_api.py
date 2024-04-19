@@ -1,8 +1,3 @@
-"""
-Cve Search API
-==============
-"""
-
 import pymongo
 
 from CveXplore.core.api_base_class import ApiBaseClass
