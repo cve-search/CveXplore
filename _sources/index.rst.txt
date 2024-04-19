@@ -1,34 +1,34 @@
-.. image:: ../images/CveExplore_logo.png
+Welcome to CveXplore's documentation!
+=====================================
 
 .. include:: ../README.rst
    :start-after: ##INCLUDE_MARKER##
 
 .. toctree::
-   :maxdepth: 2
-   :caption: General documentation
+   :caption: General:
+   :hidden:
 
    /general/general
+   /general/settings
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Package documentation
+   :caption: Package:
+   :hidden:
 
-   /package/core
-   /package/common
-   /package/database
-   /package/api
-   /package/objects
+   /package/query_data
+   /package/code_base
 
 .. toctree::
-   :maxdepth: 2
-   :caption: CLI documentation
+   :caption: Command line:
+   :hidden:
 
+   /cli/general
    /cli/cli
 
+.. toctree::
+   :caption: Backend:
+   :hidden:
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   /backend/general
+   /backend/installation
+   /backend/settings
