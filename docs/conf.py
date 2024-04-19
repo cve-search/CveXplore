@@ -5,11 +5,14 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-# import os
+import os
 import string
-
-# import sys
+import sys
 import typing
+import json
+
+sys.path.insert(0, os.path.abspath("."))
+sys.path.insert(0, os.path.abspath(".."))
 
 import docutils
 import sphinx
@@ -22,7 +25,7 @@ from sphinx_immaterial.apidoc import (
     object_description_options as _object_description_options,
 )
 
-# sys.path.insert(0, os.path.abspath("."))
+os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "YES"})
 
 
 logger = sphinx.util.logging.getLogger(__name__)
