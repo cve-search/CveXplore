@@ -211,8 +211,8 @@ html_theme_options = {
 }
 
 
-def _find_modules(module_name):
-    module_path = os.path.dirname(module_name.__file__)
+def _find_modules(module_path):
+    # module_path = os.path.dirname(module_name.__file__)
     pkg_name = module_path.split(os.path.sep)[-1]
     modules = set()
     for pkg in find_packages(module_path):
@@ -388,7 +388,7 @@ class TestColorScheme(TestColor):
 
 
 def setup(app):
-    python_apigen_modules.update(_find_modules(CveXplore))
+    python_apigen_modules.update(_find_modules("./CveXplore"))
 
     app.add_role("test-color-primary", TestColorPrimary())
     app.add_role("test-color-accent", TestColorAccent())
@@ -425,4 +425,4 @@ def setup(app):
         objname="Sphinx event",
         indextemplate="pair: %s; event",
     )
-    # app.connect("builder-inited", _validate_parallel_build)
+    app.connect("builder-inited", _validate_parallel_build)
