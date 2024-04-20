@@ -22,7 +22,9 @@ from setuptools import find_packages
 from pkgutil import iter_modules
 
 os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "YES"})
-
+os.environ["DATASOURCE_TYPE"] = "mysql"
+os.environ["DATASOURCE_PROTOCOL"] = "mysql"
+os.environ["DATASOURCE_DBAPI"] = "pymysql"
 
 logger = sphinx.util.logging.getLogger(__name__)
 
@@ -44,6 +46,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.autosectionlabel",
     "sphinx_click",
+    "sphinx_sqlalchemy",
 ]
 
 default_role = "any"
@@ -64,7 +67,7 @@ python_apigen_modules = {
     "CveXplore": "CveXplore/main/",
 }
 
-python_apigen_ban_list = ["cli_cmds", "celery_app"]
+python_apigen_ban_list = ["cli_cmds", "celery_app", "database_models"]
 
 python_apigen_default_groups = [
     ("class:.*", "Classes"),
@@ -379,7 +382,7 @@ class TestColorScheme(TestColor):
 
 
 def setup(app):
-    # python_apigen_modules.update(_find_modules("../CveXplore"))
+    python_apigen_modules.update(_find_modules("../CveXplore"))
 
     app.add_role("test-color-primary", TestColorPrimary())
     app.add_role("test-color-accent", TestColorAccent())

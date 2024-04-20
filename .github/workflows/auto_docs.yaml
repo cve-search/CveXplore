@@ -45,6 +45,9 @@ jobs:
           git commit -m "Update documentation" -a || true
         env:
           DOC_BUILD: '{"DOC_BUILD": "YES"}'
+          DATASOURCE_TYPE: 'mysql'
+          DATASOURCE_PROTOCOL: 'mysql'
+          DATASOURCE_DBAPI: 'pymysql'
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
