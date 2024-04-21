@@ -51,6 +51,16 @@ extensions = [
 
 default_role = "any"
 autosectionlabel_prefix_document = True
+show_warning_types = True
+suppress_warnings = [
+    "ref.ref",
+    "ref.doc",
+    "ref.term",
+    "misc.highlighting_failure",
+    "toc.excluded",
+]
+
+autoclass_content = "both"
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
@@ -381,8 +391,29 @@ class TestColorScheme(TestColor):
     )
 
 
+def _parse_config_values(app, config_class):
+
+    logger.info(f"Parsing config values for {config_class}")
+
+    all_configs = [c for c in dir(config_class) if not c.startswith("_")]
+
+    for each in all_configs:
+        app.add_config_value(
+            name=each,
+            default=getattr(config_class, each),
+            rebuild="html",
+            types=[type(getattr(config_class, each))],
+        )
+
+
 def setup(app):
     python_apigen_modules.update(_find_modules("../CveXplore"))
+
+    from CveXplore.common.config import Configuration
+
+    config = Configuration()
+
+    _parse_config_values(app, config)
 
     app.add_role("test-color-primary", TestColorPrimary())
     app.add_role("test-color-accent", TestColorAccent())

@@ -54,7 +54,10 @@ class Configuration(object):
     Class holding the configuration
     """
 
-    USER_HOME_DIR = os.path.expanduser("~/.cvexplore")
+    if json.loads(os.getenv("DOC_BUILD"))["DOC_BUILD"] == "YES":
+        USER_HOME_DIR = "${HOME}/.cvexplore"
+    else:
+        USER_HOME_DIR = os.path.expanduser("~/.cvexplore")
 
     CVE_START_YEAR = int(os.getenv("CVE_START_YEAR", 2000))
 
@@ -101,17 +104,6 @@ class Configuration(object):
     MONGODB_HOST = os.getenv("MONGODB_HOST", "127.0.0.1")
     MONGODB_PORT = int(os.getenv("MONGODB_PORT", 27017))
 
-    if os.getenv("SOURCES") is not None:
-        SOURCES = getenv_dict("SOURCES", None)
-    else:
-        with open(os.path.join(USER_HOME_DIR, ".sources.ini")) as f:
-            SOURCES = json.loads(f.read())
-
-    NVD_NIST_API_KEY = os.getenv("NVD_NIST_API_KEY", None)
-    NVD_NIST_NO_REJECTED = getenv_bool("NVD_NIST_NO_REJECTED", "True")
-    HTTP_PROXY_DICT = getenv_dict("HTTP_PROXY_DICT", {})
-    HTTP_PROXY_STRING = os.getenv("HTTP_PROXY_STRING", "")
-
     DEFAULT_SOURCES = {
         "cwe": "https://cwe.mitre.org/data/xml/cwec_latest.xml.zip",
         "capec": "https://capec.mitre.org/data/xml/capec_latest.xml",
@@ -119,13 +111,31 @@ class Configuration(object):
         "epss": "https://epss.cyentia.com/epss_scores-current.csv.gz",  # See EPSS at https://www.first.org/epss
     }
 
+    if os.getenv("SOURCES") is not None:
+        SOURCES = getenv_dict("SOURCES", None)
+    else:
+        try:
+            with open(os.path.join(USER_HOME_DIR, ".sources.ini")) as _f:
+                SOURCES = json.loads(_f.read())
+        except FileNotFoundError:
+            SOURCES = DEFAULT_SOURCES
+
+    NVD_NIST_API_KEY = os.getenv("NVD_NIST_API_KEY", None)
+    NVD_NIST_NO_REJECTED = getenv_bool("NVD_NIST_NO_REJECTED", "True")
+    HTTP_PROXY_DICT = getenv_dict("HTTP_PROXY_DICT", {})
+    HTTP_PROXY_STRING = os.getenv("HTTP_PROXY_STRING", "")
+
     LOGGING_TO_FILE = getenv_bool("LOGGING_TO_FILE", "True")
     LOGGING_FILE_PATH = os.getenv(
         "LOGGING_FILE_PATH", os.path.join(USER_HOME_DIR, "log")
     )
 
-    if not os.path.exists(LOGGING_FILE_PATH):
-        os.mkdir(LOGGING_FILE_PATH)
+    try:
+        if not os.path.exists(LOGGING_FILE_PATH):
+            os.mkdir(LOGGING_FILE_PATH)
+    except FileNotFoundError:
+        # Probably creating documentation; just pass
+        pass
 
     LOGGING_MAX_FILE_SIZE = (
         int(os.getenv("LOGGING_MAX_FILE_SIZE", 100)) * 1024 * 1024
