@@ -398,12 +398,17 @@ def _parse_config_values(app, config_class):
     all_configs = [c for c in dir(config_class) if not c.startswith("_")]
 
     for each in all_configs:
+        logger.info(
+            f"Value {each}; default: {getattr(config_class, each)}, type: {type(getattr(config_class, each))}"
+        )
         app.add_config_value(
             name=each,
             default=getattr(config_class, each),
             rebuild="html",
             types=[type(getattr(config_class, each))],
         )
+
+    logger.info("Done Parsing config variables!!")
 
 
 def setup(app):
