@@ -16,6 +16,10 @@ CveXploreBase = declarative_base()
 
 
 class Info(CveXploreBase):
+    """
+    Information about the time the last update was made to a db table.
+    """
+
     __tablename__ = "info"
     id = Column(Integer, primary_key=True, doc="ID of the record")
     db = Column(String(25), doc="Database name")
@@ -26,6 +30,10 @@ class Info(CveXploreBase):
 
 
 class Schema(CveXploreBase):
+    """
+    Holds information about the current database schema.
+    """
+
     __tablename__ = "schema"
     id = Column(Integer, primary_key=True, doc="ID of the record")
     rebuild_needed = Column(Boolean, default=False, doc="Flag to indicate if a rebuild is needed")
@@ -36,6 +44,10 @@ class Schema(CveXploreBase):
 
 
 class Capec(CveXploreBase):
+    """
+    CAPEC database table.
+    """
+
     __tablename__ = "capec"
     id = Column(Integer, primary_key=True, unique=True, index=True, doc="ID of the CAPEC")
     loa = Column(String(25), index=True, doc="Likelihood Of Attack")
@@ -54,6 +66,10 @@ class Capec(CveXploreBase):
 
 
 class Cpe(CveXploreBase):
+    """
+    CPE database table.
+    """
+
     __tablename__ = "cpe"
     _id = Column(BigInteger, primary_key=True, unique=True, index=True, doc="ID of the record")
     id = Column(String(50), unique=True, index=True, doc="ID of the CPE")
@@ -75,6 +91,10 @@ class Cpe(CveXploreBase):
 
 
 class Cves(CveXploreBase):
+    """
+    CVE database table.
+    """
+
     __tablename__ = "cves"
     _id = Column(BigInteger, primary_key=True, unique=True, index=True, doc="ID of the record")
     id = Column(String(50), unique=True, index=True, doc="ID of the CVE")
@@ -111,6 +131,10 @@ class Cves(CveXploreBase):
 
 
 class Cwe(CveXploreBase):
+    """
+    CWE database table.
+    """
+
     __tablename__ = "cwe"
     id = Column(Integer, primary_key=True, unique=True, index=True, doc="ID of the record")
     description = Column(Text, doc="Description of the CWE")
@@ -124,15 +148,19 @@ class Cwe(CveXploreBase):
 
 
 class Via4(CveXploreBase):
+    """
+    VIA4 database table.
+    """
+
     __tablename__ = "via4"
     _id = Column(Integer, primary_key=True, unique=True, index=True, doc="ID of the record")
     id = Column(String(50), index=True, doc="ID of the Via4")
     db = Column(String(25), doc="Database name")
-    searchables = Column(JSON, default=[], ddoc="Via4 searchables")
-    sources = Column(JSON, default=[], doc="Via4 sources")
-    msbulletin = Column(JSON, default=[], doc="Via4 msbulletin")
-    redhat = Column(JSON, default={}, doc="Via4 redhat")
-    refmap = Column(JSON, default={}, doc="Via4 refmap")
+    searchables = Column(JSON, default=[], doc="VIA4 searchables")
+    sources = Column(JSON, default=[], doc="VIA4 sources")
+    msbulletin = Column(JSON, default=[], doc="VIA4 msbulletin")
+    redhat = Column(JSON, default={}, doc="VIA4 redhat")
+    refmap = Column(JSON, default={}, doc="VIA4 refmap")
 
     def __repr__(self):
         return f"<< Via4: {self.db} >>"
