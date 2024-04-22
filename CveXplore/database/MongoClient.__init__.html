@@ -1,0 +1,1195 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../_static/CveExplore_icon.png">
+    
+    
+      
+        <title>CveXplore.database.connection.mongodb.mongo_db.MongoClient.__init__ - CveXplore</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.359ec555e2989f00f.min.css?v=b000af5c" />
+        <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="CveXplore" class="md-header__button md-logo" aria-label="CveXplore" data-md-component="logo">
+      <img src="../../_static/CveExplore_icon.png" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CveXplore
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CveXplore.database.connection.mongodb.mongo_db.MongoClient.__init__
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cve-search/CveXplore" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CveXplore
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="CveXplore" class="md-nav__button md-logo" aria-label="CveXplore" data-md-component="logo">
+      <img src="../../_static/CveExplore_icon.png" alt="logo">
+    </a>
+    CveXplore
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cve-search/CveXplore" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CveXplore
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">General:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="General:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">General:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/general.html" class="md-nav__link">
+        <span class="md-ellipsis">Dependencies</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/settings.html" class="md-nav__link">
+        <span class="md-ellipsis">Settings</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">Package:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Package:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Package:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../package/query_data.html" class="md-nav__link">
+        <span class="md-ellipsis">Query for data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../package/code_base.html" class="md-nav__link">
+        <span class="md-ellipsis">Code base</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Command line:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Command line:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Command line:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/general.html" class="md-nav__link">
+        <span class="md-ellipsis">General</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/cli.html" class="md-nav__link">
+        <span class="md-ellipsis">Command Line Interpreter</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          <span class="md-ellipsis">Backend:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Backend:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Backend:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/general.html" class="md-nav__link">
+        <span class="md-ellipsis">General</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/installation.html" class="md-nav__link">
+        <span class="md-ellipsis">Installation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/settings.html" class="md-nav__link">
+        <span class="md-ellipsis">Settings</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<dl class="py method objdesc">
+<dt class="sig sig-object highlight sig-wrap py">
+<span class="sig-prename descclassname"><span class="pre">CveXplore.database.connection.mongodb.mongo_db.</span></span><span class="sig-name descname"><span class="pre">MongoClient</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">document_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.12)"><span class="pre">Type</span></a><span class="p"><span class="pre">[</span></span><span class="pre">_DocumentType</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">tz_aware</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">connect</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">type_registry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TypeRegistry</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pymongo/mongo_client.html#MongoClient.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Client for a MongoDB instance, a replica set, or a set of mongoses.</p>
+<div class="warning admonition">
+<p class="admonition-title">Warning</p>
+<p>Starting in PyMongo 4.0, <code class="code highlight python docutils literal highlight-python"><span class="n">directConnection</span></code> now has a default value of
+False instead of None.
+For more details, see the relevant section of the PyMongo 4.x migration guide:
+<span class="xref std std-ref">pymongo4-migration-direct-connection</span>.</p>
+</div>
+<p>The client object is thread-safe and has connection-pooling built in.
+If an operation fails because of a network error,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectionFailure</span></code> is raised and the client
+reconnects in the background. Application code should handle this
+exception (recognizing that the operation failed) and then continue to
+execute.</p>
+<p>The <code class="xref py py-obj docutils literal notranslate"><span class="pre">host</span></code> parameter can be a full <a class="reference external" href="http://dochub.mongodb.org/core/connections">mongodb URI</a>, in addition to
+a simple hostname. It can also be a list of hostnames but no more
+than one URI. Any port specified in the host string(s) will override
+the <code class="xref py py-obj docutils literal notranslate"><span class="pre">port</span></code> parameter. For username and
+passwords reserved characters like ‘:’, ‘/’, ‘+’ and ‘&#64;’ must be
+percent encoded following RFC 2396:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote_plus</span>
+
+<span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;mongodb://</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">@</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+    <span class="n">quote_plus</span><span class="p">(</span><span class="n">user</span><span class="p">),</span> <span class="n">quote_plus</span><span class="p">(</span><span class="n">password</span><span class="p">),</span> <span class="n">host</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<p>Unix domain sockets are also supported. The socket path must be percent
+encoded in the URI:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;mongodb://</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">@</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+    <span class="n">quote_plus</span><span class="p">(</span><span class="n">user</span><span class="p">),</span> <span class="n">quote_plus</span><span class="p">(</span><span class="n">password</span><span class="p">),</span> <span class="n">quote_plus</span><span class="p">(</span><span class="n">socket_path</span><span class="p">))</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<p>But not when passed as a simple hostname:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="s1">&#39;/tmp/mongodb-27017.sock&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<p>Starting with version 3.6, PyMongo supports mongodb+srv:// URIs. The
+URI must include one, and only one, hostname. The hostname will be
+resolved to one or more DNS <a class="reference external" href="https://en.wikipedia.org/wiki/SRV_record">SRV records</a> which will be used
+as the seed list for connecting to the MongoDB deployment. When using
+SRV URIs, the <code class="xref py py-obj docutils literal notranslate"><span class="pre">authSource</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">replicaSet</span></code> configuration options can
+be specified using <a class="reference external" href="https://en.wikipedia.org/wiki/TXT_record">TXT records</a>. See the
+<a class="reference external" href="https://github.com/mongodb/specifications/blob/master/source/initial-dns-seedlist-discovery/initial-dns-seedlist-discovery.rst">Initial DNS Seedlist Discovery spec</a>
+for more details. Note that the use of SRV URIs implicitly enables
+TLS support. Pass tls=false in the URI to override.</p>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>MongoClient creation will block waiting for answers from
+DNS when mongodb+srv:// URIs are used.</p>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Starting with version 3.0 the <a class="reference internal" href="MongoClient.html" title="CveXplore.database.connection.mongodb.mongo_db.MongoClient (Python class) — A client-side representation of a MongoDB cluster."><code class="xref py py-class docutils literal notranslate"><span class="pre">MongoClient</span></code></a>
+constructor no longer blocks while connecting to the server or
+servers, and it no longer raises
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectionFailure</span></code> if they are
+unavailable, nor <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigurationError</span></code>
+if the user’s credentials are wrong. Instead, the constructor
+returns immediately and launches the connection process on
+background threads. You can check if the server is available
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pymongo.errors</span> <span class="kn">import</span> <span class="n">ConnectionFailure</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">()</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># The ping command is cheap and does not require auth.</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;ping&#39;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">ConnectionFailure</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Server not available&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<div class="warning admonition">
+<p class="admonition-title">Warning</p>
+<p>When using PyMongo in a multiprocessing context, please
+read <span class="xref std std-ref">multiprocessing</span> first.</p>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Many of the following options can be passed using a MongoDB
+URI or keyword parameters. If the same option is passed in a URI and
+as a keyword parameter the keyword parameter takes precedence.</p>
+</div>
+<dl class="field-list">
+<dt class="field-odd" id="parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">host</span></code> (optional): hostname or IP address or Unix domain socket
+path of a single mongod or mongos instance to connect to, or a
+mongodb URI, or a list of hostnames (but no more than one mongodb
+URI). If <code class="xref py py-obj docutils literal notranslate"><span class="pre">host</span></code> is an IPv6 literal it must be enclosed in ‘[’
+and ‘]’ characters
+following the RFC2732 URL syntax (e.g. ‘[::1]’ for localhost).
+Multihomed and round robin DNS addresses are <strong>not</strong> supported.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">port</span></code> (optional): port number on which to connect</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">document_class</span></code> (optional): default class to use for
+documents returned from queries on this client</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tz_aware</span></code> (optional): if <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code>,
+<a class="reference internal" href="../core/datetime.html" title="datetime.datetime (Python class)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> instances returned as values
+in a document by this <a class="reference internal" href="MongoClient.html" title="CveXplore.database.connection.mongodb.mongo_db.MongoClient (Python class) — A client-side representation of a MongoDB cluster."><code class="xref py py-class docutils literal notranslate"><span class="pre">MongoClient</span></code></a> will be timezone
+aware (otherwise they will be naive)</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">connect</span></code> (optional): if <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code> (the default), immediately
+begin connecting to MongoDB in the background. Otherwise connect
+on the first operation.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">type_registry</span></code> (optional): instance of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">TypeRegistry</span></code> to enable encoding
+and decoding of custom types.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime_conversion</span></code>: Specifies how UTC datetimes should be decoded
+within BSON. Valid options include ‘datetime_ms’ to return as a
+DatetimeMS, ‘datetime’ to return as a datetime.datetime and
+raising a ValueError for out-of-range values, ‘datetime_auto’ to
+return DatetimeMS objects when the underlying datetime is
+out-of-range and ‘datetime_clamp’ to clamp to the minimum and
+maximum possible datetimes. Defaults to ‘datetime’. See
+<span class="xref std std-ref">handling-out-of-range-datetimes</span> for details.</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><strong>Other optional parameters can be passed as keyword arguments:</strong></div>
+</div>
+<ul>
+<li><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">directConnection</span></code> (optional): if <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code>, forces this client to</dt><dd><p>connect directly to the specified MongoDB host as a standalone.
+If <code class="code highlight python docutils literal highlight-python"><span class="n">false</span></code>, the client connects to the entire replica set of
+which the given MongoDB host(s) is a part. If this is <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code>
+and a mongodb+srv:// URI or a URI containing multiple seeds is
+provided, an exception will be raised.</p>
+</dd>
+</dl>
+</li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">maxPoolSize</span></code> (optional): The maximum allowable number of
+concurrent connections to each connected server. Requests to a
+server will block if there are <code class="xref py py-obj docutils literal notranslate"><span class="pre">maxPoolSize</span></code> outstanding
+connections to the requested server. Defaults to 100. Can be
+either 0 or None, in which case there is no limit on the number
+of concurrent connections.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">minPoolSize</span></code> (optional): The minimum required number of concurrent
+connections that the pool will maintain to each connected server.
+Default is 0.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">maxIdleTimeMS</span></code> (optional): The maximum number of milliseconds that
+a connection can remain idle in the pool before being removed and
+replaced. Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a> (no limit).</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">maxConnecting</span></code> (optional): The maximum number of connections that
+each pool can establish concurrently. Defaults to <code class="xref py py-obj docutils literal notranslate"><span class="pre">2</span></code>.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">timeoutMS</span></code>: (integer or None) Controls how long (in
+milliseconds) the driver will wait when executing an operation
+(including retry attempts) before raising a timeout error.
+<code class="code highlight python docutils literal highlight-python"><span class="mi">0</span></code> or <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code> means no timeout.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">socketTimeoutMS</span></code>: (integer or None) Controls how long (in
+milliseconds) the driver will wait for a response after sending an
+ordinary (non-monitoring) database operation before concluding that
+a network error has occurred. <code class="code highlight python docutils literal highlight-python"><span class="mi">0</span></code> or <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code> means no timeout.
+Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code> (no timeout).</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">connectTimeoutMS</span></code>: (integer or None) Controls how long (in
+milliseconds) the driver will wait during server monitoring when
+connecting a new socket to a server before concluding the server
+is unavailable. <code class="code highlight python docutils literal highlight-python"><span class="mi">0</span></code> or <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code> means no timeout.
+Defaults to <code class="code highlight python docutils literal highlight-python"><span class="mi">20000</span></code> (20 seconds).</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">server_selector</span></code>: (callable or None) Optional, user-provided
+function that augments server selection rules. The function should
+accept as an argument a list of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ServerDescription</span></code> objects and
+return a list of server descriptions that should be considered
+suitable for the desired operation.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">serverSelectionTimeoutMS</span></code>: (integer) Controls how long (in
+milliseconds) the driver will wait to find an available,
+appropriate server to carry out a database operation; while it is
+waiting, multiple server monitoring operations may be carried out,
+each controlled by <code class="xref py py-obj docutils literal notranslate"><span class="pre">connectTimeoutMS</span></code>. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="mi">30000</span></code> (30
+seconds).</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">waitQueueTimeoutMS</span></code>: (integer or None) How long (in milliseconds)
+a thread will wait for a socket from the pool if the pool has no
+free sockets. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code> (no timeout).</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">heartbeatFrequencyMS</span></code>: (optional) The number of milliseconds
+between periodic server checks, or None to accept the default
+frequency of 10 seconds.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">serverMonitoringMode</span></code>: (optional) The server monitoring mode to use.
+Valid values are the strings: “auto”, “stream”, “poll”. Defaults to “auto”.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">appname</span></code>: (string or None) The name of the application that
+created this MongoClient instance. The server will log this value
+upon establishing each connection. It is also recorded in the slow
+query log and profile collections.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">driver</span></code>: (pair or None) A driver implemented on top of PyMongo can
+pass a <code class="xref py py-class docutils literal notranslate"><span class="pre">DriverInfo</span></code> to add its name,
+version, and platform to the message printed in the server log when
+establishing a connection.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">event_listeners</span></code>: a list or tuple of event listeners. See
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">monitoring</span></code> for details.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">retryWrites</span></code>: (boolean) Whether supported write operations
+executed within this MongoClient will be retried once after a
+network error. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code>.
+The supported write operations are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="../common/Collection.bulk_write.html" title="pymongo.collection.Collection.bulk_write (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bulk_write()</span></code></a>, as long as
+<code class="xref py py-class docutils literal notranslate"><span class="pre">UpdateMany</span></code> or
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DeleteMany</span></code> are not included.</p></li>
+<li><p><a class="reference internal" href="../common/Collection.delete_one.html" title="pymongo.collection.Collection.delete_one (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_one()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../common/Collection.insert_one.html" title="pymongo.collection.Collection.insert_one (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">insert_one()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../common/Collection.insert_many.html" title="pymongo.collection.Collection.insert_many (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">insert_many()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../common/Collection.replace_one.html" title="pymongo.collection.Collection.replace_one (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">replace_one()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../common/Collection.update_one.html" title="pymongo.collection.Collection.update_one (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update_one()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../common/Collection.find_one_and_delete.html" title="pymongo.collection.Collection.find_one_and_delete (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_one_and_delete()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../common/Collection.find_one_and_replace.html" title="pymongo.collection.Collection.find_one_and_replace (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_one_and_replace()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../common/Collection.find_one_and_update.html" title="pymongo.collection.Collection.find_one_and_update (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_one_and_update()</span></code></a></p></li>
+</ul>
+</div></blockquote>
+<p>Unsupported write operations include, but are not limited to,
+<a class="reference internal" href="../common/Collection.aggregate.html" title="pymongo.collection.Collection.aggregate (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">aggregate()</span></code></a> using the <code class="code highlight python docutils literal highlight-python"><span class="err">$</span><span class="n">out</span></code>
+pipeline operator and any operation with an unacknowledged write
+concern (e.g. {w: 0})). See
+<a class="reference external" href="https://github.com/mongodb/specifications/blob/master/source/retryable-writes/retryable-writes.rst">https://github.com/mongodb/specifications/blob/master/source/retryable-writes/retryable-writes.rst</a></p>
+</li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">retryReads</span></code>: (boolean) Whether supported read operations
+executed within this MongoClient will be retried once after a
+network error. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code>.
+The supported read operations are:
+<a class="reference internal" href="../common/Collection.find.html" title="pymongo.collection.Collection.find (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find()</span></code></a>,
+<a class="reference internal" href="../common/Collection.find_one.html" title="pymongo.collection.Collection.find_one (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_one()</span></code></a>,
+<a class="reference internal" href="../common/Collection.aggregate.html" title="pymongo.collection.Collection.aggregate (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">aggregate()</span></code></a> without <code class="code highlight python docutils literal highlight-python"><span class="err">$</span><span class="n">out</span></code>,
+<a class="reference internal" href="../common/Collection.distinct.html" title="pymongo.collection.Collection.distinct (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">distinct()</span></code></a>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">count()</span></code>,
+<a class="reference internal" href="../common/Collection.estimated_document_count.html" title="pymongo.collection.Collection.estimated_document_count (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">estimated_document_count()</span></code></a>,
+<a class="reference internal" href="../common/Collection.count_documents.html" title="pymongo.collection.Collection.count_documents (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count_documents()</span></code></a>,
+<a class="reference internal" href="../common/Collection.watch.html" title="pymongo.collection.Collection.watch (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pymongo.collection.Collection.watch()</span></code></a>,
+<a class="reference internal" href="../common/Collection.list_indexes.html" title="pymongo.collection.Collection.list_indexes (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">list_indexes()</span></code></a>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">pymongo.database.Database.watch()</span></code>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">list_collections()</span></code>,
+<a class="reference internal" href="MongoClient.watch.html" title="pymongo.mongo_client.MongoClient.watch (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pymongo.mongo_client.MongoClient.watch()</span></code></a>,
+and <a class="reference internal" href="MongoClient.list_databases.html" title="pymongo.mongo_client.MongoClient.list_databases (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">list_databases()</span></code></a>.</p>
+<p>Unsupported read operations include, but are not limited to
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">command()</span></code> and any getMore
+operation on a cursor.</p>
+<p>Enabling retryable reads makes applications more resilient to
+transient errors such as network failures, database upgrades, and
+replica set failovers. For an exact definition of which errors
+trigger a retry, see the <a class="reference external" href="https://github.com/mongodb/specifications/blob/master/source/retryable-reads/retryable-reads.rst">retryable reads specification</a>.</p>
+</li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compressors</span></code>: Comma separated list of compressors for wire
+protocol compression. The list is used to negotiate a compressor
+with the server. Currently supported options are “snappy”, “zlib”
+and “zstd”. Support for snappy requires the
+<a class="reference external" href="https://pypi.org/project/python-snappy/">python-snappy</a> package.
+zlib support requires the Python standard library zlib module. zstd
+requires the <a class="reference external" href="https://pypi.org/project/zstandard/">zstandard</a>
+package. By default no compression is used. Compression support
+must also be enabled on the server. MongoDB 3.6+ supports snappy
+and zlib compression. MongoDB 4.2+ adds support for zstd.
+See <span class="xref std std-ref">network-compression-example</span> for details.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">zlibCompressionLevel</span></code>: (int) The zlib compression level to use
+when zlib is used as the wire protocol compressor. Supported values
+are -1 through 9. -1 tells the zlib library to use its default
+compression level (usually 6). 0 means no compression. 1 is best
+speed. 9 is best compression. Defaults to -1.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">uuidRepresentation</span></code>: The BSON representation to use when encoding
+from and decoding to instances of <a class="reference external" href="https://docs.python.org/3/library/uuid.html#uuid.UUID" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UUID</span></code></a>. Valid
+values are the strings: “standard”, “pythonLegacy”, “javaLegacy”,
+“csharpLegacy”, and “unspecified” (the default). New applications
+should consider setting this to “standard” for cross language
+compatibility. See <span class="xref std std-ref">handling-uuid-data-example</span> for details.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unicode_decode_error_handler</span></code>: The error handler to apply when
+a Unicode-related error occurs during BSON decoding that would
+otherwise raise <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#UnicodeDecodeError" title="(in Python v3.12)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">UnicodeDecodeError</span></code></a>. Valid options include
+‘strict’, ‘replace’, ‘backslashreplace’, ‘surrogateescape’, and
+‘ignore’. Defaults to ‘strict’.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">srvServiceName</span></code>: (string) The SRV service name to use for
+“mongodb+srv://” URIs. Defaults to “mongodb”. Use it like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">MongoClient</span><span class="p">(</span><span class="s2">&quot;mongodb+srv://example.com/?srvServiceName=customname&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">srvMaxHosts</span></code>: (int) limits the number of mongos-like hosts a client will
+connect to. More specifically, when a “mongodb+srv://” connection string
+resolves to more than srvMaxHosts number of hosts, the client will randomly
+choose an srvMaxHosts sized subset of hosts.</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><strong>Write Concern options:</strong></div>
+<div class="line">(Only set if passed. No default values.)</div>
+</div>
+<ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">w</span></code>: (integer or string) If this is a replica set, write operations
+will block until they have been replicated to the specified number
+or tagged set of servers. <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">w=</span></code></a> always includes the replica set
+primary (e.g. w=3 means write to the primary and wait until
+replicated to <strong>two</strong> secondaries). Passing w=0 <strong>disables write
+acknowledgement</strong> and all other write concern options.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wTimeoutMS</span></code>: (integer) Used in conjunction with <code class="xref py py-obj docutils literal notranslate"><span class="pre">w</span></code>. Specify a value
+in milliseconds to control how long to wait for write propagation
+to complete. If replication does not complete in the given
+timeframe, a timeout exception is raised. Passing wTimeoutMS=0
+will cause <strong>write operations to wait indefinitely</strong>.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">journal</span></code>: If <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code> block until write operations have been
+committed to the journal. Cannot be used in combination with
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">fsync</span></code>. Write operations will fail with an exception if this
+option is used when the server is running without journaling.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fsync</span></code>: If <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code> and the server is running without journaling,
+blocks until the server has synced all data files to disk. If the
+server is running with journaling, this acts the same as the <code class="xref py py-obj docutils literal notranslate"><span class="pre">j</span></code>
+option, blocking until write operations have been committed to the
+journal. Cannot be used in combination with <code class="xref py py-obj docutils literal notranslate"><span class="pre">j</span></code>.</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><strong>Replica set keyword arguments for connecting with a replica set
+- either directly or via a mongos:</strong></div>
+</div>
+<ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">replicaSet</span></code>: (string or None) The name of the replica set to
+connect to. The driver will verify that all servers it connects to
+match this name. Implies that the hosts specified are a seed list
+and the driver should attempt to find all members of the set.
+Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code>.</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><strong>Read Preference:</strong></div>
+</div>
+<ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">readPreference</span></code>: The replica set read preference for this client.
+One of <code class="code highlight python docutils literal highlight-python"><span class="n">primary</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="n">primaryPreferred</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="n">secondary</span></code>,
+<code class="code highlight python docutils literal highlight-python"><span class="n">secondaryPreferred</span></code>, or <code class="code highlight python docutils literal highlight-python"><span class="n">nearest</span></code>. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="n">primary</span></code>.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">readPreferenceTags</span></code>: Specifies a tag set as a comma-separated list
+of colon-separated key-value pairs. For example <code class="code highlight python docutils literal highlight-python"><span class="n">dc</span><span class="p">:</span><span class="n">ny</span><span class="p">,</span><span class="n">rack</span><span class="p">:</span><span class="mi">1</span></code>.
+Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code>.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">maxStalenessSeconds</span></code>: (integer) The maximum estimated
+length of time a replica set secondary can fall behind the primary
+in replication before it will no longer be selected for operations.
+Defaults to <code class="code highlight python docutils literal highlight-python"><span class="o">-</span><span class="mi">1</span></code>, meaning no maximum. If maxStalenessSeconds
+is set, it must be a positive integer greater than or equal to
+90 seconds.</p></li>
+</ul>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-doc">/examples/server_selection</span></p>
+</div>
+<div class="line-block">
+<div class="line"><strong>Authentication:</strong></div>
+</div>
+<ul>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">username</span></code>: A string.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">password</span></code>: A string.</p>
+<p>Although username and password must be percent-escaped in a MongoDB
+URI, they must not be percent-escaped when passed as parameters. In
+this example, both the space and slash special characters are passed
+as-is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">MongoClient</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;user name&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;pass/word&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">authSource</span></code>: The database to authenticate on. Defaults to the
+database specified in the URI, if provided, or to “admin”.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">authMechanism</span></code>: See <code class="xref py py-data docutils literal notranslate"><span class="pre">MECHANISMS</span></code> for options.
+If no mechanism is specified, PyMongo automatically SCRAM-SHA-1
+when connected to MongoDB 3.6 and negotiates the mechanism to use
+(SCRAM-SHA-1 or SCRAM-SHA-256) when connected to MongoDB 4.0+.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">authMechanismProperties</span></code>: Used to specify authentication mechanism
+specific options. To specify the service name for GSSAPI
+authentication pass authMechanismProperties=’SERVICE_NAME:&lt;service
+name&gt;’.
+To specify the session token for MONGODB-AWS authentication pass
+<code class="code highlight python docutils literal highlight-python"><span class="n">authMechanismProperties</span><span class="o">=</span><span class="s1">&#39;AWS_SESSION_TOKEN:&lt;session token&gt;&#39;</span></code>.</p></li>
+</ul>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-doc">/examples/authentication</span></p>
+</div>
+<div class="line-block">
+<div class="line"><strong>TLS/SSL configuration:</strong></div>
+</div>
+<ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tls</span></code>: (boolean) If <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code>, create the connection to the server
+using transport layer security. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">False</span></code>.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tlsInsecure</span></code>: (boolean) Specify whether TLS constraints should be
+relaxed as much as possible. Setting <code class="code highlight python docutils literal highlight-python"><span class="n">tlsInsecure</span><span class="o">=</span><span class="kc">True</span></code> implies
+<code class="code highlight python docutils literal highlight-python"><span class="n">tlsAllowInvalidCertificates</span><span class="o">=</span><span class="kc">True</span></code> and
+<code class="code highlight python docutils literal highlight-python"><span class="n">tlsAllowInvalidHostnames</span><span class="o">=</span><span class="kc">True</span></code>. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">False</span></code>. Think
+very carefully before setting this to <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code> as it dramatically
+reduces the security of TLS.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tlsAllowInvalidCertificates</span></code>: (boolean) If <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code>, continues
+the TLS handshake regardless of the outcome of the certificate
+verification process. If this is <code class="code highlight python docutils literal highlight-python"><span class="kc">False</span></code>, and a value is not
+provided for <code class="code highlight python docutils literal highlight-python"><span class="n">tlsCAFile</span></code>, PyMongo will attempt to load system
+provided CA certificates. If the python version in use does not
+support loading system CA certificates then the <code class="code highlight python docutils literal highlight-python"><span class="n">tlsCAFile</span></code>
+parameter must point to a file of CA certificates.
+<code class="code highlight python docutils literal highlight-python"><span class="n">tlsAllowInvalidCertificates</span><span class="o">=</span><span class="kc">False</span></code> implies <code class="code highlight python docutils literal highlight-python"><span class="n">tls</span><span class="o">=</span><span class="kc">True</span></code>.
+Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">False</span></code>. Think very carefully before setting this
+to <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code> as that could make your application vulnerable to
+on-path attackers.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tlsAllowInvalidHostnames</span></code>: (boolean) If <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code>, disables TLS
+hostname verification. <code class="code highlight python docutils literal highlight-python"><span class="n">tlsAllowInvalidHostnames</span><span class="o">=</span><span class="kc">False</span></code> implies
+<code class="code highlight python docutils literal highlight-python"><span class="n">tls</span><span class="o">=</span><span class="kc">True</span></code>. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">False</span></code>. Think very carefully before
+setting this to <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code> as that could make your application
+vulnerable to on-path attackers.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tlsCAFile</span></code>: A file containing a single or a bundle of
+“certification authority” certificates, which are used to validate
+certificates passed from the other end of the connection.
+Implies <code class="code highlight python docutils literal highlight-python"><span class="n">tls</span><span class="o">=</span><span class="kc">True</span></code>. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code>.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tlsCertificateKeyFile</span></code>: A file containing the client certificate
+and private key. Implies <code class="code highlight python docutils literal highlight-python"><span class="n">tls</span><span class="o">=</span><span class="kc">True</span></code>. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code>.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tlsCRLFile</span></code>: A file containing a PEM or DER formatted
+certificate revocation list. Implies <code class="code highlight python docutils literal highlight-python"><span class="n">tls</span><span class="o">=</span><span class="kc">True</span></code>. Defaults to
+<code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code>.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tlsCertificateKeyFilePassword</span></code>: The password or passphrase for
+decrypting the private key in <code class="code highlight python docutils literal highlight-python"><span class="n">tlsCertificateKeyFile</span></code>. Only
+necessary if the private key is encrypted. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code>.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tlsDisableOCSPEndpointCheck</span></code>: (boolean) If <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code>, disables
+certificate revocation status checking via the OCSP responder
+specified on the server certificate.
+<code class="code highlight python docutils literal highlight-python"><span class="n">tlsDisableOCSPEndpointCheck</span><span class="o">=</span><span class="kc">False</span></code> implies <code class="code highlight python docutils literal highlight-python"><span class="n">tls</span><span class="o">=</span><span class="kc">True</span></code>.
+Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">False</span></code>.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/ssl.html#module-ssl" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ssl</span></code></a>: (boolean) Alias for <code class="code highlight python docutils literal highlight-python"><span class="n">tls</span></code>.</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><strong>Read Concern options:</strong></div>
+<div class="line">(If not set explicitly, this will use the server default)</div>
+</div>
+<ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">readConcernLevel</span></code>: (string) The read concern level specifies the
+level of isolation for read operations.  For example, a read
+operation using a read concern level of <code class="code highlight python docutils literal highlight-python"><span class="n">majority</span></code> will only
+return data that has been written to a majority of nodes. If the
+level is left unspecified, the server default will be used.</p></li>
+</ul>
+<div class="line-block">
+<div class="line"><strong>Client side encryption options:</strong></div>
+<div class="line">(If not set explicitly, client side encryption will not be enabled.)</div>
+</div>
+<ul>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_encryption_opts</span></code>: A
+<code class="xref py py-class docutils literal notranslate"><span class="pre">AutoEncryptionOpts</span></code> which
+configures this client to automatically encrypt collection commands
+and automatically decrypt results. See
+<span class="xref std std-ref">automatic-client-side-encryption</span> for an example.
+If a <a class="reference internal" href="MongoClient.html" title="CveXplore.database.connection.mongodb.mongo_db.MongoClient (Python class) — A client-side representation of a MongoDB cluster."><code class="xref py py-class docutils literal notranslate"><span class="pre">MongoClient</span></code></a> is configured with
+<code class="code highlight python docutils literal highlight-python"><span class="n">auto_encryption_opts</span></code> and a non-None <code class="code highlight python docutils literal highlight-python"><span class="n">maxPoolSize</span></code>, a
+separate internal <code class="code highlight python docutils literal highlight-python"><span class="n">MongoClient</span></code> is created if any of the
+following are true:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A <code class="code highlight python docutils literal highlight-python"><span class="n">key_vault_client</span></code> is not passed to
+<code class="xref py py-class docutils literal notranslate"><span class="pre">AutoEncryptionOpts</span></code></p></li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">bypass_auto_encrpytion</span><span class="o">=</span><span class="kc">False</span></code> is passed to
+<code class="xref py py-class docutils literal notranslate"><span class="pre">AutoEncryptionOpts</span></code></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<div class="line-block">
+<div class="line"><strong>Stable API options:</strong></div>
+<div class="line">(If not set explicitly, Stable API will not be enabled.)</div>
+</div>
+<ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">server_api</span></code>: A
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ServerApi</span></code> which configures this
+client to use Stable API. See <span class="xref std std-ref">versioned-api-ref</span> for
+details.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p>The MongoDB documentation on <a class="reference external" href="https://dochub.mongodb.org/core/connections">connections</a>.</p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 4.5: </span>Added the <code class="code highlight python docutils literal highlight-python"><span class="n">serverMonitoringMode</span></code> keyword argument.</p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 4.2: </span>Added the <code class="code highlight python docutils literal highlight-python"><span class="n">timeoutMS</span></code> keyword argument.</p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 4.0: </span></p>
+<ul class="simple">
+<li><p>Removed the fsync, unlock, is_locked, database_names, and
+close_cursor methods.
+See the <span class="xref std std-ref">pymongo4-migration-guide</span>.</p></li>
+<li><p>Removed the <code class="code highlight python docutils literal highlight-python"><span class="n">waitQueueMultiple</span></code> and <code class="code highlight python docutils literal highlight-python"><span class="n">socketKeepAlive</span></code>
+keyword arguments.</p></li>
+<li><p>The default for <code class="xref py py-obj docutils literal notranslate"><span class="pre">uuidRepresentation</span></code> was changed from
+<code class="code highlight python docutils literal highlight-python"><span class="n">pythonLegacy</span></code> to <code class="code highlight python docutils literal highlight-python"><span class="n">unspecified</span></code>.</p></li>
+<li><p>Added the <code class="code highlight python docutils literal highlight-python"><span class="n">srvServiceName</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="n">maxConnecting</span></code>, and <code class="code highlight python docutils literal highlight-python"><span class="n">srvMaxHosts</span></code> URI and
+keyword arguments.</p></li>
+</ul>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 3.12: </span>Added the <code class="code highlight python docutils literal highlight-python"><span class="n">server_api</span></code> keyword argument.
+The following keyword arguments were deprecated:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">ssl_certfile</span></code> and <code class="code highlight python docutils literal highlight-python"><span class="n">ssl_keyfile</span></code> were deprecated in favor
+of <code class="code highlight python docutils literal highlight-python"><span class="n">tlsCertificateKeyFile</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 3.11: </span>Added the following keyword arguments and URI options:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">tlsDisableOCSPEndpointCheck</span></code></p></li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">directConnection</span></code></p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 3.9: </span>Added the <code class="code highlight python docutils literal highlight-python"><span class="n">retryReads</span></code> keyword argument and URI option.
+Added the <code class="code highlight python docutils literal highlight-python"><span class="n">tlsInsecure</span></code> keyword argument and URI option.
+The following keyword arguments and URI options were deprecated:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">wTimeout</span></code> was deprecated in favor of <code class="code highlight python docutils literal highlight-python"><span class="n">wTimeoutMS</span></code>.</p></li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">j</span></code> was deprecated in favor of <code class="code highlight python docutils literal highlight-python"><span class="n">journal</span></code>.</p></li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">ssl_cert_reqs</span></code> was deprecated in favor of
+<code class="code highlight python docutils literal highlight-python"><span class="n">tlsAllowInvalidCertificates</span></code>.</p></li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">ssl_match_hostname</span></code> was deprecated in favor of
+<code class="code highlight python docutils literal highlight-python"><span class="n">tlsAllowInvalidHostnames</span></code>.</p></li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">ssl_ca_certs</span></code> was deprecated in favor of <code class="code highlight python docutils literal highlight-python"><span class="n">tlsCAFile</span></code>.</p></li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">ssl_certfile</span></code> was deprecated in favor of
+<code class="code highlight python docutils literal highlight-python"><span class="n">tlsCertificateKeyFile</span></code>.</p></li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">ssl_crlfile</span></code> was deprecated in favor of <code class="code highlight python docutils literal highlight-python"><span class="n">tlsCRLFile</span></code>.</p></li>
+<li><p><code class="code highlight python docutils literal highlight-python"><span class="n">ssl_pem_passphrase</span></code> was deprecated in favor of
+<code class="code highlight python docutils literal highlight-python"><span class="n">tlsCertificateKeyFilePassword</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 3.9: </span><code class="code highlight python docutils literal highlight-python"><span class="n">retryWrites</span></code> now defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code>.</p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 3.8: </span>Added the <code class="code highlight python docutils literal highlight-python"><span class="n">server_selector</span></code> keyword argument.
+Added the <code class="code highlight python docutils literal highlight-python"><span class="n">type_registry</span></code> keyword argument.</p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 3.7: </span>Added the <code class="code highlight python docutils literal highlight-python"><span class="n">driver</span></code> keyword argument.</p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 3.6: </span>Added support for mongodb+srv:// URIs.
+Added the <code class="code highlight python docutils literal highlight-python"><span class="n">retryWrites</span></code> keyword argument and URI option.</p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 3.5: </span>Add <code class="code highlight python docutils literal highlight-python"><span class="n">username</span></code> and <code class="code highlight python docutils literal highlight-python"><span class="n">password</span></code> options. Document the
+<code class="code highlight python docutils literal highlight-python"><span class="n">authSource</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="n">authMechanism</span></code>, and <code class="code highlight python docutils literal highlight-python"><span class="n">authMechanismProperties</span></code>
+options.
+Deprecated the <code class="code highlight python docutils literal highlight-python"><span class="n">socketKeepAlive</span></code> keyword argument and URI option.
+<code class="code highlight python docutils literal highlight-python"><span class="n">socketKeepAlive</span></code> now defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code>.</p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 3.0: </span><a class="reference internal" href="MongoClient.html" title="pymongo.mongo_client.MongoClient (Python class)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MongoClient</span></code></a> is now the one and only
+client class for a standalone server, mongos, or replica set.
+It includes the functionality that had been split into
+<code class="xref py py-class docutils literal notranslate"><span class="pre">MongoReplicaSetClient</span></code>: it can connect
+to a replica set, discover all its members, and monitor the set for
+stepdowns, elections, and reconfigs.</p>
+<p>The <a class="reference internal" href="MongoClient.html" title="pymongo.mongo_client.MongoClient (Python class)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MongoClient</span></code></a> constructor no
+longer blocks while connecting to the server or servers, and it no
+longer raises <code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectionFailure</span></code> if they
+are unavailable, nor <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigurationError</span></code>
+if the user’s credentials are wrong. Instead, the constructor
+returns immediately and launches the connection process on
+background threads.</p>
+<p>Therefore the <code class="code highlight python docutils literal highlight-python"><span class="n">alive</span></code> method is removed since it no longer
+provides meaningful information; even if the client is disconnected,
+it may discover a server in time to fulfill the next operation.</p>
+<p>In PyMongo 2.x, <code class="xref py py-class docutils literal notranslate"><span class="pre">MongoClient</span></code> accepted a list of
+standalone MongoDB servers and used the first it could connect to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">MongoClient</span><span class="p">([</span><span class="s1">&#39;host1.com:27017&#39;</span><span class="p">,</span> <span class="s1">&#39;host2.com:27017&#39;</span><span class="p">])</span>
+</code></pre></div>
+</div>
+<p>A list of multiple standalones is no longer supported; if multiple
+servers are listed they must be members of the same replica set, or
+mongoses in the same sharded cluster.</p>
+<p>The behavior for a list of mongoses is changed from “high
+availability” to “load balancing”. Before, the client connected to
+the lowest-latency mongos in the list, and used it until a network
+error prompted it to re-evaluate all mongoses’ latencies and
+reconnect to one of them. In PyMongo 3, the client monitors its
+network latency to all the mongoses continuously, and distributes
+operations evenly among those with the lowest latency. See
+<span class="xref std std-ref">mongos-load-balancing</span> for more information.</p>
+<p>The <code class="code highlight python docutils literal highlight-python"><span class="n">connect</span></code> option is added.</p>
+<p>The <code class="code highlight python docutils literal highlight-python"><span class="n">start_request</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="n">in_request</span></code>, and <code class="code highlight python docutils literal highlight-python"><span class="n">end_request</span></code> methods
+are removed, as well as the <code class="code highlight python docutils literal highlight-python"><span class="n">auto_start_request</span></code> option.</p>
+<p>The <code class="code highlight python docutils literal highlight-python"><span class="n">copy_database</span></code> method is removed, see the
+<span class="xref std std-doc">copy_database examples</span> for alternatives.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">MongoClient.disconnect()</span></code> method is removed; it was a
+synonym for <code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code>.</p>
+<p><a class="reference internal" href="MongoClient.html" title="pymongo.mongo_client.MongoClient (Python class)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MongoClient</span></code></a> no longer returns an
+instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Database</span></code> for attribute names
+with leading underscores. You must use dict-style lookups instead:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">client</span><span class="p">[</span><span class="s1">&#39;__my_database__&#39;</span><span class="p">]</span>
+</code></pre></div>
+</div>
+<p>Not:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">client</span><span class="o">.</span><span class="n">__my_database__</span>
+</code></pre></div>
+</div>
+</div>
+</dd></dl>
+
+
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      Apr 22, 2024
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2020, Paul Tikken.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.3.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.sections", "navigation.top", "search.share", "toc.follow", "toc.sticky", "content.tabs.link", "announce.dismiss"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

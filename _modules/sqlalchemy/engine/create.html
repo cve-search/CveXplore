@@ -1,0 +1,1480 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../../_static/CveExplore_icon.png">
+    
+    
+      
+        <title>sqlalchemy.engine.create - CveXplore</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.359ec555e2989f00f.min.css?v=b000af5c" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df571175" />
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../index.html" title="CveXplore" class="md-header__button md-logo" aria-label="CveXplore" data-md-component="logo">
+      <img src="../../../_static/CveExplore_icon.png" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CveXplore
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              sqlalchemy.engine.create
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cve-search/CveXplore" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CveXplore
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../index.html" title="CveXplore" class="md-nav__button md-logo" aria-label="CveXplore" data-md-component="logo">
+      <img src="../../../_static/CveExplore_icon.png" alt="logo">
+    </a>
+    CveXplore
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cve-search/CveXplore" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CveXplore
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">General:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="General:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">General:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../general/general.html" class="md-nav__link">
+        <span class="md-ellipsis">Dependencies</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../general/settings.html" class="md-nav__link">
+        <span class="md-ellipsis">Settings</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">Package:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Package:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Package:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../package/query_data.html" class="md-nav__link">
+        <span class="md-ellipsis">Query for data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../package/code_base.html" class="md-nav__link">
+        <span class="md-ellipsis">Code base</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Command line:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Command line:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Command line:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/general.html" class="md-nav__link">
+        <span class="md-ellipsis">General</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/cli.html" class="md-nav__link">
+        <span class="md-ellipsis">Command Line Interpreter</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          <span class="md-ellipsis">Backend:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Backend:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Backend:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../backend/general.html" class="md-nav__link">
+        <span class="md-ellipsis">General</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../backend/installation.html" class="md-nav__link">
+        <span class="md-ellipsis">Installation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../backend/settings.html" class="md-nav__link">
+        <span class="md-ellipsis">Settings</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+  <a href="https://github.com/cve-search/CveXplore/blob/master/docs/_modules/sqlalchemy/engine/create.rst" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+  </a>
+
+<h1>Source code for sqlalchemy.engine.create</h1><div class="highlight"><pre>
+<span></span><code><span class="c1"># engine/create.py</span>
+<span class="c1"># Copyright (C) 2005-2024 the SQLAlchemy authors and contributors</span>
+<span class="c1"># &lt;see AUTHORS file&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This module is part of SQLAlchemy and is released under</span>
+<span class="c1"># the MIT License: https://www.opensource.org/licenses/mit-license.php</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">cast</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">overload</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">base</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">url</span> <span class="k">as</span> <span class="n">_url</span>
+<span class="kn">from</span> <span class="nn">.interfaces</span> <span class="kn">import</span> <span class="n">DBAPIConnection</span>
+<span class="kn">from</span> <span class="nn">.mock</span> <span class="kn">import</span> <span class="n">create_mock_engine</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">event</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">exc</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">util</span>
+<span class="kn">from</span> <span class="nn">..pool</span> <span class="kn">import</span> <span class="n">_AdhocProxiedConnection</span>
+<span class="kn">from</span> <span class="nn">..pool</span> <span class="kn">import</span> <span class="n">ConnectionPoolEntry</span>
+<span class="kn">from</span> <span class="nn">..sql</span> <span class="kn">import</span> <span class="n">compiler</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">immutabledict</span>
+
+<span class="k">if</span> <span class="n">typing</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">Engine</span>
+    <span class="kn">from</span> <span class="nn">.interfaces</span> <span class="kn">import</span> <span class="n">_ExecuteOptions</span>
+    <span class="kn">from</span> <span class="nn">.interfaces</span> <span class="kn">import</span> <span class="n">_ParamStyle</span>
+    <span class="kn">from</span> <span class="nn">.interfaces</span> <span class="kn">import</span> <span class="n">IsolationLevel</span>
+    <span class="kn">from</span> <span class="nn">.url</span> <span class="kn">import</span> <span class="n">URL</span>
+    <span class="kn">from</span> <span class="nn">..log</span> <span class="kn">import</span> <span class="n">_EchoFlagType</span>
+    <span class="kn">from</span> <span class="nn">..pool</span> <span class="kn">import</span> <span class="n">_CreatorFnType</span>
+    <span class="kn">from</span> <span class="nn">..pool</span> <span class="kn">import</span> <span class="n">_CreatorWRecFnType</span>
+    <span class="kn">from</span> <span class="nn">..pool</span> <span class="kn">import</span> <span class="n">_ResetStyleArgType</span>
+    <span class="kn">from</span> <span class="nn">..pool</span> <span class="kn">import</span> <span class="n">Pool</span>
+    <span class="kn">from</span> <span class="nn">..util.typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">create_engine</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">URL</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">connect_args</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">convert_unicode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">creator</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">_CreatorFnType</span><span class="p">,</span> <span class="n">_CreatorWRecFnType</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">echo</span><span class="p">:</span> <span class="n">_EchoFlagType</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">echo_pool</span><span class="p">:</span> <span class="n">_EchoFlagType</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">enable_from_linting</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">execution_options</span><span class="p">:</span> <span class="n">_ExecuteOptions</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">future</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+    <span class="n">hide_parameters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">implicit_returning</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">insertmanyvalues_page_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">isolation_level</span><span class="p">:</span> <span class="n">IsolationLevel</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">json_deserializer</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">json_serializer</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">label_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">logging_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">max_identifier_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">max_overflow</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">module</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">paramstyle</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ParamStyle</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">pool</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Pool</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">poolclass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">Pool</span><span class="p">]]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">pool_logging_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">pool_pre_ping</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">pool_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">pool_recycle</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">pool_reset_on_return</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ResetStyleArgType</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">pool_timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">pool_use_lifo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">plugins</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">query_cache_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">use_insertmanyvalues</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Engine</span><span class="p">:</span> <span class="o">...</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">create_engine</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">URL</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Engine</span><span class="p">:</span> <span class="o">...</span>
+
+
+<div class="viewcode-block" id="create_engine">
+<a class="viewcode-back" href="../../../CveXplore/database/create_engine.html#CveXplore.database.connection.sqlbase.connection.create_engine">[docs]</a>
+<span class="nd">@util</span><span class="o">.</span><span class="n">deprecated_params</span><span class="p">(</span>
+    <span class="n">strategy</span><span class="o">=</span><span class="p">(</span>
+        <span class="s2">&quot;1.4&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;The :paramref:`_sa.create_engine.strategy` keyword is deprecated, &quot;</span>
+        <span class="s2">&quot;and the only argument accepted is &#39;mock&#39;; please use &quot;</span>
+        <span class="s2">&quot;:func:`.create_mock_engine` going forward.  For general &quot;</span>
+        <span class="s2">&quot;customization of create_engine which may have been accomplished &quot;</span>
+        <span class="s2">&quot;using strategies, see :class:`.CreateEnginePlugin`.&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">empty_in_strategy</span><span class="o">=</span><span class="p">(</span>
+        <span class="s2">&quot;1.4&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;The :paramref:`_sa.create_engine.empty_in_strategy` keyword is &quot;</span>
+        <span class="s2">&quot;deprecated, and no longer has any effect.  All IN expressions &quot;</span>
+        <span class="s2">&quot;are now rendered using &quot;</span>
+        <span class="s1">&#39;the &quot;expanding parameter&quot; strategy which renders a set of bound&#39;</span>
+        <span class="s1">&#39;expressions, or an &quot;empty set&quot; SELECT, at statement execution&#39;</span>
+        <span class="s2">&quot;time.&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">implicit_returning</span><span class="o">=</span><span class="p">(</span>
+        <span class="s2">&quot;2.0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;The :paramref:`_sa.create_engine.implicit_returning` parameter &quot;</span>
+        <span class="s2">&quot;is deprecated and will be removed in a future release. &quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">create_engine</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">_url</span><span class="o">.</span><span class="n">URL</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Engine</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a new :class:`_engine.Engine` instance.</span>
+
+<span class="sd">    The standard calling form is to send the :ref:`URL &lt;database_urls&gt;` as the</span>
+<span class="sd">    first positional argument, usually a string</span>
+<span class="sd">    that indicates database dialect and connection arguments::</span>
+
+<span class="sd">        engine = create_engine(&quot;postgresql+psycopg2://scott:tiger@localhost/test&quot;)</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Please review :ref:`database_urls` for general guidelines in composing</span>
+<span class="sd">        URL strings.  In particular, special characters, such as those often</span>
+<span class="sd">        part of passwords, must be URL encoded to be properly parsed.</span>
+
+<span class="sd">    Additional keyword arguments may then follow it which</span>
+<span class="sd">    establish various options on the resulting :class:`_engine.Engine`</span>
+<span class="sd">    and its underlying :class:`.Dialect` and :class:`_pool.Pool`</span>
+<span class="sd">    constructs::</span>
+
+<span class="sd">        engine = create_engine(&quot;mysql+mysqldb://scott:tiger@hostname/dbname&quot;,</span>
+<span class="sd">                                    pool_recycle=3600, echo=True)</span>
+
+<span class="sd">    The string form of the URL is</span>
+<span class="sd">    ``dialect[+driver]://user:password@host/dbname[?key=value..]``, where</span>
+<span class="sd">    ``dialect`` is a database name such as ``mysql``, ``oracle``,</span>
+<span class="sd">    ``postgresql``, etc., and ``driver`` the name of a DBAPI, such as</span>
+<span class="sd">    ``psycopg2``, ``pyodbc``, ``cx_oracle``, etc.  Alternatively,</span>
+<span class="sd">    the URL can be an instance of :class:`~sqlalchemy.engine.url.URL`.</span>
+
+<span class="sd">    ``**kwargs`` takes a wide variety of options which are routed</span>
+<span class="sd">    towards their appropriate components.  Arguments may be specific to</span>
+<span class="sd">    the :class:`_engine.Engine`, the underlying :class:`.Dialect`,</span>
+<span class="sd">    as well as the</span>
+<span class="sd">    :class:`_pool.Pool`.  Specific dialects also accept keyword arguments that</span>
+<span class="sd">    are unique to that dialect.   Here, we describe the parameters</span>
+<span class="sd">    that are common to most :func:`_sa.create_engine()` usage.</span>
+
+<span class="sd">    Once established, the newly resulting :class:`_engine.Engine` will</span>
+<span class="sd">    request a connection from the underlying :class:`_pool.Pool` once</span>
+<span class="sd">    :meth:`_engine.Engine.connect` is called, or a method which depends on it</span>
+<span class="sd">    such as :meth:`_engine.Engine.execute` is invoked.   The</span>
+<span class="sd">    :class:`_pool.Pool` in turn</span>
+<span class="sd">    will establish the first actual DBAPI connection when this request</span>
+<span class="sd">    is received.   The :func:`_sa.create_engine` call itself does **not**</span>
+<span class="sd">    establish any actual DBAPI connections directly.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :doc:`/core/engines`</span>
+
+<span class="sd">        :doc:`/dialects/index`</span>
+
+<span class="sd">        :ref:`connections_toplevel`</span>
+
+<span class="sd">    :param connect_args: a dictionary of options which will be</span>
+<span class="sd">        passed directly to the DBAPI&#39;s ``connect()`` method as</span>
+<span class="sd">        additional keyword arguments.  See the example</span>
+<span class="sd">        at :ref:`custom_dbapi_args`.</span>
+
+<span class="sd">    :param creator: a callable which returns a DBAPI connection.</span>
+<span class="sd">        This creation function will be passed to the underlying</span>
+<span class="sd">        connection pool and will be used to create all new database</span>
+<span class="sd">        connections. Usage of this function causes connection</span>
+<span class="sd">        parameters specified in the URL argument to be bypassed.</span>
+
+<span class="sd">        This hook is not as flexible as the newer</span>
+<span class="sd">        :meth:`_events.DialectEvents.do_connect` hook which allows complete</span>
+<span class="sd">        control over how a connection is made to the database, given the full</span>
+<span class="sd">        set of URL arguments and state beforehand.</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :meth:`_events.DialectEvents.do_connect` - event hook that allows</span>
+<span class="sd">            full control over DBAPI connection mechanics.</span>
+
+<span class="sd">            :ref:`custom_dbapi_args`</span>
+
+<span class="sd">    :param echo=False: if True, the Engine will log all statements</span>
+<span class="sd">        as well as a ``repr()`` of their parameter lists to the default log</span>
+<span class="sd">        handler, which defaults to ``sys.stdout`` for output.   If set to the</span>
+<span class="sd">        string ``&quot;debug&quot;``, result rows will be printed to the standard output</span>
+<span class="sd">        as well. The ``echo`` attribute of ``Engine`` can be modified at any</span>
+<span class="sd">        time to turn logging on and off; direct control of logging is also</span>
+<span class="sd">        available using the standard Python ``logging`` module.</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :ref:`dbengine_logging` - further detail on how to configure</span>
+<span class="sd">            logging.</span>
+
+
+<span class="sd">    :param echo_pool=False: if True, the connection pool will log</span>
+<span class="sd">        informational output such as when connections are invalidated</span>
+<span class="sd">        as well as when connections are recycled to the default log handler,</span>
+<span class="sd">        which defaults to ``sys.stdout`` for output.   If set to the string</span>
+<span class="sd">        ``&quot;debug&quot;``, the logging will include pool checkouts and checkins.</span>
+<span class="sd">        Direct control of logging is also available using the standard Python</span>
+<span class="sd">        ``logging`` module.</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :ref:`dbengine_logging` - further detail on how to configure</span>
+<span class="sd">            logging.</span>
+
+
+<span class="sd">    :param empty_in_strategy:   No longer used; SQLAlchemy now uses</span>
+<span class="sd">        &quot;empty set&quot; behavior for IN in all cases.</span>
+
+<span class="sd">    :param enable_from_linting: defaults to True.  Will emit a warning</span>
+<span class="sd">        if a given SELECT statement is found to have un-linked FROM elements</span>
+<span class="sd">        which would cause a cartesian product.</span>
+
+<span class="sd">        .. versionadded:: 1.4</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :ref:`change_4737`</span>
+
+<span class="sd">    :param execution_options: Dictionary execution options which will</span>
+<span class="sd">        be applied to all connections.  See</span>
+<span class="sd">        :meth:`~sqlalchemy.engine.Connection.execution_options`</span>
+
+<span class="sd">    :param future: Use the 2.0 style :class:`_engine.Engine` and</span>
+<span class="sd">        :class:`_engine.Connection` API.</span>
+
+<span class="sd">        As of SQLAlchemy 2.0, this parameter is present for backwards</span>
+<span class="sd">        compatibility only and must remain at its default value of ``True``.</span>
+
+<span class="sd">        The :paramref:`_sa.create_engine.future` parameter will be</span>
+<span class="sd">        deprecated in a subsequent 2.x release and eventually removed.</span>
+
+<span class="sd">        .. versionadded:: 1.4</span>
+
+<span class="sd">        .. versionchanged:: 2.0 All :class:`_engine.Engine` objects are</span>
+<span class="sd">           &quot;future&quot; style engines and there is no longer a ``future=False``</span>
+<span class="sd">           mode of operation.</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :ref:`migration_20_toplevel`</span>
+
+<span class="sd">    :param hide_parameters: Boolean, when set to True, SQL statement parameters</span>
+<span class="sd">        will not be displayed in INFO logging nor will they be formatted into</span>
+<span class="sd">        the string representation of :class:`.StatementError` objects.</span>
+
+<span class="sd">        .. versionadded:: 1.3.8</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :ref:`dbengine_logging` - further detail on how to configure</span>
+<span class="sd">            logging.</span>
+
+<span class="sd">    :param implicit_returning=True:  Legacy parameter that may only be set</span>
+<span class="sd">        to True. In SQLAlchemy 2.0, this parameter does nothing. In order to</span>
+<span class="sd">        disable &quot;implicit returning&quot; for statements invoked by the ORM,</span>
+<span class="sd">        configure this on a per-table basis using the</span>
+<span class="sd">        :paramref:`.Table.implicit_returning` parameter.</span>
+
+
+<span class="sd">    :param insertmanyvalues_page_size: number of rows to format into an</span>
+<span class="sd">     INSERT statement when the statement uses &quot;insertmanyvalues&quot; mode, which is</span>
+<span class="sd">     a paged form of bulk insert that is used for many backends when using</span>
+<span class="sd">     :term:`executemany` execution typically in conjunction with RETURNING.</span>
+<span class="sd">     Defaults to 1000, but may also be subject to dialect-specific limiting</span>
+<span class="sd">     factors which may override this value on a per-statement basis.</span>
+
+<span class="sd">     .. versionadded:: 2.0</span>
+
+<span class="sd">     .. seealso::</span>
+
+<span class="sd">        :ref:`engine_insertmanyvalues`</span>
+
+<span class="sd">        :ref:`engine_insertmanyvalues_page_size`</span>
+
+<span class="sd">        :paramref:`_engine.Connection.execution_options.insertmanyvalues_page_size`</span>
+
+<span class="sd">    :param isolation_level: optional string name of an isolation level</span>
+<span class="sd">        which will be set on all new connections unconditionally.</span>
+<span class="sd">        Isolation levels are typically some subset of the string names</span>
+<span class="sd">        ``&quot;SERIALIZABLE&quot;``, ``&quot;REPEATABLE READ&quot;``,</span>
+<span class="sd">        ``&quot;READ COMMITTED&quot;``, ``&quot;READ UNCOMMITTED&quot;`` and ``&quot;AUTOCOMMIT&quot;``</span>
+<span class="sd">        based on backend.</span>
+
+<span class="sd">        The :paramref:`_sa.create_engine.isolation_level` parameter is</span>
+<span class="sd">        in contrast to the</span>
+<span class="sd">        :paramref:`.Connection.execution_options.isolation_level`</span>
+<span class="sd">        execution option, which may be set on an individual</span>
+<span class="sd">        :class:`.Connection`, as well as the same parameter passed to</span>
+<span class="sd">        :meth:`.Engine.execution_options`, where it may be used to create</span>
+<span class="sd">        multiple engines with different isolation levels that share a common</span>
+<span class="sd">        connection pool and dialect.</span>
+
+<span class="sd">        .. versionchanged:: 2.0 The</span>
+<span class="sd">           :paramref:`_sa.create_engine.isolation_level`</span>
+<span class="sd">           parameter has been generalized to work on all dialects which support</span>
+<span class="sd">           the concept of isolation level, and is provided as a more succinct,</span>
+<span class="sd">           up front configuration switch in contrast to the execution option</span>
+<span class="sd">           which is more of an ad-hoc programmatic option.</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :ref:`dbapi_autocommit`</span>
+
+<span class="sd">    :param json_deserializer: for dialects that support the</span>
+<span class="sd">        :class:`_types.JSON`</span>
+<span class="sd">        datatype, this is a Python callable that will convert a JSON string</span>
+<span class="sd">        to a Python object.  By default, the Python ``json.loads`` function is</span>
+<span class="sd">        used.</span>
+
+<span class="sd">        .. versionchanged:: 1.3.7  The SQLite dialect renamed this from</span>
+<span class="sd">           ``_json_deserializer``.</span>
+
+<span class="sd">    :param json_serializer: for dialects that support the :class:`_types.JSON`</span>
+<span class="sd">        datatype, this is a Python callable that will render a given object</span>
+<span class="sd">        as JSON.   By default, the Python ``json.dumps`` function is used.</span>
+
+<span class="sd">        .. versionchanged:: 1.3.7  The SQLite dialect renamed this from</span>
+<span class="sd">           ``_json_serializer``.</span>
+
+
+<span class="sd">    :param label_length=None: optional integer value which limits</span>
+<span class="sd">        the size of dynamically generated column labels to that many</span>
+<span class="sd">        characters. If less than 6, labels are generated as</span>
+<span class="sd">        &quot;_(counter)&quot;. If ``None``, the value of</span>
+<span class="sd">        ``dialect.max_identifier_length``, which may be affected via the</span>
+<span class="sd">        :paramref:`_sa.create_engine.max_identifier_length` parameter,</span>
+<span class="sd">        is used instead.   The value of</span>
+<span class="sd">        :paramref:`_sa.create_engine.label_length`</span>
+<span class="sd">        may not be larger than that of</span>
+<span class="sd">        :paramref:`_sa.create_engine.max_identfier_length`.</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :paramref:`_sa.create_engine.max_identifier_length`</span>
+
+<span class="sd">    :param logging_name:  String identifier which will be used within</span>
+<span class="sd">        the &quot;name&quot; field of logging records generated within the</span>
+<span class="sd">        &quot;sqlalchemy.engine&quot; logger. Defaults to a hexstring of the</span>
+<span class="sd">        object&#39;s id.</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :ref:`dbengine_logging` - further detail on how to configure</span>
+<span class="sd">            logging.</span>
+
+<span class="sd">            :paramref:`_engine.Connection.execution_options.logging_token`</span>
+
+<span class="sd">    :param max_identifier_length: integer; override the max_identifier_length</span>
+<span class="sd">        determined by the dialect.  if ``None`` or zero, has no effect.  This</span>
+<span class="sd">        is the database&#39;s configured maximum number of characters that may be</span>
+<span class="sd">        used in a SQL identifier such as a table name, column name, or label</span>
+<span class="sd">        name. All dialects determine this value automatically, however in the</span>
+<span class="sd">        case of a new database version for which this value has changed but</span>
+<span class="sd">        SQLAlchemy&#39;s dialect has not been adjusted, the value may be passed</span>
+<span class="sd">        here.</span>
+
+<span class="sd">        .. versionadded:: 1.3.9</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :paramref:`_sa.create_engine.label_length`</span>
+
+<span class="sd">    :param max_overflow=10: the number of connections to allow in</span>
+<span class="sd">        connection pool &quot;overflow&quot;, that is connections that can be</span>
+<span class="sd">        opened above and beyond the pool_size setting, which defaults</span>
+<span class="sd">        to five. this is only used with :class:`~sqlalchemy.pool.QueuePool`.</span>
+
+<span class="sd">    :param module=None: reference to a Python module object (the module</span>
+<span class="sd">        itself, not its string name).  Specifies an alternate DBAPI module to</span>
+<span class="sd">        be used by the engine&#39;s dialect.  Each sub-dialect references a</span>
+<span class="sd">        specific DBAPI which will be imported before first connect.  This</span>
+<span class="sd">        parameter causes the import to be bypassed, and the given module to</span>
+<span class="sd">        be used instead. Can be used for testing of DBAPIs as well as to</span>
+<span class="sd">        inject &quot;mock&quot; DBAPI implementations into the :class:`_engine.Engine`.</span>
+
+<span class="sd">    :param paramstyle=None: The `paramstyle &lt;https://legacy.python.org/dev/peps/pep-0249/#paramstyle&gt;`_</span>
+<span class="sd">        to use when rendering bound parameters.  This style defaults to the</span>
+<span class="sd">        one recommended by the DBAPI itself, which is retrieved from the</span>
+<span class="sd">        ``.paramstyle`` attribute of the DBAPI.  However, most DBAPIs accept</span>
+<span class="sd">        more than one paramstyle, and in particular it may be desirable</span>
+<span class="sd">        to change a &quot;named&quot; paramstyle into a &quot;positional&quot; one, or vice versa.</span>
+<span class="sd">        When this attribute is passed, it should be one of the values</span>
+<span class="sd">        ``&quot;qmark&quot;``, ``&quot;numeric&quot;``, ``&quot;named&quot;``, ``&quot;format&quot;`` or</span>
+<span class="sd">        ``&quot;pyformat&quot;``, and should correspond to a parameter style known</span>
+<span class="sd">        to be supported by the DBAPI in use.</span>
+
+<span class="sd">    :param pool=None: an already-constructed instance of</span>
+<span class="sd">        :class:`~sqlalchemy.pool.Pool`, such as a</span>
+<span class="sd">        :class:`~sqlalchemy.pool.QueuePool` instance. If non-None, this</span>
+<span class="sd">        pool will be used directly as the underlying connection pool</span>
+<span class="sd">        for the engine, bypassing whatever connection parameters are</span>
+<span class="sd">        present in the URL argument. For information on constructing</span>
+<span class="sd">        connection pools manually, see :ref:`pooling_toplevel`.</span>
+
+<span class="sd">    :param poolclass=None: a :class:`~sqlalchemy.pool.Pool`</span>
+<span class="sd">        subclass, which will be used to create a connection pool</span>
+<span class="sd">        instance using the connection parameters given in the URL. Note</span>
+<span class="sd">        this differs from ``pool`` in that you don&#39;t actually</span>
+<span class="sd">        instantiate the pool in this case, you just indicate what type</span>
+<span class="sd">        of pool to be used.</span>
+
+<span class="sd">    :param pool_logging_name:  String identifier which will be used within</span>
+<span class="sd">       the &quot;name&quot; field of logging records generated within the</span>
+<span class="sd">       &quot;sqlalchemy.pool&quot; logger. Defaults to a hexstring of the object&#39;s</span>
+<span class="sd">       id.</span>
+
+<span class="sd">       .. seealso::</span>
+
+<span class="sd">            :ref:`dbengine_logging` - further detail on how to configure</span>
+<span class="sd">            logging.</span>
+
+<span class="sd">    :param pool_pre_ping: boolean, if True will enable the connection pool</span>
+<span class="sd">        &quot;pre-ping&quot; feature that tests connections for liveness upon</span>
+<span class="sd">        each checkout.</span>
+
+<span class="sd">        .. versionadded:: 1.2</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :ref:`pool_disconnects_pessimistic`</span>
+
+<span class="sd">    :param pool_size=5: the number of connections to keep open</span>
+<span class="sd">        inside the connection pool. This used with</span>
+<span class="sd">        :class:`~sqlalchemy.pool.QueuePool` as</span>
+<span class="sd">        well as :class:`~sqlalchemy.pool.SingletonThreadPool`.  With</span>
+<span class="sd">        :class:`~sqlalchemy.pool.QueuePool`, a ``pool_size`` setting</span>
+<span class="sd">        of 0 indicates no limit; to disable pooling, set ``poolclass`` to</span>
+<span class="sd">        :class:`~sqlalchemy.pool.NullPool` instead.</span>
+
+<span class="sd">    :param pool_recycle=-1: this setting causes the pool to recycle</span>
+<span class="sd">        connections after the given number of seconds has passed. It</span>
+<span class="sd">        defaults to -1, or no timeout. For example, setting to 3600</span>
+<span class="sd">        means connections will be recycled after one hour. Note that</span>
+<span class="sd">        MySQL in particular will disconnect automatically if no</span>
+<span class="sd">        activity is detected on a connection for eight hours (although</span>
+<span class="sd">        this is configurable with the MySQLDB connection itself and the</span>
+<span class="sd">        server configuration as well).</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :ref:`pool_setting_recycle`</span>
+
+<span class="sd">    :param pool_reset_on_return=&#39;rollback&#39;: set the</span>
+<span class="sd">        :paramref:`_pool.Pool.reset_on_return` parameter of the underlying</span>
+<span class="sd">        :class:`_pool.Pool` object, which can be set to the values</span>
+<span class="sd">        ``&quot;rollback&quot;``, ``&quot;commit&quot;``, or ``None``.</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :ref:`pool_reset_on_return`</span>
+
+<span class="sd">    :param pool_timeout=30: number of seconds to wait before giving</span>
+<span class="sd">        up on getting a connection from the pool. This is only used</span>
+<span class="sd">        with :class:`~sqlalchemy.pool.QueuePool`. This can be a float but is</span>
+<span class="sd">        subject to the limitations of Python time functions which may not be</span>
+<span class="sd">        reliable in the tens of milliseconds.</span>
+
+<span class="sd">        .. note: don&#39;t use 30.0 above, it seems to break with the :param tag</span>
+
+<span class="sd">    :param pool_use_lifo=False: use LIFO (last-in-first-out) when retrieving</span>
+<span class="sd">        connections from :class:`.QueuePool` instead of FIFO</span>
+<span class="sd">        (first-in-first-out). Using LIFO, a server-side timeout scheme can</span>
+<span class="sd">        reduce the number of connections used during non- peak   periods of</span>
+<span class="sd">        use.   When planning for server-side timeouts, ensure that a recycle or</span>
+<span class="sd">        pre-ping strategy is in use to gracefully   handle stale connections.</span>
+
+<span class="sd">          .. versionadded:: 1.3</span>
+
+<span class="sd">          .. seealso::</span>
+
+<span class="sd">            :ref:`pool_use_lifo`</span>
+
+<span class="sd">            :ref:`pool_disconnects`</span>
+
+<span class="sd">    :param plugins: string list of plugin names to load.  See</span>
+<span class="sd">        :class:`.CreateEnginePlugin` for background.</span>
+
+<span class="sd">        .. versionadded:: 1.2.3</span>
+
+<span class="sd">    :param query_cache_size: size of the cache used to cache the SQL string</span>
+<span class="sd">     form of queries.  Set to zero to disable caching.</span>
+
+<span class="sd">     The cache is pruned of its least recently used items when its size reaches</span>
+<span class="sd">     N * 1.5.  Defaults to 500, meaning the cache will always store at least</span>
+<span class="sd">     500 SQL statements when filled, and will grow up to 750 items at which</span>
+<span class="sd">     point it is pruned back down to 500 by removing the 250 least recently</span>
+<span class="sd">     used items.</span>
+
+<span class="sd">     Caching is accomplished on a per-statement basis by generating a</span>
+<span class="sd">     cache key that represents the statement&#39;s structure, then generating</span>
+<span class="sd">     string SQL for the current dialect only if that key is not present</span>
+<span class="sd">     in the cache.   All statements support caching, however some features</span>
+<span class="sd">     such as an INSERT with a large set of parameters will intentionally</span>
+<span class="sd">     bypass the cache.   SQL logging will indicate statistics for each</span>
+<span class="sd">     statement whether or not it were pull from the cache.</span>
+
+<span class="sd">     .. note:: some ORM functions related to unit-of-work persistence as well</span>
+<span class="sd">        as some attribute loading strategies will make use of individual</span>
+<span class="sd">        per-mapper caches outside of the main cache.</span>
+
+
+<span class="sd">     .. seealso::</span>
+
+<span class="sd">        :ref:`sql_caching`</span>
+
+<span class="sd">     .. versionadded:: 1.4</span>
+
+<span class="sd">    :param use_insertmanyvalues: True by default, use the &quot;insertmanyvalues&quot;</span>
+<span class="sd">     execution style for INSERT..RETURNING statements by default.</span>
+
+<span class="sd">     .. versionadded:: 2.0</span>
+
+<span class="sd">     .. seealso::</span>
+
+<span class="sd">        :ref:`engine_insertmanyvalues`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa</span>
+
+    <span class="k">if</span> <span class="s2">&quot;strategy&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">strat</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;strategy&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">strat</span> <span class="o">==</span> <span class="s2">&quot;mock&quot;</span><span class="p">:</span>
+            <span class="c1"># this case is deprecated</span>
+            <span class="k">return</span> <span class="n">create_mock_engine</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exc</span><span class="o">.</span><span class="n">ArgumentError</span><span class="p">(</span><span class="s2">&quot;unknown strategy: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">strat</span><span class="p">)</span>
+
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;empty_in_strategy&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1"># create url.URL object</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">_url</span><span class="o">.</span><span class="n">make_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="n">u</span><span class="p">,</span> <span class="n">plugins</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">_instantiate_plugins</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">_get_entrypoint</span><span class="p">()</span>
+    <span class="n">_is_async</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_is_async&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_is_async</span><span class="p">:</span>
+        <span class="n">dialect_cls</span> <span class="o">=</span> <span class="n">entrypoint</span><span class="o">.</span><span class="n">get_async_dialect_cls</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dialect_cls</span> <span class="o">=</span> <span class="n">entrypoint</span><span class="o">.</span><span class="n">get_dialect_cls</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_coerce_config&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="nf">pop_kwarg</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dialect_cls</span><span class="o">.</span><span class="n">engine_config_types</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">dialect_cls</span><span class="o">.</span><span class="n">engine_config_types</span><span class="p">[</span><span class="n">key</span><span class="p">](</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pop_kwarg</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span>  <span class="c1"># type: ignore</span>
+
+    <span class="n">dialect_args</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># consume dialect arguments from kwargs</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">util</span><span class="o">.</span><span class="n">get_cls_kwargs</span><span class="p">(</span><span class="n">dialect_cls</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">dialect_args</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">pop_kwarg</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+
+    <span class="n">dbapi</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dbapi</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dbapi_args</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="s2">&quot;import_dbapi&quot;</span> <span class="ow">in</span> <span class="n">dialect_cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="n">dbapi_meth</span> <span class="o">=</span> <span class="n">dialect_cls</span><span class="o">.</span><span class="n">import_dbapi</span>
+
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">dialect_cls</span><span class="p">,</span> <span class="s2">&quot;dbapi&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">inspect</span><span class="o">.</span><span class="n">ismethod</span><span class="p">(</span>
+            <span class="n">dialect_cls</span><span class="o">.</span><span class="n">dbapi</span>
+        <span class="p">):</span>
+            <span class="n">util</span><span class="o">.</span><span class="n">warn_deprecated</span><span class="p">(</span>
+                <span class="s2">&quot;The dbapi() classmethod on dialect classes has been &quot;</span>
+                <span class="s2">&quot;renamed to import_dbapi().  Implement an import_dbapi() &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;classmethod directly on class </span><span class="si">{</span><span class="n">dialect_cls</span><span class="si">}</span><span class="s2"> to remove this &quot;</span>
+                <span class="s2">&quot;warning; the old .dbapi() classmethod may be maintained for &quot;</span>
+                <span class="s2">&quot;backwards compatibility.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;2.0&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">dbapi_meth</span> <span class="o">=</span> <span class="n">dialect_cls</span><span class="o">.</span><span class="n">dbapi</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dbapi_meth</span> <span class="o">=</span> <span class="n">dialect_cls</span><span class="o">.</span><span class="n">import_dbapi</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">util</span><span class="o">.</span><span class="n">get_func_kwargs</span><span class="p">(</span><span class="n">dbapi_meth</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">dbapi_args</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">pop_kwarg</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">dbapi</span> <span class="o">=</span> <span class="n">dbapi_meth</span><span class="p">(</span><span class="o">**</span><span class="n">dbapi_args</span><span class="p">)</span>
+
+    <span class="n">dialect_args</span><span class="p">[</span><span class="s2">&quot;dbapi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dbapi</span>
+
+    <span class="n">dialect_args</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;compiler_linting&quot;</span><span class="p">,</span> <span class="n">compiler</span><span class="o">.</span><span class="n">NO_LINTING</span><span class="p">)</span>
+    <span class="n">enable_from_linting</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;enable_from_linting&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">enable_from_linting</span><span class="p">:</span>
+        <span class="n">dialect_args</span><span class="p">[</span><span class="s2">&quot;compiler_linting&quot;</span><span class="p">]</span> <span class="o">^=</span> <span class="n">compiler</span><span class="o">.</span><span class="n">COLLECT_CARTESIAN_PRODUCTS</span>
+
+    <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">plugins</span><span class="p">:</span>
+        <span class="n">plugin</span><span class="o">.</span><span class="n">handle_dialect_kwargs</span><span class="p">(</span><span class="n">dialect_cls</span><span class="p">,</span> <span class="n">dialect_args</span><span class="p">)</span>
+
+    <span class="c1"># create dialect</span>
+    <span class="n">dialect</span> <span class="o">=</span> <span class="n">dialect_cls</span><span class="p">(</span><span class="o">**</span><span class="n">dialect_args</span><span class="p">)</span>
+
+    <span class="c1"># assemble connection arguments</span>
+    <span class="p">(</span><span class="n">cargs_tup</span><span class="p">,</span> <span class="n">cparams</span><span class="p">)</span> <span class="o">=</span> <span class="n">dialect</span><span class="o">.</span><span class="n">create_connect_args</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">cparams</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pop_kwarg</span><span class="p">(</span><span class="s2">&quot;connect_args&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+
+    <span class="k">if</span> <span class="s2">&quot;async_fallback&quot;</span> <span class="ow">in</span> <span class="n">cparams</span> <span class="ow">and</span> <span class="n">util</span><span class="o">.</span><span class="n">asbool</span><span class="p">(</span><span class="n">cparams</span><span class="p">[</span><span class="s2">&quot;async_fallback&quot;</span><span class="p">]):</span>
+        <span class="n">util</span><span class="o">.</span><span class="n">warn_deprecated</span><span class="p">(</span>
+            <span class="s2">&quot;The async_fallback dialect argument is deprecated and will be &quot;</span>
+            <span class="s2">&quot;removed in SQLAlchemy 2.1.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2.0&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">cargs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cargs_tup</span><span class="p">)</span>  <span class="c1"># allow mutability</span>
+
+    <span class="c1"># look for existing pool or create</span>
+    <span class="n">pool</span> <span class="o">=</span> <span class="n">pop_kwarg</span><span class="p">(</span><span class="s2">&quot;pool&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pool</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span>
+            <span class="n">connection_record</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ConnectionPoolEntry</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DBAPIConnection</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dialect</span><span class="o">.</span><span class="n">_has_events</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">dialect</span><span class="o">.</span><span class="n">dispatch</span><span class="o">.</span><span class="n">do_connect</span><span class="p">:</span>
+                    <span class="n">connection</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span>
+                        <span class="n">DBAPIConnection</span><span class="p">,</span>
+                        <span class="n">fn</span><span class="p">(</span><span class="n">dialect</span><span class="p">,</span> <span class="n">connection_record</span><span class="p">,</span> <span class="n">cargs</span><span class="p">,</span> <span class="n">cparams</span><span class="p">),</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">connection</span>
+
+            <span class="k">return</span> <span class="n">dialect</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="o">*</span><span class="n">cargs</span><span class="p">,</span> <span class="o">**</span><span class="n">cparams</span><span class="p">)</span>
+
+        <span class="n">creator</span> <span class="o">=</span> <span class="n">pop_kwarg</span><span class="p">(</span><span class="s2">&quot;creator&quot;</span><span class="p">,</span> <span class="n">connect</span><span class="p">)</span>
+
+        <span class="n">poolclass</span> <span class="o">=</span> <span class="n">pop_kwarg</span><span class="p">(</span><span class="s2">&quot;poolclass&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">poolclass</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">poolclass</span> <span class="o">=</span> <span class="n">dialect</span><span class="o">.</span><span class="n">get_dialect_pool_class</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="n">pool_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;dialect&quot;</span><span class="p">:</span> <span class="n">dialect</span><span class="p">}</span>
+
+        <span class="c1"># consume pool arguments from kwargs, translating a few of</span>
+        <span class="c1"># the arguments</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">util</span><span class="o">.</span><span class="n">get_cls_kwargs</span><span class="p">(</span><span class="n">poolclass</span><span class="p">):</span>
+            <span class="n">tk</span> <span class="o">=</span> <span class="n">_pool_translate_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tk</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">pool_args</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">pop_kwarg</span><span class="p">(</span><span class="n">tk</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">plugins</span><span class="p">:</span>
+            <span class="n">plugin</span><span class="o">.</span><span class="n">handle_pool_kwargs</span><span class="p">(</span><span class="n">poolclass</span><span class="p">,</span> <span class="n">pool_args</span><span class="p">)</span>
+
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">poolclass</span><span class="p">(</span><span class="n">creator</span><span class="p">,</span> <span class="o">**</span><span class="n">pool_args</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">_dialect</span> <span class="o">=</span> <span class="n">dialect</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="nb">hasattr</span><span class="p">(</span><span class="n">pool</span><span class="p">,</span> <span class="s2">&quot;_is_asyncio&quot;</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">pool</span><span class="o">.</span><span class="n">_is_asyncio</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">dialect</span><span class="o">.</span><span class="n">is_async</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="n">exc</span><span class="o">.</span><span class="n">ArgumentError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Pool class </span><span class="si">{</span><span class="n">pool</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> cannot be &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;used with </span><span class="si">{</span><span class="s1">&#39;non-&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">dialect</span><span class="o">.</span><span class="n">is_async</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;asyncio engine&quot;</span><span class="p">,</span>
+            <span class="n">code</span><span class="o">=</span><span class="s2">&quot;pcls&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># create engine.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pop_kwarg</span><span class="p">(</span><span class="s2">&quot;future&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">exc</span><span class="o">.</span><span class="n">ArgumentError</span><span class="p">(</span>
+            <span class="s2">&quot;The &#39;future&#39; parameter passed to &quot;</span>
+            <span class="s2">&quot;create_engine() may only be set to True.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">engineclass</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">Engine</span>
+
+    <span class="n">engine_args</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">util</span><span class="o">.</span><span class="n">get_cls_kwargs</span><span class="p">(</span><span class="n">engineclass</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">engine_args</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">pop_kwarg</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+
+    <span class="c1"># internal flags used by the test suite for instrumenting / proxying</span>
+    <span class="c1"># engines with mocks etc.</span>
+    <span class="n">_initialize</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_initialize&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># all kwargs should be consumed</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s2">&quot;Invalid argument(s) </span><span class="si">%s</span><span class="s2"> sent to create_engine(), &quot;</span>
+            <span class="s2">&quot;using configuration </span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">.  Please check that the &quot;</span>
+            <span class="s2">&quot;keyword arguments are appropriate for this combination &quot;</span>
+            <span class="s2">&quot;of components.&quot;</span>
+            <span class="o">%</span> <span class="p">(</span>
+                <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">),</span>
+                <span class="n">dialect</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                <span class="n">pool</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                <span class="n">engineclass</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">engineclass</span><span class="p">(</span><span class="n">pool</span><span class="p">,</span> <span class="n">dialect</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="o">**</span><span class="n">engine_args</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">_initialize</span><span class="p">:</span>
+        <span class="n">do_on_connect</span> <span class="o">=</span> <span class="n">dialect</span><span class="o">.</span><span class="n">on_connect_url</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">do_on_connect</span><span class="p">:</span>
+
+            <span class="k">def</span> <span class="nf">on_connect</span><span class="p">(</span>
+                <span class="n">dbapi_connection</span><span class="p">:</span> <span class="n">DBAPIConnection</span><span class="p">,</span>
+                <span class="n">connection_record</span><span class="p">:</span> <span class="n">ConnectionPoolEntry</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">do_on_connect</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="n">do_on_connect</span><span class="p">(</span><span class="n">dbapi_connection</span><span class="p">)</span>
+
+            <span class="n">event</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="n">pool</span><span class="p">,</span> <span class="s2">&quot;connect&quot;</span><span class="p">,</span> <span class="n">on_connect</span><span class="p">)</span>
+
+        <span class="n">builtin_on_connect</span> <span class="o">=</span> <span class="n">dialect</span><span class="o">.</span><span class="n">_builtin_onconnect</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">builtin_on_connect</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="n">pool</span><span class="p">,</span> <span class="s2">&quot;connect&quot;</span><span class="p">,</span> <span class="n">builtin_on_connect</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">first_connect</span><span class="p">(</span>
+            <span class="n">dbapi_connection</span><span class="p">:</span> <span class="n">DBAPIConnection</span><span class="p">,</span>
+            <span class="n">connection_record</span><span class="p">:</span> <span class="n">ConnectionPoolEntry</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span>
+                <span class="n">engine</span><span class="p">,</span>
+                <span class="n">connection</span><span class="o">=</span><span class="n">_AdhocProxiedConnection</span><span class="p">(</span>
+                    <span class="n">dbapi_connection</span><span class="p">,</span> <span class="n">connection_record</span>
+                <span class="p">),</span>
+                <span class="n">_has_events</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="c1"># reconnecting will be a reentrant condition, so if the</span>
+                <span class="c1"># connection goes away, Connection is then closed</span>
+                <span class="n">_allow_revalidate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="c1"># dont trigger the autobegin sequence</span>
+                <span class="c1"># within the up front dialect checks</span>
+                <span class="n">_allow_autobegin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">_execution_options</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">EMPTY_DICT</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">dialect</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="c1"># note that &quot;invalidated&quot; and &quot;closed&quot; are mutually</span>
+                <span class="c1"># exclusive in 1.4 Connection.</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">invalidated</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+                    <span class="c1"># transaction is rolled back otherwise, tested by</span>
+                    <span class="c1"># test/dialect/postgresql/test_dialect.py</span>
+                    <span class="c1"># ::MiscBackendTest::test_initial_transaction_state</span>
+                    <span class="n">dialect</span><span class="o">.</span><span class="n">do_rollback</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
+
+        <span class="c1"># previously, the &quot;first_connect&quot; event was used here, which was then</span>
+        <span class="c1"># scaled back if the &quot;on_connect&quot; handler were present.  now,</span>
+        <span class="c1"># since &quot;on_connect&quot; is virtually always present, just use</span>
+        <span class="c1"># &quot;connect&quot; event with once_unless_exception in all cases so that</span>
+        <span class="c1"># the connection event flow is consistent in all cases.</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span>
+            <span class="n">pool</span><span class="p">,</span> <span class="s2">&quot;connect&quot;</span><span class="p">,</span> <span class="n">first_connect</span><span class="p">,</span> <span class="n">_once_unless_exception</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+    <span class="n">dialect_cls</span><span class="o">.</span><span class="n">engine_created</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">entrypoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">dialect_cls</span><span class="p">:</span>
+        <span class="n">entrypoint</span><span class="o">.</span><span class="n">engine_created</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">plugins</span><span class="p">:</span>
+        <span class="n">plugin</span><span class="o">.</span><span class="n">engine_created</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">engine</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">engine_from_config</span><span class="p">(</span>
+    <span class="n">configuration</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sqlalchemy.&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Engine</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a new Engine instance using a configuration dictionary.</span>
+
+<span class="sd">    The dictionary is typically produced from a config file.</span>
+
+<span class="sd">    The keys of interest to ``engine_from_config()`` should be prefixed, e.g.</span>
+<span class="sd">    ``sqlalchemy.url``, ``sqlalchemy.echo``, etc.  The &#39;prefix&#39; argument</span>
+<span class="sd">    indicates the prefix to be searched for.  Each matching key (after the</span>
+<span class="sd">    prefix is stripped) is treated as though it were the corresponding keyword</span>
+<span class="sd">    argument to a :func:`_sa.create_engine` call.</span>
+
+<span class="sd">    The only required key is (assuming the default prefix) ``sqlalchemy.url``,</span>
+<span class="sd">    which provides the :ref:`database URL &lt;database_urls&gt;`.</span>
+
+<span class="sd">    A select set of keyword arguments will be &quot;coerced&quot; to their</span>
+<span class="sd">    expected type based on string values.    The set of arguments</span>
+<span class="sd">    is extensible per-dialect using the ``engine_config_types`` accessor.</span>
+
+<span class="sd">    :param configuration: A dictionary (typically produced from a config file,</span>
+<span class="sd">        but this is not a requirement).  Items whose keys start with the value</span>
+<span class="sd">        of &#39;prefix&#39; will have that prefix stripped, and will then be passed to</span>
+<span class="sd">        :func:`_sa.create_engine`.</span>
+
+<span class="sd">    :param prefix: Prefix to match and then strip from keys</span>
+<span class="sd">        in &#39;configuration&#39;.</span>
+
+<span class="sd">    :param kwargs: Each keyword argument to ``engine_from_config()`` itself</span>
+<span class="sd">        overrides the corresponding item taken from the &#39;configuration&#39;</span>
+<span class="sd">        dictionary.  Keyword arguments should *not* be prefixed.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">key</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="p">:]:</span> <span class="n">configuration</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">configuration</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">options</span><span class="p">[</span><span class="s2">&quot;_coerce_config&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">create_pool_from_url</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">URL</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">poolclass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">Pool</span><span class="p">]]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">logging_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">pre_ping</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">recycle</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">reset_on_return</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ResetStyleArgType</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">use_lifo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Pool</span><span class="p">:</span> <span class="o">...</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">create_pool_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">URL</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Pool</span><span class="p">:</span> <span class="o">...</span>
+
+
+<span class="k">def</span> <span class="nf">create_pool_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">URL</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Pool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a pool instance from the given url.</span>
+
+<span class="sd">    If ``poolclass`` is not provided the pool class used</span>
+<span class="sd">    is selected using the dialect specified in the URL.</span>
+
+<span class="sd">    The arguments passed to :func:`_sa.create_pool_from_url` are</span>
+<span class="sd">    identical to the pool argument passed to the :func:`_sa.create_engine`</span>
+<span class="sd">    function.</span>
+
+<span class="sd">    .. versionadded:: 2.0.10</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_pool_translate_kwargs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="n">_pool_translate_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">_initialize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">engine</span><span class="o">.</span><span class="n">pool</span>
+
+
+<span class="n">_pool_translate_kwargs</span> <span class="o">=</span> <span class="n">immutabledict</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;logging_name&quot;</span><span class="p">:</span> <span class="s2">&quot;pool_logging_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;echo&quot;</span><span class="p">:</span> <span class="s2">&quot;echo_pool&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="s2">&quot;pool_timeout&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;recycle&quot;</span><span class="p">:</span> <span class="s2">&quot;pool_recycle&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;events&quot;</span><span class="p">:</span> <span class="s2">&quot;pool_events&quot;</span><span class="p">,</span>  <span class="c1"># deprecated</span>
+        <span class="s2">&quot;reset_on_return&quot;</span><span class="p">:</span> <span class="s2">&quot;pool_reset_on_return&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pre_ping&quot;</span><span class="p">:</span> <span class="s2">&quot;pool_pre_ping&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;use_lifo&quot;</span><span class="p">:</span> <span class="s2">&quot;pool_use_lifo&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      Apr 22, 2024
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2020, Paul Tikken.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.3.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.sections", "navigation.top", "search.share", "toc.follow", "toc.sticky", "content.tabs.link", "announce.dismiss"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

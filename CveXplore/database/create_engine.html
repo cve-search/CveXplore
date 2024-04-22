@@ -1,0 +1,1045 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../_static/CveExplore_icon.png">
+    
+    
+      
+        <title>CveXplore.database.connection.sqlbase.connection.create_engine - CveXplore</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.359ec555e2989f00f.min.css?v=b000af5c" />
+        <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="CveXplore" class="md-header__button md-logo" aria-label="CveXplore" data-md-component="logo">
+      <img src="../../_static/CveExplore_icon.png" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CveXplore
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CveXplore.database.connection.sqlbase.connection.create_engine
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cve-search/CveXplore" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CveXplore
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="CveXplore" class="md-nav__button md-logo" aria-label="CveXplore" data-md-component="logo">
+      <img src="../../_static/CveExplore_icon.png" alt="logo">
+    </a>
+    CveXplore
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cve-search/CveXplore" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CveXplore
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">General:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="General:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">General:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/general.html" class="md-nav__link">
+        <span class="md-ellipsis">Dependencies</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/settings.html" class="md-nav__link">
+        <span class="md-ellipsis">Settings</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">Package:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Package:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Package:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../package/query_data.html" class="md-nav__link">
+        <span class="md-ellipsis">Query for data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../package/code_base.html" class="md-nav__link">
+        <span class="md-ellipsis">Code base</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Command line:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Command line:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Command line:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/general.html" class="md-nav__link">
+        <span class="md-ellipsis">General</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/cli.html" class="md-nav__link">
+        <span class="md-ellipsis">Command Line Interpreter</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          <span class="md-ellipsis">Backend:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Backend:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Backend:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/general.html" class="md-nav__link">
+        <span class="md-ellipsis">General</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/installation.html" class="md-nav__link">
+        <span class="md-ellipsis">Installation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/settings.html" class="md-nav__link">
+        <span class="md-ellipsis">Settings</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py">
+<span class="sig-prename descclassname"><span class="pre">CveXplore.database.connection.sqlbase.connection.</span></span><span class="sig-name descname"><span class="pre">create_engine</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">URL</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-connect_args" title="CveXplore.database.connection.sqlbase.connection.create_engine.connect_args (Python parameter) — a dictionary of options which will be passed directly to the DBAPI's connect() method as additional keyword arguments.  See the example at custom_dbapi_args."><span class="n"><span class="pre">connect_args</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">convert_unicode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-creator" title="CveXplore.database.connection.sqlbase.connection.create_engine.creator (Python parameter) — a callable which returns a DBAPI connection. This creation function will be passed to the underlying connection pool and will be used to create all new database connections. Usage of this function causes connection parameters specified in the URL argument to be bypassed."><span class="n"><span class="pre">creator</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_CreatorFnType</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_CreatorWRecFnType</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">echo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_EchoFlagType</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">echo_pool</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_EchoFlagType</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-enable_from_linting" title="CveXplore.database.connection.sqlbase.connection.create_engine.enable_from_linting (Python parameter) — defaults to True.  Will emit a warning if a given SELECT statement is found to have un-linked FROM elements which would cause a cartesian product."><span class="n"><span class="pre">enable_from_linting</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-execution_options" title="CveXplore.database.connection.sqlbase.connection.create_engine.execution_options (Python parameter) — Dictionary execution options which will be applied to all connections.  See execution_options()"><span class="n"><span class="pre">execution_options</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_ExecuteOptions</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-future" title="CveXplore.database.connection.sqlbase.connection.create_engine.future (Python parameter) — Use the 2.0 style _engine.Engine and _engine.Connection API."><span class="n"><span class="pre">future</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="k"><span class="pre">True</span></span><span class="p"><span class="pre">]</span></span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-hide_parameters" title="CveXplore.database.connection.sqlbase.connection.create_engine.hide_parameters (Python parameter) — Boolean, when set to True, SQL statement parameters will not be displayed in INFO logging nor will they be formatted into the string representation of StatementError objects."><span class="n"><span class="pre">hide_parameters</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">implicit_returning</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="k"><span class="pre">True</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-insertmanyvalues_page_size" title="CveXplore.database.connection.sqlbase.connection.create_engine.insertmanyvalues_page_size (Python parameter) — number of rows to format into an INSERT statement when the statement uses &quot;insertmanyvalues&quot; mode, which is a paged form of bulk insert that is used for many backends when using executemany execution typically in conjunction with RETURNING. Defaults to 1000, but may also be subject to dialect-specific limiting factors which may override this value on a per-statement basis."><span class="n"><span class="pre">insertmanyvalues_page_size</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-isolation_level" title="CveXplore.database.connection.sqlbase.connection.create_engine.isolation_level (Python parameter) — optional string name of an isolation level which will be set on all new connections unconditionally. Isolation levels are typically some subset of the string names &quot;SERIALIZABLE&quot;, &quot;REPEATABLE READ&quot;, &quot;READ COMMITTED&quot;, &quot;READ UNCOMMITTED&quot; and &quot;AUTOCOMMIT&quot; based on backend."><span class="n"><span class="pre">isolation_level</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IsolationLevel</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-json_deserializer" title="CveXplore.database.connection.sqlbase.connection.create_engine.json_deserializer (Python parameter) — for dialects that support the _types.JSON datatype, this is a Python callable that will convert a JSON string to a Python object.  By default, the Python json.loads function is used."><span class="n"><span class="pre">json_deserializer</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-json_serializer" title="CveXplore.database.connection.sqlbase.connection.create_engine.json_serializer (Python parameter) — for dialects that support the _types.JSON datatype, this is a Python callable that will render a given object as JSON.   By default, the Python json.dumps function is used."><span class="n"><span class="pre">json_serializer</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">label_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-logging_name" title="CveXplore.database.connection.sqlbase.connection.create_engine.logging_name (Python parameter) — String identifier which will be used within the &quot;name&quot; field of logging records generated within the &quot;sqlalchemy.engine&quot; logger. Defaults to a hexstring of the object's id."><span class="n"><span class="pre">logging_name</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-max_identifier_length" title="CveXplore.database.connection.sqlbase.connection.create_engine.max_identifier_length (Python parameter) — integer; override the max_identifier_length determined by the dialect.  if None or zero, has no effect.  This is the database's configured maximum number of characters that may be used in a SQL identifier such as a table name, column name, or label name. All dialects determine this value automatically, however in the case of a new database version for which this value has changed but SQLAlchemy's dialect has not been adjusted, the value may be passed here."><span class="n"><span class="pre">max_identifier_length</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">max_overflow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">paramstyle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_ParamStyle</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">pool</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Pool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">poolclass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">Pool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-pool_logging_name" title="CveXplore.database.connection.sqlbase.connection.create_engine.pool_logging_name (Python parameter) — String identifier which will be used within the &quot;name&quot; field of logging records generated within the &quot;sqlalchemy.pool&quot; logger. Defaults to a hexstring of the object's id."><span class="n"><span class="pre">pool_logging_name</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-pool_pre_ping" title="CveXplore.database.connection.sqlbase.connection.create_engine.pool_pre_ping (Python parameter) — boolean, if True will enable the connection pool &quot;pre-ping&quot; feature that tests connections for liveness upon each checkout."><span class="n"><span class="pre">pool_pre_ping</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">pool_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">pool_recycle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">pool_reset_on_return</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_ResetStyleArgType</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">pool_timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">pool_use_lifo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-plugins" title="CveXplore.database.connection.sqlbase.connection.create_engine.plugins (Python parameter) — string list of plugin names to load.  See CreateEnginePlugin for background."><span class="n"><span class="pre">plugins</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-query_cache_size" title="CveXplore.database.connection.sqlbase.connection.create_engine.query_cache_size (Python parameter) — size of the cache used to cache the SQL string form of queries.  Set to zero to disable caching."><span class="n"><span class="pre">query_cache_size</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-use_insertmanyvalues" title="CveXplore.database.connection.sqlbase.connection.create_engine.use_insertmanyvalues (Python parameter) — True by default, use the &quot;insertmanyvalues&quot; execution style for INSERT..RETURNING statements by default."><span class="n"><span class="pre">use_insertmanyvalues</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">...</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Engine</span></span></span><a class="reference internal" href="../../_modules/sqlalchemy/engine/create.html#create_engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object highlight sig-wrap py">
+<span class="sig-prename descclassname"><span class="pre">CveXplore.database.connection.sqlbase.connection.</span></span><span class="sig-name descname"><span class="pre">create_engine</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">URL</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Engine</span></span></span></dt>
+<dd><p>Create a new <code class="xref py py-class docutils literal notranslate"><span class="pre">_engine.Engine</span></code> instance.</p>
+<p>The standard calling form is to send the <span class="xref std std-ref">URL</span> as the
+first positional argument, usually a string
+that indicates database dialect and connection arguments:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">&quot;postgresql+psycopg2://scott:tiger@localhost/test&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Please review <span class="xref std std-ref">database_urls</span> for general guidelines in composing
+URL strings.  In particular, special characters, such as those often
+part of passwords, must be URL encoded to be properly parsed.</p>
+</div>
+<p>Additional keyword arguments may then follow it which
+establish various options on the resulting <code class="xref py py-class docutils literal notranslate"><span class="pre">_engine.Engine</span></code>
+and its underlying <code class="xref py py-class docutils literal notranslate"><span class="pre">Dialect</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">_pool.Pool</span></code>
+constructs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">&quot;mysql+mysqldb://scott:tiger@hostname/dbname&quot;</span><span class="p">,</span>
+                            <span class="n">pool_recycle</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span> <span class="n">echo</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<p>The string form of the URL is
+<code class="code highlight python docutils literal highlight-python"><span class="n">dialect</span><span class="p">[</span><span class="o">+</span><span class="n">driver</span><span class="p">]:</span><span class="o">//</span><span class="n">user</span><span class="p">:</span><span class="n">password</span><span class="nd">@host</span><span class="o">/</span><span class="n">dbname</span><span class="p">[</span><span class="err">?</span><span class="n">key</span><span class="o">=</span><span class="n">value</span><span class="o">..</span><span class="p">]</span></code>, where
+<code class="code highlight python docutils literal highlight-python"><span class="n">dialect</span></code> is a database name such as <code class="code highlight python docutils literal highlight-python"><span class="n">mysql</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="n">oracle</span></code>,
+<code class="code highlight python docutils literal highlight-python"><span class="n">postgresql</span></code>, etc., and <code class="code highlight python docutils literal highlight-python"><span class="n">driver</span></code> the name of a DBAPI, such as
+<code class="code highlight python docutils literal highlight-python"><span class="n">psycopg2</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="n">pyodbc</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="n">cx_oracle</span></code>, etc.  Alternatively,
+the URL can be an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code>.</p>
+<p><code class="code highlight python docutils literal highlight-python"><span class="o">**</span><span class="n">kwargs</span></code> takes a wide variety of options which are routed
+towards their appropriate components.  Arguments may be specific to
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">_engine.Engine</span></code>, the underlying <code class="xref py py-class docutils literal notranslate"><span class="pre">Dialect</span></code>,
+as well as the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">_pool.Pool</span></code>.  Specific dialects also accept keyword arguments that
+are unique to that dialect.   Here, we describe the parameters
+that are common to most <code class="xref py py-func docutils literal notranslate"><span class="pre">_sa.create_engine()</span></code> usage.</p>
+<p>Once established, the newly resulting <code class="xref py py-class docutils literal notranslate"><span class="pre">_engine.Engine</span></code> will
+request a connection from the underlying <code class="xref py py-class docutils literal notranslate"><span class="pre">_pool.Pool</span></code> once
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_engine.Engine.connect()</span></code> is called, or a method which depends on it
+such as <code class="xref py py-meth docutils literal notranslate"><span class="pre">_engine.Engine.execute()</span></code> is invoked.   The
+<code class="xref py py-class docutils literal notranslate"><span class="pre">_pool.Pool</span></code> in turn
+will establish the first actual DBAPI connection when this request
+is received.   The <code class="xref py py-func docutils literal notranslate"><span class="pre">_sa.create_engine()</span></code> call itself does <strong>not</strong>
+establish any actual DBAPI connections directly.</p>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-doc">/core/engines</span></p>
+<p><span class="xref std std-doc">/dialects/index</span></p>
+<p><span class="xref std std-ref">connections_toplevel</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd" id="parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="p-connect_args"><span class="n sig-name">connect_args</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)">Dict</a><span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)">Any</a><span class="p">,</span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)">Any</a><span class="p">]</span></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-connect_args" title="Permalink to this definition">¶</a></dt><dd><p>a dictionary of options which will be
+passed directly to the DBAPI’s <code class="code highlight python docutils literal highlight-python"><span class="n">connect</span><span class="p">()</span></code> method as
+additional keyword arguments.  See the example
+at <span class="xref std std-ref">custom_dbapi_args</span>.</p>
+</dd>
+<dt id="p-creator"><span class="n sig-name">creator</span><span class="p">:</span><span class="w"> </span><span class="n">_CreatorFnType<span class="w"> </span><span class="p">|</span><span class="w"> </span>_CreatorWRecFnType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-creator" title="Permalink to this definition">¶</a></dt><dd><p><p>a callable which returns a DBAPI connection.
+This creation function will be passed to the underlying
+connection pool and will be used to create all new database
+connections. Usage of this function causes connection
+parameters specified in the URL argument to be bypassed.</p>
+<p>This hook is not as flexible as the newer
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_events.DialectEvents.do_connect()</span></code> hook which allows complete
+control over how a connection is made to the database, given the full
+set of URL arguments and state beforehand.</p>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">_events.DialectEvents.do_connect()</span></code> - event hook that allows
+full control over DBAPI connection mechanics.</p>
+<p><span class="xref std std-ref">custom_dbapi_args</span></p>
+</div>
+</p>
+</dd>
+<dt><span class="sig-name descname">echo=False</span></dt><dd><p><p>if True, the Engine will log all statements
+as well as a <code class="code highlight python docutils literal highlight-python"><span class="nb">repr</span><span class="p">()</span></code> of their parameter lists to the default log
+handler, which defaults to <code class="code highlight python docutils literal highlight-python"><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span></code> for output.   If set to the
+string <code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;debug&quot;</span></code>, result rows will be printed to the standard output
+as well. The <code class="code highlight python docutils literal highlight-python"><span class="n">echo</span></code> attribute of <code class="code highlight python docutils literal highlight-python"><span class="n">Engine</span></code> can be modified at any
+time to turn logging on and off; direct control of logging is also
+available using the standard Python <code class="code highlight python docutils literal highlight-python"><span class="n">logging</span></code> module.</p>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">dbengine_logging</span> - further detail on how to configure
+logging.</p>
+</div>
+</p>
+</dd>
+<dt><span class="sig-name descname">echo_pool=False</span></dt><dd><p><p>if True, the connection pool will log
+informational output such as when connections are invalidated
+as well as when connections are recycled to the default log handler,
+which defaults to <code class="code highlight python docutils literal highlight-python"><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span></code> for output.   If set to the string
+<code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;debug&quot;</span></code>, the logging will include pool checkouts and checkins.
+Direct control of logging is also available using the standard Python
+<code class="code highlight python docutils literal highlight-python"><span class="n">logging</span></code> module.</p>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">dbengine_logging</span> - further detail on how to configure
+logging.</p>
+</div>
+</p>
+</dd>
+<dt><span class="sig-name descname">empty_in_strategy</span></dt><dd><p><p>No longer used; SQLAlchemy now uses
+“empty set” behavior for IN in all cases.</p>
+<div class="admonition deprecated">
+<p class="admonition-title"><span class="versionmodified deprecated">Deprecated since version 1.4: </span>The <a href="#id1"><span class="problematic" id="id2">:paramref:`_sa.create_engine.empty_in_strategy`</span></a> keyword is deprecated, and no longer has any effect.  All IN expressions are now rendered using the “expanding parameter” strategy which renders a set of boundexpressions, or an “empty set” SELECT, at statement executiontime.</p>
+</div>
+</p>
+</dd>
+<dt id="p-enable_from_linting"><span class="n sig-name">enable_from_linting</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-enable_from_linting" title="Permalink to this definition">¶</a></dt><dd><p><p>defaults to True.  Will emit a warning
+if a given SELECT statement is found to have un-linked FROM elements
+which would cause a cartesian product.</p>
+<div class="admonition versionadded">
+<p class="admonition-title"><span class="versionmodified added">Added in version 1.4.</span></p>
+</div>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">change_4737</span></p>
+</div>
+</p>
+</dd>
+<dt id="p-execution_options"><span class="n sig-name">execution_options</span><span class="p">:</span><span class="w"> </span><span class="n">_ExecuteOptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-execution_options" title="Permalink to this definition">¶</a></dt><dd><p>Dictionary execution options which will
+be applied to all connections.  See
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">execution_options()</span></code></p>
+</dd>
+<dt id="p-future"><span class="n sig-name">future</span><span class="p">:</span><span class="w"> </span><span class="n">Literal<span class="p">[</span><span class="k">True</span><span class="p">]</span></span><a class="headerlink" href="#p-future" title="Permalink to this definition">¶</a></dt><dd><p><p>Use the 2.0 style <code class="xref py py-class docutils literal notranslate"><span class="pre">_engine.Engine</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">_engine.Connection</span></code> API.</p>
+<p>As of SQLAlchemy 2.0, this parameter is present for backwards
+compatibility only and must remain at its default value of <code class="code highlight python docutils literal highlight-python"><span class="kc">True</span></code>.</p>
+<p>The <a href="#id3"><span class="problematic" id="id4">:paramref:`_sa.create_engine.future`</span></a> parameter will be
+deprecated in a subsequent 2.x release and eventually removed.</p>
+<div class="admonition versionadded">
+<p class="admonition-title"><span class="versionmodified added">Added in version 1.4.</span></p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 2.0: </span>All <code class="xref py py-class docutils literal notranslate"><span class="pre">_engine.Engine</span></code> objects are
+“future” style engines and there is no longer a <code class="code highlight python docutils literal highlight-python"><span class="n">future</span><span class="o">=</span><span class="kc">False</span></code>
+mode of operation.</p>
+</div>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">migration_20_toplevel</span></p>
+</div>
+</p>
+</dd>
+<dt id="p-hide_parameters"><span class="n sig-name">hide_parameters</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-hide_parameters" title="Permalink to this definition">¶</a></dt><dd><p><p>Boolean, when set to True, SQL statement parameters
+will not be displayed in INFO logging nor will they be formatted into
+the string representation of <code class="xref py py-class docutils literal notranslate"><span class="pre">StatementError</span></code> objects.</p>
+<div class="admonition versionadded">
+<p class="admonition-title"><span class="versionmodified added">Added in version 1.3.8.</span></p>
+</div>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">dbengine_logging</span> - further detail on how to configure
+logging.</p>
+</div>
+</p>
+</dd>
+<dt><span class="sig-name descname">implicit_returning=True</span></dt><dd><p>Legacy parameter that may only be set
+to True. In SQLAlchemy 2.0, this parameter does nothing. In order to
+disable “implicit returning” for statements invoked by the ORM,
+configure this on a per-table basis using the
+<a href="#id5"><span class="problematic" id="id6">:paramref:`.Table.implicit_returning`</span></a> parameter.</p>
+</dd>
+<dt id="p-insertmanyvalues_page_size"><span class="n sig-name">insertmanyvalues_page_size</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-insertmanyvalues_page_size" title="Permalink to this definition">¶</a></dt><dd><p><p>number of rows to format into an
+INSERT statement when the statement uses “insertmanyvalues” mode, which is
+a paged form of bulk insert that is used for many backends when using
+<span class="xref std std-term">executemany</span> execution typically in conjunction with RETURNING.
+Defaults to 1000, but may also be subject to dialect-specific limiting
+factors which may override this value on a per-statement basis.</p>
+<div class="admonition versionadded">
+<p class="admonition-title"><span class="versionmodified added">Added in version 2.0.</span></p>
+</div>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">engine_insertmanyvalues</span></p>
+<p><span class="xref std std-ref">engine_insertmanyvalues_page_size</span></p>
+<p><a href="#id7"><span class="problematic" id="id8">:paramref:`_engine.Connection.execution_options.insertmanyvalues_page_size`</span></a></p>
+</div>
+</p>
+</dd>
+<dt id="p-isolation_level"><span class="n sig-name">isolation_level</span><span class="p">:</span><span class="w"> </span><span class="n">IsolationLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-isolation_level" title="Permalink to this definition">¶</a></dt><dd><p><p>optional string name of an isolation level
+which will be set on all new connections unconditionally.
+Isolation levels are typically some subset of the string names
+<code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;SERIALIZABLE&quot;</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;REPEATABLE READ&quot;</span></code>,
+<code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;READ COMMITTED&quot;</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;READ UNCOMMITTED&quot;</span></code> and <code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;AUTOCOMMIT&quot;</span></code>
+based on backend.</p>
+<p>The <a href="#id9"><span class="problematic" id="id10">:paramref:`_sa.create_engine.isolation_level`</span></a> parameter is
+in contrast to the
+<a href="#id11"><span class="problematic" id="id12">:paramref:`.Connection.execution_options.isolation_level`</span></a>
+execution option, which may be set on an individual
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code>, as well as the same parameter passed to
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">Engine.execution_options()</span></code>, where it may be used to create
+multiple engines with different isolation levels that share a common
+connection pool and dialect.</p>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 2.0: </span>The
+<a href="#id13"><span class="problematic" id="id14">:paramref:`_sa.create_engine.isolation_level`</span></a>
+parameter has been generalized to work on all dialects which support
+the concept of isolation level, and is provided as a more succinct,
+up front configuration switch in contrast to the execution option
+which is more of an ad-hoc programmatic option.</p>
+</div>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">dbapi_autocommit</span></p>
+</div>
+</p>
+</dd>
+<dt id="p-json_deserializer"><span class="n sig-name">json_deserializer</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)">Callable</a><span class="p">[</span><span class="p">[</span><span class="p">...</span><span class="p">]</span><span class="p">,</span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)">Any</a><span class="p">]</span></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-json_deserializer" title="Permalink to this definition">¶</a></dt><dd><p><p>for dialects that support the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">_types.JSON</span></code>
+datatype, this is a Python callable that will convert a JSON string
+to a Python object.  By default, the Python <code class="code highlight python docutils literal highlight-python"><span class="n">json</span><span class="o">.</span><span class="n">loads</span></code> function is
+used.</p>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 1.3.7: </span>The SQLite dialect renamed this from
+<code class="code highlight python docutils literal highlight-python"><span class="n">_json_deserializer</span></code>.</p>
+</div>
+</p>
+</dd>
+<dt id="p-json_serializer"><span class="n sig-name">json_serializer</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)">Callable</a><span class="p">[</span><span class="p">[</span><span class="p">...</span><span class="p">]</span><span class="p">,</span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)">Any</a><span class="p">]</span></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-json_serializer" title="Permalink to this definition">¶</a></dt><dd><p><p>for dialects that support the <code class="xref py py-class docutils literal notranslate"><span class="pre">_types.JSON</span></code>
+datatype, this is a Python callable that will render a given object
+as JSON.   By default, the Python <code class="code highlight python docutils literal highlight-python"><span class="n">json</span><span class="o">.</span><span class="n">dumps</span></code> function is used.</p>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 1.3.7: </span>The SQLite dialect renamed this from
+<code class="code highlight python docutils literal highlight-python"><span class="n">_json_serializer</span></code>.</p>
+</div>
+</p>
+</dd>
+<dt><span class="sig-name descname">label_length=None</span></dt><dd><p><p>optional integer value which limits
+the size of dynamically generated column labels to that many
+characters. If less than 6, labels are generated as
+“_(counter)”. If <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code>, the value of
+<code class="code highlight python docutils literal highlight-python"><span class="n">dialect</span><span class="o">.</span><span class="n">max_identifier_length</span></code>, which may be affected via the
+<a href="#id15"><span class="problematic" id="id16">:paramref:`_sa.create_engine.max_identifier_length`</span></a> parameter,
+is used instead.   The value of
+<a href="#id17"><span class="problematic" id="id18">:paramref:`_sa.create_engine.label_length`</span></a>
+may not be larger than that of
+<a href="#id19"><span class="problematic" id="id20">:paramref:`_sa.create_engine.max_identfier_length`</span></a>.</p>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><a href="#id21"><span class="problematic" id="id22">:paramref:`_sa.create_engine.max_identifier_length`</span></a></p>
+</div>
+</p>
+</dd>
+<dt id="p-logging_name"><span class="n sig-name">logging_name</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-logging_name" title="Permalink to this definition">¶</a></dt><dd><p><p>String identifier which will be used within
+the “name” field of logging records generated within the
+“sqlalchemy.engine” logger. Defaults to a hexstring of the
+object’s id.</p>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">dbengine_logging</span> - further detail on how to configure
+logging.</p>
+<p><a href="#id23"><span class="problematic" id="id24">:paramref:`_engine.Connection.execution_options.logging_token`</span></a></p>
+</div>
+</p>
+</dd>
+<dt id="p-max_identifier_length"><span class="n sig-name">max_identifier_length</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a><span class="w"> </span><span class="p">|</span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)">None</a></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-max_identifier_length" title="Permalink to this definition">¶</a></dt><dd><p><p>integer; override the max_identifier_length
+determined by the dialect.  if <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code> or zero, has no effect.  This
+is the database’s configured maximum number of characters that may be
+used in a SQL identifier such as a table name, column name, or label
+name. All dialects determine this value automatically, however in the
+case of a new database version for which this value has changed but
+SQLAlchemy’s dialect has not been adjusted, the value may be passed
+here.</p>
+<div class="admonition versionadded">
+<p class="admonition-title"><span class="versionmodified added">Added in version 1.3.9.</span></p>
+</div>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><a href="#id25"><span class="problematic" id="id26">:paramref:`_sa.create_engine.label_length`</span></a></p>
+</div>
+</p>
+</dd>
+<dt><span class="sig-name descname">max_overflow=10</span></dt><dd><p>the number of connections to allow in
+connection pool “overflow”, that is connections that can be
+opened above and beyond the pool_size setting, which defaults
+to five. this is only used with <code class="xref py py-class docutils literal notranslate"><span class="pre">QueuePool</span></code>.</p>
+</dd>
+<dt><span class="sig-name descname">module=None</span></dt><dd><p>reference to a Python module object (the module
+itself, not its string name).  Specifies an alternate DBAPI module to
+be used by the engine’s dialect.  Each sub-dialect references a
+specific DBAPI which will be imported before first connect.  This
+parameter causes the import to be bypassed, and the given module to
+be used instead. Can be used for testing of DBAPIs as well as to
+inject “mock” DBAPI implementations into the <code class="xref py py-class docutils literal notranslate"><span class="pre">_engine.Engine</span></code>.</p>
+</dd>
+<dt><span class="sig-name descname">paramstyle=None</span></dt><dd><p>The <a class="reference external" href="https://legacy.python.org/dev/peps/pep-0249/#paramstyle">paramstyle</a>
+to use when rendering bound parameters.  This style defaults to the
+one recommended by the DBAPI itself, which is retrieved from the
+<code class="code highlight python docutils literal highlight-python"><span class="o">.</span><span class="n">paramstyle</span></code> attribute of the DBAPI.  However, most DBAPIs accept
+more than one paramstyle, and in particular it may be desirable
+to change a “named” paramstyle into a “positional” one, or vice versa.
+When this attribute is passed, it should be one of the values
+<code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;qmark&quot;</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;numeric&quot;</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;named&quot;</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;format&quot;</span></code> or
+<code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;pyformat&quot;</span></code>, and should correspond to a parameter style known
+to be supported by the DBAPI in use.</p>
+</dd>
+<dt><span class="sig-name descname">pool=None</span></dt><dd><p>an already-constructed instance of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Pool</span></code>, such as a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">QueuePool</span></code> instance. If non-None, this
+pool will be used directly as the underlying connection pool
+for the engine, bypassing whatever connection parameters are
+present in the URL argument. For information on constructing
+connection pools manually, see <span class="xref std std-ref">pooling_toplevel</span>.</p>
+</dd>
+<dt><span class="sig-name descname">poolclass=None</span></dt><dd><p>a <code class="xref py py-class docutils literal notranslate"><span class="pre">Pool</span></code>
+subclass, which will be used to create a connection pool
+instance using the connection parameters given in the URL. Note
+this differs from <code class="code highlight python docutils literal highlight-python"><span class="n">pool</span></code> in that you don’t actually
+instantiate the pool in this case, you just indicate what type
+of pool to be used.</p>
+</dd>
+<dt id="p-pool_logging_name"><span class="n sig-name">pool_logging_name</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-pool_logging_name" title="Permalink to this definition">¶</a></dt><dd><p><p>String identifier which will be used within
+the “name” field of logging records generated within the
+“sqlalchemy.pool” logger. Defaults to a hexstring of the object’s
+id.</p>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">dbengine_logging</span> - further detail on how to configure
+logging.</p>
+</div>
+</p>
+</dd>
+<dt id="p-pool_pre_ping"><span class="n sig-name">pool_pre_ping</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-pool_pre_ping" title="Permalink to this definition">¶</a></dt><dd><p><p>boolean, if True will enable the connection pool
+“pre-ping” feature that tests connections for liveness upon
+each checkout.</p>
+<div class="admonition versionadded">
+<p class="admonition-title"><span class="versionmodified added">Added in version 1.2.</span></p>
+</div>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">pool_disconnects_pessimistic</span></p>
+</div>
+</p>
+</dd>
+<dt><span class="sig-name descname">pool_size=5</span></dt><dd><p>the number of connections to keep open
+inside the connection pool. This used with
+<code class="xref py py-class docutils literal notranslate"><span class="pre">QueuePool</span></code> as
+well as <code class="xref py py-class docutils literal notranslate"><span class="pre">SingletonThreadPool</span></code>.  With
+<code class="xref py py-class docutils literal notranslate"><span class="pre">QueuePool</span></code>, a <code class="code highlight python docutils literal highlight-python"><span class="n">pool_size</span></code> setting
+of 0 indicates no limit; to disable pooling, set <code class="code highlight python docutils literal highlight-python"><span class="n">poolclass</span></code> to
+<code class="xref py py-class docutils literal notranslate"><span class="pre">NullPool</span></code> instead.</p>
+</dd>
+<dt><span class="sig-name descname">pool_recycle=-1</span></dt><dd><p><p>this setting causes the pool to recycle
+connections after the given number of seconds has passed. It
+defaults to -1, or no timeout. For example, setting to 3600
+means connections will be recycled after one hour. Note that
+MySQL in particular will disconnect automatically if no
+activity is detected on a connection for eight hours (although
+this is configurable with the MySQLDB connection itself and the
+server configuration as well).</p>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">pool_setting_recycle</span></p>
+</div>
+</p>
+</dd>
+<dt><span class="sig-name descname">pool_reset_on_return='rollback'</span></dt><dd><p><p>set the
+<a href="#id27"><span class="problematic" id="id28">:paramref:`_pool.Pool.reset_on_return`</span></a> parameter of the underlying
+<code class="xref py py-class docutils literal notranslate"><span class="pre">_pool.Pool</span></code> object, which can be set to the values
+<code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;rollback&quot;</span></code>, <code class="code highlight python docutils literal highlight-python"><span class="s2">&quot;commit&quot;</span></code>, or <code class="code highlight python docutils literal highlight-python"><span class="kc">None</span></code>.</p>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">pool_reset_on_return</span></p>
+</div>
+</p>
+</dd>
+<dt><span class="sig-name descname">pool_timeout=30</span></dt><dd><p><p>number of seconds to wait before giving
+up on getting a connection from the pool. This is only used
+with <code class="xref py py-class docutils literal notranslate"><span class="pre">QueuePool</span></code>. This can be a float but is
+subject to the limitations of Python time functions which may not be
+reliable in the tens of milliseconds.</p>
+</p>
+</dd>
+<dt><span class="sig-name descname">pool_use_lifo=False</span></dt><dd><p><p>use LIFO (last-in-first-out) when retrieving
+connections from <code class="xref py py-class docutils literal notranslate"><span class="pre">QueuePool</span></code> instead of FIFO
+(first-in-first-out). Using LIFO, a server-side timeout scheme can
+reduce the number of connections used during non- peak   periods of
+use.   When planning for server-side timeouts, ensure that a recycle or
+pre-ping strategy is in use to gracefully   handle stale connections.</p>
+<blockquote>
+<div><div class="admonition versionadded">
+<p class="admonition-title"><span class="versionmodified added">Added in version 1.3.</span></p>
+</div>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">pool_use_lifo</span></p>
+<p><span class="xref std std-ref">pool_disconnects</span></p>
+</div>
+</div></blockquote>
+</p>
+</dd>
+<dt id="p-plugins"><span class="n sig-name">plugins</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)">List</a><span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a><span class="p">]</span></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-plugins" title="Permalink to this definition">¶</a></dt><dd><p><p>string list of plugin names to load.  See
+<code class="xref py py-class docutils literal notranslate"><span class="pre">CreateEnginePlugin</span></code> for background.</p>
+<div class="admonition versionadded">
+<p class="admonition-title"><span class="versionmodified added">Added in version 1.2.3.</span></p>
+</div>
+</p>
+</dd>
+<dt id="p-query_cache_size"><span class="n sig-name">query_cache_size</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-query_cache_size" title="Permalink to this definition">¶</a></dt><dd><p><p>size of the cache used to cache the SQL string
+form of queries.  Set to zero to disable caching.</p>
+<p>The cache is pruned of its least recently used items when its size reaches
+N * 1.5.  Defaults to 500, meaning the cache will always store at least
+500 SQL statements when filled, and will grow up to 750 items at which
+point it is pruned back down to 500 by removing the 250 least recently
+used items.</p>
+<p>Caching is accomplished on a per-statement basis by generating a
+cache key that represents the statement’s structure, then generating
+string SQL for the current dialect only if that key is not present
+in the cache.   All statements support caching, however some features
+such as an INSERT with a large set of parameters will intentionally
+bypass the cache.   SQL logging will indicate statistics for each
+statement whether or not it were pull from the cache.</p>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>some ORM functions related to unit-of-work persistence as well
+as some attribute loading strategies will make use of individual
+per-mapper caches outside of the main cache.</p>
+</div>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">sql_caching</span></p>
+</div>
+<div class="admonition versionadded">
+<p class="admonition-title"><span class="versionmodified added">Added in version 1.4.</span></p>
+</div>
+</p>
+</dd>
+<dt id="p-use_insertmanyvalues"><span class="n sig-name">use_insertmanyvalues</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">...</span><a class="headerlink" href="#p-use_insertmanyvalues" title="Permalink to this definition">¶</a></dt><dd><p><p>True by default, use the “insertmanyvalues”
+execution style for INSERT..RETURNING statements by default.</p>
+<div class="admonition versionadded">
+<p class="admonition-title"><span class="versionmodified added">Added in version 2.0.</span></p>
+</div>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">engine_insertmanyvalues</span></p>
+</div>
+</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      Apr 22, 2024
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2020, Paul Tikken.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.3.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.sections", "navigation.top", "search.share", "toc.follow", "toc.sticky", "content.tabs.link", "announce.dismiss"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

@@ -62,6 +62,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#confval-USER_HOME_DIR" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -275,9 +280,41 @@
       
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">Settings</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="#" class="md-nav__link md-nav__link--active">
         <span class="md-ellipsis">Settings</span>
       </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Settings</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#confval-USER_HOME_DIR" class="md-nav__link">
+    <span aria-label="configuration value" class="objinfo-icon objinfo-icon__data" title="configuration value">C</span><span title="USER_HOME_DIR (configuration value) — Directory to use as main directory for storing data, config files and sources initialization files." class="md-ellipsis">USER_<wbr>HOME_<wbr>DIR</span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -517,9 +554,26 @@
                   <div class="md-sidebar__inner">
                     
 
+  
+
 <nav class="md-nav md-nav--secondary">
   
   
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Settings</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#confval-USER_HOME_DIR" class="md-nav__link">
+    <span aria-label="configuration value" class="objinfo-icon objinfo-icon__data" title="configuration value">C</span><span title="USER_HOME_DIR (configuration value) — Directory to use as main directory for storing data, config files and sources initialization files." class="md-ellipsis">USER_<wbr>HOME_<wbr>DIR</span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -539,6 +593,15 @@
   </a>
 
 <h1 id="settings">Settings<a class="headerlink" href="#settings" title="Link to this heading">¶</a></h1>
+<p>CveXplore by default looks for an .env file in <code class="docutils literal notranslate"><span class="pre">${HOME}/.cvexplore</span></code> folder, if certain values need to be
+overwritten you can do it there.</p>
+<p>The following config variables are the configuration settings for CveXplore:</p>
+<dl class="std confval objdesc">
+<dt class="sig sig-object highlight std" id="confval-USER_HOME_DIR">
+<span class="sig-name descname"><span class="pre">USER_HOME_DIR</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;$</span><span class="si">{HOME}</span><span class="s1">/.cvexplore&#39;</span></code><a class="headerlink" href="#confval-USER_HOME_DIR" title="Link to this definition">¶</a></dt>
+<dd><p>Directory to use as main directory for storing data, config files and sources initialization files.</p>
+</dd></dl>
+
 
 
   <hr>
@@ -546,7 +609,7 @@
   <small>
     
       Last update:
-      Apr 19, 2024
+      Apr 22, 2024
     
   </small>
 </div>

@@ -1,0 +1,1186 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../_static/CveExplore_icon.png">
+    
+    
+      
+        <title>redbeat.schedulers - CveXplore</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.359ec555e2989f00f.min.css?v=b000af5c" />
+        <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="CveXplore" class="md-header__button md-logo" aria-label="CveXplore" data-md-component="logo">
+      <img src="../../_static/CveExplore_icon.png" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CveXplore
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              redbeat.schedulers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cve-search/CveXplore" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CveXplore
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="CveXplore" class="md-nav__button md-logo" aria-label="CveXplore" data-md-component="logo">
+      <img src="../../_static/CveExplore_icon.png" alt="logo">
+    </a>
+    CveXplore
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cve-search/CveXplore" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CveXplore
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">General:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="General:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">General:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/general.html" class="md-nav__link">
+        <span class="md-ellipsis">Dependencies</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/settings.html" class="md-nav__link">
+        <span class="md-ellipsis">Settings</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">Package:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Package:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Package:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../package/query_data.html" class="md-nav__link">
+        <span class="md-ellipsis">Query for data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../package/code_base.html" class="md-nav__link">
+        <span class="md-ellipsis">Code base</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Command line:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Command line:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Command line:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/general.html" class="md-nav__link">
+        <span class="md-ellipsis">General</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/cli.html" class="md-nav__link">
+        <span class="md-ellipsis">Command Line Interpreter</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          <span class="md-ellipsis">Backend:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Backend:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Backend:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/general.html" class="md-nav__link">
+        <span class="md-ellipsis">General</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/installation.html" class="md-nav__link">
+        <span class="md-ellipsis">Installation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/settings.html" class="md-nav__link">
+        <span class="md-ellipsis">Settings</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+  <a href="https://github.com/cve-search/CveXplore/blob/master/docs/_modules/redbeat/schedulers.rst" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+  </a>
+
+<h1>Source code for redbeat.schedulers</h1><div class="highlight"><pre>
+<span></span><code><span class="c1"># Licensed under the Apache License, Version 2.0 (the &#39;License&#39;); you may not</span>
+<span class="c1"># use this file except in compliance with the License. You may obtain a copy</span>
+<span class="c1"># of the License at http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1"># Copyright 2015 Marc Sibson</span>
+
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">ssl</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">MINYEAR</span><span class="p">,</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">redis.exceptions</span>
+<span class="kn">from</span> <span class="nn">celery.app</span> <span class="kn">import</span> <span class="n">app_or_default</span>
+<span class="kn">from</span> <span class="nn">celery.beat</span> <span class="kn">import</span> <span class="n">DEFAULT_MAX_INTERVAL</span><span class="p">,</span> <span class="n">ScheduleEntry</span><span class="p">,</span> <span class="n">Scheduler</span>
+<span class="kn">from</span> <span class="nn">celery.signals</span> <span class="kn">import</span> <span class="n">beat_init</span>
+<span class="kn">from</span> <span class="nn">celery.utils.log</span> <span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span> <span class="nn">celery.utils.time</span> <span class="kn">import</span> <span class="n">humanize_seconds</span>
+<span class="kn">from</span> <span class="nn">kombu.utils.objects</span> <span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">from</span> <span class="nn">kombu.utils.url</span> <span class="kn">import</span> <span class="n">maybe_sanitize_url</span>
+<span class="kn">from</span> <span class="nn">redis.client</span> <span class="kn">import</span> <span class="n">StrictRedis</span>
+<span class="kn">from</span> <span class="nn">tenacity</span> <span class="kn">import</span> <span class="n">retry</span><span class="p">,</span> <span class="n">retry_if_exception_type</span><span class="p">,</span> <span class="n">stop_after_delay</span><span class="p">,</span> <span class="n">wait_exponential</span>
+
+<span class="kn">from</span> <span class="nn">.decoder</span> <span class="kn">import</span> <span class="n">RedBeatJSONDecoder</span><span class="p">,</span> <span class="n">RedBeatJSONEncoder</span><span class="p">,</span> <span class="n">to_timestamp</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="s1">&#39;celery.beat&#39;</span><span class="p">)</span>
+
+<span class="c1"># Copied from:</span>
+<span class="c1"># https://github.com/andymccurdy/redis-py/blob/master/redis/lock.py#L33</span>
+<span class="c1"># Changes:</span>
+<span class="c1">#     The second line from the bottom: The original Lua script intends</span>
+<span class="c1">#     to extend time to (lock remaining time + additional time); while</span>
+<span class="c1">#     the script here extend time to a expected expiration time.</span>
+<span class="c1"># KEYS[1] - lock name</span>
+<span class="c1"># ARGS[1] - token</span>
+<span class="c1"># ARGS[2] - additional milliseconds</span>
+<span class="c1"># return 1 if the locks time was extended, otherwise 0</span>
+<span class="n">LUA_EXTEND_TO_SCRIPT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    local token = redis.call(&#39;get&#39;, KEYS[1])</span>
+<span class="s2">    if not token or token ~= ARGV[1] then</span>
+<span class="s2">        return 0</span>
+<span class="s2">    end</span>
+<span class="s2">    local expiration = redis.call(&#39;pttl&#39;, KEYS[1])</span>
+<span class="s2">    if not expiration then</span>
+<span class="s2">        expiration = 0</span>
+<span class="s2">    end</span>
+<span class="s2">    if expiration &lt; 0 then</span>
+<span class="s2">        return 0</span>
+<span class="s2">    end</span>
+<span class="s2">    redis.call(&#39;pexpire&#39;, KEYS[1], ARGV[2])</span>
+<span class="s2">    return 1</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">RetryingConnection</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A proxy for the Redis connection that delegates all the calls to</span>
+<span class="sd">    underlying Redis connection while retrying on connection or time-out error.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">RETRY_MAX_WAIT</span> <span class="o">=</span> <span class="mi">30</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_period</span><span class="p">,</span> <span class="n">wrapped_connection</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_connection</span> <span class="o">=</span> <span class="n">wrapped_connection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retry_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">retry</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">retry_if_exception_type</span><span class="p">(</span><span class="n">redis</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">)</span>
+                <span class="o">|</span> <span class="n">retry_if_exception_type</span><span class="p">(</span><span class="n">redis</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="n">reraise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">wait</span><span class="o">=</span><span class="n">wait_exponential</span><span class="p">(</span><span class="n">multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">RETRY_MAX_WAIT</span><span class="p">),</span>
+            <span class="n">before_sleep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_log_retry_attempt</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">retry_period</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">retry_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">stop</span><span class="o">=</span><span class="n">stop_after_delay</span><span class="p">(</span><span class="n">retry_period</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wrapped_connection</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+
+        <span class="c1"># we don&#39;t want to deal attributes or properties</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">method</span>
+
+        <span class="nd">@retry</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">retry_kwargs</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">retrier</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">retrier</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_log_retry_attempt</span><span class="p">(</span><span class="n">retry_state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Log when next reconnection attempt is about to be made.&quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s1">&#39;beat: Retrying Redis connection in </span><span class="si">%s</span><span class="s1"> seconds...&#39;</span><span class="p">,</span> <span class="n">retry_state</span><span class="o">.</span><span class="n">next_action</span><span class="o">.</span><span class="n">sleep</span>
+        <span class="p">)</span>
+
+
+<div class="viewcode-block" id="ensure_conf">
+<a class="viewcode-back" href="../../CveXplore/core/ensure_conf.html#CveXplore.core.celery_task_handler.task_handler.ensure_conf">[docs]</a>
+<span class="k">def</span> <span class="nf">ensure_conf</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensure for the given app the the redbeat_conf</span>
+<span class="sd">    attribute is set to an instance of the RedBeatConfig</span>
+<span class="sd">    class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;redbeat_conf&#39;</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">app_or_default</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">RedBeatConfig</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">config</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">get_redis</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">app_or_default</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">ensure_conf</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="s1">&#39;redbeat_redis&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">app</span><span class="o">.</span><span class="n">redbeat_redis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">redis_options</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">redbeat_redis_options</span>
+        <span class="n">retry_period</span> <span class="o">=</span> <span class="n">redis_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;retry_period&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">redis_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cluster&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">redis.cluster</span> <span class="kn">import</span> <span class="n">RedisCluster</span>
+
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">RedisCluster</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">redis_url</span><span class="p">,</span> <span class="o">**</span><span class="n">redis_options</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">conf</span><span class="o">.</span><span class="n">redis_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;redis-sentinel&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;sentinels&#39;</span> <span class="ow">in</span> <span class="n">redis_options</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">redis.sentinel</span> <span class="kn">import</span> <span class="n">Sentinel</span>
+
+            <span class="n">connection_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">redis_use_ssl</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">connection_kwargs</span><span class="p">[</span><span class="s1">&#39;ssl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">connection_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">redis_use_ssl</span><span class="p">)</span>
+            <span class="n">sentinel</span> <span class="o">=</span> <span class="n">Sentinel</span><span class="p">(</span>
+                <span class="n">redis_options</span><span class="p">[</span><span class="s1">&#39;sentinels&#39;</span><span class="p">],</span>
+                <span class="n">socket_timeout</span><span class="o">=</span><span class="n">redis_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;socket_timeout&#39;</span><span class="p">),</span>
+                <span class="n">password</span><span class="o">=</span><span class="n">redis_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">),</span>
+                <span class="n">db</span><span class="o">=</span><span class="n">redis_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;db&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="n">decode_responses</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">sentinel_kwargs</span><span class="o">=</span><span class="n">redis_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sentinel_kwargs&#39;</span><span class="p">),</span>
+                <span class="o">**</span><span class="n">connection_kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">sentinel</span><span class="o">.</span><span class="n">master_for</span><span class="p">(</span>
+                <span class="n">redis_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;service_name&#39;</span><span class="p">,</span> <span class="s1">&#39;master&#39;</span><span class="p">),</span> <span class="n">db</span><span class="o">=</span><span class="n">redis_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;db&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">conf</span><span class="o">.</span><span class="n">redis_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;rediss&#39;</span><span class="p">):</span>
+            <span class="n">ssl_options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ssl_cert_reqs&#39;</span><span class="p">:</span> <span class="n">ssl</span><span class="o">.</span><span class="n">CERT_REQUIRED</span><span class="p">}</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">redis_use_ssl</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">ssl_options</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">redis_use_ssl</span><span class="p">)</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">StrictRedis</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">redis_url</span><span class="p">,</span> <span class="n">decode_responses</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">ssl_options</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">conf</span><span class="o">.</span><span class="n">redis_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;redis-cluster&#39;</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">rediscluster</span> <span class="kn">import</span> <span class="n">RedisCluster</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">redis_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startup_nodes&#39;</span><span class="p">):</span>
+                <span class="n">redis_options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;startup_nodes&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="s2">&quot;30001&quot;</span><span class="p">}]}</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">RedisCluster</span><span class="p">(</span><span class="n">decode_responses</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">redis_options</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">StrictRedis</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">redis_url</span><span class="p">,</span> <span class="n">decode_responses</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">retry_period</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">redbeat_redis</span> <span class="o">=</span> <span class="n">connection</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">redbeat_redis</span> <span class="o">=</span> <span class="n">RetryingConnection</span><span class="p">(</span><span class="n">retry_period</span><span class="p">,</span> <span class="n">connection</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">redbeat_redis</span>
+
+
+<span class="n">ADD_ENTRY_ERROR</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+
+<span class="s2">Couldn&#39;t add entry </span><span class="si">%r</span><span class="s2"> to redis schedule: </span><span class="si">%r</span><span class="s2">. Contents: </span><span class="si">%r</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">RedBeatConfig</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app_or_default</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key_prefix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">either_or</span><span class="p">(</span><span class="s1">&#39;redbeat_key_prefix&#39;</span><span class="p">,</span> <span class="s1">&#39;redbeat:&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_prefix</span> <span class="o">+</span> <span class="s1">&#39;:schedule&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statics_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_prefix</span> <span class="o">+</span> <span class="s1">&#39;:statics&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">either_or</span><span class="p">(</span><span class="s1">&#39;redbeat_lock_key&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_prefix</span> <span class="o">+</span> <span class="s1">&#39;:lock&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock_timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">either_or</span><span class="p">(</span><span class="s1">&#39;redbeat_lock_timeout&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redis_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">either_or</span><span class="p">(</span><span class="s1">&#39;redbeat_redis_url&#39;</span><span class="p">,</span> <span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;BROKER_URL&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redis_use_ssl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">either_or</span><span class="p">(</span><span class="s1">&#39;redbeat_redis_use_ssl&#39;</span><span class="p">,</span> <span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;BROKER_USE_SSL&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redbeat_redis_options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">either_or</span><span class="p">(</span>
+            <span class="s1">&#39;redbeat_redis_options&#39;</span><span class="p">,</span> <span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;BROKER_TRANSPORT_OPTIONS&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_schedule</span>
+
+    <span class="nd">@schedule</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_schedule</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">either_or</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s1">&#39;Celery v4 installed, but detected Celery v3 &#39;</span>
+                <span class="s1">&#39;configuration </span><span class="si">%s</span><span class="s1"> (use </span><span class="si">%s</span><span class="s1"> instead).&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()),</span>
+                <span class="ne">UserWarning</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span> <span class="ow">or</span> <span class="n">default</span>
+
+
+<div class="viewcode-block" id="RedBeatSchedulerEntry">
+<a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry">[docs]</a>
+<span class="k">class</span> <span class="nc">RedBeatSchedulerEntry</span><span class="p">(</span><span class="n">ScheduleEntry</span><span class="p">):</span>
+    <span class="n">_meta</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="RedBeatSchedulerEntry.__init__">
+<a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.__init__.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">task</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">clsargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">),</span>
+            <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span>
+            <span class="n">schedule</span><span class="o">=</span><span class="n">schedule</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
+            <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">clsargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="n">enabled</span>
+        <span class="n">ensure_conf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RedBeatSchedulerEntry.load_definition">
+<a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.load_definition.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.load_definition">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">load_definition</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">definition</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">definition</span> <span class="o">=</span> <span class="n">get_redis</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">hget</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;definition&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">definition</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="n">definition</span> <span class="o">=</span> <span class="n">RedBeatSchedulerEntry</span><span class="o">.</span><span class="n">decode_definition</span><span class="p">(</span><span class="n">definition</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">definition</span></div>
+
+
+<div class="viewcode-block" id="RedBeatSchedulerEntry.decode_definition">
+<a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.decode_definition.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.decode_definition">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">decode_definition</span><span class="p">(</span><span class="n">definition</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">RedBeatJSONDecoder</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RedBeatSchedulerEntry.load_meta">
+<a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.load_meta.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.load_meta">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">load_meta</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">RedBeatSchedulerEntry</span><span class="o">.</span><span class="n">decode_meta</span><span class="p">(</span><span class="n">get_redis</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">hget</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="RedBeatSchedulerEntry.decode_meta">
+<a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.decode_meta.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.decode_meta">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">decode_meta</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">meta</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;last_run_at&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">RedBeatJSONDecoder</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RedBeatSchedulerEntry.from_key">
+<a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.from_key.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.from_key">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_key</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">ensure_conf</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">get_redis</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">pipeline</span><span class="p">()</span> <span class="k">as</span> <span class="n">pipe</span><span class="p">:</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">hget</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;definition&#39;</span><span class="p">)</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">hget</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">)</span>
+            <span class="n">definition</span><span class="p">,</span> <span class="n">meta</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">definition</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="n">definition</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">decode_definition</span><span class="p">(</span><span class="n">definition</span><span class="p">)</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">decode_meta</span><span class="p">(</span><span class="n">meta</span><span class="p">)</span>
+        <span class="n">definition</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">meta</span><span class="p">)</span>
+
+        <span class="n">entry</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">,</span> <span class="o">**</span><span class="n">definition</span><span class="p">)</span>
+        <span class="c1"># celery.ScheduleEntry sets last_run_at = utcnow(), which is confusing and wrong</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">last_run_at</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;last_run_at&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">entry</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">due_at</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># never run =&gt; due now</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_run_at</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_now</span><span class="p">()</span>
+
+        <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span><span class="o">.</span><span class="n">remaining_estimate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_run_at</span><span class="p">)</span>
+        <span class="c1"># if no delta, means no more events after the last_run_at.</span>
+        <span class="k">if</span> <span class="n">delta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># overdue =&gt; due now</span>
+        <span class="k">if</span> <span class="n">delta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_now</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_run_at</span> <span class="o">+</span> <span class="n">delta</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">key_prefix</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return UTC based UNIX timestamp&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">due_at</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Scores &lt; zero are ignored on each tick.</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">return</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">due_at</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rank</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">zrank</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RedBeatSchedulerEntry.save">
+<a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.save.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.save">[docs]</a>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">definition</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s1">&#39;task&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="p">,</span>
+            <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span>
+            <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="s1">&#39;options&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span>
+            <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span><span class="p">,</span>
+            <span class="s1">&#39;enabled&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;last_run_at&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_run_at</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">pipeline</span><span class="p">()</span> <span class="k">as</span> <span class="n">pipe</span><span class="p">:</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">hset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;definition&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">RedBeatJSONEncoder</span><span class="p">))</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">hsetnx</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">RedBeatJSONEncoder</span><span class="p">))</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">zadd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule_key</span><span class="p">,</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">})</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="RedBeatSchedulerEntry.delete">
+<a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.delete.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.delete">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">pipeline</span><span class="p">()</span> <span class="k">as</span> <span class="n">pipe</span><span class="p">:</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">zrem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_next_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">only_update_last_run_at</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_next_instance</span><span class="p">(</span><span class="n">last_run_at</span><span class="o">=</span><span class="n">last_run_at</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">only_update_last_run_at</span><span class="p">:</span>
+            <span class="c1"># rollback the update to total_run_count</span>
+            <span class="n">entry</span><span class="o">.</span><span class="n">total_run_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_run_count</span>
+
+        <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;last_run_at&#39;</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">last_run_at</span><span class="p">,</span>
+            <span class="s1">&#39;total_run_count&#39;</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">total_run_count</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">with</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">pipeline</span><span class="p">()</span> <span class="k">as</span> <span class="n">pipe</span><span class="p">:</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">hset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">RedBeatJSONEncoder</span><span class="p">))</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">zadd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule_key</span><span class="p">,</span> <span class="p">{</span><span class="n">entry</span><span class="o">.</span><span class="n">key</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">score</span><span class="p">})</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">entry</span>
+
+    <span class="fm">__next__</span> <span class="o">=</span> <span class="nb">next</span> <span class="o">=</span> <span class="n">_next_instance</span>
+
+<div class="viewcode-block" id="RedBeatSchedulerEntry.reschedule">
+<a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.reschedule.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.reschedule">[docs]</a>
+    <span class="k">def</span> <span class="nf">reschedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_run_at</span> <span class="o">=</span> <span class="n">last_run_at</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_now</span><span class="p">()</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;last_run_at&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_run_at</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">pipeline</span><span class="p">()</span> <span class="k">as</span> <span class="n">pipe</span><span class="p">:</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">hset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">RedBeatJSONEncoder</span><span class="p">))</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">zadd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule_key</span><span class="p">,</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">})</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="RedBeatSchedulerEntry.is_due">
+<a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.is_due.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.is_due">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_due</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="mf">5.0</span>  <span class="c1"># 5 second delay for re-enable.</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span><span class="o">.</span><span class="n">is_due</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_run_at</span> <span class="ow">or</span> <span class="n">datetime</span><span class="p">(</span><span class="n">MINYEAR</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">schedule</span><span class="o">.</span><span class="n">tz</span><span class="p">)</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<span class="k">class</span> <span class="nc">RedBeatScheduler</span><span class="p">(</span><span class="n">Scheduler</span><span class="p">):</span>
+    <span class="c1"># how often should we sync in schedule information</span>
+    <span class="c1"># from the backend redis database</span>
+    <span class="n">Entry</span> <span class="o">=</span> <span class="n">RedBeatSchedulerEntry</span>
+
+    <span class="n">lock</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: The default lock timeout in seconds.</span>
+    <span class="n">lock_timeout</span> <span class="o">=</span> <span class="n">DEFAULT_MAX_INTERVAL</span> <span class="o">*</span> <span class="mi">5</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">lock_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lock_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">ensure_conf</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>  <span class="c1"># set app.redbeat_conf</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RedBeatScheduler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock_key</span> <span class="o">=</span> <span class="n">lock_key</span> <span class="ow">or</span> <span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">lock_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock_timeout</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">lock_timeout</span>
+            <span class="ow">or</span> <span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">lock_timeout</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_interval</span> <span class="o">*</span> <span class="mi">5</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock_timeout</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setup_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># cleanup old static schedule entries</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
+        <span class="n">previous</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">smembers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">statics_key</span><span class="p">)}</span>
+        <span class="n">removed</span> <span class="o">=</span> <span class="n">previous</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">removed</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;beat: Removing old static schedule entry &#39;</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">pipeline</span><span class="p">()</span> <span class="k">as</span> <span class="n">pipe</span><span class="p">:</span>
+                <span class="n">RedBeatSchedulerEntry</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+                <span class="n">pipe</span><span class="o">.</span><span class="n">srem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">statics_key</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                <span class="n">pipe</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+
+        <span class="c1"># setup static schedule entries</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">install_default_entries</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule</span><span class="p">)</span>
+
+            <span class="c1"># keep track of static schedule entries,</span>
+            <span class="c1"># so we notice when any are removed at next startup</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">statics_key</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">update_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">dict_</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maybe_entry</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">ADD_ENTRY_ERROR</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">entry</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>  <span class="c1"># store into redis</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;beat: Stored entry: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reserve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+        <span class="n">new_entry</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_entry</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;beat: Selecting tasks&#39;</span><span class="p">)</span>
+
+        <span class="n">max_due_at</span> <span class="o">=</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">pipeline</span><span class="p">()</span> <span class="k">as</span> <span class="n">pipe</span><span class="p">:</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">zrangebyscore</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule_key</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">max_due_at</span><span class="p">)</span>
+
+            <span class="c1"># peek into the next tick to accuratly calculate sleep between ticks</span>
+            <span class="n">pipe</span><span class="o">.</span><span class="n">zrangebyscore</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule_key</span><span class="p">,</span>
+                <span class="s1">&#39;(</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">max_due_at</span><span class="p">),</span>
+                <span class="n">max_due_at</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_interval</span><span class="p">,</span>
+                <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">due_tasks</span><span class="p">,</span> <span class="n">maybe_due</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;beat: Loading </span><span class="si">%d</span><span class="s1"> tasks&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">due_tasks</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">maybe_due</span><span class="p">))</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">due_tasks</span> <span class="o">+</span> <span class="n">maybe_due</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Entry</span><span class="o">.</span><span class="n">from_key</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;beat: Failed to load </span><span class="si">%s</span><span class="s1">, removing&#39;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+                <span class="n">client</span><span class="o">.</span><span class="n">zrem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule_key</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">d</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span>
+
+        <span class="k">return</span> <span class="n">d</span>
+
+    <span class="k">def</span> <span class="nf">maybe_due</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">is_due</span><span class="p">,</span> <span class="n">next_time_to_run</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_due</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">is_due</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Scheduler: Sending due task </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">task</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Scheduler: Message Error: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Scheduler: </span><span class="si">%s</span><span class="s1"> sent. id-&gt;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">task</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">next_time_to_run</span>
+
+    <span class="k">def</span> <span class="nf">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="nb">min</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock_key</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;beat: Extending lock...&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lock_timeout</span><span class="p">))</span>
+
+        <span class="n">remaining_times</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">next_time_to_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maybe_due</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_maybe_due_kwargs</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">next_time_to_run</span><span class="p">:</span>
+                    <span class="n">remaining_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_time_to_run</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;beat: RuntimeError&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">remaining_times</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">max_interval</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;beat: Releasing lock&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">owned</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;       . redis -&gt; </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">maybe_sanitize_url</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">redis_url</span><span class="p">))]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock_key</span><span class="p">:</span>
+            <span class="n">info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s1">&#39;       . lock -&gt; `</span><span class="si">{}</span><span class="s1">` </span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1">s)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">lock_key</span><span class="p">,</span> <span class="n">humanize_seconds</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lock_timeout</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock_timeout</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">_maybe_due_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;handle rename of publisher to producer&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;producer&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">producer</span><span class="p">}</span>
+
+
+<span class="nd">@beat_init</span><span class="o">.</span><span class="n">connect</span>
+<span class="k">def</span> <span class="nf">acquire_distributed_beat_lock</span><span class="p">(</span><span class="n">sender</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Attempt to acquire lock on startup</span>
+
+<span class="sd">    Celery will squash any exceptions raised here. If one is raised</span>
+<span class="sd">    scheduler.lock will be None while scheduler.lock_key is set</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scheduler</span> <span class="o">=</span> <span class="n">sender</span><span class="o">.</span><span class="n">scheduler</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">lock_key</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;beat: Acquiring lock...&#39;</span><span class="p">)</span>
+    <span class="n">redis_client</span> <span class="o">=</span> <span class="n">get_redis</span><span class="p">(</span><span class="n">scheduler</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="n">lock</span> <span class="o">=</span> <span class="n">redis_client</span><span class="o">.</span><span class="n">lock</span><span class="p">(</span>
+        <span class="n">scheduler</span><span class="o">.</span><span class="n">lock_key</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">scheduler</span><span class="o">.</span><span class="n">lock_timeout</span><span class="p">,</span>
+        <span class="n">sleep</span><span class="o">=</span><span class="n">scheduler</span><span class="o">.</span><span class="n">max_interval</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># overwrite redis-py&#39;s extend script</span>
+    <span class="c1"># which will add additional timeout instead of extend to a new timeout</span>
+    <span class="n">lock</span><span class="o">.</span><span class="n">lua_extend</span> <span class="o">=</span> <span class="n">redis_client</span><span class="o">.</span><span class="n">register_script</span><span class="p">(</span><span class="n">LUA_EXTEND_TO_SCRIPT</span><span class="p">)</span>
+    <span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;beat: Acquired lock&#39;</span><span class="p">)</span>
+    <span class="n">scheduler</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">lock</span>
+</code></pre></div>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      Apr 22, 2024
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2020, Paul Tikken.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.3.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.sections", "navigation.top", "search.share", "toc.follow", "toc.sticky", "content.tabs.link", "announce.dismiss"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

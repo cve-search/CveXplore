@@ -1,0 +1,1512 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../_static/CveExplore_icon.png">
+    
+    
+      
+        <title>celery.schedules - CveXplore</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.359ec555e2989f00f.min.css?v=b000af5c" />
+        <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="CveXplore" class="md-header__button md-logo" aria-label="CveXplore" data-md-component="logo">
+      <img src="../../_static/CveExplore_icon.png" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CveXplore
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              celery.schedules
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cve-search/CveXplore" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CveXplore
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="CveXplore" class="md-nav__button md-logo" aria-label="CveXplore" data-md-component="logo">
+      <img src="../../_static/CveExplore_icon.png" alt="logo">
+    </a>
+    CveXplore
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cve-search/CveXplore" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CveXplore
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">General:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="General:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">General:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/general.html" class="md-nav__link">
+        <span class="md-ellipsis">Dependencies</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/settings.html" class="md-nav__link">
+        <span class="md-ellipsis">Settings</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">Package:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Package:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Package:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../package/query_data.html" class="md-nav__link">
+        <span class="md-ellipsis">Query for data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../package/code_base.html" class="md-nav__link">
+        <span class="md-ellipsis">Code base</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Command line:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Command line:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Command line:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/general.html" class="md-nav__link">
+        <span class="md-ellipsis">General</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/cli.html" class="md-nav__link">
+        <span class="md-ellipsis">Command Line Interpreter</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          <span class="md-ellipsis">Backend:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Backend:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Backend:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/general.html" class="md-nav__link">
+        <span class="md-ellipsis">General</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/installation.html" class="md-nav__link">
+        <span class="md-ellipsis">Installation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/settings.html" class="md-nav__link">
+        <span class="md-ellipsis">Settings</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+  <a href="https://github.com/cve-search/CveXplore/blob/master/docs/_modules/celery/schedules.rst" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+  </a>
+
+<h1>Source code for celery.schedules</h1><div class="highlight"><pre>
+<span></span><code><span class="sd">&quot;&quot;&quot;Schedules define the intervals at which periodic tasks run.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">bisect</span> <span class="kn">import</span> <span class="n">bisect</span><span class="p">,</span> <span class="n">bisect_left</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">tzinfo</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="kn">from</span> <span class="nn">kombu.utils.objects</span> <span class="kn">import</span> <span class="n">cached_property</span>
+
+<span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">current_app</span>
+<span class="kn">from</span> <span class="nn">.utils.collections</span> <span class="kn">import</span> <span class="n">AttributeDict</span>
+<span class="kn">from</span> <span class="nn">.utils.time</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ffwd</span><span class="p">,</span> <span class="n">humanize_seconds</span><span class="p">,</span> <span class="n">localize</span><span class="p">,</span> <span class="n">maybe_make_aware</span><span class="p">,</span> <span class="n">maybe_timedelta</span><span class="p">,</span> <span class="n">remaining</span><span class="p">,</span> <span class="n">timezone</span><span class="p">,</span>
+                         <span class="n">weekday</span><span class="p">)</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;ParseException&#39;</span><span class="p">,</span> <span class="s1">&#39;schedule&#39;</span><span class="p">,</span> <span class="s1">&#39;crontab&#39;</span><span class="p">,</span> <span class="s1">&#39;crontab_parser&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;maybe_schedule&#39;</span><span class="p">,</span> <span class="s1">&#39;solar&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">schedstate</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;schedstate&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;is_due&#39;</span><span class="p">,</span> <span class="s1">&#39;next&#39;</span><span class="p">))</span>
+
+<span class="n">CRON_PATTERN_INVALID</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">Invalid crontab pattern.  Valid range is </span><span class="si">{min}</span><span class="s2">-</span><span class="si">{max}</span><span class="s2">. </span><span class="se">\</span>
+<span class="s2">&#39;</span><span class="si">{value}</span><span class="s2">&#39; was found.</span><span class="se">\</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">CRON_INVALID_TYPE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">Argument cronspec needs to be of any of the following types: </span><span class="se">\</span>
+<span class="s2">int, str, or an iterable type. </span><span class="si">{type!r}</span><span class="s2"> was given.</span><span class="se">\</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">CRON_REPR</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">&lt;crontab: </span><span class="si">{0._orig_minute}</span><span class="s2"> </span><span class="si">{0._orig_hour}</span><span class="s2"> </span><span class="si">{0._orig_day_of_month}</span><span class="s2"> </span><span class="si">{0._orig_month_of_year}</span><span class="s2"> </span><span class="se">\</span>
+<span class="si">{0._orig_day_of_week}</span><span class="s2"> (m/h/dM/MY/d)&gt;</span><span class="se">\</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">SOLAR_INVALID_LATITUDE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">Argument latitude </span><span class="si">{lat}</span><span class="s2"> is invalid, must be between -90 and 90.</span><span class="se">\</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">SOLAR_INVALID_LONGITUDE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">Argument longitude </span><span class="si">{lon}</span><span class="s2"> is invalid, must be between -180 and 180.</span><span class="se">\</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">SOLAR_INVALID_EVENT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">Argument event &quot;</span><span class="si">{event}</span><span class="s2">&quot; is invalid, must be one of </span><span class="si">{all_events}</span><span class="s2">.</span><span class="se">\</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">cronfield</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s1">&#39;*&#39;</span> <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">s</span>
+
+
+<span class="k">class</span> <span class="nc">ParseException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised by :class:`crontab_parser` when the input can&#39;t be parsed.&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">BaseSchedule</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nowfun</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="n">Celery</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nowfun</span> <span class="o">=</span> <span class="n">nowfun</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_app</span> <span class="o">=</span> <span class="n">app</span>
+
+    <span class="k">def</span> <span class="nf">now</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nowfun</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">now</span><span class="p">)()</span>
+
+    <span class="k">def</span> <span class="nf">remaining_estimate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">timedelta</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">is_due</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">maybe_make_aware</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">naive_as_utc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">maybe_make_aware</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tz</span><span class="p">,</span> <span class="n">naive_as_utc</span><span class="o">=</span><span class="n">naive_as_utc</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">app</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Celery</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span> <span class="ow">or</span> <span class="n">current_app</span><span class="o">.</span><span class="n">_get_current_object</span><span class="p">()</span>
+
+    <span class="nd">@app</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">app</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="n">Celery</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_app</span> <span class="o">=</span> <span class="n">app</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">tz</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tzinfo</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">timezone</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">utc_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">enable_utc</span>
+
+    <span class="k">def</span> <span class="nf">to_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">utc_enabled</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">timezone</span><span class="o">.</span><span class="n">to_local_fallback</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dt</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">BaseSchedule</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">nowfun</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">nowfun</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+
+<div class="viewcode-block" id="schedule">
+<a class="viewcode-back" href="../../CveXplore/core/schedule.html#CveXplore.core.celery_task_handler.task_handler.schedule">[docs]</a>
+<span class="k">class</span> <span class="nc">schedule</span><span class="p">(</span><span class="n">BaseSchedule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schedule for periodic task.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        run_every (float, ~datetime.timedelta): Time interval.</span>
+<span class="sd">        relative (bool):  If set to True the run time will be rounded to the</span>
+<span class="sd">            resolution of the interval.</span>
+<span class="sd">        nowfun (Callable): Function returning the current date and time</span>
+<span class="sd">            (:class:`~datetime.datetime`).</span>
+<span class="sd">        app (Celery): Celery app instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">relative</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="schedule.__init__">
+<a class="viewcode-back" href="../../CveXplore/core/schedule.__init__.html#CveXplore.core.celery_task_handler.task_handler.schedule.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_every</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">timedelta</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">relative</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">nowfun</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="n">Celery</span>
+                 <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_every</span> <span class="o">=</span> <span class="n">maybe_timedelta</span><span class="p">(</span><span class="n">run_every</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relative</span> <span class="o">=</span> <span class="n">relative</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nowfun</span><span class="o">=</span><span class="n">nowfun</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="schedule.remaining_estimate">
+<a class="viewcode-back" href="../../CveXplore/core/schedule.remaining_estimate.html#CveXplore.core.celery_task_handler.task_handler.schedule.remaining_estimate">[docs]</a>
+    <span class="k">def</span> <span class="nf">remaining_estimate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">timedelta</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">remaining</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maybe_make_aware</span><span class="p">(</span><span class="n">last_run_at</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_every</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maybe_make_aware</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">relative</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="schedule.is_due">
+<a class="viewcode-back" href="../../CveXplore/core/schedule.is_due.html#CveXplore.core.celery_task_handler.task_handler.schedule.is_due">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_due</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return tuple of ``(is_due, next_time_to_check)``.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            - next time to check is in seconds.</span>
+
+<span class="sd">            - ``(True, 20)``, means the task should be run now, and the next</span>
+<span class="sd">                time to check is in 20 seconds.</span>
+
+<span class="sd">            - ``(False, 12.3)``, means the task is not due, but that the</span>
+<span class="sd">              scheduler should check again in 12.3 seconds.</span>
+
+<span class="sd">        The next time to check is used to save energy/CPU cycles,</span>
+<span class="sd">        it does not need to be accurate but will influence the precision</span>
+<span class="sd">        of your schedule.  You must also keep in mind</span>
+<span class="sd">        the value of :setting:`beat_max_loop_interval`,</span>
+<span class="sd">        that decides the maximum number of seconds the scheduler can</span>
+<span class="sd">        sleep between re-checking the periodic task intervals.  So if you</span>
+<span class="sd">        have a task that changes schedule at run-time then your next_run_at</span>
+<span class="sd">        check will decide how long it will take before a change to the</span>
+<span class="sd">        schedule takes effect.  The max loop interval takes precedence</span>
+<span class="sd">        over the next check at value returned.</span>
+
+<span class="sd">        .. admonition:: Scheduler max interval variance</span>
+
+<span class="sd">            The default max loop interval may vary for different schedulers.</span>
+<span class="sd">            For the default scheduler the value is 5 minutes, but for example</span>
+<span class="sd">            the :pypi:`django-celery-beat` database scheduler the value</span>
+<span class="sd">            is 5 seconds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">last_run_at</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maybe_make_aware</span><span class="p">(</span><span class="n">last_run_at</span><span class="p">)</span>
+        <span class="n">rem_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remaining_estimate</span><span class="p">(</span><span class="n">last_run_at</span><span class="p">)</span>
+        <span class="n">remaining_s</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">rem_delta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">remaining_s</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">schedstate</span><span class="p">(</span><span class="n">is_due</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">next</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">schedstate</span><span class="p">(</span><span class="n">is_due</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">next</span><span class="o">=</span><span class="n">remaining_s</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="schedule.__repr__">
+<a class="viewcode-back" href="../../CveXplore/core/schedule.__repr__.html#CveXplore.core.celery_task_handler.task_handler.schedule.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;freq: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">human_seconds</span><span class="si">}</span><span class="s1">&gt;&#39;</span></div>
+
+
+<div class="viewcode-block" id="schedule.__eq__">
+<a class="viewcode-back" href="../../CveXplore/core/schedule.__eq__.html#CveXplore.core.celery_task_handler.task_handler.schedule.__eq__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">schedule</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_every</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">run_every</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_every</span> <span class="o">==</span> <span class="n">other</span></div>
+
+
+<div class="viewcode-block" id="schedule.__reduce__">
+<a class="viewcode-back" href="../../CveXplore/core/schedule.__reduce__.html#CveXplore.core.celery_task_handler.task_handler.schedule.__reduce__">[docs]</a>
+    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span>
+                                  <span class="nb">tuple</span><span class="p">[</span><span class="n">timedelta</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_every</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">relative</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nowfun</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">seconds</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_every</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">human_seconds</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">humanize_seconds</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span></div>
+
+
+
+<span class="k">class</span> <span class="nc">crontab_parser</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parser for Crontab expressions.</span>
+
+<span class="sd">    Any expression of the form &#39;groups&#39;</span>
+<span class="sd">    (see BNF grammar below) is accepted and expanded to a set of numbers.</span>
+<span class="sd">    These numbers represent the units of time that the Crontab needs to</span>
+<span class="sd">    run on:</span>
+
+<span class="sd">    .. code-block:: bnf</span>
+
+<span class="sd">        digit   :: &#39;0&#39;..&#39;9&#39;</span>
+<span class="sd">        dow     :: &#39;a&#39;..&#39;z&#39;</span>
+<span class="sd">        number  :: digit+ | dow+</span>
+<span class="sd">        steps   :: number</span>
+<span class="sd">        range   :: number ( &#39;-&#39; number ) ?</span>
+<span class="sd">        numspec :: &#39;*&#39; | range</span>
+<span class="sd">        expr    :: numspec ( &#39;/&#39; steps ) ?</span>
+<span class="sd">        groups  :: expr ( &#39;,&#39; expr ) *</span>
+
+<span class="sd">    The parser is a general purpose one, useful for parsing hours, minutes and</span>
+<span class="sd">    day of week expressions.  Example usage:</span>
+
+<span class="sd">    .. code-block:: pycon</span>
+
+<span class="sd">        &gt;&gt;&gt; minutes = crontab_parser(60).parse(&#39;*/15&#39;)</span>
+<span class="sd">        [0, 15, 30, 45]</span>
+<span class="sd">        &gt;&gt;&gt; hours = crontab_parser(24).parse(&#39;*/4&#39;)</span>
+<span class="sd">        [0, 4, 8, 12, 16, 20]</span>
+<span class="sd">        &gt;&gt;&gt; day_of_week = crontab_parser(7).parse(&#39;*&#39;)</span>
+<span class="sd">        [0, 1, 2, 3, 4, 5, 6]</span>
+
+<span class="sd">    It can also parse day of month and month of year expressions if initialized</span>
+<span class="sd">    with a minimum of 1.  Example usage:</span>
+
+<span class="sd">    .. code-block:: pycon</span>
+
+<span class="sd">        &gt;&gt;&gt; days_of_month = crontab_parser(31, 1).parse(&#39;*/3&#39;)</span>
+<span class="sd">        [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31]</span>
+<span class="sd">        &gt;&gt;&gt; months_of_year = crontab_parser(12, 1).parse(&#39;*/2&#39;)</span>
+<span class="sd">        [1, 3, 5, 7, 9, 11]</span>
+<span class="sd">        &gt;&gt;&gt; months_of_year = crontab_parser(12, 1).parse(&#39;2-12/2&#39;)</span>
+<span class="sd">        [2, 4, 6, 8, 10, 12]</span>
+
+<span class="sd">    The maximum possible expanded value returned is found by the formula:</span>
+
+<span class="sd">        :math:`max_ + min_ - 1`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ParseException</span> <span class="o">=</span> <span class="n">ParseException</span>
+
+    <span class="n">_range</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;(\w+?)-(\w+)&#39;</span>
+    <span class="n">_steps</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;/(\w+)?&#39;</span>
+    <span class="n">_star</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\*&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">min_</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_</span> <span class="o">=</span> <span class="n">max_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_</span> <span class="o">=</span> <span class="n">min_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pats</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">,</span> <span class="n">Callable</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_range</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_range_steps</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_range</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_range</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_star</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_star_steps</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_star</span> <span class="o">+</span> <span class="s1">&#39;$&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_star</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">spec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">part</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">ParseException</span><span class="p">(</span><span class="s1">&#39;empty part&#39;</span><span class="p">)</span>
+            <span class="n">acc</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parse_part</span><span class="p">(</span><span class="n">part</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">acc</span>
+
+    <span class="k">def</span> <span class="nf">_parse_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">regex</span><span class="p">,</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pats</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">handler</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">groups</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_range</span><span class="p">((</span><span class="n">part</span><span class="p">,))</span>
+
+    <span class="k">def</span> <span class="nf">_expand_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toks</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">fr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_number</span><span class="p">(</span><span class="n">toks</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">toks</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">to</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_number</span><span class="p">(</span><span class="n">toks</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">to</span> <span class="o">&lt;</span> <span class="n">fr</span><span class="p">:</span>  <span class="c1"># Wrap around max_ if necessary</span>
+                <span class="k">return</span> <span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">fr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_</span><span class="p">))</span> <span class="o">+</span>
+                        <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_</span><span class="p">,</span> <span class="n">to</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">fr</span><span class="p">,</span> <span class="n">to</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">fr</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_range_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toks</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">toks</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">toks</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">ParseException</span><span class="p">(</span><span class="s1">&#39;empty filter&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_range</span><span class="p">(</span><span class="n">toks</span><span class="p">[:</span><span class="mi">2</span><span class="p">])[::</span><span class="nb">int</span><span class="p">(</span><span class="n">toks</span><span class="p">[</span><span class="mi">2</span><span class="p">])]</span>
+
+    <span class="k">def</span> <span class="nf">_star_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toks</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">toks</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">toks</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">ParseException</span><span class="p">(</span><span class="s1">&#39;empty filter&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_star</span><span class="p">()[::</span><span class="nb">int</span><span class="p">(</span><span class="n">toks</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+
+    <span class="k">def</span> <span class="nf">_expand_star</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_expand_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">ParseException</span><span class="p">(</span><span class="s1">&#39;negative numbers not supported&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">weekday</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid weekday literal </span><span class="si">{</span><span class="n">s</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+        <span class="n">max_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">max_val</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Invalid end range: </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> &gt; </span><span class="si">{</span><span class="n">max_val</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Invalid beginning range: </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> &lt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">min_</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">i</span>
+
+
+<div class="viewcode-block" id="crontab">
+<a class="viewcode-back" href="../../CveXplore/core/crontab.html#CveXplore.core.celery_task_handler.task_handler.crontab">[docs]</a>
+<span class="k">class</span> <span class="nc">crontab</span><span class="p">(</span><span class="n">BaseSchedule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Crontab schedule.</span>
+
+<span class="sd">    A Crontab can be used as the ``run_every`` value of a</span>
+<span class="sd">    periodic task entry to add :manpage:`crontab(5)`-like scheduling.</span>
+
+<span class="sd">    Like a :manpage:`cron(5)`-job, you can specify units of time of when</span>
+<span class="sd">    you&#39;d like the task to execute.  It&#39;s a reasonably complete</span>
+<span class="sd">    implementation of :command:`cron`&#39;s features, so it should provide a fair</span>
+<span class="sd">    degree of scheduling needs.</span>
+
+<span class="sd">    You can specify a minute, an hour, a day of the week, a day of the</span>
+<span class="sd">    month, and/or a month in the year in any of the following formats:</span>
+
+<span class="sd">    .. attribute:: minute</span>
+
+<span class="sd">        - A (list of) integers from 0-59 that represent the minutes of</span>
+<span class="sd">          an hour of when execution should occur; or</span>
+<span class="sd">        - A string representing a Crontab pattern.  This may get pretty</span>
+<span class="sd">          advanced, like ``minute=&#39;*/15&#39;`` (for every quarter) or</span>
+<span class="sd">          ``minute=&#39;1,13,30-45,50-59/2&#39;``.</span>
+
+<span class="sd">    .. attribute:: hour</span>
+
+<span class="sd">        - A (list of) integers from 0-23 that represent the hours of</span>
+<span class="sd">          a day of when execution should occur; or</span>
+<span class="sd">        - A string representing a Crontab pattern.  This may get pretty</span>
+<span class="sd">          advanced, like ``hour=&#39;*/3&#39;`` (for every three hours) or</span>
+<span class="sd">          ``hour=&#39;0,8-17/2&#39;`` (at midnight, and every two hours during</span>
+<span class="sd">          office hours).</span>
+
+<span class="sd">    .. attribute:: day_of_week</span>
+
+<span class="sd">        - A (list of) integers from 0-6, where Sunday = 0 and Saturday =</span>
+<span class="sd">          6, that represent the days of a week that execution should</span>
+<span class="sd">          occur.</span>
+<span class="sd">        - A string representing a Crontab pattern.  This may get pretty</span>
+<span class="sd">          advanced, like ``day_of_week=&#39;mon-fri&#39;`` (for weekdays only).</span>
+<span class="sd">          (Beware that ``day_of_week=&#39;*/2&#39;`` does not literally mean</span>
+<span class="sd">          &#39;every two days&#39;, but &#39;every day that is divisible by two&#39;!)</span>
+
+<span class="sd">    .. attribute:: day_of_month</span>
+
+<span class="sd">        - A (list of) integers from 1-31 that represents the days of the</span>
+<span class="sd">          month that execution should occur.</span>
+<span class="sd">        - A string representing a Crontab pattern.  This may get pretty</span>
+<span class="sd">          advanced, such as ``day_of_month=&#39;2-30/2&#39;`` (for every even</span>
+<span class="sd">          numbered day) or ``day_of_month=&#39;1-7,15-21&#39;`` (for the first and</span>
+<span class="sd">          third weeks of the month).</span>
+
+<span class="sd">    .. attribute:: month_of_year</span>
+
+<span class="sd">        - A (list of) integers from 1-12 that represents the months of</span>
+<span class="sd">          the year during which execution can occur.</span>
+<span class="sd">        - A string representing a Crontab pattern.  This may get pretty</span>
+<span class="sd">          advanced, such as ``month_of_year=&#39;*/3&#39;`` (for the first month</span>
+<span class="sd">          of every quarter) or ``month_of_year=&#39;2-12/2&#39;`` (for every even</span>
+<span class="sd">          numbered month).</span>
+
+<span class="sd">    .. attribute:: nowfun</span>
+
+<span class="sd">        Function returning the current date and time</span>
+<span class="sd">        (:class:`~datetime.datetime`).</span>
+
+<span class="sd">    .. attribute:: app</span>
+
+<span class="sd">        The Celery app instance.</span>
+
+<span class="sd">    It&#39;s important to realize that any day on which execution should</span>
+<span class="sd">    occur must be represented by entries in all three of the day and</span>
+<span class="sd">    month attributes.  For example, if ``day_of_week`` is 0 and</span>
+<span class="sd">    ``day_of_month`` is every seventh day, only months that begin</span>
+<span class="sd">    on Sunday and are also in the ``month_of_year`` attribute will have</span>
+<span class="sd">    execution events.  Or, ``day_of_week`` is 1 and ``day_of_month``</span>
+<span class="sd">    is &#39;1-7,15-21&#39; means every first and third Monday of every month</span>
+<span class="sd">    present in ``month_of_year``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="crontab.__init__">
+<a class="viewcode-back" href="../../CveXplore/core/crontab.__init__.html#CveXplore.core.celery_task_handler.task_handler.crontab.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minute</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">hour</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">day_of_week</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span>
+                 <span class="n">day_of_month</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">month_of_year</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_orig_minute</span> <span class="o">=</span> <span class="n">cronfield</span><span class="p">(</span><span class="n">minute</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_orig_hour</span> <span class="o">=</span> <span class="n">cronfield</span><span class="p">(</span><span class="n">hour</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_orig_day_of_week</span> <span class="o">=</span> <span class="n">cronfield</span><span class="p">(</span><span class="n">day_of_week</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_orig_day_of_month</span> <span class="o">=</span> <span class="n">cronfield</span><span class="p">(</span><span class="n">day_of_month</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_orig_month_of_year</span> <span class="o">=</span> <span class="n">cronfield</span><span class="p">(</span><span class="n">month_of_year</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_orig_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hour</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_cronspec</span><span class="p">(</span><span class="n">hour</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minute</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_cronspec</span><span class="p">(</span><span class="n">minute</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">day_of_week</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_cronspec</span><span class="p">(</span><span class="n">day_of_week</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">day_of_month</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_cronspec</span><span class="p">(</span><span class="n">day_of_month</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">month_of_year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_cronspec</span><span class="p">(</span><span class="n">month_of_year</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_expand_cronspec</span><span class="p">(</span>
+            <span class="n">cronspec</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">,</span>
+            <span class="n">max_</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">min_</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expand cron specification.</span>
+
+<span class="sd">        Takes the given cronspec argument in one of the forms:</span>
+
+<span class="sd">        .. code-block:: text</span>
+
+<span class="sd">            int         (like 7)</span>
+<span class="sd">            str         (like &#39;3-5,*/15&#39;, &#39;*&#39;, or &#39;monday&#39;)</span>
+<span class="sd">            set         (like {0,15,30,45}</span>
+<span class="sd">            list        (like [8-17])</span>
+
+<span class="sd">        And convert it to an (expanded) set representing all time unit</span>
+<span class="sd">        values on which the Crontab triggers.  Only in case of the base</span>
+<span class="sd">        type being :class:`str`, parsing occurs.  (It&#39;s fast and</span>
+<span class="sd">        happens only once for each Crontab instance, so there&#39;s no</span>
+<span class="sd">        significant performance overhead involved.)</span>
+
+<span class="sd">        For the other base types, merely Python type conversions happen.</span>
+
+<span class="sd">        The argument ``max_`` is needed to determine the expansion of</span>
+<span class="sd">        ``*`` and ranges.  The argument ``min_`` is needed to determine</span>
+<span class="sd">        the expansion of ``*`` and ranges for 1-based cronspecs, such as</span>
+<span class="sd">        day of month or month of year.  The default is sufficient for minute,</span>
+<span class="sd">        hour, and day of week.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cronspec</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="n">cronspec</span><span class="p">}</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cronspec</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">crontab_parser</span><span class="p">(</span><span class="n">max_</span><span class="p">,</span> <span class="n">min_</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">cronspec</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cronspec</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cronspec</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cronspec</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">cronspec</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">CRON_INVALID_TYPE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="n">cronspec</span><span class="p">)))</span>
+
+        <span class="c1"># assure the result does not precede the min or exceed the max</span>
+        <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">number</span> <span class="o">&gt;=</span> <span class="n">max_</span> <span class="o">+</span> <span class="n">min_</span> <span class="ow">or</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="n">min_</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">CRON_PATTERN_INVALID</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">min</span><span class="o">=</span><span class="n">min_</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">max_</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">min_</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">number</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_delta_to_next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">next_hour</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                       <span class="n">next_minute</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ffwd</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find next delta.</span>
+
+<span class="sd">        Takes a :class:`~datetime.datetime` of last run, next minute and hour,</span>
+<span class="sd">        and returns a :class:`~celery.utils.time.ffwd` for the next</span>
+<span class="sd">        scheduled day and time.</span>
+
+<span class="sd">        Only called when ``day_of_month`` and/or ``month_of_year``</span>
+<span class="sd">        cronspec is specified to further limit scheduled task execution.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">datedata</span> <span class="o">=</span> <span class="n">AttributeDict</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">last_run_at</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+        <span class="n">days_of_month</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">day_of_month</span><span class="p">)</span>
+        <span class="n">months_of_year</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">month_of_year</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">day_out_of_range</span><span class="p">(</span><span class="n">year</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">month</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">day</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="n">day</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">def</span> <span class="nf">is_before_last_run</span><span class="p">(</span><span class="n">year</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">month</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">day</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">maybe_make_aware</span><span class="p">(</span>
+                <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">next_hour</span><span class="p">,</span> <span class="n">next_minute</span><span class="p">),</span>
+                <span class="n">naive_as_utc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">last_run_at</span>
+
+        <span class="k">def</span> <span class="nf">roll_over</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2000</span><span class="p">):</span>
+                <span class="n">flag</span> <span class="o">=</span> <span class="p">(</span><span class="n">datedata</span><span class="o">.</span><span class="n">dom</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">days_of_month</span><span class="p">)</span> <span class="ow">or</span>
+                        <span class="n">day_out_of_range</span><span class="p">(</span><span class="n">datedata</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+                                         <span class="n">months_of_year</span><span class="p">[</span><span class="n">datedata</span><span class="o">.</span><span class="n">moy</span><span class="p">],</span>
+                                         <span class="n">days_of_month</span><span class="p">[</span><span class="n">datedata</span><span class="o">.</span><span class="n">dom</span><span class="p">])</span> <span class="ow">or</span>
+                        <span class="p">(</span><span class="n">is_before_last_run</span><span class="p">(</span><span class="n">datedata</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+                                            <span class="n">months_of_year</span><span class="p">[</span><span class="n">datedata</span><span class="o">.</span><span class="n">moy</span><span class="p">],</span>
+                                            <span class="n">days_of_month</span><span class="p">[</span><span class="n">datedata</span><span class="o">.</span><span class="n">dom</span><span class="p">])))</span>
+
+                <span class="k">if</span> <span class="n">flag</span><span class="p">:</span>
+                    <span class="n">datedata</span><span class="o">.</span><span class="n">dom</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">datedata</span><span class="o">.</span><span class="n">moy</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">datedata</span><span class="o">.</span><span class="n">moy</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">months_of_year</span><span class="p">):</span>
+                        <span class="n">datedata</span><span class="o">.</span><span class="n">moy</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="n">datedata</span><span class="o">.</span><span class="n">year</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Tried 2000 times, we&#39;re most likely in an infinite loop</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;unable to rollover, &#39;</span>
+                                   <span class="s1">&#39;time specification is probably invalid&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">last_run_at</span><span class="o">.</span><span class="n">month</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">month_of_year</span><span class="p">:</span>
+            <span class="n">datedata</span><span class="o">.</span><span class="n">dom</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="n">days_of_month</span><span class="p">,</span> <span class="n">last_run_at</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+            <span class="n">datedata</span><span class="o">.</span><span class="n">moy</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="n">months_of_year</span><span class="p">,</span> <span class="n">last_run_at</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">datedata</span><span class="o">.</span><span class="n">dom</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">datedata</span><span class="o">.</span><span class="n">moy</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="n">months_of_year</span><span class="p">,</span> <span class="n">last_run_at</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">datedata</span><span class="o">.</span><span class="n">moy</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">months_of_year</span><span class="p">):</span>
+                <span class="n">datedata</span><span class="o">.</span><span class="n">moy</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">roll_over</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">th</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">datedata</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+                          <span class="n">month</span><span class="o">=</span><span class="n">months_of_year</span><span class="p">[</span><span class="n">datedata</span><span class="o">.</span><span class="n">moy</span><span class="p">],</span>
+                          <span class="n">day</span><span class="o">=</span><span class="n">days_of_month</span><span class="p">[</span><span class="n">datedata</span><span class="o">.</span><span class="n">dom</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">th</span><span class="o">.</span><span class="n">isoweekday</span><span class="p">()</span> <span class="o">%</span> <span class="mi">7</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_of_week</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">datedata</span><span class="o">.</span><span class="n">dom</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">roll_over</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">ffwd</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">datedata</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+                    <span class="n">month</span><span class="o">=</span><span class="n">months_of_year</span><span class="p">[</span><span class="n">datedata</span><span class="o">.</span><span class="n">moy</span><span class="p">],</span>
+                    <span class="n">day</span><span class="o">=</span><span class="n">days_of_month</span><span class="p">[</span><span class="n">datedata</span><span class="o">.</span><span class="n">dom</span><span class="p">],</span>
+                    <span class="n">hour</span><span class="o">=</span><span class="n">next_hour</span><span class="p">,</span>
+                    <span class="n">minute</span><span class="o">=</span><span class="n">next_minute</span><span class="p">,</span>
+                    <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="crontab.__repr__">
+<a class="viewcode-back" href="../../CveXplore/core/crontab.__repr__.html#CveXplore.core.celery_task_handler.task_handler.crontab.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CRON_REPR</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="crontab.__reduce__">
+<a class="viewcode-back" href="../../CveXplore/core/crontab.__reduce__.html#CveXplore.core.celery_task_handler.task_handler.crontab.__reduce__">[docs]</a>
+    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_orig_minute</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">_orig_hour</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">_orig_day_of_week</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">_orig_day_of_month</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">_orig_month_of_year</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orig_kwargs</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Calling super&#39;s init because the kwargs aren&#39;t necessarily passed in</span>
+        <span class="c1"># the same form as they are stored by the superclass</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">state</span><span class="p">)</span>
+
+<div class="viewcode-block" id="crontab.remaining_delta">
+<a class="viewcode-back" href="../../CveXplore/core/crontab.remaining_delta.html#CveXplore.core.celery_task_handler.task_handler.crontab.remaining_delta">[docs]</a>
+    <span class="k">def</span> <span class="nf">remaining_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">tz</span><span class="p">:</span> <span class="n">tzinfo</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">ffwd</span><span class="p">:</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">ffwd</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">datetime</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]:</span>
+        <span class="c1"># caching global ffwd</span>
+        <span class="n">last_run_at</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maybe_make_aware</span><span class="p">(</span><span class="n">last_run_at</span><span class="p">)</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maybe_make_aware</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+        <span class="n">dow_num</span> <span class="o">=</span> <span class="n">last_run_at</span><span class="o">.</span><span class="n">isoweekday</span><span class="p">()</span> <span class="o">%</span> <span class="mi">7</span>  <span class="c1"># Sunday is day 0, not day 7</span>
+
+        <span class="n">execute_this_date</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">last_run_at</span><span class="o">.</span><span class="n">month</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">month_of_year</span> <span class="ow">and</span>
+            <span class="n">last_run_at</span><span class="o">.</span><span class="n">day</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_of_month</span> <span class="ow">and</span>
+            <span class="n">dow_num</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_of_week</span>
+        <span class="p">)</span>
+
+        <span class="n">execute_this_hour</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">execute_this_date</span> <span class="ow">and</span>
+            <span class="n">last_run_at</span><span class="o">.</span><span class="n">day</span> <span class="o">==</span> <span class="n">now</span><span class="o">.</span><span class="n">day</span> <span class="ow">and</span>
+            <span class="n">last_run_at</span><span class="o">.</span><span class="n">month</span> <span class="o">==</span> <span class="n">now</span><span class="o">.</span><span class="n">month</span> <span class="ow">and</span>
+            <span class="n">last_run_at</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="n">now</span><span class="o">.</span><span class="n">year</span> <span class="ow">and</span>
+            <span class="n">last_run_at</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hour</span> <span class="ow">and</span>
+            <span class="n">last_run_at</span><span class="o">.</span><span class="n">minute</span> <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minute</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">execute_this_hour</span><span class="p">:</span>
+            <span class="n">next_minute</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">minute</span> <span class="k">for</span> <span class="n">minute</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">minute</span>
+                              <span class="k">if</span> <span class="n">minute</span> <span class="o">&gt;</span> <span class="n">last_run_at</span><span class="o">.</span><span class="n">minute</span><span class="p">)</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="n">ffwd</span><span class="p">(</span><span class="n">minute</span><span class="o">=</span><span class="n">next_minute</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">next_minute</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minute</span><span class="p">)</span>
+            <span class="n">execute_today</span> <span class="o">=</span> <span class="p">(</span><span class="n">execute_this_date</span> <span class="ow">and</span>
+                             <span class="n">last_run_at</span><span class="o">.</span><span class="n">hour</span> <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hour</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">execute_today</span><span class="p">:</span>
+                <span class="n">next_hour</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">hour</span> <span class="k">for</span> <span class="n">hour</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hour</span>
+                                <span class="k">if</span> <span class="n">hour</span> <span class="o">&gt;</span> <span class="n">last_run_at</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span>
+                <span class="n">delta</span> <span class="o">=</span> <span class="n">ffwd</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="n">next_hour</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">next_minute</span><span class="p">,</span>
+                             <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">next_hour</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span>
+                <span class="n">all_dom_moy</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_orig_day_of_month</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span> <span class="ow">and</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">_orig_month_of_year</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">all_dom_moy</span><span class="p">:</span>
+                    <span class="n">next_day</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">day</span> <span class="k">for</span> <span class="n">day</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_of_week</span>
+                                    <span class="k">if</span> <span class="n">day</span> <span class="o">&gt;</span> <span class="n">dow_num</span><span class="p">]</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_of_week</span><span class="p">)</span>
+                    <span class="n">add_week</span> <span class="o">=</span> <span class="n">next_day</span> <span class="o">==</span> <span class="n">dow_num</span>
+
+                    <span class="n">delta</span> <span class="o">=</span> <span class="n">ffwd</span><span class="p">(</span>
+                        <span class="n">weeks</span><span class="o">=</span><span class="n">add_week</span> <span class="ow">and</span> <span class="mi">1</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span>
+                        <span class="n">weekday</span><span class="o">=</span><span class="p">(</span><span class="n">next_day</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">7</span><span class="p">,</span>
+                        <span class="n">hour</span><span class="o">=</span><span class="n">next_hour</span><span class="p">,</span>
+                        <span class="n">minute</span><span class="o">=</span><span class="n">next_minute</span><span class="p">,</span>
+                        <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                        <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delta_to_next</span><span class="p">(</span><span class="n">last_run_at</span><span class="p">,</span>
+                                                <span class="n">next_hour</span><span class="p">,</span> <span class="n">next_minute</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_local</span><span class="p">(</span><span class="n">last_run_at</span><span class="p">),</span> <span class="n">delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_local</span><span class="p">(</span><span class="n">now</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="crontab.remaining_estimate">
+<a class="viewcode-back" href="../../CveXplore/core/crontab.remaining_estimate.html#CveXplore.core.celery_task_handler.task_handler.crontab.remaining_estimate">[docs]</a>
+    <span class="k">def</span> <span class="nf">remaining_estimate</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">ffwd</span><span class="p">:</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">ffwd</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">timedelta</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Estimate of next run time.</span>
+
+<span class="sd">        Returns when the periodic task should run next as a</span>
+<span class="sd">        :class:`~datetime.timedelta`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># pylint: disable=redefined-outer-name</span>
+        <span class="c1"># caching global ffwd</span>
+        <span class="k">return</span> <span class="n">remaining</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">remaining_delta</span><span class="p">(</span><span class="n">last_run_at</span><span class="p">,</span> <span class="n">ffwd</span><span class="o">=</span><span class="n">ffwd</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="crontab.is_due">
+<a class="viewcode-back" href="../../CveXplore/core/crontab.is_due.html#CveXplore.core.celery_task_handler.task_handler.crontab.is_due">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_due</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return tuple of ``(is_due, next_time_to_run)``.</span>
+
+<span class="sd">        If :setting:`beat_cron_starting_deadline`  has been specified, the</span>
+<span class="sd">        scheduler will make sure that the `last_run_at` time is within the</span>
+<span class="sd">        deadline. This prevents tasks that could have been run according to</span>
+<span class="sd">        the crontab, but didn&#39;t, from running again unexpectedly.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Next time to run is in seconds.</span>
+
+<span class="sd">        SeeAlso:</span>
+<span class="sd">            :meth:`celery.schedules.schedule.is_due` for more information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">rem_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remaining_estimate</span><span class="p">(</span><span class="n">last_run_at</span><span class="p">)</span>
+        <span class="n">rem_secs</span> <span class="o">=</span> <span class="n">rem_delta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="n">rem</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">rem_secs</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">due</span> <span class="o">=</span> <span class="n">rem</span> <span class="o">==</span> <span class="mi">0</span>
+
+        <span class="n">deadline_secs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_cron_starting_deadline</span>
+        <span class="n">has_passed_deadline</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">deadline_secs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Make sure we&#39;re looking at the latest possible feasible run</span>
+            <span class="c1"># date when checking the deadline.</span>
+            <span class="n">last_date_checked</span> <span class="o">=</span> <span class="n">last_run_at</span>
+            <span class="n">last_feasible_rem_secs</span> <span class="o">=</span> <span class="n">rem_secs</span>
+            <span class="k">while</span> <span class="n">rem_secs</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">last_date_checked</span> <span class="o">=</span> <span class="n">last_date_checked</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rem_delta</span><span class="p">)</span>
+                <span class="n">rem_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remaining_estimate</span><span class="p">(</span><span class="n">last_date_checked</span><span class="p">)</span>
+                <span class="n">rem_secs</span> <span class="o">=</span> <span class="n">rem_delta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">rem_secs</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">last_feasible_rem_secs</span> <span class="o">=</span> <span class="n">rem_secs</span>
+
+            <span class="c1"># if rem_secs becomes 0 or positive, second-to-last</span>
+            <span class="c1"># last_date_checked must be the last feasible run date.</span>
+            <span class="c1"># Check if the last feasible date is within the deadline</span>
+            <span class="c1"># for running</span>
+            <span class="n">has_passed_deadline</span> <span class="o">=</span> <span class="o">-</span><span class="n">last_feasible_rem_secs</span> <span class="o">&gt;</span> <span class="n">deadline_secs</span>
+            <span class="k">if</span> <span class="n">has_passed_deadline</span><span class="p">:</span>
+                <span class="c1"># Should not be due if we&#39;ve passed the deadline for looking</span>
+                <span class="c1"># at past runs</span>
+                <span class="n">due</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">due</span> <span class="ow">or</span> <span class="n">has_passed_deadline</span><span class="p">:</span>
+            <span class="n">rem_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remaining_estimate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+            <span class="n">rem</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">rem_delta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">schedstate</span><span class="p">(</span><span class="n">due</span><span class="p">,</span> <span class="n">rem</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="crontab.__eq__">
+<a class="viewcode-back" href="../../CveXplore/core/crontab.__eq__.html#CveXplore.core.celery_task_handler.task_handler.crontab.__eq__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">crontab</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">month_of_year</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">month_of_year</span> <span class="ow">and</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">day_of_month</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_of_month</span> <span class="ow">and</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">day_of_week</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_of_week</span> <span class="ow">and</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">hour</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">hour</span> <span class="ow">and</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">minute</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">minute</span> <span class="ow">and</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span></div>
+</div>
+
+
+
+<span class="k">def</span> <span class="nf">maybe_schedule</span><span class="p">(</span>
+        <span class="n">s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">timedelta</span> <span class="o">|</span> <span class="n">BaseSchedule</span><span class="p">,</span> <span class="n">relative</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">app</span><span class="p">:</span> <span class="n">Celery</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">timedelta</span> <span class="o">|</span> <span class="n">BaseSchedule</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return schedule from number, timedelta, or actual schedule.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">schedule</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">relative</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+    <span class="k">return</span> <span class="n">s</span>
+
+
+<span class="k">class</span> <span class="nc">solar</span><span class="p">(</span><span class="n">BaseSchedule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Solar event.</span>
+
+<span class="sd">    A solar event can be used as the ``run_every`` value of a</span>
+<span class="sd">    periodic task entry to schedule based on certain solar events.</span>
+
+<span class="sd">    Notes:</span>
+
+<span class="sd">        Available event values are:</span>
+
+<span class="sd">            - ``dawn_astronomical``</span>
+<span class="sd">            - ``dawn_nautical``</span>
+<span class="sd">            - ``dawn_civil``</span>
+<span class="sd">            - ``sunrise``</span>
+<span class="sd">            - ``solar_noon``</span>
+<span class="sd">            - ``sunset``</span>
+<span class="sd">            - ``dusk_civil``</span>
+<span class="sd">            - ``dusk_nautical``</span>
+<span class="sd">            - ``dusk_astronomical``</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        event (str): Solar event that triggers this task.</span>
+<span class="sd">            See note for available values.</span>
+<span class="sd">        lat (float): The latitude of the observer.</span>
+<span class="sd">        lon (float): The longitude of the observer.</span>
+<span class="sd">        nowfun (Callable): Function returning the current date and time</span>
+<span class="sd">            as a class:`~datetime.datetime`.</span>
+<span class="sd">        app (Celery): Celery app instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_all_events</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;dawn_astronomical&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dawn_nautical&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dawn_civil&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;sunrise&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;solar_noon&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;sunset&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dusk_civil&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dusk_nautical&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dusk_astronomical&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">_horizons</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;dawn_astronomical&#39;</span><span class="p">:</span> <span class="s1">&#39;-18&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dawn_nautical&#39;</span><span class="p">:</span> <span class="s1">&#39;-12&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dawn_civil&#39;</span><span class="p">:</span> <span class="s1">&#39;-6&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;sunrise&#39;</span><span class="p">:</span> <span class="s1">&#39;-0:34&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;solar_noon&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;sunset&#39;</span><span class="p">:</span> <span class="s1">&#39;-0:34&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dusk_civil&#39;</span><span class="p">:</span> <span class="s1">&#39;-6&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dusk_nautical&#39;</span><span class="p">:</span> <span class="s1">&#39;-12&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dusk_astronomical&#39;</span><span class="p">:</span> <span class="s1">&#39;18&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">_methods</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;dawn_astronomical&#39;</span><span class="p">:</span> <span class="s1">&#39;next_rising&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dawn_nautical&#39;</span><span class="p">:</span> <span class="s1">&#39;next_rising&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dawn_civil&#39;</span><span class="p">:</span> <span class="s1">&#39;next_rising&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;sunrise&#39;</span><span class="p">:</span> <span class="s1">&#39;next_rising&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;solar_noon&#39;</span><span class="p">:</span> <span class="s1">&#39;next_transit&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;sunset&#39;</span><span class="p">:</span> <span class="s1">&#39;next_setting&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dusk_civil&#39;</span><span class="p">:</span> <span class="s1">&#39;next_setting&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dusk_nautical&#39;</span><span class="p">:</span> <span class="s1">&#39;next_setting&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dusk_astronomical&#39;</span><span class="p">:</span> <span class="s1">&#39;next_setting&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">_use_center_l</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;dawn_astronomical&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;dawn_nautical&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;dawn_civil&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;sunrise&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;solar_noon&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;sunset&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;dusk_civil&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;dusk_nautical&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;dusk_astronomical&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> <span class="o">**</span>
+                 <span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ephem</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;ephem&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="n">event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">lat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">lon</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">event</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_events</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">SOLAR_INVALID_EVENT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="p">,</span> <span class="n">all_events</span><span class="o">=</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_events</span><span class="p">)),</span>
+            <span class="p">))</span>
+        <span class="k">if</span> <span class="n">lat</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">90</span> <span class="ow">or</span> <span class="n">lat</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">SOLAR_INVALID_LATITUDE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">lat</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">lon</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">180</span> <span class="ow">or</span> <span class="n">lon</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">SOLAR_INVALID_LONGITUDE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="n">lon</span><span class="p">))</span>
+
+        <span class="n">cal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ephem</span><span class="o">.</span><span class="n">Observer</span><span class="p">()</span>
+        <span class="n">cal</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+        <span class="n">cal</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span>
+        <span class="n">cal</span><span class="o">.</span><span class="n">elev</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">cal</span><span class="o">.</span><span class="n">horizon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_horizons</span><span class="p">[</span><span class="n">event</span><span class="p">]</span>
+        <span class="n">cal</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cal</span> <span class="o">=</span> <span class="n">cal</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_methods</span><span class="p">[</span><span class="n">event</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_center_l</span><span class="p">[</span><span class="n">event</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">]]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;solar: </span><span class="si">{}</span><span class="s1"> at latitude </span><span class="si">{}</span><span class="s1">, longitude: </span><span class="si">{}</span><span class="s1">&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">remaining_estimate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">timedelta</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return estimate of next time to run.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~datetime.timedelta: when the periodic task should</span>
+<span class="sd">                run next, or if it shouldn&#39;t run today (e.g., the sun does</span>
+<span class="sd">                not rise today), returns the time when the next check</span>
+<span class="sd">                should take place.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">last_run_at</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maybe_make_aware</span><span class="p">(</span><span class="n">last_run_at</span><span class="p">)</span>
+        <span class="n">last_run_at_utc</span> <span class="o">=</span> <span class="n">localize</span><span class="p">(</span><span class="n">last_run_at</span><span class="p">,</span> <span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cal</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">last_run_at_utc</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_center</span><span class="p">:</span>
+                <span class="n">next_utc</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">)(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ephem</span><span class="o">.</span><span class="n">Sun</span><span class="p">(),</span>
+                    <span class="n">start</span><span class="o">=</span><span class="n">last_run_at_utc</span><span class="p">,</span> <span class="n">use_center</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">use_center</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">next_utc</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">)(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ephem</span><span class="o">.</span><span class="n">Sun</span><span class="p">(),</span> <span class="n">start</span><span class="o">=</span><span class="n">last_run_at_utc</span>
+                <span class="p">)</span>
+
+        <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">ephem</span><span class="o">.</span><span class="n">CircumpolarError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="c1"># Sun won&#39;t rise/set today.  Check again tomorrow</span>
+            <span class="c1"># (specifically, after the next anti-transit).</span>
+            <span class="n">next_utc</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cal</span><span class="o">.</span><span class="n">next_antitransit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ephem</span><span class="o">.</span><span class="n">Sun</span><span class="p">())</span> <span class="o">+</span>
+                <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maybe_make_aware</span><span class="p">(</span><span class="n">next_utc</span><span class="o">.</span><span class="n">datetime</span><span class="p">())</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maybe_make_aware</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="nb">next</span> <span class="o">-</span> <span class="n">now</span>
+        <span class="k">return</span> <span class="n">delta</span>
+
+    <span class="k">def</span> <span class="nf">is_due</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return tuple of ``(is_due, next_time_to_run)``.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            next time to run is in seconds.</span>
+
+<span class="sd">        See Also:</span>
+<span class="sd">            :meth:`celery.schedules.schedule.is_due` for more information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rem_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remaining_estimate</span><span class="p">(</span><span class="n">last_run_at</span><span class="p">)</span>
+        <span class="n">rem</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">rem_delta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">due</span> <span class="o">=</span> <span class="n">rem</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">due</span><span class="p">:</span>
+            <span class="n">rem_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remaining_estimate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+            <span class="n">rem</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">rem_delta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">schedstate</span><span class="p">(</span><span class="n">due</span><span class="p">,</span> <span class="n">rem</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">solar</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">event</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="ow">and</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">lat</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="ow">and</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">lon</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+</code></pre></div>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      Apr 22, 2024
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2020, Paul Tikken.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.3.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.sections", "navigation.top", "search.share", "toc.follow", "toc.sticky", "content.tabs.link", "announce.dismiss"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

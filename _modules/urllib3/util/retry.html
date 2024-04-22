@@ -1,0 +1,1170 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../../_static/CveExplore_icon.png">
+    
+    
+      
+        <title>urllib3.util.retry - CveXplore</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.359ec555e2989f00f.min.css?v=b000af5c" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df571175" />
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../index.html" title="CveXplore" class="md-header__button md-logo" aria-label="CveXplore" data-md-component="logo">
+      <img src="../../../_static/CveExplore_icon.png" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CveXplore
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              urllib3.util.retry
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cve-search/CveXplore" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CveXplore
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../index.html" title="CveXplore" class="md-nav__button md-logo" aria-label="CveXplore" data-md-component="logo">
+      <img src="../../../_static/CveExplore_icon.png" alt="logo">
+    </a>
+    CveXplore
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cve-search/CveXplore" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CveXplore
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">General:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="General:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">General:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../general/general.html" class="md-nav__link">
+        <span class="md-ellipsis">Dependencies</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../general/settings.html" class="md-nav__link">
+        <span class="md-ellipsis">Settings</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">Package:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Package:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Package:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../package/query_data.html" class="md-nav__link">
+        <span class="md-ellipsis">Query for data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../package/code_base.html" class="md-nav__link">
+        <span class="md-ellipsis">Code base</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Command line:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Command line:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Command line:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/general.html" class="md-nav__link">
+        <span class="md-ellipsis">General</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/cli.html" class="md-nav__link">
+        <span class="md-ellipsis">Command Line Interpreter</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          <span class="md-ellipsis">Backend:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Backend:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Backend:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../backend/general.html" class="md-nav__link">
+        <span class="md-ellipsis">General</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../backend/installation.html" class="md-nav__link">
+        <span class="md-ellipsis">Installation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../backend/settings.html" class="md-nav__link">
+        <span class="md-ellipsis">Settings</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+  <a href="https://github.com/cve-search/CveXplore/blob/master/docs/_modules/urllib3/util/retry.rst" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+  </a>
+
+<h1>Source code for urllib3.util.retry</h1><div class="highlight"><pre>
+<span></span><code><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">email</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">takewhile</span>
+<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">TracebackType</span>
+
+<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConnectTimeoutError</span><span class="p">,</span>
+    <span class="n">InvalidHeader</span><span class="p">,</span>
+    <span class="n">MaxRetryError</span><span class="p">,</span>
+    <span class="n">ProtocolError</span><span class="p">,</span>
+    <span class="n">ProxyError</span><span class="p">,</span>
+    <span class="n">ReadTimeoutError</span><span class="p">,</span>
+    <span class="n">ResponseError</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">reraise</span>
+
+<span class="k">if</span> <span class="n">typing</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">..connectionpool</span> <span class="kn">import</span> <span class="n">ConnectionPool</span>
+    <span class="kn">from</span> <span class="nn">..response</span> <span class="kn">import</span> <span class="n">BaseHTTPResponse</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="c1"># Data structure for representing the metadata of requests that result in a retry.</span>
+<span class="k">class</span> <span class="nc">RequestHistory</span><span class="p">(</span><span class="n">typing</span><span class="o">.</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">status</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">redirect_location</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="Retry">
+<a class="viewcode-back" href="../../../CveXplore/core/Retry.html#CveXplore.core.api_base_class.Retry">[docs]</a>
+<span class="k">class</span> <span class="nc">Retry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retry configuration.</span>
+
+<span class="sd">    Each retry attempt will create a new Retry object with updated values, so</span>
+<span class="sd">    they can be safely reused.</span>
+
+<span class="sd">    Retries can be defined as a default for a pool:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        retries = Retry(connect=5, read=2, redirect=5)</span>
+<span class="sd">        http = PoolManager(retries=retries)</span>
+<span class="sd">        response = http.request(&quot;GET&quot;, &quot;https://example.com/&quot;)</span>
+
+<span class="sd">    Or per-request (which overrides the default for the pool):</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        response = http.request(&quot;GET&quot;, &quot;https://example.com/&quot;, retries=Retry(10))</span>
+
+<span class="sd">    Retries can be disabled by passing ``False``:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        response = http.request(&quot;GET&quot;, &quot;https://example.com/&quot;, retries=False)</span>
+
+<span class="sd">    Errors will be wrapped in :class:`~urllib3.exceptions.MaxRetryError` unless</span>
+<span class="sd">    retries are disabled, in which case the causing exception will be raised.</span>
+
+<span class="sd">    :param int total:</span>
+<span class="sd">        Total number of retries to allow. Takes precedence over other counts.</span>
+
+<span class="sd">        Set to ``None`` to remove this constraint and fall back on other</span>
+<span class="sd">        counts.</span>
+
+<span class="sd">        Set to ``0`` to fail on the first retry.</span>
+
+<span class="sd">        Set to ``False`` to disable and imply ``raise_on_redirect=False``.</span>
+
+<span class="sd">    :param int connect:</span>
+<span class="sd">        How many connection-related errors to retry on.</span>
+
+<span class="sd">        These are errors raised before the request is sent to the remote server,</span>
+<span class="sd">        which we assume has not triggered the server to process the request.</span>
+
+<span class="sd">        Set to ``0`` to fail on the first retry of this type.</span>
+
+<span class="sd">    :param int read:</span>
+<span class="sd">        How many times to retry on read errors.</span>
+
+<span class="sd">        These errors are raised after the request was sent to the server, so the</span>
+<span class="sd">        request may have side-effects.</span>
+
+<span class="sd">        Set to ``0`` to fail on the first retry of this type.</span>
+
+<span class="sd">    :param int redirect:</span>
+<span class="sd">        How many redirects to perform. Limit this to avoid infinite redirect</span>
+<span class="sd">        loops.</span>
+
+<span class="sd">        A redirect is a HTTP response with a status code 301, 302, 303, 307 or</span>
+<span class="sd">        308.</span>
+
+<span class="sd">        Set to ``0`` to fail on the first retry of this type.</span>
+
+<span class="sd">        Set to ``False`` to disable and imply ``raise_on_redirect=False``.</span>
+
+<span class="sd">    :param int status:</span>
+<span class="sd">        How many times to retry on bad status codes.</span>
+
+<span class="sd">        These are retries made on responses, where status code matches</span>
+<span class="sd">        ``status_forcelist``.</span>
+
+<span class="sd">        Set to ``0`` to fail on the first retry of this type.</span>
+
+<span class="sd">    :param int other:</span>
+<span class="sd">        How many times to retry on other errors.</span>
+
+<span class="sd">        Other errors are errors that are not connect, read, redirect or status errors.</span>
+<span class="sd">        These errors might be raised after the request was sent to the server, so the</span>
+<span class="sd">        request might have side-effects.</span>
+
+<span class="sd">        Set to ``0`` to fail on the first retry of this type.</span>
+
+<span class="sd">        If ``total`` is not set, it&#39;s a good idea to set this to 0 to account</span>
+<span class="sd">        for unexpected edge cases and avoid infinite retry loops.</span>
+
+<span class="sd">    :param Collection allowed_methods:</span>
+<span class="sd">        Set of uppercased HTTP method verbs that we should retry on.</span>
+
+<span class="sd">        By default, we only retry on methods which are considered to be</span>
+<span class="sd">        idempotent (multiple requests with the same parameters end with the</span>
+<span class="sd">        same state). See :attr:`Retry.DEFAULT_ALLOWED_METHODS`.</span>
+
+<span class="sd">        Set to a ``None`` value to retry on any verb.</span>
+
+<span class="sd">    :param Collection status_forcelist:</span>
+<span class="sd">        A set of integer HTTP status codes that we should force a retry on.</span>
+<span class="sd">        A retry is initiated if the request method is in ``allowed_methods``</span>
+<span class="sd">        and the response status code is in ``status_forcelist``.</span>
+
+<span class="sd">        By default, this is disabled with ``None``.</span>
+
+<span class="sd">    :param float backoff_factor:</span>
+<span class="sd">        A backoff factor to apply between attempts after the second try</span>
+<span class="sd">        (most errors are resolved immediately by a second try without a</span>
+<span class="sd">        delay). urllib3 will sleep for::</span>
+
+<span class="sd">            {backoff factor} * (2 ** ({number of previous retries}))</span>
+
+<span class="sd">        seconds. If `backoff_jitter` is non-zero, this sleep is extended by::</span>
+
+<span class="sd">            random.uniform(0, {backoff jitter})</span>
+
+<span class="sd">        seconds. For example, if the backoff_factor is 0.1, then :func:`Retry.sleep` will</span>
+<span class="sd">        sleep for [0.0s, 0.2s, 0.4s, 0.8s, ...] between retries. No backoff will ever</span>
+<span class="sd">        be longer than `backoff_max`.</span>
+
+<span class="sd">        By default, backoff is disabled (factor set to 0).</span>
+
+<span class="sd">    :param bool raise_on_redirect: Whether, if the number of redirects is</span>
+<span class="sd">        exhausted, to raise a MaxRetryError, or to return a response with a</span>
+<span class="sd">        response code in the 3xx range.</span>
+
+<span class="sd">    :param bool raise_on_status: Similar meaning to ``raise_on_redirect``:</span>
+<span class="sd">        whether we should raise an exception, or return a response,</span>
+<span class="sd">        if status falls in ``status_forcelist`` range and retries have</span>
+<span class="sd">        been exhausted.</span>
+
+<span class="sd">    :param tuple history: The history of the request encountered during</span>
+<span class="sd">        each call to :meth:`~Retry.increment`. The list is in the order</span>
+<span class="sd">        the requests occurred. Each list item is of class :class:`RequestHistory`.</span>
+
+<span class="sd">    :param bool respect_retry_after_header:</span>
+<span class="sd">        Whether to respect Retry-After header on status codes defined as</span>
+<span class="sd">        :attr:`Retry.RETRY_AFTER_STATUS_CODES` or not.</span>
+
+<span class="sd">    :param Collection remove_headers_on_redirect:</span>
+<span class="sd">        Sequence of headers to remove from the request when a response</span>
+<span class="sd">        indicating a redirect is returned before firing off the redirected</span>
+<span class="sd">        request.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: Default methods to be used for ``allowed_methods``</span>
+    <span class="n">DEFAULT_ALLOWED_METHODS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;HEAD&quot;</span><span class="p">,</span> <span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;PUT&quot;</span><span class="p">,</span> <span class="s2">&quot;DELETE&quot;</span><span class="p">,</span> <span class="s2">&quot;OPTIONS&quot;</span><span class="p">,</span> <span class="s2">&quot;TRACE&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1">#: Default status codes to be used for ``status_forcelist``</span>
+    <span class="n">RETRY_AFTER_STATUS_CODES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span><span class="mi">413</span><span class="p">,</span> <span class="mi">429</span><span class="p">,</span> <span class="mi">503</span><span class="p">])</span>
+
+    <span class="c1">#: Default headers to be used for ``remove_headers_on_redirect``</span>
+    <span class="n">DEFAULT_REMOVE_HEADERS_ON_REDIRECT</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span><span class="s2">&quot;Cookie&quot;</span><span class="p">,</span> <span class="s2">&quot;Authorization&quot;</span><span class="p">])</span>
+
+    <span class="c1">#: Default maximum backoff time.</span>
+    <span class="n">DEFAULT_BACKOFF_MAX</span> <span class="o">=</span> <span class="mi">120</span>
+
+    <span class="c1"># Backward compatibility; assigned outside of the class.</span>
+    <span class="n">DEFAULT</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">ClassVar</span><span class="p">[</span><span class="n">Retry</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Retry.__init__">
+<a class="viewcode-back" href="../../../CveXplore/core/Retry.__init__.html#CveXplore.core.api_base_class.Retry.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">total</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">connect</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">read</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">redirect</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">other</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">allowed_methods</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Collection</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_ALLOWED_METHODS</span><span class="p">,</span>
+        <span class="n">status_forcelist</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Collection</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backoff_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">backoff_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_BACKOFF_MAX</span><span class="p">,</span>
+        <span class="n">raise_on_redirect</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">raise_on_status</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">history</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">RequestHistory</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">respect_retry_after_header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">remove_headers_on_redirect</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Collection</span><span class="p">[</span>
+            <span class="nb">str</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_REMOVE_HEADERS_ON_REDIRECT</span><span class="p">,</span>
+        <span class="n">backoff_jitter</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">total</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span> <span class="o">=</span> <span class="n">connect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read</span> <span class="o">=</span> <span class="n">read</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">other</span> <span class="o">=</span> <span class="n">other</span>
+
+        <span class="k">if</span> <span class="n">redirect</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">or</span> <span class="n">total</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">redirect</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">raise_on_redirect</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">redirect</span> <span class="o">=</span> <span class="n">redirect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status_forcelist</span> <span class="o">=</span> <span class="n">status_forcelist</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allowed_methods</span> <span class="o">=</span> <span class="n">allowed_methods</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backoff_factor</span> <span class="o">=</span> <span class="n">backoff_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backoff_max</span> <span class="o">=</span> <span class="n">backoff_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raise_on_redirect</span> <span class="o">=</span> <span class="n">raise_on_redirect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raise_on_status</span> <span class="o">=</span> <span class="n">raise_on_status</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="n">history</span> <span class="ow">or</span> <span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">respect_retry_after_header</span> <span class="o">=</span> <span class="n">respect_retry_after_header</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_headers_on_redirect</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">remove_headers_on_redirect</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backoff_jitter</span> <span class="o">=</span> <span class="n">backoff_jitter</span></div>
+
+
+<div class="viewcode-block" id="Retry.new">
+<a class="viewcode-back" href="../../../CveXplore/core/Retry.new.html#CveXplore.core.api_base_class.Retry.new">[docs]</a>
+    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Retry</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">total</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">,</span>
+            <span class="n">connect</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">,</span>
+            <span class="n">read</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">,</span>
+            <span class="n">redirect</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">redirect</span><span class="p">,</span>
+            <span class="n">status</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">,</span>
+            <span class="n">other</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">other</span><span class="p">,</span>
+            <span class="n">allowed_methods</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">allowed_methods</span><span class="p">,</span>
+            <span class="n">status_forcelist</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">status_forcelist</span><span class="p">,</span>
+            <span class="n">backoff_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backoff_factor</span><span class="p">,</span>
+            <span class="n">backoff_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backoff_max</span><span class="p">,</span>
+            <span class="n">raise_on_redirect</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">raise_on_redirect</span><span class="p">,</span>
+            <span class="n">raise_on_status</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">raise_on_status</span><span class="p">,</span>
+            <span class="n">history</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">,</span>
+            <span class="n">remove_headers_on_redirect</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_headers_on_redirect</span><span class="p">,</span>
+            <span class="n">respect_retry_after_header</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">respect_retry_after_header</span><span class="p">,</span>
+            <span class="n">backoff_jitter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backoff_jitter</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kw</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span></div>
+
+
+<div class="viewcode-block" id="Retry.from_int">
+<a class="viewcode-back" href="../../../CveXplore/core/Retry.from_int.html#CveXplore.core.api_base_class.Retry.from_int">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_int</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">retries</span><span class="p">:</span> <span class="n">Retry</span> <span class="o">|</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">redirect</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="p">:</span> <span class="n">Retry</span> <span class="o">|</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Retry</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Backwards-compatibility for the old retries format.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">retries</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">retries</span> <span class="o">=</span> <span class="n">default</span> <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">cls</span><span class="o">.</span><span class="n">DEFAULT</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">retries</span><span class="p">,</span> <span class="n">Retry</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">retries</span>
+
+        <span class="n">redirect</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">redirect</span><span class="p">)</span> <span class="ow">and</span> <span class="kc">None</span>
+        <span class="n">new_retries</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">retries</span><span class="p">,</span> <span class="n">redirect</span><span class="o">=</span><span class="n">redirect</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Converted retries value: </span><span class="si">%r</span><span class="s2"> -&gt; </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">retries</span><span class="p">,</span> <span class="n">new_retries</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_retries</span></div>
+
+
+<div class="viewcode-block" id="Retry.get_backoff_time">
+<a class="viewcode-back" href="../../../CveXplore/core/Retry.get_backoff_time.html#CveXplore.core.api_base_class.Retry.get_backoff_time">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_backoff_time</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Formula for computing the current backoff</span>
+
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># We want to consider only the last consecutive errors sequence (Ignore redirects).</span>
+        <span class="n">consecutive_errors_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span>
+                <span class="n">takewhile</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">redirect_location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">consecutive_errors_len</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">backoff_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backoff_factor</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">consecutive_errors_len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">backoff_jitter</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">backoff_value</span> <span class="o">+=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">backoff_jitter</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backoff_max</span><span class="p">,</span> <span class="n">backoff_value</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="Retry.parse_retry_after">
+<a class="viewcode-back" href="../../../CveXplore/core/Retry.parse_retry_after.html#CveXplore.core.api_base_class.Retry.parse_retry_after">[docs]</a>
+    <span class="k">def</span> <span class="nf">parse_retry_after</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_after</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">seconds</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="c1"># Whitespace: https://tools.ietf.org/html/rfc7230#section-3.2.4</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s*[0-9]+\s*$&quot;</span><span class="p">,</span> <span class="n">retry_after</span><span class="p">):</span>
+            <span class="n">seconds</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">retry_after</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">retry_date_tuple</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">parsedate_tz</span><span class="p">(</span><span class="n">retry_after</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">retry_date_tuple</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InvalidHeader</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid Retry-After header: </span><span class="si">{</span><span class="n">retry_after</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">retry_date</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">mktime_tz</span><span class="p">(</span><span class="n">retry_date_tuple</span><span class="p">)</span>
+            <span class="n">seconds</span> <span class="o">=</span> <span class="n">retry_date</span> <span class="o">-</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">seconds</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">seconds</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">seconds</span></div>
+
+
+<div class="viewcode-block" id="Retry.get_retry_after">
+<a class="viewcode-back" href="../../../CveXplore/core/Retry.get_retry_after.html#CveXplore.core.api_base_class.Retry.get_retry_after">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_retry_after</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">BaseHTTPResponse</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the value of Retry-After in seconds.&quot;&quot;&quot;</span>
+
+        <span class="n">retry_after</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Retry-After&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">retry_after</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_retry_after</span><span class="p">(</span><span class="n">retry_after</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Retry.sleep_for_retry">
+<a class="viewcode-back" href="../../../CveXplore/core/Retry.sleep_for_retry.html#CveXplore.core.api_base_class.Retry.sleep_for_retry">[docs]</a>
+    <span class="k">def</span> <span class="nf">sleep_for_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">BaseHTTPResponse</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">retry_after</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_retry_after</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">retry_after</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">retry_after</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_sleep_backoff</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">backoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_backoff_time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">backoff</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">backoff</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Retry.sleep">
+<a class="viewcode-back" href="../../../CveXplore/core/Retry.sleep.html#CveXplore.core.api_base_class.Retry.sleep">[docs]</a>
+    <span class="k">def</span> <span class="nf">sleep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">BaseHTTPResponse</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sleep between retry attempts.</span>
+
+<span class="sd">        This method will respect a server&#39;s ``Retry-After`` response header</span>
+<span class="sd">        and sleep the duration of the time requested. If that is not present, it</span>
+<span class="sd">        will use an exponential backoff. By default, the backoff factor is 0 and</span>
+<span class="sd">        this method will return immediately.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">respect_retry_after_header</span> <span class="ow">and</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">slept</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep_for_retry</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">slept</span><span class="p">:</span>
+                <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_backoff</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_is_connection_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Errors when we&#39;re fairly sure that the server did not receive the</span>
+<span class="sd">        request, so it should be safe to retry.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">ProxyError</span><span class="p">):</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">original_error</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">ConnectTimeoutError</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_is_read_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Errors that occur after the request has been started, so we should</span>
+<span class="sd">        assume that the server began processing it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="p">(</span><span class="n">ReadTimeoutError</span><span class="p">,</span> <span class="n">ProtocolError</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_is_method_retryable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if a given HTTP method should be retried upon, depending if</span>
+<span class="sd">        it is included in the allowed_methods</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_methods</span> <span class="ow">and</span> <span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_methods</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Retry.is_retry">
+<a class="viewcode-back" href="../../../CveXplore/core/Retry.is_retry.html#CveXplore.core.api_base_class.Retry.is_retry">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_retry</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">has_retry_after</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Is this method/status code retryable? (Based on allowlists and control</span>
+<span class="sd">        variables such as the number of total retries to allow, whether to</span>
+<span class="sd">        respect the Retry-After header, whether this header is present, and</span>
+<span class="sd">        whether the returned status code is on the list of status codes to</span>
+<span class="sd">        be retried upon on the presence of the aforementioned header)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_method_retryable</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_forcelist</span> <span class="ow">and</span> <span class="n">status_code</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_forcelist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">total</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">respect_retry_after_header</span>
+            <span class="ow">and</span> <span class="n">has_retry_after</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="n">status_code</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">RETRY_AFTER_STATUS_CODES</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Retry.is_exhausted">
+<a class="viewcode-back" href="../../../CveXplore/core/Retry.is_exhausted.html#CveXplore.core.api_base_class.Retry.is_exhausted">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_exhausted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Are we out of retries?&quot;&quot;&quot;</span>
+        <span class="n">retry_counts</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">x</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">redirect</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">other</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">x</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">retry_counts</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">retry_counts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="Retry.increment">
+<a class="viewcode-back" href="../../../CveXplore/core/Retry.increment.html#CveXplore.core.api_base_class.Retry.increment">[docs]</a>
+    <span class="k">def</span> <span class="nf">increment</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">response</span><span class="p">:</span> <span class="n">BaseHTTPResponse</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">_pool</span><span class="p">:</span> <span class="n">ConnectionPool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">_stacktrace</span><span class="p">:</span> <span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Retry</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a new Retry object with incremented retry counters.</span>
+
+<span class="sd">        :param response: A response object, or None, if the server did not</span>
+<span class="sd">            return a response.</span>
+<span class="sd">        :type response: :class:`~urllib3.response.BaseHTTPResponse`</span>
+<span class="sd">        :param Exception error: An error encountered during the request, or</span>
+<span class="sd">            None if the response was received successfully.</span>
+
+<span class="sd">        :return: A new ``Retry`` object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">error</span><span class="p">:</span>
+            <span class="c1"># Disabled, indicate to re-raise the error.</span>
+            <span class="k">raise</span> <span class="n">reraise</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="n">error</span><span class="p">,</span> <span class="n">_stacktrace</span><span class="p">)</span>
+
+        <span class="n">total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span>
+        <span class="k">if</span> <span class="n">total</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">total</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="n">connect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span>
+        <span class="n">read</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span>
+        <span class="n">redirect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">redirect</span>
+        <span class="n">status_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span>
+        <span class="n">other</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">other</span>
+        <span class="n">cause</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">redirect_location</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">error</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_connection_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+            <span class="c1"># Connect retry?</span>
+            <span class="k">if</span> <span class="n">connect</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">reraise</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="n">error</span><span class="p">,</span> <span class="n">_stacktrace</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">connect</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">connect</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="k">elif</span> <span class="n">error</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_read_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+            <span class="c1"># Read retry?</span>
+            <span class="k">if</span> <span class="n">read</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">or</span> <span class="n">method</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_method_retryable</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">reraise</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="n">error</span><span class="p">,</span> <span class="n">_stacktrace</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">read</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">read</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="k">elif</span> <span class="n">error</span><span class="p">:</span>
+            <span class="c1"># Other retry?</span>
+            <span class="k">if</span> <span class="n">other</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">other</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="k">elif</span> <span class="n">response</span> <span class="ow">and</span> <span class="n">response</span><span class="o">.</span><span class="n">get_redirect_location</span><span class="p">():</span>
+            <span class="c1"># Redirect retry?</span>
+            <span class="k">if</span> <span class="n">redirect</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">redirect</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">cause</span> <span class="o">=</span> <span class="s2">&quot;too many redirects&quot;</span>
+            <span class="n">response_redirect_location</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_redirect_location</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">response_redirect_location</span><span class="p">:</span>
+                <span class="n">redirect_location</span> <span class="o">=</span> <span class="n">response_redirect_location</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Incrementing because of a server error like a 500 in</span>
+            <span class="c1"># status_forcelist and the given method is in the allowed_methods</span>
+            <span class="n">cause</span> <span class="o">=</span> <span class="n">ResponseError</span><span class="o">.</span><span class="n">GENERIC_ERROR</span>
+            <span class="k">if</span> <span class="n">response</span> <span class="ow">and</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">status_count</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">status_count</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">cause</span> <span class="o">=</span> <span class="n">ResponseError</span><span class="o">.</span><span class="n">SPECIFIC_ERROR</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span>
+
+        <span class="n">history</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">+</span> <span class="p">(</span>
+            <span class="n">RequestHistory</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">redirect_location</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="n">new_retry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+            <span class="n">total</span><span class="o">=</span><span class="n">total</span><span class="p">,</span>
+            <span class="n">connect</span><span class="o">=</span><span class="n">connect</span><span class="p">,</span>
+            <span class="n">read</span><span class="o">=</span><span class="n">read</span><span class="p">,</span>
+            <span class="n">redirect</span><span class="o">=</span><span class="n">redirect</span><span class="p">,</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">status_count</span><span class="p">,</span>
+            <span class="n">other</span><span class="o">=</span><span class="n">other</span><span class="p">,</span>
+            <span class="n">history</span><span class="o">=</span><span class="n">history</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">new_retry</span><span class="o">.</span><span class="n">is_exhausted</span><span class="p">():</span>
+            <span class="n">reason</span> <span class="o">=</span> <span class="n">error</span> <span class="ow">or</span> <span class="n">ResponseError</span><span class="p">(</span><span class="n">cause</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">MaxRetryError</span><span class="p">(</span><span class="n">_pool</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">reason</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">reason</span>  <span class="c1"># type: ignore[arg-type]</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Incremented Retry for (url=&#39;</span><span class="si">%s</span><span class="s2">&#39;): </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">new_retry</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">new_retry</span></div>
+
+
+<div class="viewcode-block" id="Retry.__repr__">
+<a class="viewcode-back" href="../../../CveXplore/core/Retry.__repr__.html#CveXplore.core.api_base_class.Retry.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(total=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="si">}</span><span class="s2">, connect=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;read=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="si">}</span><span class="s2">, redirect=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">redirect</span><span class="si">}</span><span class="s2">, status=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># For backwards compatibility (equivalent to pre-v1.9):</span>
+<span class="n">Retry</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">=</span> <span class="n">Retry</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      Apr 22, 2024
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2020, Paul Tikken.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.3.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.sections", "navigation.top", "search.share", "toc.follow", "toc.sticky", "content.tabs.link", "announce.dismiss"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

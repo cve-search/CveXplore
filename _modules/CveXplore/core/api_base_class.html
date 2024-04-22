@@ -540,14 +540,14 @@
 
 
 <div class="viewcode-block" id="ApiBaseClass">
-<a class="viewcode-back" href="../../../package/code_base.html#CveXplore.api.helpers.cve_search_api.ApiBaseClass">[docs]</a>
+<a class="viewcode-back" href="../../../CveXplore/core/ApiBaseClass.html#CveXplore.core.api_base_class.ApiBaseClass">[docs]</a>
 <span class="k">class</span> <span class="nc">ApiBaseClass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The GenericApi class serves as a base class for all API&#39;s used within CveXplore</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ApiBaseClass.__init__">
-<a class="viewcode-back" href="../../../CveXplore/api/ApiBaseClass.__init__.html#CveXplore.api.helpers.cve_search_api.ApiBaseClass.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../CveXplore/core/ApiBaseClass.__init__.html#CveXplore.core.api_base_class.ApiBaseClass.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">baseurl</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -580,7 +580,7 @@
 
 
 <div class="viewcode-block" id="ApiBaseClass.__repr__">
-<a class="viewcode-back" href="../../../CveXplore/api/ApiBaseClass.__repr__.html#CveXplore.api.helpers.cve_search_api.ApiBaseClass.__repr__">[docs]</a>
+<a class="viewcode-back" href="../../../CveXplore/core/ApiBaseClass.__repr__.html#CveXplore.core.api_base_class.ApiBaseClass.__repr__">[docs]</a>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return a string representation of the obj&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; GenericApi:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">baseurl</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
@@ -662,7 +662,7 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ApiBaseClass.get_session">
-<a class="viewcode-back" href="../../../CveXplore/api/CveSearchApi.html#CveXplore.api.helpers.cve_search_api.ApiBaseClass.get_session">[docs]</a>
+<a class="viewcode-back" href="../../../CveXplore/core/ApiBaseClass.get_session.html#CveXplore.core.api_base_class.ApiBaseClass.get_session">[docs]</a>
     <span class="k">def</span> <span class="nf">get_session</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
@@ -689,7 +689,7 @@
 
 
 <div class="viewcode-block" id="ApiBaseClass.call">
-<a class="viewcode-back" href="../../../CveXplore/api/CveSearchApi.html#CveXplore.api.helpers.cve_search_api.ApiBaseClass.call">[docs]</a>
+<a class="viewcode-back" href="../../../CveXplore/core/NvdNistApi.html#CveXplore.core.api_base_class.ApiBaseClass.call">[docs]</a>
     <span class="k">def</span> <span class="nf">call</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -742,7 +742,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">myheaders</span>
 
 <div class="viewcode-block" id="ApiBaseClass.set_header_field">
-<a class="viewcode-back" href="../../../CveXplore/api/CveSearchApi.html#CveXplore.api.helpers.cve_search_api.ApiBaseClass.set_header_field">[docs]</a>
+<a class="viewcode-back" href="../../../CveXplore/core/NvdNistApi.html#CveXplore.core.api_base_class.ApiBaseClass.set_header_field">[docs]</a>
     <span class="k">def</span> <span class="nf">set_header_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to add a header and set it&#39;s value</span>
@@ -754,7 +754,7 @@
 
 
 <div class="viewcode-block" id="ApiBaseClass.del_header_field">
-<a class="viewcode-back" href="../../../CveXplore/api/CveSearchApi.html#CveXplore.api.helpers.cve_search_api.ApiBaseClass.del_header_field">[docs]</a>
+<a class="viewcode-back" href="../../../CveXplore/core/NvdNistApi.html#CveXplore.core.api_base_class.ApiBaseClass.del_header_field">[docs]</a>
     <span class="k">def</span> <span class="nf">del_header_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to delete a header field</span>
@@ -766,7 +766,7 @@
 
 
 <div class="viewcode-block" id="ApiBaseClass.reset_headers">
-<a class="viewcode-back" href="../../../CveXplore/api/CveSearchApi.html#CveXplore.api.helpers.cve_search_api.ApiBaseClass.reset_headers">[docs]</a>
+<a class="viewcode-back" href="../../../CveXplore/core/NvdNistApi.html#CveXplore.core.api_base_class.ApiBaseClass.reset_headers">[docs]</a>
     <span class="k">def</span> <span class="nf">reset_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to reset the headers to the default values</span>
@@ -776,7 +776,7 @@
 
 
 <div class="viewcode-block" id="ApiBaseClass.clear_headers">
-<a class="viewcode-back" href="../../../CveXplore/api/CveSearchApi.html#CveXplore.api.helpers.cve_search_api.ApiBaseClass.clear_headers">[docs]</a>
+<a class="viewcode-back" href="../../../CveXplore/core/NvdNistApi.html#CveXplore.core.api_base_class.ApiBaseClass.clear_headers">[docs]</a>
     <span class="k">def</span> <span class="nf">clear_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to clear the headers and the myheaders to None</span>
@@ -791,7 +791,7 @@
   <small>
     
       Last update:
-      Apr 19, 2024
+      Apr 22, 2024
     
   </small>
 </div>

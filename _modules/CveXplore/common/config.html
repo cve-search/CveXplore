@@ -529,17 +529,14 @@
   </a>
 
 <h1>Source code for CveXplore.common.config</h1><div class="highlight"><pre>
-<span></span><code><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Configuration</span>
-<span class="sd">=============</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">ast</span>
+<span></span><code><span class="kn">import</span> <span class="nn">ast</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span>
 
 
+<div class="viewcode-block" id="getenv_bool">
+<a class="viewcode-back" href="../../../CveXplore/common/getenv_bool.html#CveXplore.common.config.getenv_bool">[docs]</a>
 <span class="k">def</span> <span class="nf">getenv_bool</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span><span class="p">):</span>
     <span class="n">raw</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
     <span class="k">try</span><span class="p">:</span>
@@ -550,9 +547,12 @@
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
         <span class="k">raise</span>
 
-    <span class="k">return</span> <span class="n">the_bool</span>
+    <span class="k">return</span> <span class="n">the_bool</span></div>
 
 
+
+<div class="viewcode-block" id="getenv_list">
+<a class="viewcode-back" href="../../../CveXplore/common/getenv_list.html#CveXplore.common.config.getenv_list">[docs]</a>
 <span class="k">def</span> <span class="nf">getenv_list</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">default</span> <span class="o">=</span> <span class="p">[]</span>
@@ -566,9 +566,12 @@
         <span class="k">except</span> <span class="n">JSONDecodeError</span><span class="p">:</span>
             <span class="k">raise</span>
 
-    <span class="k">return</span> <span class="n">default</span>
+    <span class="k">return</span> <span class="n">default</span></div>
 
 
+
+<div class="viewcode-block" id="getenv_dict">
+<a class="viewcode-back" href="../../../CveXplore/common/getenv_dict.html#CveXplore.common.config.getenv_dict">[docs]</a>
 <span class="k">def</span> <span class="nf">getenv_dict</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">default</span> <span class="o">=</span> <span class="p">{}</span>
@@ -582,17 +585,21 @@
         <span class="k">except</span> <span class="n">JSONDecodeError</span><span class="p">:</span>
             <span class="k">raise</span>
 
-    <span class="k">return</span> <span class="n">default</span>
+    <span class="k">return</span> <span class="n">default</span></div>
+
 
 
 <div class="viewcode-block" id="Configuration">
-<a class="viewcode-back" href="../../../package/code_base.html#CveXplore.objects.cvexplore_object.Configuration">[docs]</a>
+<a class="viewcode-back" href="../../../CveXplore/common/Configuration.html#CveXplore.common.config.Configuration">[docs]</a>
 <span class="k">class</span> <span class="nc">Configuration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class holding the configuration</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">USER_HOME_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~/.cvexplore&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DOC_BUILD&quot;</span><span class="p">))[</span><span class="s2">&quot;DOC_BUILD&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;YES&quot;</span><span class="p">:</span>
+        <span class="n">USER_HOME_DIR</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{HOME}</span><span class="s2">/.cvexplore&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">USER_HOME_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~/.cvexplore&quot;</span><span class="p">)</span>
 
     <span class="n">CVE_START_YEAR</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CVE_START_YEAR&quot;</span><span class="p">,</span> <span class="mi">2000</span><span class="p">))</span>
 
@@ -639,17 +646,6 @@
     <span class="n">MONGODB_HOST</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MONGODB_HOST&quot;</span><span class="p">,</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">)</span>
     <span class="n">MONGODB_PORT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MONGODB_PORT&quot;</span><span class="p">,</span> <span class="mi">27017</span><span class="p">))</span>
 
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;SOURCES&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">SOURCES</span> <span class="o">=</span> <span class="n">getenv_dict</span><span class="p">(</span><span class="s2">&quot;SOURCES&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">USER_HOME_DIR</span><span class="p">,</span> <span class="s2">&quot;.sources.ini&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">SOURCES</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-
-    <span class="n">NVD_NIST_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;NVD_NIST_API_KEY&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="n">NVD_NIST_NO_REJECTED</span> <span class="o">=</span> <span class="n">getenv_bool</span><span class="p">(</span><span class="s2">&quot;NVD_NIST_NO_REJECTED&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span>
-    <span class="n">HTTP_PROXY_DICT</span> <span class="o">=</span> <span class="n">getenv_dict</span><span class="p">(</span><span class="s2">&quot;HTTP_PROXY_DICT&quot;</span><span class="p">,</span> <span class="p">{})</span>
-    <span class="n">HTTP_PROXY_STRING</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;HTTP_PROXY_STRING&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-
     <span class="n">DEFAULT_SOURCES</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;cwe&quot;</span><span class="p">:</span> <span class="s2">&quot;https://cwe.mitre.org/data/xml/cwec_latest.xml.zip&quot;</span><span class="p">,</span>
         <span class="s2">&quot;capec&quot;</span><span class="p">:</span> <span class="s2">&quot;https://capec.mitre.org/data/xml/capec_latest.xml&quot;</span><span class="p">,</span>
@@ -657,13 +653,31 @@
         <span class="s2">&quot;epss&quot;</span><span class="p">:</span> <span class="s2">&quot;https://epss.cyentia.com/epss_scores-current.csv.gz&quot;</span><span class="p">,</span>  <span class="c1"># See EPSS at https://www.first.org/epss</span>
     <span class="p">}</span>
 
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;SOURCES&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">SOURCES</span> <span class="o">=</span> <span class="n">getenv_dict</span><span class="p">(</span><span class="s2">&quot;SOURCES&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">USER_HOME_DIR</span><span class="p">,</span> <span class="s2">&quot;.sources.ini&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">_f</span><span class="p">:</span>
+                <span class="n">SOURCES</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">_f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="n">SOURCES</span> <span class="o">=</span> <span class="n">DEFAULT_SOURCES</span>
+
+    <span class="n">NVD_NIST_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;NVD_NIST_API_KEY&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">NVD_NIST_NO_REJECTED</span> <span class="o">=</span> <span class="n">getenv_bool</span><span class="p">(</span><span class="s2">&quot;NVD_NIST_NO_REJECTED&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span>
+    <span class="n">HTTP_PROXY_DICT</span> <span class="o">=</span> <span class="n">getenv_dict</span><span class="p">(</span><span class="s2">&quot;HTTP_PROXY_DICT&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">HTTP_PROXY_STRING</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;HTTP_PROXY_STRING&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
     <span class="n">LOGGING_TO_FILE</span> <span class="o">=</span> <span class="n">getenv_bool</span><span class="p">(</span><span class="s2">&quot;LOGGING_TO_FILE&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span>
     <span class="n">LOGGING_FILE_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span>
         <span class="s2">&quot;LOGGING_FILE_PATH&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">USER_HOME_DIR</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">)</span>
     <span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">LOGGING_FILE_PATH</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">LOGGING_FILE_PATH</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">LOGGING_FILE_PATH</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">LOGGING_FILE_PATH</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="c1"># Probably creating documentation; just pass</span>
+        <span class="k">pass</span>
 
     <span class="n">LOGGING_MAX_FILE_SIZE</span> <span class="o">=</span> <span class="p">(</span>
         <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;LOGGING_MAX_FILE_SIZE&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>
@@ -709,7 +723,7 @@
     <span class="n">CELERY_KEEP_TASK_RESULT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CELERY_KEEP_TASK_RESULT&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>  <span class="c1"># in days</span>
 
 <div class="viewcode-block" id="Configuration.__repr__">
-<a class="viewcode-back" href="../../../CveXplore/objects/Configuration.__repr__.html#CveXplore.objects.cvexplore_object.Configuration.__repr__">[docs]</a>
+<a class="viewcode-back" href="../../../CveXplore/common/Configuration.__repr__.html#CveXplore.common.config.Configuration.__repr__">[docs]</a>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; CveXploreConfiguration &gt;&gt;&quot;</span></div>
 </div>
@@ -721,7 +735,7 @@
   <small>
     
       Last update:
-      Apr 19, 2024
+      Apr 22, 2024
     
   </small>
 </div>
