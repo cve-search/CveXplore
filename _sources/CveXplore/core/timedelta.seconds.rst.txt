@@ -6,5 +6,5 @@
 
 
 
-.. python-apigen-entity-page::  CveXplore.core.database_maintenance.download_handler.timedelta.seconds
+.. python-apigen-entity-page::  CveXplore.core.celery_task_handler.task_handler.timedelta.seconds
 

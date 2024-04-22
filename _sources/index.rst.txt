@@ -12,6 +12,12 @@ Welcome to CveXplore's documentation!
    /general/settings
 
 .. toctree::
+   :caption: Database:
+   :hidden:
+
+   /database/models
+
+.. toctree::
    :caption: Package:
    :hidden:
 
