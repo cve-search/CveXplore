@@ -77,7 +77,7 @@ python_apigen_modules = {
     "CveXplore": "CveXplore/main/",
 }
 
-python_apigen_ban_list = ["cli_cmds", "celery_app", "database_models"]
+python_apigen_ban_list = ["cli_cmds", "database_models"]
 
 python_apigen_default_groups = [
     ("class:.*", "Classes"),

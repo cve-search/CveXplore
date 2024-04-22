@@ -182,8 +182,22 @@ def get_db_session():
     retry_jitter=True,
     ignore_result=True,
 )
-def crt_test(task_slug: str, *args, **kwargs):
-    """General test task with random response"""
+def crt_test(task_slug: str, *args, **kwargs) -> dict:
+    """
+    General test task with random response
+
+    Args:
+        task_slug: Task slug
+        args: Argument list
+        kwargs: Named arguments dict
+
+    Returns:
+        A dictionary with key "status" with will reflect the status of the task
+
+    Group:
+        tasks
+
+    """
     import random
 
     logger = get_task_logger(__name__)
