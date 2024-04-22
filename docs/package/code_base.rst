@@ -12,3 +12,7 @@ Common
 Database
 ########
 .. python-apigen-group:: database
+
+Taskhandler
+###########
+.. python-apigen-group:: taskhandler

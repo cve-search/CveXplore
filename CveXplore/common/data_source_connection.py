@@ -3,6 +3,7 @@ import os
 
 from pymongo.collection import Collection
 
+from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
 from CveXplore.database.connection.database_connection import DatabaseConnection
 from CveXplore.objects.cvexplore_object import CveXploreObject
 
@@ -28,7 +29,7 @@ class DatasourceConnection(CveXploreObject):
         self._collection = collection
 
     @property
-    def datasource_connection(self) -> DatabaseConnection.database_connection:
+    def datasource_connection(self) -> DatabaseConnectionBase:
         """
         Property to access the datasource connection
 
@@ -94,8 +95,8 @@ class DatasourceConnection(CveXploreObject):
 
         return full_dict
 
-    def __eq__(self, other):
+    def __eq__(self, other: DatabaseConnection) -> bool:
         return self.__dict__ == other.__dict__
 
-    def __ne__(self, other):
+    def __ne__(self, other: DatabaseConnection) -> bool:
         return self.__dict__ != other.__dict__

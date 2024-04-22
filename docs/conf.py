@@ -66,23 +66,17 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
 }
 
-# python_apigen_modules = {
-#     "CveXplore": "CveXplore/main/",
-#     "CveXplore.api.connection.api_db": "CveXplore/api/",
-#     "CveXplore.api.helpers.cve_search_api": "CveXplore/api/",
-#     "CveXplore.objects.cvexplore_object": "CveXplore/objects/",
-# }
-
 python_apigen_modules = {
     "CveXplore": "CveXplore/main/",
 }
 
-python_apigen_ban_list = ["cli_cmds", "database_models"]
+python_apigen_ban_list = ["cli_cmds", "celery_app", "database_models"]
 
 python_apigen_default_groups = [
     ("class:.*", "Classes"),
     (r".*:.*\.__(init|new)__", "Constructors"),
-    (r".*:.*\.__(eq|ne)__", "Comparison operators"),
+    (r".*:.*\.__(eq|ne|ge|gt|le|lt)__", "Comparison operators"),
+    (r".*:.*\.__(reduce)__", "Helper methods"),
     (r".*:.*\.__(next|iter)__", "Iterators"),
     (r".*:.*\.__(str|repr)__", "String representation"),
 ]
@@ -90,7 +84,8 @@ python_apigen_default_groups = [
 python_apigen_default_order = [
     ("class:.*", -10),
     (r".*\.__(init|new)__", -5),
-    (r".*\.__(eq|ne)__", 8),
+    (r".*\.__(eq|ne|ge|gt|le|lt)__", 8),
+    (r".*\.__(reduce)__", 7),
     (r".*\.__(next|iter)__", 9),
     (r".*\.__(str|repr)__", 10),
 ]
@@ -100,6 +95,9 @@ python_type_aliases = {
     "CveXplore.database.connection.base.db_connection_base.DatabaseConnectionBase": "DatabaseConnectionBase",
     "CveXplore.core.database_maintenance.download_handler.ABC": "ABC",
     "CveXplore.objects.cvexplore_object.CveXploreObject": "CveXploreObject",
+    "CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry": "RedBeatSchedulerEntry",
+    "celery.beat.ScheduleEntry": "ScheduleEntry",
+    "CveXplore.errors.tasks.TaskError": "TaskError",
 }
 
 python_apigen_order_tiebreaker = "alphabetical"

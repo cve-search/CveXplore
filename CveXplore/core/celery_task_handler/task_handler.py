@@ -3,8 +3,9 @@ import collections
 import inspect
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from itertools import zip_longest
+from typing import Any, Iterable
 from urllib.parse import urlparse
 
 import pytz
@@ -34,19 +35,42 @@ task_descriptions = {
 
 
 class CveXploreEntry(RedBeatSchedulerEntry):
+    """
+    CveXploreEntry class is used to create new tasks in the backend; it inherits from RedBeatSchedulerEntry and
+    overwrites the save method. By default, the RedBeatSchedulerEntry uses the same redis parameters as the celery
+    daemon it facilitates. By overwriting this method the possibility is created to use different redis connection
+    parameters then the celery daemon.
+
+    Group:
+        taskhandler
+    """
 
     def __init__(
         self,
-        name=None,
-        task=None,
-        schedule=None,
-        args=None,
-        kwargs=None,
-        enabled=True,
-        options=None,
-        redis_broker=None,
+        name: str = None,
+        task: str = None,
+        schedule: float | timedelta | schedule | crontab = None,
+        args: Any = None,
+        kwargs: dict = None,
+        enabled: bool = True,
+        options: dict = None,
+        redis_broker: Redis = None,
         **clsargs,
     ):
+        """
+        Create a new instance of CveXploreEntry.
+
+        Args:
+            name: Slug of the task
+            task: Task name as stated in celery daemon definition
+            schedule: Schedule of the task
+            args: Arguments of the task
+            kwargs: Keyword arguments of the task
+            enabled: Whether the task is enabled or not
+            options: Options of the task
+            redis_broker: Redis instance to connect to redis broker
+            **clsargs: Class arguments of the task
+        """
         super().__init__(
             name=str(name),
             task=task,
@@ -63,6 +87,13 @@ class CveXploreEntry(RedBeatSchedulerEntry):
         self.redis_broker = redis_broker
 
     def save(self):
+        """
+        Save the task to the backend of CveXplore.
+
+        Returns:
+            `CveXploreEntry` instance
+
+        """
         definition = {
             "name": self.name,
             "task": self.task,
@@ -87,18 +118,39 @@ class CveXploreEntry(RedBeatSchedulerEntry):
 
 
 class Task(object):
+    """
+    The Task class is used to handle all task related operations related to the CveXplore backend.
+
+    Group:
+        taskhandler
+    """
+
     def __init__(
         self,
         name: str,
         task: str,
         run: schedule | crontab = None,
-        args: list = None,
+        args: Any = None,
         kwargs: dict = None,
         enabled: bool = True,
         last_run_at: datetime = None,
         total_run_count: int = 0,
         next_run_at: datetime = None,
     ):
+        """
+        Create a new instance of Task
+
+        Args:
+            name: Slug of the task
+            task: Task name as stated in celery daemon definition
+            run: Schedule of the task
+            args: Arguments of the task
+            kwargs: Keyword arguments of the task
+            enabled: Whether the task is enabled or not
+            last_run_at: Last run time of the task
+            total_run_count: Total run count of the task
+            next_run_at: Next run time of the task
+        """
         self.name = name
         self.task = (
             task if task.startswith(TASK_START_STRING) else f"{TASK_START_STRING}{task}"
@@ -158,13 +210,42 @@ class Task(object):
 
     @property
     def is_enabled(self):
+        """
+        Property to check if the task is enabled or not.
+
+        Returns:
+            Whether the task is enabled or not; True when the task is enabled, False when the task is disabled.
+        Group:
+            properties
+        """
         return self.enabled
 
-    def batcher(self, iterable, n):
+    def batcher(self, iterable: Iterable, n: int) -> Iterable:
+        """
+        Helper function to request chunks of keys from the Redis backend.
+
+        Args:
+            iterable:
+            n:
+
+        Returns:
+            A list of Redis keys
+        """
         args = [iter(iterable)] * n
         return zip_longest(*args)
 
-    def decode_redis_output(self, src):
+    def decode_redis_output(
+        self, src: list | dict | bytes | None
+    ) -> list | dict | str | None:
+        """
+        Helper function to decode output from Redis backend.
+
+        Args:
+            src: redis output to decode
+
+        Returns:
+            A list, dict or str with decoded output or None if src is None.
+        """
         if isinstance(src, list):
             rv = list()
             for key in src:
@@ -188,7 +269,13 @@ class Task(object):
         else:
             raise Exception("type not handled: " + type(src))
 
-    def get_all_task_results(self):
+    def get_all_task_results(self) -> Iterable[list | dict | str | None]:
+        """
+        Iterator over all task results in the Redis backend.
+
+        Returns:
+            List with Redis task data from the backend
+        """
         for keybatch in self.batcher(
             self.redis_backend.scan_iter(f"{self.name}_*"), 500
         ):
@@ -203,7 +290,19 @@ class Task(object):
 
             yield data
 
-    def get_sorted_task_results(self, limit: int, desc: bool = True):
+    def get_sorted_task_results(
+        self, limit: int, desc: bool = True
+    ) -> Iterable[list | dict | str | None]:
+        """
+        Get task results in the Redis backend.
+
+        Args:
+            limit: Limit the amount of results to return.
+            desc: If desc is True, sort descending.
+
+        Returns:
+            Sorted list of task results.
+        """
         task_results = self.redis_backend.zrange(
             f"sortresults_{self.name}", 0, limit, desc=desc, withscores=True
         )
@@ -222,61 +321,90 @@ class Task(object):
         return data
 
     def purge_task_results(self) -> bool:
-        count = 0
+        """
+        Purge task results in the Redis backend.
 
-        for keybatch in self.batcher(
-            self.redis_backend.scan_iter(f"{self.name}_*"), 500
-        ):
-            cleaned_keybatch = [x for x in keybatch if x is not None]
-            count += len(cleaned_keybatch)
-            self.redis_backend.delete(*cleaned_keybatch)
+        Raises:
+            Exception: If an uncaught exception is raised.
 
-        self.total_run_count = 0
-        self.upsert_task()
+        Returns:
+            True if the task results are purged.
+        """
+        try:
+            count = 0
 
-        all_run_results = self.redis_backend.keys(f"runresult_{self.name}*")
-        if len(all_run_results) != 0:
-            self.redis_backend.unlink(*all_run_results)
+            for keybatch in self.batcher(
+                self.redis_backend.scan_iter(f"{self.name}_*"), 500
+            ):
+                cleaned_keybatch = [x for x in keybatch if x is not None]
+                count += len(cleaned_keybatch)
+                self.redis_backend.delete(*cleaned_keybatch)
 
-        self.redis_backend.unlink(f"sortresults_{self.name}")
+            self.total_run_count = 0
+            self.upsert_task()
 
-        entry = self.redis_broker.hgetall("redbeat:{}".format(self.name))
+            all_run_results = self.redis_backend.keys(f"runresult_{self.name}*")
+            if len(all_run_results) != 0:
+                self.redis_backend.unlink(*all_run_results)
 
-        new_entry = json.loads(entry[b"meta"])
+            self.redis_backend.unlink(f"sortresults_{self.name}")
 
-        new_entry["total_run_count"] = 0
+            entry = self.redis_broker.hgetall("redbeat:{}".format(self.name))
 
-        entry[b"meta"] = json.dumps(new_entry).encode()
+            new_entry = json.loads(entry[b"meta"])
 
-        self.redis_broker.hset("redbeat:{}".format(self.name), mapping=entry)
+            new_entry["total_run_count"] = 0
 
-        self.logger.info(
-            f"Purged {self.name} database entries, deleting: {count} records"
-        )
+            entry[b"meta"] = json.dumps(new_entry).encode()
 
-        return True
+            self.redis_broker.hset("redbeat:{}".format(self.name), mapping=entry)
+
+            self.logger.info(
+                f"Purged {self.name} database entries, deleting: {count} records"
+            )
+
+            return True
+        except Exception as e:
+            self.logger.error(f"Error purging task results: {e}")
+            raise
 
     def upsert_task(self) -> bool:
         """
         Method to create or update a scheduled interval task
-        """
-        entry = CveXploreEntry(
-            name=self.name,
-            task=self.task,
-            schedule=self.run,
-            args=self.args,
-            kwargs=self.kwargs,
-            enabled=self.enabled,
-            app=app,
-            redis_broker=self.redis_broker,
-        )
-        entry.save()
 
-        return True
+        Raises:
+            Exception: If an uncaught exception is raised.
+
+        Returns:
+            True if the task is saved.
+        """
+        try:
+            entry = CveXploreEntry(
+                name=self.name,
+                task=self.task,
+                schedule=self.run,
+                args=self.args,
+                kwargs=self.kwargs,
+                enabled=self.enabled,
+                app=app,
+                redis_broker=self.redis_broker,
+            )
+            entry.save()
+
+            return True
+        except Exception as e:
+            self.logger.exception(f"Failed to save the task!! Error: {e}")
+            raise
 
     def delete_task(self) -> bool:
         """
-        method to delete a task from the database
+        Method to delete a task from the database
+
+        Raises:
+            Exception: If an uncaught exception is raised.
+
+        Returns:
+            True if the task is deleted.
         """
         try:
             self.purge_task_results()
@@ -287,17 +415,35 @@ class Task(object):
             return True
         except Exception:
             self.logger.exception("Failed to delete the task!!")
-        return False
+            raise
 
     def enable(self) -> bool:
+        """
+        Method to enable the task
+
+        Returns:
+            True if the task is enabled, False otherwise.
+        """
         return self._toggle_task(1)
 
     def disable(self) -> bool:
+        """
+        Method to disable the task.
+
+        Returns:
+            True if the task is disabled, False otherwise.
+        """
         return self._toggle_task(0)
 
     def _toggle_task(self, value: int) -> bool:
         """
         method to enable (1) or disable (0) a task
+
+        Raises:
+            Exception: If an uncaught exception is raised.
+
+        Returns:
+            True if the toggle succeeds, False otherwise.
         """
 
         if value == 0:
@@ -320,9 +466,15 @@ class Task(object):
             return True
         except Exception:
             self.logger.exception("Failed to toggle the task!!")
-        return False
+            raise
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
+        """
+        Method to convert the `Task` result to a dictionary.
+
+        Returns:
+            Serialized `Task` data
+        """
         my_dict = {
             k: v
             for (k, v) in self.__dict__.items()
@@ -347,6 +499,12 @@ class Task(object):
         return my_dict
 
     def to_data(self):
+        """
+        Method to convert the `Task` result to a dictionary.
+
+        Returns:
+            Serialized `Task` data
+        """
         my_dict = {
             k: v
             for (k, v) in self.__dict__.items()
@@ -415,11 +573,30 @@ class Task(object):
         return my_dict
 
     def __repr__(self):
+        """
+        String representation of the object.
+
+        Returns:
+            String representation of the object.
+        """
         return f"<< Task: {self.name} >>"
 
 
 class TaskData(object):
+    """
+    Class to hold task data.
+
+    Group:
+        taskhandler
+    """
+
     def __init__(self, entry_data: dict):
+        """
+        Method to initialize the `TaskData` object.
+
+        Args:
+            entry_data: Dictionary of task data.
+        """
         self.entry_data = entry_data
 
         for k, v in self.entry_data[b"definition"].items():
@@ -452,7 +629,13 @@ class TaskData(object):
             tzinfo=pytz.utc,
         )
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
+        """
+        Method to convert the `TaskData` result to a dictionary.
+
+        Returns:
+            Serialized `TaskData` data
+        """
         return {
             "name": self.name,
             "task": self.task,
@@ -465,11 +648,28 @@ class TaskData(object):
         }
 
     def __repr__(self):
+        """
+        String representation of the object.
+
+        Returns:
+            String representation of the object.
+        """
         return f"<< TaskData: {self.name} >>"
 
 
 class TaskHandler(object):
+    """
+    Class that is the main handler towards the backend; this class is used by the package and CLI for
+    all CRUD operations on the backend of CveXplore.
+
+    Group:
+        taskhandler
+    """
+
     def __init__(self):
+        """
+        Method to initialize the `TaskHandler` object.
+        """
         self.config = Configuration
 
         parsed_url = urlparse(self.config.REDIS_URL)
@@ -482,7 +682,14 @@ class TaskHandler(object):
 
         self.logger = logging.getLogger(__name__)
 
-    def show_available_tasks(self) -> collections.OrderedDict:
+    @staticmethod
+    def show_available_tasks() -> collections.OrderedDict:
+        """
+        Show available tasks. Sorted by key.
+
+        Returns:
+            An ordered dictionary of the available tasks.
+        """
 
         ordered_dict = collections.OrderedDict()
 
@@ -499,12 +706,41 @@ class TaskHandler(object):
         task_slug: str,
         task_interval: int = None,
         task_crontab: dict = None,
-    ):
+    ) -> bool:
+        """
+        Create a task by its number. The number should correspond to the indexnumber + 1 in the result of a call to
+        `TaskHandler.show_available_tasks()` or should correspond to the number in the ID column of the
+        equivalent cli command. Either `task_interval` or `task_crontab` must be specified.
+
+        Examples:
+
+            >>> th = TaskHandler()
+            >>> th.create_task_by_number(1, task_slug="test", task_interval=10)
+            True
+
+            >>> th = TaskHandler()
+            >>> th.create_task_by_number(2, task_slug="test_2", task_crontab={"minute": "*/5"})
+            True
+
+        Args:
+            task_number: The number of the task.
+            task_slug: The slug that you want to use for the task.
+            task_interval: The interval (in seconds) that you want to run the task.
+            task_crontab: The crontab that you want to use for the task.
+
+        Raises:
+            ValueError: if both `task_interval` and `task_crontab` are not specified.
+            TaskNotFoundError: If the specified `task_number` is not found.
+            Exception: If an uncaught exception is raised.
+
+        Returns:
+            True if the task was successfully created.
+        """
         try:
             all_tasks = self.show_available_tasks()
             task_name = list(all_tasks.keys())[task_number - 1]
 
-            return self.schedule_task(
+            return self._schedule_task(
                 task_slug=task_slug,
                 task_name=task_name,
                 task_interval=task_interval,
@@ -519,6 +755,23 @@ class TaskHandler(object):
             raise
 
     def show_scheduled_tasks(self) -> list[Task]:
+        """
+        Show all scheduled tasks. Sorted by `Task.name`. A scheduled task is a task that is inserted into the redis
+        beat queue and is executed according to the `task_interval` or `task_crontab` variables.
+
+        Examples:
+
+            >>> th = TaskHandler()
+            >>> th.show_scheduled_tasks()
+            [<< Task: test >>, << Task: test_2 >>]
+
+        Raises:
+            RedisConnectionError: If connection to Redis could not be established.
+            Exception: If an uncaught exception is raised.
+
+        Returns:
+            A list of scheduled tasks.
+        """
         try:
             tasks = self.redis.zrange("redbeat::schedule", 0, -1, withscores=True)
 
@@ -554,6 +807,21 @@ class TaskHandler(object):
             raise
 
     def delete_scheduled_task(self, task_id: int) -> bool:
+        """
+        Delete a scheduled task by number. The number should correspond to the indexnumber + 1 in the result of a
+        call to `TaskHandler.show_scheduled_tasks()` or should correspond to the number in the ID column of the
+        equivalent cli command.
+
+        Args:
+            task_id: The number of the task.
+
+        Raises:
+            TaskNotFoundError: If the specified `task_number` is not found.
+            Exception: If an uncaught exception is raised.
+
+        Returns:
+            True if the task was successfully deleted.
+        """
         try:
             all_tasks = self.show_scheduled_tasks()
             the_task = all_tasks[task_id - 1]
@@ -567,6 +835,19 @@ class TaskHandler(object):
             raise
 
     def toggle_scheduled_task(self, task_id: int) -> bool:
+        """
+        Toggle a scheduled task by number between an enabled and disabled state.
+
+        Args:
+            task_id: The number of the task.
+
+        Raises:
+            TaskNotFoundError: If the specified `task_number` is not found.
+            Exception: If an uncaught exception is raised.
+
+        Returns:
+            True if the task was successfully toggled.
+        """
         try:
             all_tasks = self.show_scheduled_tasks()
             the_task = all_tasks[task_id - 1]
@@ -583,6 +864,21 @@ class TaskHandler(object):
             raise
 
     def purge_scheduled_task(self, task_id: int) -> bool:
+        """
+        Purge the results from a given task. The number should correspond to the indexnumber + 1 in the result of a
+        call to `TaskHandler.show_scheduled_tasks()` or should correspond to the number in the ID column of the
+        equivalent cli command.
+
+        Args:
+            task_id: The number of the task.
+
+        Raises:
+            TaskNotFoundError: If the specified `task_number` is not found.
+            Exception: If an uncaught exception is raised.
+
+        Returns:
+            True if the task was successfully purged.
+        """
         try:
             all_tasks = self.show_scheduled_tasks()
             the_task = all_tasks[task_id - 1]
@@ -596,6 +892,22 @@ class TaskHandler(object):
             raise
 
     def get_scheduled_tasks_results(self, task_id: int, limit: int = 10) -> list[dict]:
+        """
+        Method to retrieve the results of a scheduled task by number. The number should correspond to the
+        indexnumber + 1 in the result of a call to `TaskHandler.show_scheduled_tasks()` or should correspond to the
+        number in the ID column of the equivalent cli command.
+
+        Args:
+            task_id: The number of the task.
+            limit: The maximum number of results to retrieve.
+
+        Raises:
+            TaskNotFoundError: If the specified `task_number` is not found.
+            Exception: If an uncaught exception is raised.
+
+        Returns:
+            A list with dictionaries containing the results of the scheduled task.
+        """
         try:
             all_tasks = self.show_scheduled_tasks()
             the_task = all_tasks[task_id - 1]
@@ -612,6 +924,15 @@ class TaskHandler(object):
     def get_scheduled_task_by_name(self, task_name: str) -> Task:
         """
         Method to retrieve the task parameters
+
+        Args:
+            task_name: The task slug
+
+        Raises:
+            TaskNotFoundError: If the specified `task_number` is not found.
+
+        Returns:
+            A `Task` instance.
         """
         try:
             task = [
@@ -625,7 +946,7 @@ class TaskHandler(object):
         except IndexError:
             raise TaskNotFoundError
 
-    def schedule_task(
+    def _schedule_task(
         self,
         task_slug: str,
         task_name: str,
@@ -634,7 +955,26 @@ class TaskHandler(object):
         task_args: list = None,
         task_kwargs: dict = None,
         task_enabled: bool = True,
-    ):
+    ) -> bool:
+        """
+        Method to schedule a task; used by `TaskHandler.create_task_by_number()`.
+
+        Args:
+            task_slug: The slug that you want to use for the task
+            task_name: The name of the task
+            task_interval: The interval in seconds that the task should be scheduled
+            task_crontab: The crontab dictionary that will be used to schedule a task
+            task_args: The arguments that will be passed to the task
+            task_kwargs: The keyword arguments that will be passed to the task
+            task_enabled: Whether the task should be enabled or not.
+
+        Raises:
+            ValueError: if both `task_interval` and `task_crontab` are not specified.
+            Exception: If an uncaught exception is raised.
+
+        Returns:
+
+        """
         if task_interval is not None:
             job_run = schedule(run_every=task_interval)
         elif task_crontab is not None:
@@ -657,4 +997,10 @@ class TaskHandler(object):
             raise
 
     def __repr__(self):
+        """
+        String representation of the object.
+
+        Returns:
+            String representation of the object.
+        """
         return "<< TaskHandler >>"

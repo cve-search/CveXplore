@@ -54,7 +54,7 @@ class Configuration(object):
     Class holding the configuration
     """
 
-    if json.loads(os.getenv("DOC_BUILD"))["DOC_BUILD"] == "YES":
+    if json.loads(os.getenv("DOC_BUILD", '{"DOC_BUILD": "NO"}'))["DOC_BUILD"] == "YES":
         USER_HOME_DIR = "${HOME}/.cvexplore"
     else:
         USER_HOME_DIR = os.path.expanduser("~/.cvexplore")
