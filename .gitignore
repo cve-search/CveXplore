@@ -305,3 +305,4 @@ cython_debug/
 /venv_test/
 /development/docker-compose.yml
 /docs/CveXplore/
+/docs/${HOME}/
