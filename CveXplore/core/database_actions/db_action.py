@@ -10,6 +10,7 @@ class DatabaseAction(object):
     Group:
         database
     """
+
     actions = collections.namedtuple("Actions", "InsertOne UpdateOne")(0, 1)
 
     def __init__(self, action: actions, doc: dict):
