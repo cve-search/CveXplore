@@ -3,6 +3,8 @@ import os
 
 from dotenv import load_dotenv
 
+from CveXplore import CveXplore
+
 user_wd = os.path.expanduser("~/.cvexplore")
 
 load_dotenv(os.path.join(user_wd, ".env"))
@@ -25,6 +27,7 @@ from celery.utils.log import get_task_logger
 from CveXplore.common.config import Configuration
 from CveXplore.core.logging.logger_class import AppLogger
 from CveXplore.core.general.constants import task_status_codes
+from CveXplore.core.redis_handler.redis_handler import RedisHandler
 
 logging.setLoggerClass(AppLogger)
 
@@ -36,10 +39,10 @@ app = Celery(
     backend=f"{config.CELERY_REDIS_URL}{config.CELERY_REDIS_BACKEND_DB}",
     result_extended=True,
     include=["CveXplore.celery_app.cvexplore_daemon"],
-    task_time_limit=900,
+    task_time_limit=config.CELERY_TASK_TIME_LIMIT,
     task_default_queue="default",
     broker_connection_retry_on_startup=True,
-    result_expires=300,
+    result_expires=config.CELERY_RESULT_EXPIRES,
 )
 
 execution_times = {}
@@ -188,8 +191,8 @@ def crt_test(task_slug: str, *args, **kwargs) -> dict:
 
     Args:
         task_slug: Task slug
-        args: Argument list
-        kwargs: Named arguments dict
+        args: Task Arguments
+        kwargs: Task Keyword arguments
 
     Returns:
         A dictionary with key "status" with will reflect the status of the task
@@ -209,3 +212,37 @@ def crt_test(task_slug: str, *args, **kwargs) -> dict:
         return {"status": task_status_codes.OK}
     else:
         return {"status": task_status_codes.NOK}
+
+
+@app.task(
+    autoretry_for=(Exception,),
+    max_retries=5,
+    retry_backoff=True,
+    retry_backoff_max=700,
+    retry_jitter=True,
+    ignore_result=True,
+    task_time_limit=1800,
+)
+def crt_update(task_slug: str, *args, **kwargs) -> dict:
+    """
+    Task to automatically update the database. Task will only run one instance at the time to prevent the update tasks
+    interfering with each other.
+
+    Args:
+        task_slug: Task slug
+        args: Task Arguments
+        kwargs: Task Keyword arguments
+
+    Returns:
+        A dictionary with key "status" with will reflect the status of the task
+
+    Group:
+        tasks
+
+    """
+    rh = RedisHandler(redis_client=app.backend.client)
+
+    # Acquiring a lock to prevent this specific task to run twice or more at a time
+    with rh.acquire_lock(f"crt_update"):
+        cvex = CveXplore()
+        cvex.database.update()

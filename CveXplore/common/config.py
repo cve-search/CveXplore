@@ -180,5 +180,8 @@ class Configuration(object):
     )
     CELERY_KEEP_TASK_RESULT = int(os.getenv("CELERY_KEEP_TASK_RESULT", 7))  # in days
 
+    CELERY_TASK_TIME_LIMIT = int(os.getenv("CELERY_TASK_TIME_LIMIT", 900))  # in seconds
+    CELERY_RESULT_EXPIRES = int(os.getenv("CELERY_RESULT_EXPIRES", 300))  # in seconds
+
     def __repr__(self):
         return f"<< CveXploreConfiguration >>"
