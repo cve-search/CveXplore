@@ -1,6 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 
+from CveXplore.common.config import Configuration
 from CveXplore.core.logging.logger_class import AppLogger
 
 logging.setLoggerClass(AppLogger)
@@ -9,6 +10,7 @@ logging.setLoggerClass(AppLogger)
 class DatabaseConnectionBase(ABC):
     def __init__(self, logger_name: str):
         self.logger = logging.getLogger(logger_name)
+        self.config = Configuration
 
     def __repr__(self):
         return f"<<{self.__class__.__name__}>>"

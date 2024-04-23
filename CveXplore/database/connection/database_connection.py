@@ -7,6 +7,7 @@ from CveXplore.database.connection.sqlbase.sql_base import SQLBaseConnection
 
 class DatabaseConnection(object):
     def __init__(self, database_type: str, database_init_parameters: dict):
+
         self.database_type = database_type
         self.database_init_parameters = database_init_parameters
 
