@@ -3,8 +3,6 @@ import os
 
 from dotenv import load_dotenv
 
-from CveXplore import CveXplore
-
 user_wd = os.path.expanduser("~/.cvexplore")
 
 load_dotenv(os.path.join(user_wd, ".env"))
@@ -235,6 +233,8 @@ def crt_update(task_slug: str, *args, **kwargs) -> dict:
         tasks
 
     """
+    from CveXplore import CveXplore
+
     rh = RedisHandler(redis_client=app.backend.client)
 
     # Acquiring a lock to prevent this specific task to run twice or more at a time
