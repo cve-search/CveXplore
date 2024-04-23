@@ -3,7 +3,7 @@ import shutil
 from abc import abstractmethod
 from typing import Tuple
 
-from CveXplore.core.database_actions.db_action import DatabaseAction
+from CveXplore.core.database_maintenance.db_action import DatabaseAction
 from CveXplore.core.database_maintenance.download_handler import DownloadHandler
 from CveXplore.core.database_maintenance.ijson_handler import IJSONHandler
 

@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
 from CveXplore.common.cpe_converters import split_cpe_name
-from CveXplore.core.database_actions.db_action import DatabaseAction
+from CveXplore.core.database_maintenance.db_action import DatabaseAction
 from CveXplore.core.database_maintenance.download_handler import DownloadHandler
 from CveXplore.core.nvd_nist.nvd_nist_api import NvdNistApi
 

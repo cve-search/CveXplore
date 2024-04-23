@@ -23,7 +23,7 @@ from urllib3 import Retry
 
 from CveXplore.common.config import Configuration
 from CveXplore.core.general.utils import sanitize
-from CveXplore.core.worker_queue.worker_q import WorkerQueue
+from CveXplore.core.database_maintenance.worker_q import WorkerQueue
 from ..database_indexer.db_indexer import DatabaseIndexer
 from ..logging.handlers.cve_explore_rfh import CveExploreUpdateRfhHandler
 from ..logging.handlers.cve_explore_stream import CveExploreUpdateStreamHandler

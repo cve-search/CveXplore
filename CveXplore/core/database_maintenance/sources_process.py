@@ -10,7 +10,7 @@ from xml.sax import make_parser
 from dateutil.parser import parse as parse_datetime
 from tqdm import tqdm
 
-from CveXplore.core.database_actions.db_action import DatabaseAction
+from CveXplore.core.database_maintenance.db_action import DatabaseAction
 from CveXplore.core.database_maintenance.api_handlers import NVDApiHandler
 from CveXplore.core.database_maintenance.content_handlers import (
     CapecHandler,
