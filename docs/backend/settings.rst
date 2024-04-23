@@ -25,3 +25,12 @@ The following config variables are the configuration settings for the backend:
 .. confval:: CELERY_KEEP_TASK_RESULT
 
    The amount of days to keep the task results in the database.
+
+.. confval:: CELERY_TASK_TIME_LIMIT
+
+    The time limit that is set for a task as a limit
+
+.. confval:: CELERY_RESULT_EXPIRES
+
+    The amount of seconds that the results from the tasks (if `ignore_result=False` is set in the task decorator) will
+    stay in the Redis database.
