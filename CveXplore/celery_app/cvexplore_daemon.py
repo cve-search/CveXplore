@@ -215,11 +215,6 @@ def crt_test(task_slug: str, *args, **kwargs) -> dict:
 
 
 @app.task(
-    autoretry_for=(Exception,),
-    max_retries=5,
-    retry_backoff=True,
-    retry_backoff_max=700,
-    retry_jitter=True,
     ignore_result=True,
     task_time_limit=1800,
 )
@@ -244,5 +239,9 @@ def crt_update(task_slug: str, *args, **kwargs) -> dict:
 
     # Acquiring a lock to prevent this specific task to run twice or more at a time
     with rh.acquire_lock(f"crt_update"):
-        cvex = CveXplore()
-        cvex.database.update()
+        try:
+            cvex = CveXplore()
+            cvex.database.update()
+            return {"status": task_status_codes.OK}
+        except Exception:
+            return {"status": task_status_codes.NOK}
