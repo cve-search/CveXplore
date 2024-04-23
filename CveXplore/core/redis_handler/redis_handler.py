@@ -14,6 +14,7 @@ class RedisHandler(object):
     Group:
         backend
     """
+
     def __init__(self, redis_client: Redis):
         """
         Create a new RedisHandler instance
@@ -51,9 +52,7 @@ class RedisHandler(object):
             else:
                 got_lock = False
 
-        self.logger.info(
-            f"Lock request: {lock_key} -> Lock request result: {got_lock}"
-        )
+        self.logger.info(f"Lock request: {lock_key} -> Lock request result: {got_lock}")
 
         return got_lock
 
