@@ -3,10 +3,20 @@ from itertools import chain
 
 from setuptools import setup, find_packages
 
-from CveXplore.main import VERSION
-
 # The directory containing this file
 HERE = os.path.abspath(os.path.dirname(__file__))
+
+
+# Get static version from CveXplore/VERSION
+def _version():
+    version_file = os.path.join(HERE, "CveXplore/VERSION")
+
+    with open(version_file, "r") as fdsec:
+        tag = fdsec.read()
+    return tag
+
+
+VERSION = __version__ = _version()
 
 # The text of the README file
 with open(os.path.join(HERE, "README.rst")) as fid:
@@ -15,6 +25,8 @@ with open(os.path.join(HERE, "README.rst")) as fid:
 
 # -*- Extras -*-
 MODULES = {
+    "all-db",
+    "celery",
     "docs",
     "kafka",
     "mongodb",
@@ -107,12 +119,16 @@ setup(
     package_data={
         "CveXplore": [
             "LICENSE",
+            "VERSION",
             ".schema_version",
             "common/.sources.ini",
             "common/.env_example",
             "alembic/*",
             "alembic/**/*",
             "alembic.ini",
+            "backend/*",
+            "backend/**/*",
+            "backend/**/**/*",
         ]
     },
     entry_points="""

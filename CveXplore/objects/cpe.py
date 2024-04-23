@@ -1,8 +1,3 @@
-"""
-cpe
-===
-"""
-
 from pymongo import DESCENDING
 
 from CveXplore.common.cpe_converters import create_cpe_regex_string

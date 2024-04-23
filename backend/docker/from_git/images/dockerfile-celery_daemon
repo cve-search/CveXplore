@@ -1,0 +1,27 @@
+FROM python:3.11
+
+RUN pip install --upgrade pip
+
+COPY ./backend/docker/from_git/files/install.sh .
+RUN sed -i -e 's/\r$//' ./install.sh
+
+RUN ./install.sh
+
+RUN rm ./install.sh
+
+RUN groupadd -g 1000 basicuser && useradd -r -u 1000 -g basicuser basicuser
+
+RUN mkdir -p /home/basicuser && chown basicuser:basicuser -R /home/basicuser
+
+USER basicuser
+
+ENV PATH="/home/basicuser/.local/bin:${PATH}"
+
+COPY --chown=basicuser:basicuser . /app
+WORKDIR /app
+
+RUN pip install -r requirements.txt
+RUN pip install -r requirements/modules/celery.txt
+
+# run the command to start the celery daemon
+CMD ["/home/basicuser/.local/bin/celery", "-A", "CveXplore.celery_app.cvexplore_daemon", "worker", "--loglevel=INFO", "-O", "fair" , "--without-heartbeat", "--without-gossip", "--without-mingle"]

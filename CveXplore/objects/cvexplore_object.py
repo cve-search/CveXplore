@@ -1,8 +1,3 @@
-"""
-CveXploreObject
-===============
-"""
-
 from CveXplore.common.config import Configuration
 
 

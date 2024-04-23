@@ -1,0 +1,52 @@
+version: '3.5'
+
+services:
+
+  redis:
+    image: cvexplore-redis
+    hostname: redis
+    restart: always
+    volumes:
+      - redis_data:/data
+    ports:
+      - "127.0.0.1:6379:6379"
+
+  celery_daemon:
+    image: cvexplore-celery_daemon
+    depends_on:
+      - redis
+    env_file:
+      - ${HOME}/.cvexplore/.env
+    deploy:
+      replicas: 2
+    restart: always
+    environment:
+      - PYTHONUNBUFFERED=TRUE
+    volumes:
+      - celery_data:/app/data
+
+  celery_beat:
+    image: cvexplore-celery_beat
+    depends_on:
+      - redis
+    env_file:
+      - ${HOME}/.cvexplore/.env
+    restart: always
+    environment:
+      - PYTHONUNBUFFERED=TRUE
+    volumes:
+      - celery_data:/app/data
+
+  fix-named-volumes-permissions:
+    # the image doesn't matter; easiest to use the same as the target docker service
+    image: cvexplore-celery_daemon
+    user: root
+    command: chown basicuser:basicuser -R /app/data
+    volumes:
+      - celery_data:/app/data
+
+volumes:
+  celery_data:
+    driver: local
+  redis_data:
+    driver: local

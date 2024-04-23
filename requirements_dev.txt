@@ -1,2 +1,3 @@
 -r requirements/default.txt
 -r requirements/modules/docs.txt
+-r requirements/modules/celery.txt

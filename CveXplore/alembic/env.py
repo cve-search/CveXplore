@@ -10,7 +10,7 @@ folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 sys.path.insert(0, folder)
 
 from CveXplore.common.config import Configuration
-from CveXplore.core.database_models.models import CveXploreBase
+from CveXplore.database_models import CveXploreBase
 
 app_config = Configuration
 # this is the Alembic Config object, which provides
