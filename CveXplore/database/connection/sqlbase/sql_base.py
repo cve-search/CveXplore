@@ -1,6 +1,6 @@
-from CveXplore.core.database_models.models import CveXploreBase
 from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
 from CveXplore.database.connection.sqlbase.sql_client import SQLClient
+from CveXplore.database_models.models import CveXploreBase
 from CveXplore.errors import DatabaseConnectionException
 
 

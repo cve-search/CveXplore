@@ -1,7 +1,7 @@
 from sqlalchemy import insert, text
 from sqlalchemy.exc import IntegrityError
 
-from CveXplore.core.database_models.models import (
+from CveXplore.database_models.models import (
     Cpe,
     Info,
     Schema,

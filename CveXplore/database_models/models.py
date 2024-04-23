@@ -15,7 +15,30 @@ from sqlalchemy.orm import declarative_base
 CveXploreBase = declarative_base()
 
 
-class Info(CveXploreBase):
+class CveXploreModel(CveXploreBase):
+    __abstract__ = True
+
+    def to_dict(self, *print_keys: str) -> dict:
+        """
+        Method to convert the entire object to a dictionary
+        """
+        if len(print_keys) != 0:
+            full_dict = {
+                k: v
+                for (k, v) in self.__dict__.items()
+                if (not k.startswith("_") and k in print_keys) or k == "_id"
+            }
+        else:
+            full_dict = {
+                k: v
+                for (k, v) in self.__dict__.items()
+                if not k.startswith("_") or k == "_id"
+            }
+
+        return full_dict
+
+
+class Info(CveXploreModel):
     """
     Information about the time the last update was made to a db table.
     """
@@ -29,7 +52,7 @@ class Info(CveXploreBase):
         return f"<< Info: {self.db} >>"
 
 
-class Schema(CveXploreBase):
+class Schema(CveXploreModel):
     """
     Holds information about the current database schema.
     """
@@ -45,7 +68,7 @@ class Schema(CveXploreBase):
         return f"<< Schema: {self.id} >>"
 
 
-class Capec(CveXploreBase):
+class Capec(CveXploreModel):
     """
     CAPEC database table.
     """
@@ -71,7 +94,7 @@ class Capec(CveXploreBase):
         return f"<< Capec: {self.id} >>"
 
 
-class Cpe(CveXploreBase):
+class Cpe(CveXploreModel):
     """
     CPE database table.
     """
@@ -105,7 +128,7 @@ class Cpe(CveXploreBase):
         return f"<< Cpe: {self.id} >>"
 
 
-class Cves(CveXploreBase):
+class Cves(CveXploreModel):
     """
     CVE database table.
     """
@@ -157,7 +180,7 @@ class Cves(CveXploreBase):
         return f"<< Cves: {self.id} >>"
 
 
-class Cwe(CveXploreBase):
+class Cwe(CveXploreModel):
     """
     CWE database table.
     """
@@ -176,7 +199,7 @@ class Cwe(CveXploreBase):
         return f"<< Cwe: {self.id} >>"
 
 
-class Via4(CveXploreBase):
+class Via4(CveXploreModel):
     """
     VIA4 database table.
     """
@@ -197,7 +220,7 @@ class Via4(CveXploreBase):
         return f"<< Via4: {self.db} >>"
 
 
-class Cpeother(CveXploreBase):
+class Cpeother(CveXploreModel):
     __tablename__ = "cpeother"
     id = Column(Integer, primary_key=True, unique=True, index=True)
 
@@ -205,7 +228,7 @@ class Cpeother(CveXploreBase):
         return f"<< Cpeother: {self.id} >>"
 
 
-class MgmtBlacklist(CveXploreBase):
+class MgmtBlacklist(CveXploreModel):
     __tablename__ = "mgmt_blacklist"
     id = Column(Integer, primary_key=True, unique=True, index=True)
 
@@ -213,7 +236,7 @@ class MgmtBlacklist(CveXploreBase):
         return f"<< MgmtBlacklist: {self.id} >>"
 
 
-class MgmtWhitelist(CveXploreBase):
+class MgmtWhitelist(CveXploreModel):
     __tablename__ = "mgmt_whitelist"
     id = Column(Integer, primary_key=True, unique=True, index=True)
 
