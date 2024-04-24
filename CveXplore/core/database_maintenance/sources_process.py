@@ -10,17 +10,18 @@ from xml.sax import make_parser
 from dateutil.parser import parse as parse_datetime
 from tqdm import tqdm
 
-from CveXplore.core.database_maintenance.db_action import DatabaseAction
 from CveXplore.core.database_maintenance.api_handlers import NVDApiHandler
 from CveXplore.core.database_maintenance.content_handlers import (
     CapecHandler,
     CWEHandler,
 )
+from CveXplore.core.database_maintenance.db_action import DatabaseAction
 from CveXplore.core.database_maintenance.file_handlers import (
     XMLFileHandler,
     JSONFileHandler,
     CSVFileHandler,
 )
+from CveXplore.core.general.datasources import datasources
 from CveXplore.errors.apis import ApiDataRetrievalFailed, ApiMaxRetryError
 
 date = datetime.datetime.now()
@@ -273,7 +274,7 @@ class CPEDownloads(NVDApiHandler):
 
         self.process_downloads(**kwargs)
 
-        if self.config.DATASOURCE_TYPE == "mongodb":
+        if self.config.DATASOURCE_TYPE.lower() == datasources.MONGODB:
             self.database_indexer.create_indexes(collection=self.feed_type.lower())
 
         self.logger.info("Finished CPE database population")
@@ -832,7 +833,7 @@ class CVEDownloads(NVDApiHandler):
 
         self.process_downloads(**kwargs)
 
-        if self.config.DATASOURCE_TYPE == "mongodb":
+        if self.config.DATASOURCE_TYPE.lower() == datasources.MONGODB:
             self.database_indexer.create_indexes(collection=self.feed_type.lower())
 
         self.logger.info("Finished CVE database population")

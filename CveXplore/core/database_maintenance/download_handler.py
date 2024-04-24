@@ -22,8 +22,8 @@ from tqdm.contrib.concurrent import thread_map
 from urllib3 import Retry
 
 from CveXplore.common.config import Configuration
-from CveXplore.core.general.utils import sanitize
 from CveXplore.core.database_maintenance.worker_q import WorkerQueue
+from CveXplore.core.general.utils import sanitize
 from ..database_indexer.db_indexer import DatabaseIndexer
 from ..logging.handlers.cve_explore_rfh import CveExploreUpdateRfhHandler
 from ..logging.handlers.cve_explore_stream import CveExploreUpdateStreamHandler
@@ -68,7 +68,7 @@ class DownloadHandler(ABC):
         self.do_process = True
 
         database = DatabaseConnection(
-            database_type=self.config.DATASOURCE_TYPE,
+            database_type=self.config.DATASOURCE_TYPE.lower(),
             database_init_parameters=self.config.DATASOURCE_CONNECTION_DETAILS,
         ).database_connection
 
@@ -438,7 +438,11 @@ class DownloadHandler(ABC):
         return self.database[col].drop()
 
     def get_table_names(self):
-        return self.database.list_collection_names()
+        # if self.config.DATASOURCE_TYPE.lower() == datasources.MONGODB:
+        #     return self.database.list_collection_names()
+        # if self.config.DATASOURCE_TYPE.lower() == datasources.MYSQL:
+        #     return self.database[self.feed_type.lower()].list_collection_names()
+        return self.database[self.feed_type.lower()].list_collection_names()
 
     def set_col_field(self, collection: str, field: str, data: dict):
         self.database[collection].update_one(

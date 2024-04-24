@@ -18,7 +18,7 @@ from redis.exceptions import ConnectionError as RedisConnectionError
 
 from CveXplore.celery_app.cvexplore_daemon import app
 from CveXplore.common.config import Configuration
-from CveXplore.core.general.utils import timestampTOdatetime
+from CveXplore.core.general.utils import timestamp_to_datetime
 from CveXplore.core.logging.logger_class import AppLogger
 from CveXplore.errors.tasks import TaskNotFoundError
 
@@ -790,7 +790,7 @@ class TaskHandler(object):
                 ret_list.append(
                     Task(
                         **task_data.to_dict(),
-                        next_run_at=timestampTOdatetime(int(next_run)),
+                        next_run_at=timestamp_to_datetime(int(next_run)),
                     )
                 )
 

@@ -58,14 +58,14 @@ class Schema(CveXploreModel):
     """
 
     __tablename__ = "schema"
-    id = Column(Integer, primary_key=True, doc="ID of the record")
+    _id = Column(Integer, primary_key=True, doc="ID of the record")
     rebuild_needed = Column(
         Boolean, default=False, doc="Flag to indicate if a rebuild is needed"
     )
     version = Column(Float, doc="Version of the database schema")
 
     def __repr__(self):
-        return f"<< Schema: {self.id} >>"
+        return f"<< Schema: {self._id} >>"
 
 
 class Capec(CveXploreModel):
@@ -104,7 +104,7 @@ class Cpe(CveXploreModel):
         BigInteger, primary_key=True, unique=True, index=True, doc="ID of the record"
     )
     id = Column(String(50), unique=True, index=True, doc="ID of the CPE")
-    cpeName = Column(String(50), index=True, doc="Name of the CPE")
+    cpeName = Column(String(256), index=True, doc="Name of the CPE")
     cpeNameId = Column(String(50), doc="Unique ID number of the CPE")
     created = Column(DateTime, doc="Creation time of the CPE")
     deprecated = Column(
@@ -116,13 +116,13 @@ class Cpe(CveXploreModel):
     deprecatedBy = Column(String(50), doc="Organization that deprecated the CPE")
     lastModified = Column(DateTime, index=True, doc="Last modified time of the CPE")
     padded_version = Column(
-        String(50), index=True, doc="Left zero padded version of the CPE"
+        String(128), index=True, doc="Left zero padded version of the CPE"
     )
-    product = Column(String(50), index=True, doc="Product of the CPE")
-    stem = Column(String(50), index=True, doc="Stem of the CPE")
-    title = Column(String(150), index=True, doc="Title of the CPE")
-    vendor = Column(String(50), index=True, doc="Vendor of the CPE")
-    version = Column(String(50), doc="Version of the CPE")
+    product = Column(String(128), index=True, doc="Product of the CPE")
+    stem = Column(String(256), index=True, doc="Stem of the CPE")
+    title = Column(String(256), index=True, doc="Title of the CPE")
+    vendor = Column(String(256), index=True, doc="Vendor of the CPE")
+    version = Column(String(128), doc="Version of the CPE")
 
     def __repr__(self):
         return f"<< Cpe: {self.id} >>"

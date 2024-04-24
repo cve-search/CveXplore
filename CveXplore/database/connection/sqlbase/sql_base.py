@@ -1,12 +1,14 @@
+from CveXplore.core.general.datasources import datasources
 from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
 from CveXplore.database_models.models import CveXploreBase
 from CveXplore.errors import DatabaseConnectionException
 
 
 class SQLBaseConnection(DatabaseConnectionBase):
+
     def __init__(self, **kwargs):
         super().__init__(logger_name=__name__)
-        if self.config.DATASOURCE_TYPE != "mongodb":
+        if self.config.DATASOURCE_TYPE.lower() != datasources.MONGODB:
             from CveXplore.database.connection.sqlbase.sql_client import SQLClient
 
             self._dbclient = {
@@ -34,8 +36,11 @@ class SQLBaseConnection(DatabaseConnectionBase):
     def dbclient(self):
         return self._dbclient
 
+    def list_collection_names(self):
+        return list(self._dbclient.keys())
+
     def set_handlers_for_collections(self):
-        if self.config.DATASOURCE_TYPE != "mongodb":
+        if self.config.DATASOURCE_TYPE.lower() != datasources.MONGODB:
             from CveXplore.database.connection.sqlbase.sql_client import SQLClient
 
             for each in list(CveXploreBase.metadata.tables.keys()):

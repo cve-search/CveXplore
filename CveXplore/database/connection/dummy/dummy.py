@@ -11,5 +11,8 @@ class DummyConnection(DatabaseConnectionBase):
     def dbclient(self):
         return self._dbclient
 
+    def list_collection_names(self):
+        pass
+
     def set_handlers_for_collections(self):
         pass

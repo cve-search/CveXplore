@@ -18,5 +18,9 @@ class UpdateSourceNotFound(DatabaseException):
     pass
 
 
+class PopulateSourceNotFound(DatabaseException):
+    pass
+
+
 class DatabaseSchemaVersionError(DatabaseException):
     pass

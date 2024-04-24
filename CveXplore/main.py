@@ -99,7 +99,7 @@ class CveXplore(object):
         for each in kwargs:
             setattr(self.config, each.upper(), kwargs[each])
 
-        self._datasource_type = self.config.DATASOURCE_TYPE
+        self._datasource_type = self.config.DATASOURCE_TYPE.lower()
 
         self._datasource_connection_details = self.config.DATASOURCE_CONNECTION_DETAILS
 
@@ -112,9 +112,10 @@ class CveXplore(object):
             f"Using {self.datasource_type} as datasource, connection details: {self.datasource_connection_details}"
         )
 
-        if self.datasource_type not in supported_datasources:
+        if self.datasource_type.upper() not in supported_datasources:
             raise UnsupportedDatasourceException(
-                f"Unsupported datasource selected: '{self.datasource_type}'; currently supported: {supported_datasources}"
+                f"Unsupported datasource selected: '{self.datasource_type}'; "
+                f"currently supported: {[x.lower() for x in supported_datasources]}"
             )
 
         if self.datasource_type == "api" and self.datasource_connection_details is None:

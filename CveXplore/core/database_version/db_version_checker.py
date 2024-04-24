@@ -2,8 +2,8 @@ import json
 import os
 
 from CveXplore.core.database_maintenance.update_base_class import UpdateBaseClass
-from CveXplore.database_models.models import CveXploreModel
 from CveXplore.database.connection.base.db_connection_base import DatabaseConnectionBase
+from CveXplore.database_models.models import CveXploreModel
 from CveXplore.errors import DatabaseSchemaVersionError
 
 runPath = os.path.dirname(os.path.realpath(__file__))

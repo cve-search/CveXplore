@@ -1,11 +1,14 @@
 from queue import Empty, Queue
 
+from CveXplore.common.config import Configuration
 from CveXplore.core.database_maintenance.db_action import DatabaseAction
+from CveXplore.core.general.datasources import datasources
 
 
 class WorkerQueue(Queue):
     def __init__(self, name: str, maxsize: int = 0):
         super().__init__(maxsize)
+        self.config = Configuration
         self.name = name
         self.maxsize = maxsize
 
@@ -25,7 +28,10 @@ class WorkerQueue(Queue):
             item = self.get(timeout=1)
             if item is not None:
                 if isinstance(item, DatabaseAction):
-                    item = item.entry
+                    if self.config.DATASOURCE_TYPE.lower() == datasources.MONGODB:
+                        item = item.entry
+                    else:
+                        item = item.doc
                 return item
             else:
                 raise StopIteration

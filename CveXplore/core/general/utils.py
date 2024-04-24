@@ -4,6 +4,8 @@ from datetime import datetime
 import colors
 import pymongo
 
+from CveXplore.database_models.models import CveXploreModel
+
 
 def sanitize(x: list | pymongo.cursor.Cursor):
     if isinstance(x, pymongo.cursor.Cursor):
@@ -11,12 +13,14 @@ def sanitize(x: list | pymongo.cursor.Cursor):
     if type(x) == list:
         for y in x:
             sanitize(y)
+    if isinstance(x, CveXploreModel):
+        x = x.to_dict()
     if x and "_id" in x:
         x.pop("_id")
     return x
 
 
-def timestampTOdatetime(timestamp):
+def timestamp_to_datetime(timestamp):
     """
     Method that will take the provided timestamp and converts it into a date time object
 
@@ -30,15 +34,15 @@ def timestampTOdatetime(timestamp):
     return value
 
 
-def datetimeTOtimestamp(date_time_object):
+def datetime_to_timestamp(date_time_object):
     return calendar.timegm(date_time_object.utctimetuple())
 
 
-def datetimeToTimestring(datetime_object):
-    return timestampTOdatetimestring(datetimeTOtimestamp(datetime_object))
+def datetime_to_timestring(datetime_object):
+    return timestamp_to_datetimestring(datetime_to_timestamp(datetime_object))
 
 
-def timestampTOdatetimestring(timestamp, vis=False):
+def timestamp_to_datetimestring(timestamp, vis=False):
     """
     Method that will take the provided timestamp and converts it into a RFC3339 date time string
 

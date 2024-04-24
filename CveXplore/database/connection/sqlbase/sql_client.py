@@ -1,6 +1,8 @@
 from sqlalchemy import insert, text
 from sqlalchemy.exc import IntegrityError
 
+from CveXplore.database.connection.sqlbase.connection import Session
+from CveXplore.database.connection.sqlbase.sql_client_base import SQLClientBase
 from CveXplore.database_models.models import (
     Cpe,
     Info,
@@ -13,8 +15,6 @@ from CveXplore.database_models.models import (
     MgmtBlacklist,
     MgmtWhitelist,
 )
-from CveXplore.database.connection.sqlbase.connection import Session
-from CveXplore.database.connection.sqlbase.sql_client_base import SQLClientBase
 
 
 class SQLClient(SQLClientBase):
@@ -40,6 +40,9 @@ class SQLClient(SQLClientBase):
 
     def __repr__(self):
         return f"<< SQLClient:{self.collection_name} >>"
+
+    def list_collection_names(self):
+        return list(self.model_mapping.keys())
 
     def bulk_write(self, write_entries: list, ordered: bool = False):
         with self.session() as session:
@@ -101,13 +104,30 @@ class SQLClient(SQLClientBase):
             if len(query_dict) == 0:
                 data = session.query(self.obj_ref).all()
                 return data
-            elif len(query_dict) == 1:
-                query_key, query_value = list(query_dict.items())[0]
-                data = (
-                    session.query(self.obj_ref)
-                    .filter(getattr(self.obj_ref, query_key) == query_value)
-                    .all()
-                )
+            else:
+                q = session.query(self.obj_ref)
+                for attr, value in query_dict.items():
+                    if isinstance(value, dict):
+                        for k, v in value.items():
+                            if k == "$lte":
+                                q = q.filter(
+                                    getattr(self.obj_ref, attr) <= value["$lte"]
+                                )
+                            elif k == "$gte":
+                                q = q.filter(
+                                    getattr(self.obj_ref, attr) >= value["$gte"]
+                                )
+                            elif k == "$lt":
+                                q = q.filter(getattr(self.obj_ref, attr) < value["$lt"])
+                            elif k == "$gt":
+                                q = q.filter(getattr(self.obj_ref, attr) > value["$gt"])
+                            else:
+                                raise ValueError(f"Unsupported key {k} -> {value}")
+                    else:
+                        q = q.filter(getattr(self.obj_ref, attr) == value)
+
+                data = q.all()
+
                 return data
 
     def find_one(self, query_dict: dict, *args, **kwargs):
@@ -115,11 +135,28 @@ class SQLClient(SQLClientBase):
             if len(query_dict) == 0:
                 data = session.query(self.obj_ref).first()
                 return data
-            elif len(query_dict) == 1:
-                query_key, query_value = list(query_dict.items())[0]
-                data = (
-                    session.query(self.obj_ref)
-                    .filter(getattr(self.obj_ref, query_key) == query_value)
-                    .first()
-                )
+            else:
+                q = session.query(self.obj_ref)
+                for attr, value in query_dict.items():
+                    if isinstance(value, dict):
+                        for k, v in value.items():
+                            if k == "$lte":
+                                q = q.filter(
+                                    getattr(self.obj_ref, attr) <= value["$lte"]
+                                )
+                            elif k == "$gte":
+                                q = q.filter(
+                                    getattr(self.obj_ref, attr) >= value["$gte"]
+                                )
+                            elif k == "$lt":
+                                q = q.filter(getattr(self.obj_ref, attr) < value["$lt"])
+                            elif k == "$gt":
+                                q = q.filter(getattr(self.obj_ref, attr) > value["$gt"])
+                            else:
+                                raise ValueError(f"Unsupported key {k} -> {value}")
+                    else:
+                        q = q.filter(getattr(self.obj_ref, attr) == value)
+
+                data = q.first()
+
                 return data

@@ -58,6 +58,9 @@ class MongoDBConnection(DatabaseConnectionBase):
     def dbclient(self):
         return self._dbclient
 
+    def list_collection_names(self):
+        return self._dbclient.list_collection_names()
+
     def set_handlers_for_collections(self):
         for each in self.dbclient.list_collection_names():
             if not hasattr(self, each):

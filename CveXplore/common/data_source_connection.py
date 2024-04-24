@@ -45,7 +45,7 @@ class DatasourceConnection(CveXploreObject):
             ).database_connection
         else:
             return DatabaseConnection(
-                database_type=self.config.DATASOURCE_TYPE,
+                database_type=self.config.DATASOURCE_TYPE.lower(),
                 database_init_parameters=self.config.DATASOURCE_CONNECTION_DETAILS,
             ).database_connection
 

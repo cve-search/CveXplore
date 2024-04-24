@@ -40,3 +40,7 @@ class SQLClientBase(ABC):
     @abstractmethod
     def find_one(self, *args, **kwargs):
         raise NotImplementedError
+
+    @abstractmethod
+    def list_collection_names(self):
+        raise NotImplementedError

@@ -23,3 +23,7 @@ class DatabaseConnectionBase(ABC):
     @abstractmethod
     def set_handlers_for_collections(self):
         raise NotImplementedError
+
+    @abstractmethod
+    def list_collection_names(self):
+        raise NotImplementedError

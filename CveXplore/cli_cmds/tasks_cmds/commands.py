@@ -4,12 +4,12 @@ from tabulate import tabulate
 from CveXplore.cli_cmds.mutex_options.mutex import Mutex
 from CveXplore.core.general.constants import task_status_rev_types
 from CveXplore.core.general.utils import (
-    datetimeToTimestring,
+    datetime_to_timestring,
     set_ansi_color_red,
     set_ansi_color_green,
     set_ansi_color_magenta,
     set_ansi_color_yellow,
-    timestampTOdatetimestring,
+    timestamp_to_datetimestring,
 )
 from CveXplore.errors.tasks import TaskNotFoundError
 
@@ -121,11 +121,11 @@ def scheduled_cmd(ctx, list, delete, toggle, purge, results):
                             if task["enabled"]
                             else set_ansi_color_red(task["enabled"])
                         ),
-                        f"{set_ansi_color_magenta(datetimeToTimestring(task['last_run_at']))} "
+                        f"{set_ansi_color_magenta(datetime_to_timestring(task['last_run_at']))} "
                         f"{last_run_result} "
                         f"[{set_ansi_color_yellow(task['total_run_count'])}]",
                         set_ansi_color_magenta(
-                            datetimeToTimestring(task["next_run_at"])
+                            datetime_to_timestring(task["next_run_at"])
                         ),
                     ]
                 )
@@ -179,7 +179,7 @@ def scheduled_cmd(ctx, list, delete, toggle, purge, results):
                     [
                         x,
                         set_ansi_color_magenta(
-                            timestampTOdatetimestring(each["inserted"])
+                            timestamp_to_datetimestring(each["inserted"])
                         ),
                         each["task_id"],
                         each["state"],

@@ -141,6 +141,17 @@ class MainUpdater(UpdateBaseClass):
             self.logger.info(f"Upgrading database schema to latest head, if needed...")
             self.database_migrator.db_upgrade()
 
+        if limit is not None or get_id is not None:
+            if populate_source is None:
+                raise ValueError(
+                    "populate_source is not defined, you need to provide a source when providing a limit"
+                    " or get_id parameter!"
+                )
+            if populate_source not in ["cve", "cpe"]:
+                raise ValueError(
+                    f"The source '{populate_source}' does not support the limit or get_id parameter!"
+                )
+
         if populate_source is not None:
             if not isinstance(populate_source, str | list):
                 raise ValueError("Wrong 'populate_source' parameter type received!")
