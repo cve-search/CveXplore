@@ -22,6 +22,7 @@ from CveXplore.core.database_maintenance.file_handlers import (
     CSVFileHandler,
 )
 from CveXplore.core.general.datasources import datasources
+from CveXplore.database_models.models import CveXploreModel
 from CveXplore.errors.apis import ApiDataRetrievalFailed, ApiMaxRetryError
 
 date = datetime.datetime.now()
@@ -567,13 +568,20 @@ class CVEDownloads(NVDApiHandler):
                                 if query != {}:
                                     cpe_info = sorted(
                                         self.get_cpe_version_information(query),
-                                        key=lambda x: x["padded_version"],
+                                        key=lambda x: (
+                                            x["padded_version"]
+                                            if isinstance(x, dict)
+                                            else x.padded_version
+                                        ),
                                     )
                                     if cpe_info:
                                         if not isinstance(cpe_info, list):
                                             cpe_info = [cpe_info]
 
                                         for vulnerable_version in cpe_info:
+                                            if isinstance(vulnerable_version, CveXploreModel):
+                                                vulnerable_version = vulnerable_version.to_dict()
+
                                             cve = self.add_if_missing(
                                                 cve,
                                                 "vulnerable_product",
