@@ -167,9 +167,7 @@ class ApiBaseClass(object):
         """
         Method for requesting free format api resources
         """
-        self.logger.debug(
-            f"Making API call with method: {method}, RESSOURCE: {resource}"
-        )
+        self.logger.debug(f"API call with method: {method}, RESSOURCE: {resource}")
         try:
             with self.get_session() as session:
                 result = self._connect(
