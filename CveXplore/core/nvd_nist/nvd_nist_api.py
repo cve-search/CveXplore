@@ -97,7 +97,7 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
             else:
                 url = f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/"
 
-        self.logger.info(f"Built URL: {url}")
+        self.logger.debug(f"Built URL: {url}")
         return url
 
     def _connect(
@@ -119,9 +119,9 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
         }
 
         full_url = self._build_url(resource, data=data)
-        self.logger.info(f"Sending {method} request to URL: {full_url}")
-        self.logger.info(f"Request headers: {request_api_resource['headers']}")
-        self.logger.info(f"Request data: {data}")
+        self.logger.debug(f"Sending {method} request to URL: {full_url}")
+        self.logger.debug(f"Request headers: {request_api_resource['headers']}")
+        self.logger.debug(f"Request data: {data}")
 
         try:
             if method == "GET":
@@ -137,8 +137,8 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
             else:
                 raise ValueError(f"Unsupported method: {method}")
 
-            self.logger.info(f"Received response: {r.status_code}")
-            self.logger.info(f"Response content: {r.text}")
+            self.logger.debug(f"Received response: {r.status_code}")
+            self.logger.debug(f"Response content: {r.text}")
 
             try:
                 if isinstance(r, Response):
@@ -273,7 +273,7 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
             ret_data = self.call(self.methods.GET, resource=resource, data=datasource)
 
             if not isinstance(ret_data, Response):
-                self.logger.info(f"API response data: {ret_data}")
+                self.logger.debug(f"API response data: {ret_data}")
                 return ret_data["totalResults"]
             else:
                 self.logger.error(f"Unexpected response type: {ret_data}")
