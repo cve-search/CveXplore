@@ -90,9 +90,9 @@ class ApiBaseClass(object):
         request_api_resource.update(self.kwargs)
 
         full_url = self._build_url(resource)
-        self.logger.info(f"Making {method} request to URL: {full_url}")
-        self.logger.info(f"Request headers: {request_api_resource['headers']}")
-        self.logger.info(f"Request data: {data}")
+        self.logger.debug(f"Making {method} request to URL: {full_url}")
+        self.logger.debug(f"Request headers: {request_api_resource['headers']}")
+        self.logger.debug(f"Request data: {data}")
 
         try:
             if method == self.methods.POST:
@@ -106,7 +106,7 @@ class ApiBaseClass(object):
             else:
                 r = session.get(full_url, **request_api_resource)
 
-            self.logger.info(f"Received response: {r.status_code}")
+            self.logger.debug(f"Received response: {r.status_code}")
             self.logger.debug(f"Response content: {r.text}")
 
             try:
@@ -131,7 +131,6 @@ class ApiBaseClass(object):
         except Exception as err:
             self.logger.error(f"An error occurred: {err}")
             raise
-
 
     def get_session(
         self,
@@ -168,7 +167,9 @@ class ApiBaseClass(object):
         """
         Method for requesting free format api resources
         """
-        self.logger.info(f"Making API call with method: {method}, RESSOURCE: {resource}")
+        self.logger.debug(
+            f"Making API call with method: {method}, RESSOURCE: {resource}"
+        )
         try:
             with self.get_session() as session:
                 result = self._connect(
@@ -179,7 +180,7 @@ class ApiBaseClass(object):
                     timeout=timeout,
                     return_response_object=return_response_object,
                 )
-                self.logger.info(f"Received API response: {result}")
+                self.logger.debug(f"Received API response: {result}")
                 return result
         except requests.ConnectionError as conn_err:
             self.logger.error(f"Connection error occurred: {conn_err}")
