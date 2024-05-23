@@ -1157,22 +1157,67 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_select</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;return True if this is a SELECT operation.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return True if this is a SELECT operation.</span>
+
+<span class="sd">        .. versionchanged:: 2.0.30 - the attribute is also True for a</span>
+<span class="sd">           :meth:`_sql.Select.from_statement` construct that is itself against</span>
+<span class="sd">           a :class:`_sql.Select` construct, such as</span>
+<span class="sd">           ``select(Entity).from_statement(select(..))``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement</span><span class="o">.</span><span class="n">is_select</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_from_statement</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return True if this operation is a</span>
+<span class="sd">        :meth:`_sql.Select.from_statement` operation.</span>
+
+<span class="sd">        This is independent from :attr:`_orm.ORMExecuteState.is_select`, as a</span>
+<span class="sd">        ``select().from_statement()`` construct can be used with</span>
+<span class="sd">        INSERT/UPDATE/DELETE RETURNING types of statements as well.</span>
+<span class="sd">        :attr:`_orm.ORMExecuteState.is_select` will only be set if the</span>
+<span class="sd">        :meth:`_sql.Select.from_statement` is itself against a</span>
+<span class="sd">        :class:`_sql.Select` construct.</span>
+
+<span class="sd">        .. versionadded:: 2.0.30</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement</span><span class="o">.</span><span class="n">is_from_statement</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_insert</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;return True if this is an INSERT operation.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return True if this is an INSERT operation.</span>
+
+<span class="sd">        .. versionchanged:: 2.0.30 - the attribute is also True for a</span>
+<span class="sd">           :meth:`_sql.Select.from_statement` construct that is itself against</span>
+<span class="sd">           a :class:`_sql.Insert` construct, such as</span>
+<span class="sd">           ``select(Entity).from_statement(insert(..))``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement</span><span class="o">.</span><span class="n">is_dml</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement</span><span class="o">.</span><span class="n">is_insert</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;return True if this is an UPDATE operation.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return True if this is an UPDATE operation.</span>
+
+<span class="sd">        .. versionchanged:: 2.0.30 - the attribute is also True for a</span>
+<span class="sd">           :meth:`_sql.Select.from_statement` construct that is itself against</span>
+<span class="sd">           a :class:`_sql.Update` construct, such as</span>
+<span class="sd">           ``select(Entity).from_statement(update(..))``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement</span><span class="o">.</span><span class="n">is_dml</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement</span><span class="o">.</span><span class="n">is_update</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;return True if this is a DELETE operation.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return True if this is a DELETE operation.</span>
+
+<span class="sd">        .. versionchanged:: 2.0.30 - the attribute is also True for a</span>
+<span class="sd">           :meth:`_sql.Select.from_statement` construct that is itself against</span>
+<span class="sd">           a :class:`_sql.Delete` construct, such as</span>
+<span class="sd">           ``select(Entity).from_statement(delete(..))``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement</span><span class="o">.</span><span class="n">is_dml</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">statement</span><span class="o">.</span><span class="n">is_delete</span>
 
     <span class="nd">@property</span>
@@ -5111,11 +5156,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_bulk_save_mappings</span><span class="p">(</span>
                 <span class="n">mapper</span><span class="p">,</span>
                 <span class="n">states</span><span class="p">,</span>
-                <span class="n">isupdate</span><span class="p">,</span>
-                <span class="kc">True</span><span class="p">,</span>
-                <span class="n">return_defaults</span><span class="p">,</span>
-                <span class="n">update_changed_only</span><span class="p">,</span>
-                <span class="kc">False</span><span class="p">,</span>
+                <span class="n">isupdate</span><span class="o">=</span><span class="n">isupdate</span><span class="p">,</span>
+                <span class="n">isstates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">return_defaults</span><span class="o">=</span><span class="n">return_defaults</span><span class="p">,</span>
+                <span class="n">update_changed_only</span><span class="o">=</span><span class="n">update_changed_only</span><span class="p">,</span>
+                <span class="n">render_nulls</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">bulk_insert_mappings</span><span class="p">(</span>
@@ -5194,11 +5239,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_bulk_save_mappings</span><span class="p">(</span>
             <span class="n">mapper</span><span class="p">,</span>
             <span class="n">mappings</span><span class="p">,</span>
-            <span class="kc">False</span><span class="p">,</span>
-            <span class="kc">False</span><span class="p">,</span>
-            <span class="n">return_defaults</span><span class="p">,</span>
-            <span class="kc">False</span><span class="p">,</span>
-            <span class="n">render_nulls</span><span class="p">,</span>
+            <span class="n">isupdate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">isstates</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">return_defaults</span><span class="o">=</span><span class="n">return_defaults</span><span class="p">,</span>
+            <span class="n">update_changed_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">render_nulls</span><span class="o">=</span><span class="n">render_nulls</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">bulk_update_mappings</span><span class="p">(</span>
@@ -5240,13 +5285,20 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bulk_save_mappings</span><span class="p">(</span>
-            <span class="n">mapper</span><span class="p">,</span> <span class="n">mappings</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
+            <span class="n">mapper</span><span class="p">,</span>
+            <span class="n">mappings</span><span class="p">,</span>
+            <span class="n">isupdate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">isstates</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">return_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">update_changed_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">render_nulls</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_bulk_save_mappings</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">mapper</span><span class="p">:</span> <span class="n">Mapper</span><span class="p">[</span><span class="n">_O</span><span class="p">],</span>
         <span class="n">mappings</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">InstanceState</span><span class="p">[</span><span class="n">_O</span><span class="p">]],</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]],</span>
+        <span class="o">*</span><span class="p">,</span>
         <span class="n">isupdate</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">isstates</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">return_defaults</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -5263,17 +5315,17 @@
                     <span class="n">mapper</span><span class="p">,</span>
                     <span class="n">mappings</span><span class="p">,</span>
                     <span class="n">transaction</span><span class="p">,</span>
-                    <span class="n">isstates</span><span class="p">,</span>
-                    <span class="n">update_changed_only</span><span class="p">,</span>
+                    <span class="n">isstates</span><span class="o">=</span><span class="n">isstates</span><span class="p">,</span>
+                    <span class="n">update_changed_only</span><span class="o">=</span><span class="n">update_changed_only</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">bulk_persistence</span><span class="o">.</span><span class="n">_bulk_insert</span><span class="p">(</span>
                     <span class="n">mapper</span><span class="p">,</span>
                     <span class="n">mappings</span><span class="p">,</span>
                     <span class="n">transaction</span><span class="p">,</span>
-                    <span class="n">isstates</span><span class="p">,</span>
-                    <span class="n">return_defaults</span><span class="p">,</span>
-                    <span class="n">render_nulls</span><span class="p">,</span>
+                    <span class="n">isstates</span><span class="o">=</span><span class="n">isstates</span><span class="p">,</span>
+                    <span class="n">return_defaults</span><span class="o">=</span><span class="n">return_defaults</span><span class="p">,</span>
+                    <span class="n">render_nulls</span><span class="o">=</span><span class="n">render_nulls</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
@@ -5843,7 +5895,7 @@
   <small>
     
       Last update:
-      Apr 23, 2024
+      May 23, 2024
     
   </small>
 </div>

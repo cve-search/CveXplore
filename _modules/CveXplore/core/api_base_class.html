@@ -679,17 +679,25 @@
 
         <span class="n">request_api_resource</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
 
+        <span class="n">full_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_url</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Making </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2"> request to URL: </span><span class="si">{</span><span class="n">full_url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Request headers: </span><span class="si">{</span><span class="n">request_api_resource</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Request data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
-                <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_url</span><span class="p">(</span><span class="n">resource</span><span class="p">),</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">full_url</span><span class="p">,</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">PUT</span><span class="p">:</span>
-                <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_url</span><span class="p">(</span><span class="n">resource</span><span class="p">),</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">full_url</span><span class="p">,</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">PATCH</span><span class="p">:</span>
-                <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_url</span><span class="p">(</span><span class="n">resource</span><span class="p">),</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">full_url</span><span class="p">,</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">DELETE</span><span class="p">:</span>
-                <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_url</span><span class="p">(</span><span class="n">resource</span><span class="p">),</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">full_url</span><span class="p">,</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_url</span><span class="p">(</span><span class="n">resource</span><span class="p">),</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">full_url</span><span class="p">,</span> <span class="o">**</span><span class="n">request_api_resource</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Received response: </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Response content: </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">Response</span><span class="p">):</span>
@@ -708,9 +716,11 @@
 
             <span class="k">return</span> <span class="n">the_response</span>
         <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connection error occurred: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An error occurred: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span>
 
 <div class="viewcode-block" id="ApiBaseClass.get_session">
 <a class="viewcode-back" href="../../../CveXplore/core/ApiBaseClass.get_session.html#CveXplore.core.api_base_class.ApiBaseClass.get_session">[docs]</a>
@@ -751,8 +761,8 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method for requesting free format api resources</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;API call with method: </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">, RESOURCE: </span><span class="si">{</span><span class="n">resource</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect</span><span class="p">(</span>
@@ -763,10 +773,13 @@
                     <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
                     <span class="n">return_response_object</span><span class="o">=</span><span class="n">return_response_object</span><span class="p">,</span>
                 <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Received API response: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">result</span>
-        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">ConnectionError</span> <span class="k">as</span> <span class="n">conn_err</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connection error occurred: </span><span class="si">{</span><span class="n">conn_err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">raise</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error during API call: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">raise</span></div>
 
 
@@ -842,7 +855,7 @@
   <small>
     
       Last update:
-      Apr 23, 2024
+      May 23, 2024
     
   </small>
 </div>

@@ -597,6 +597,7 @@
 <span class="sd">&quot;&quot;&quot;Operation class definitions.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
+<span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">TYPE_CHECKING</span><span class="p">,</span>
     <span class="n">Any</span><span class="p">,</span>
@@ -611,12 +612,12 @@
 <span class="kn">from</span> <span class="nn">bson.raw_bson</span> <span class="kn">import</span> <span class="n">RawBSONDocument</span>
 <span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="kn">from</span> <span class="nn">pymongo.collation</span> <span class="kn">import</span> <span class="n">validate_collation_or_none</span>
-<span class="kn">from</span> <span class="nn">pymongo.common</span> <span class="kn">import</span> <span class="n">validate_boolean</span><span class="p">,</span> <span class="n">validate_is_mapping</span><span class="p">,</span> <span class="n">validate_list</span>
+<span class="kn">from</span> <span class="nn">pymongo.common</span> <span class="kn">import</span> <span class="n">validate_is_mapping</span><span class="p">,</span> <span class="n">validate_list</span>
 <span class="kn">from</span> <span class="nn">pymongo.helpers</span> <span class="kn">import</span> <span class="n">_gen_index_name</span><span class="p">,</span> <span class="n">_index_document</span><span class="p">,</span> <span class="n">_index_list</span>
 <span class="kn">from</span> <span class="nn">pymongo.typings</span> <span class="kn">import</span> <span class="n">_CollationIn</span><span class="p">,</span> <span class="n">_DocumentType</span><span class="p">,</span> <span class="n">_Pipeline</span>
+<span class="kn">from</span> <span class="nn">pymongo.write_concern</span> <span class="kn">import</span> <span class="n">validate_boolean</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">bson.son</span> <span class="kn">import</span> <span class="n">SON</span>
     <span class="kn">from</span> <span class="nn">pymongo.bulk</span> <span class="kn">import</span> <span class="n">_Bulk</span>
 
 <span class="c1"># Hint supports index name, &quot;myIndex&quot;, a list of either strings or index pairs: [(&#39;x&#39;, 1), (&#39;y&#39;, -1), &#39;z&#39;&#39;], or a dictionary</span>
@@ -624,6 +625,37 @@
     <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]]],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">]</span>
 <span class="n">_IndexKeyHint</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">_IndexList</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">_Op</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">ABORT</span> <span class="o">=</span> <span class="s2">&quot;abortTransaction&quot;</span>
+    <span class="n">AGGREGATE</span> <span class="o">=</span> <span class="s2">&quot;aggregate&quot;</span>
+    <span class="n">COMMIT</span> <span class="o">=</span> <span class="s2">&quot;commitTransaction&quot;</span>
+    <span class="n">COUNT</span> <span class="o">=</span> <span class="s2">&quot;count&quot;</span>
+    <span class="n">CREATE</span> <span class="o">=</span> <span class="s2">&quot;create&quot;</span>
+    <span class="n">CREATE_INDEXES</span> <span class="o">=</span> <span class="s2">&quot;createIndexes&quot;</span>
+    <span class="n">CREATE_SEARCH_INDEXES</span> <span class="o">=</span> <span class="s2">&quot;createSearchIndexes&quot;</span>
+    <span class="n">DELETE</span> <span class="o">=</span> <span class="s2">&quot;delete&quot;</span>
+    <span class="n">DISTINCT</span> <span class="o">=</span> <span class="s2">&quot;distinct&quot;</span>
+    <span class="n">DROP</span> <span class="o">=</span> <span class="s2">&quot;drop&quot;</span>
+    <span class="n">DROP_DATABASE</span> <span class="o">=</span> <span class="s2">&quot;dropDatabase&quot;</span>
+    <span class="n">DROP_INDEXES</span> <span class="o">=</span> <span class="s2">&quot;dropIndexes&quot;</span>
+    <span class="n">DROP_SEARCH_INDEXES</span> <span class="o">=</span> <span class="s2">&quot;dropSearchIndexes&quot;</span>
+    <span class="n">END_SESSIONS</span> <span class="o">=</span> <span class="s2">&quot;endSessions&quot;</span>
+    <span class="n">FIND_AND_MODIFY</span> <span class="o">=</span> <span class="s2">&quot;findAndModify&quot;</span>
+    <span class="n">FIND</span> <span class="o">=</span> <span class="s2">&quot;find&quot;</span>
+    <span class="n">INSERT</span> <span class="o">=</span> <span class="s2">&quot;insert&quot;</span>
+    <span class="n">LIST_COLLECTIONS</span> <span class="o">=</span> <span class="s2">&quot;listCollections&quot;</span>
+    <span class="n">LIST_INDEXES</span> <span class="o">=</span> <span class="s2">&quot;listIndexes&quot;</span>
+    <span class="n">LIST_SEARCH_INDEX</span> <span class="o">=</span> <span class="s2">&quot;listSearchIndexes&quot;</span>
+    <span class="n">LIST_DATABASES</span> <span class="o">=</span> <span class="s2">&quot;listDatabases&quot;</span>
+    <span class="n">UPDATE</span> <span class="o">=</span> <span class="s2">&quot;update&quot;</span>
+    <span class="n">UPDATE_INDEX</span> <span class="o">=</span> <span class="s2">&quot;updateIndex&quot;</span>
+    <span class="n">UPDATE_SEARCH_INDEX</span> <span class="o">=</span> <span class="s2">&quot;updateSearchIndex&quot;</span>
+    <span class="n">RENAME</span> <span class="o">=</span> <span class="s2">&quot;rename&quot;</span>
+    <span class="n">GETMORE</span> <span class="o">=</span> <span class="s2">&quot;getMore&quot;</span>
+    <span class="n">KILL_CURSORS</span> <span class="o">=</span> <span class="s2">&quot;killCursors&quot;</span>
+    <span class="n">TEST</span> <span class="o">=</span> <span class="s2">&quot;testOperation&quot;</span>
 
 
 <div class="viewcode-block" id="InsertOne">
@@ -640,8 +672,7 @@
 
 <span class="sd">        For use with :meth:`~pymongo.collection.Collection.bulk_write`.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `document`: The document to insert. If the document is missing an</span>
+<span class="sd">        :param document: The document to insert. If the document is missing an</span>
 <span class="sd">            _id field one will be added.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span> <span class="o">=</span> <span class="n">document</span></div>
@@ -688,11 +719,10 @@
 
 <span class="sd">        For use with :meth:`~pymongo.collection.Collection.bulk_write`.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter`: A query that matches the document to delete.</span>
-<span class="sd">          - `collation` (optional): An instance of</span>
+<span class="sd">        :param filter: A query that matches the document to delete.</span>
+<span class="sd">        :param collation: An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`.</span>
-<span class="sd">          - `hint` (optional): An index to use to support the query</span>
+<span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
 <span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
@@ -707,7 +737,7 @@
         <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">validate_is_mapping</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SON</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span> <span class="o">=</span> <span class="n">hint</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span> <span class="o">=</span> <span class="nb">filter</span>
@@ -753,11 +783,10 @@
 
 <span class="sd">        For use with :meth:`~pymongo.collection.Collection.bulk_write`.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter`: A query that matches the documents to delete.</span>
-<span class="sd">          - `collation` (optional): An instance of</span>
+<span class="sd">        :param filter: A query that matches the documents to delete.</span>
+<span class="sd">        :param collation: An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`.</span>
-<span class="sd">          - `hint` (optional): An index to use to support the query</span>
+<span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
 <span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
@@ -772,7 +801,7 @@
         <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">validate_is_mapping</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SON</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span> <span class="o">=</span> <span class="n">hint</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span> <span class="o">=</span> <span class="nb">filter</span>
@@ -820,14 +849,13 @@
 
 <span class="sd">        For use with :meth:`~pymongo.collection.Collection.bulk_write`.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter`: A query that matches the document to replace.</span>
-<span class="sd">          - `replacement`: The new document.</span>
-<span class="sd">          - `upsert` (optional): If ``True``, perform an insert if no documents</span>
+<span class="sd">        :param filter: A query that matches the document to replace.</span>
+<span class="sd">        :param replacement: The new document.</span>
+<span class="sd">        :param upsert: If ``True``, perform an insert if no documents</span>
 <span class="sd">            match the filter.</span>
-<span class="sd">          - `collation` (optional): An instance of</span>
+<span class="sd">        :param collation: An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`.</span>
-<span class="sd">          - `hint` (optional): An index to use to support the query</span>
+<span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
 <span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
@@ -844,7 +872,7 @@
         <span class="k">if</span> <span class="n">upsert</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">validate_boolean</span><span class="p">(</span><span class="s2">&quot;upsert&quot;</span><span class="p">,</span> <span class="n">upsert</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SON</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span> <span class="o">=</span> <span class="n">hint</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span> <span class="o">=</span> <span class="nb">filter</span>
@@ -864,7 +892,13 @@
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_upsert</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_hint</span><span class="p">,)</span> <span class="o">==</span> <span class="p">(</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">_upsert</span><span class="p">,</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">==</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_upsert</span><span class="p">,</span>
@@ -908,7 +942,7 @@
         <span class="k">if</span> <span class="n">array_filters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">validate_list</span><span class="p">(</span><span class="s2">&quot;array_filters&quot;</span><span class="p">,</span> <span class="n">array_filters</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SON</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span> <span class="o">=</span> <span class="n">hint</span>
 
@@ -971,16 +1005,15 @@
 
 <span class="sd">        For use with :meth:`~pymongo.collection.Collection.bulk_write`.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter`: A query that matches the document to update.</span>
-<span class="sd">          - `update`: The modifications to apply.</span>
-<span class="sd">          - `upsert` (optional): If ``True``, perform an insert if no documents</span>
+<span class="sd">        :param filter: A query that matches the document to update.</span>
+<span class="sd">        :param update: The modifications to apply.</span>
+<span class="sd">        :param upsert: If ``True``, perform an insert if no documents</span>
 <span class="sd">            match the filter.</span>
-<span class="sd">          - `collation` (optional): An instance of</span>
+<span class="sd">        :param collation: An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`.</span>
-<span class="sd">          - `array_filters` (optional): A list of filters specifying which</span>
+<span class="sd">        :param array_filters: A list of filters specifying which</span>
 <span class="sd">            array elements an update should apply.</span>
-<span class="sd">          - `hint` (optional): An index to use to support the query</span>
+<span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
 <span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
@@ -1031,16 +1064,15 @@
 
 <span class="sd">        For use with :meth:`~pymongo.collection.Collection.bulk_write`.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter`: A query that matches the documents to update.</span>
-<span class="sd">          - `update`: The modifications to apply.</span>
-<span class="sd">          - `upsert` (optional): If ``True``, perform an insert if no documents</span>
+<span class="sd">        :param filter: A query that matches the documents to update.</span>
+<span class="sd">        :param update: The modifications to apply.</span>
+<span class="sd">        :param upsert: If ``True``, perform an insert if no documents</span>
 <span class="sd">            match the filter.</span>
-<span class="sd">          - `collation` (optional): An instance of</span>
+<span class="sd">        :param collation: An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`.</span>
-<span class="sd">          - `array_filters` (optional): A list of filters specifying which</span>
+<span class="sd">        :param array_filters: A list of filters specifying which</span>
 <span class="sd">            array elements an update should apply.</span>
-<span class="sd">          - `hint` (optional): An index to use to support the query</span>
+<span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
 <span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
@@ -1123,10 +1155,9 @@
 <span class="sd">        See the MongoDB documentation for a full list of supported options by</span>
 <span class="sd">        server version.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `keys`: a single key or a list containing (key, direction) pairs</span>
+<span class="sd">        :param keys: a single key or a list containing (key, direction) pairs</span>
 <span class="sd">             or keys specifying the index to create.</span>
-<span class="sd">          - `**kwargs` (optional): any additional index creation</span>
+<span class="sd">        :param kwargs: any additional index creation</span>
 <span class="sd">            options (see the above list) should be passed as keyword</span>
 <span class="sd">            arguments.</span>
 
@@ -1160,23 +1191,34 @@
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;__document&quot;</span><span class="p">,)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">definition</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">definition</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Search Index instance.</span>
 
 <span class="sd">        For use with :meth:`~pymongo.collection.Collection.create_search_index` and :meth:`~pymongo.collection.Collection.create_search_indexes`.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `definition` - The definition for this index.</span>
-<span class="sd">          - `name` (optional) - The name for this index, if present.</span>
-
-<span class="sd">        .. versionadded:: 4.5</span>
+<span class="sd">        :param definition: The definition for this index.</span>
+<span class="sd">        :param name: The name for this index, if present.</span>
+<span class="sd">        :param type: The type for this index which defaults to &quot;search&quot;. Alternative values include &quot;vectorSearch&quot;.</span>
+<span class="sd">        :param kwargs: Keyword arguments supplying any additional options.</span>
 
 <span class="sd">        .. note:: Search indexes require a MongoDB server version 7.0+ Atlas cluster.</span>
+<span class="sd">        .. versionadded:: 4.5</span>
+<span class="sd">        .. versionchanged:: 4.7</span>
+<span class="sd">           Added the type and kwargs arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__document</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__document</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">definition</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__document</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">definition</span><span class="o">=</span><span class="n">definition</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__document</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__document</span><span class="p">[</span><span class="s2">&quot;definition&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span>
+        <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__document</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__document</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">document</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
@@ -1189,7 +1231,7 @@
   <small>
     
       Last update:
-      Apr 23, 2024
+      May 23, 2024
     
   </small>
 </div>

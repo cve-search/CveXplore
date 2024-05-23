@@ -576,7 +576,7 @@
 
 <dl class="py method objdesc">
 <dt class="sig sig-object highlight py">
-<span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.cvesearch_mongo_database.</span><span class="pre">Cursor.</span></span><span class="sig-name descname"><span class="pre">where</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Code</span></span></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="Cursor.html" title="pymongo.cursor.Cursor (Python class)"><span class="pre">Cursor</span></a><span class="p"><span class="pre">[</span></span><span class="pre">_DocumentType</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/pymongo/cursor.html#Cursor.where"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.cvesearch_mongo_database.</span><span class="pre">Cursor.</span></span><span class="sig-name descname"><span class="pre">where</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-code" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor.where.code (Python parameter) — JavaScript expression to use as a filter"><span class="n"><span class="pre">code</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Code</span></span></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="Cursor.html" title="pymongo.cursor.Cursor (Python class)"><span class="pre">Cursor</span></a><span class="p"><span class="pre">[</span></span><span class="pre">_DocumentType</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/pymongo/cursor.html#Cursor.where"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Adds a <a class="reference external" href="https://mongodb.com/docs/manual/reference/operator/query/where/">$where</a> clause to this query.</p>
 <p>The <a class="reference external" href="https://docs.python.org/3/library/code.html#module-code" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code</span></code></a> argument must be an instance of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Code</span></code> containing a JavaScript expression.
@@ -600,9 +600,10 @@ with scope variables. Consider using <a class="reference external" href="https:/
 </div>
 <dl class="field-list simple">
 <dt class="field-odd" id="parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/library/code.html#module-code" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code</span></code></a>: JavaScript expression to use as a filter</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="p-code"><span class="n sig-name">code</span><span class="p">:</span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a><span class="w"> </span><span class="p">|</span><span class="w"> </span>Code</span><a class="headerlink" href="#p-code" title="Permalink to this definition">¶</a></dt><dd><p>JavaScript expression to use as a filter</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -614,7 +615,7 @@ with scope variables. Consider using <a class="reference external" href="https:/
   <small>
     
       Last update:
-      Apr 23, 2024
+      May 23, 2024
     
   </small>
 </div>

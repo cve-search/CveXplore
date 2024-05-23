@@ -637,9 +637,7 @@
     <span class="n">cast</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">bson</span>
-<span class="kn">from</span> <span class="nn">bson.codec_options</span> <span class="kn">import</span> <span class="n">DEFAULT_CODEC_OPTIONS</span><span class="p">,</span> <span class="n">TypeRegistry</span>
-<span class="kn">from</span> <span class="nn">bson.son</span> <span class="kn">import</span> <span class="n">SON</span>
+<span class="kn">from</span> <span class="nn">bson.codec_options</span> <span class="kn">import</span> <span class="n">DEFAULT_CODEC_OPTIONS</span><span class="p">,</span> <span class="n">CodecOptions</span><span class="p">,</span> <span class="n">TypeRegistry</span>
 <span class="kn">from</span> <span class="nn">bson.timestamp</span> <span class="kn">import</span> <span class="n">Timestamp</span>
 <span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">_csot</span><span class="p">,</span>
@@ -666,9 +664,12 @@
     <span class="n">PyMongoError</span><span class="p">,</span>
     <span class="n">ServerSelectionTimeoutError</span><span class="p">,</span>
     <span class="n">WaitQueueTimeoutError</span><span class="p">,</span>
+    <span class="n">WriteConcernError</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pymongo.lock</span> <span class="kn">import</span> <span class="n">_HAS_REGISTER_AT_FORK</span><span class="p">,</span> <span class="n">_create_lock</span><span class="p">,</span> <span class="n">_release_locks</span>
-<span class="kn">from</span> <span class="nn">pymongo.pool</span> <span class="kn">import</span> <span class="n">ConnectionClosedReason</span>
+<span class="kn">from</span> <span class="nn">pymongo.logger</span> <span class="kn">import</span> <span class="n">_CLIENT_LOGGER</span><span class="p">,</span> <span class="n">_log_or_warn</span>
+<span class="kn">from</span> <span class="nn">pymongo.monitoring</span> <span class="kn">import</span> <span class="n">ConnectionClosedReason</span>
+<span class="kn">from</span> <span class="nn">pymongo.operations</span> <span class="kn">import</span> <span class="n">_Op</span>
 <span class="kn">from</span> <span class="nn">pymongo.read_preferences</span> <span class="kn">import</span> <span class="n">ReadPreference</span><span class="p">,</span> <span class="n">_ServerMode</span>
 <span class="kn">from</span> <span class="nn">pymongo.server_selectors</span> <span class="kn">import</span> <span class="n">writable_server_selector</span>
 <span class="kn">from</span> <span class="nn">pymongo.server_type</span> <span class="kn">import</span> <span class="n">SERVER_TYPE</span>
@@ -832,28 +833,27 @@
 <span class="sd">          URI or keyword parameters. If the same option is passed in a URI and</span>
 <span class="sd">          as a keyword parameter the keyword parameter takes precedence.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `host` (optional): hostname or IP address or Unix domain socket</span>
+<span class="sd">        :param host: hostname or IP address or Unix domain socket</span>
 <span class="sd">            path of a single mongod or mongos instance to connect to, or a</span>
 <span class="sd">            mongodb URI, or a list of hostnames (but no more than one mongodb</span>
 <span class="sd">            URI). If `host` is an IPv6 literal it must be enclosed in &#39;[&#39;</span>
 <span class="sd">            and &#39;]&#39; characters</span>
 <span class="sd">            following the RFC2732 URL syntax (e.g. &#39;[::1]&#39; for localhost).</span>
 <span class="sd">            Multihomed and round robin DNS addresses are **not** supported.</span>
-<span class="sd">          - `port` (optional): port number on which to connect</span>
-<span class="sd">          - `document_class` (optional): default class to use for</span>
+<span class="sd">        :param port: port number on which to connect</span>
+<span class="sd">        :param document_class: default class to use for</span>
 <span class="sd">            documents returned from queries on this client</span>
-<span class="sd">          - `tz_aware` (optional): if ``True``,</span>
+<span class="sd">        :param tz_aware: if ``True``,</span>
 <span class="sd">            :class:`~datetime.datetime` instances returned as values</span>
 <span class="sd">            in a document by this :class:`MongoClient` will be timezone</span>
 <span class="sd">            aware (otherwise they will be naive)</span>
-<span class="sd">          - `connect` (optional): if ``True`` (the default), immediately</span>
+<span class="sd">        :param connect: if ``True`` (the default), immediately</span>
 <span class="sd">            begin connecting to MongoDB in the background. Otherwise connect</span>
 <span class="sd">            on the first operation.</span>
-<span class="sd">          - `type_registry` (optional): instance of</span>
+<span class="sd">        :param type_registry: instance of</span>
 <span class="sd">            :class:`~bson.codec_options.TypeRegistry` to enable encoding</span>
 <span class="sd">            and decoding of custom types.</span>
-<span class="sd">          - `datetime_conversion`: Specifies how UTC datetimes should be decoded</span>
+<span class="sd">        :param datetime_conversion: Specifies how UTC datetimes should be decoded</span>
 <span class="sd">            within BSON. Valid options include &#39;datetime_ms&#39; to return as a</span>
 <span class="sd">            DatetimeMS, &#39;datetime&#39; to return as a datetime.datetime and</span>
 <span class="sd">            raising a ValueError for out-of-range values, &#39;datetime_auto&#39; to</span>
@@ -1024,8 +1024,8 @@
 <span class="sd">            primary (e.g. w=3 means write to the primary and wait until</span>
 <span class="sd">            replicated to **two** secondaries). Passing w=0 **disables write</span>
 <span class="sd">            acknowledgement** and all other write concern options.</span>
-<span class="sd">          - `wTimeoutMS`: (integer) Used in conjunction with `w`. Specify a value</span>
-<span class="sd">            in milliseconds to control how long to wait for write propagation</span>
+<span class="sd">          - `wTimeoutMS`: **DEPRECATED** (integer) Used in conjunction with `w`.</span>
+<span class="sd">            Specify a value in milliseconds to control how long to wait for write propagation</span>
 <span class="sd">            to complete. If replication does not complete in the given</span>
 <span class="sd">            timeframe, a timeout exception is raised. Passing wTimeoutMS=0</span>
 <span class="sd">            will cause **write operations to wait indefinitely**.</span>
@@ -1302,6 +1302,9 @@
 <span class="sd">           Not::</span>
 
 <span class="sd">               client.__my_database__</span>
+
+<span class="sd">        .. versionchanged:: 4.7</span>
+<span class="sd">            Deprecated parameter ``wTimeoutMS``, use :meth:`~pymongo.timeout`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">doc_class</span> <span class="o">=</span> <span class="n">document_class</span> <span class="ow">or</span> <span class="nb">dict</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__init_kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
@@ -1374,6 +1377,10 @@
                 <span class="n">seeds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">split_hosts</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">seeds</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span><span class="s2">&quot;need to specify at least one host&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">hostname</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">seeds</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">_detect_external_db</span><span class="p">(</span><span class="n">hostname</span><span class="p">):</span>
+                <span class="k">break</span>
 
         <span class="c1"># Add options with named keyword arguments to the parsed kwarg options.</span>
         <span class="k">if</span> <span class="n">type_registry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1459,8 +1466,11 @@
             <span class="n">MongoClient</span><span class="o">.</span><span class="n">_clients</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_topology_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_init_background</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_init_background</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_pid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span> <span class="o">=</span> <span class="n">Topology</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_topology_settings</span><span class="p">)</span>
+        <span class="c1"># Seed the topology with the old one&#39;s pid so we can detect clients</span>
+        <span class="c1"># that are opened before a fork and used after.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_pid</span> <span class="o">=</span> <span class="n">old_pid</span>
 
         <span class="k">def</span> <span class="nf">target</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="n">self_ref</span><span class="p">()</span>
@@ -1483,7 +1493,7 @@
 
     <span class="k">def</span> <span class="nf">_after_fork</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets topology in a child after successfully forking.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init_background</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_background</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_pid</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MongoClient</span><span class="p">:</span>
         <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__init_kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -1501,7 +1511,7 @@
 <span class="sd">        the server may change. In such cases, store a local reference to a</span>
 <span class="sd">        ServerDescription first, then use its properties.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">select_server</span><span class="p">(</span><span class="n">writable_server_selector</span><span class="p">)</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_topology</span><span class="p">()</span><span class="o">.</span><span class="n">select_server</span><span class="p">(</span><span class="n">writable_server_selector</span><span class="p">,</span> <span class="n">_Op</span><span class="o">.</span><span class="n">TEST</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">)</span>
 
@@ -1560,47 +1570,45 @@
 <span class="sd">        For a precise description of the resume process see the</span>
 <span class="sd">        `change streams specification`_.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `pipeline` (optional): A list of aggregation pipeline stages to</span>
+<span class="sd">        :param pipeline: A list of aggregation pipeline stages to</span>
 <span class="sd">            append to an initial ``$changeStream`` stage. Not all</span>
 <span class="sd">            pipeline stages are valid after a ``$changeStream`` stage, see the</span>
 <span class="sd">            MongoDB documentation on change streams for the supported stages.</span>
-<span class="sd">          - `full_document` (optional): The fullDocument to pass as an option</span>
+<span class="sd">        :param full_document: The fullDocument to pass as an option</span>
 <span class="sd">            to the ``$changeStream`` stage. Allowed values: &#39;updateLookup&#39;,</span>
 <span class="sd">            &#39;whenAvailable&#39;, &#39;required&#39;. When set to &#39;updateLookup&#39;, the</span>
 <span class="sd">            change notification for partial updates will include both a delta</span>
 <span class="sd">            describing the changes to the document, as well as a copy of the</span>
 <span class="sd">            entire document that was changed from some time after the change</span>
 <span class="sd">            occurred.</span>
-<span class="sd">          - `full_document_before_change`: Allowed values: &#39;whenAvailable&#39;</span>
+<span class="sd">        :param full_document_before_change: Allowed values: &#39;whenAvailable&#39;</span>
 <span class="sd">            and &#39;required&#39;. Change events may now result in a</span>
 <span class="sd">            &#39;fullDocumentBeforeChange&#39; response field.</span>
-<span class="sd">          - `resume_after` (optional): A resume token. If provided, the</span>
+<span class="sd">        :param resume_after: A resume token. If provided, the</span>
 <span class="sd">            change stream will start returning changes that occur directly</span>
 <span class="sd">            after the operation specified in the resume token. A resume token</span>
 <span class="sd">            is the _id value of a change document.</span>
-<span class="sd">          - `max_await_time_ms` (optional): The maximum time in milliseconds</span>
+<span class="sd">        :param max_await_time_ms: The maximum time in milliseconds</span>
 <span class="sd">            for the server to wait for changes before responding to a getMore</span>
 <span class="sd">            operation.</span>
-<span class="sd">          - `batch_size` (optional): The maximum number of documents to return</span>
+<span class="sd">        :param batch_size: The maximum number of documents to return</span>
 <span class="sd">            per batch.</span>
-<span class="sd">          - `collation` (optional): The :class:`~pymongo.collation.Collation`</span>
+<span class="sd">        :param collation: The :class:`~pymongo.collation.Collation`</span>
 <span class="sd">            to use for the aggregation.</span>
-<span class="sd">          - `start_at_operation_time` (optional): If provided, the resulting</span>
+<span class="sd">        :param start_at_operation_time: If provided, the resulting</span>
 <span class="sd">            change stream will only return changes that occurred at or after</span>
 <span class="sd">            the specified :class:`~bson.timestamp.Timestamp`. Requires</span>
 <span class="sd">            MongoDB &gt;= 4.0.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `start_after` (optional): The same as `resume_after` except that</span>
+<span class="sd">        :param start_after: The same as `resume_after` except that</span>
 <span class="sd">            `start_after` can resume notifications after an invalidate event.</span>
 <span class="sd">            This option and `resume_after` are mutually exclusive.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `show_expanded_events` (optional): Include expanded events such as DDL events like `dropIndexes`.</span>
+<span class="sd">        :param show_expanded_events: Include expanded events such as DDL events like `dropIndexes`.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          A :class:`~pymongo.change_stream.ClusterChangeStream` cursor.</span>
+<span class="sd">        :return: A :class:`~pymongo.change_stream.ClusterChangeStream` cursor.</span>
 
 <span class="sd">        .. versionchanged:: 4.3</span>
 <span class="sd">           Added `show_expanded_events` parameter.</span>
@@ -1652,8 +1660,7 @@
 <span class="sd">        to get a more recent</span>
 <span class="sd">        :class:`~pymongo.topology_description.TopologyDescription`.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          An instance of</span>
+<span class="sd">        :return: An instance of</span>
 <span class="sd">          :class:`~pymongo.topology_description.TopologyDescription`.</span>
 
 <span class="sd">        .. versionadded:: 4.0</span>
@@ -1765,8 +1772,7 @@
     <span class="k">def</span> <span class="nf">options</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ClientOptions</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The configuration options for this client.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          An instance of :class:`~pymongo.client_options.ClientOptions`.</span>
+<span class="sd">        :return: An instance of :class:`~pymongo.client_options.ClientOptions`.</span>
 
 <span class="sd">        .. versionadded:: 4.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1777,7 +1783,9 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Use Connection.command directly to avoid implicitly creating</span>
             <span class="c1"># another session.</span>
-            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_reads</span><span class="p">(</span><span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY_PREFERRED</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_reads</span><span class="p">(</span>
+                <span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY_PREFERRED</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">END_SESSIONS</span>
+            <span class="p">)</span> <span class="k">as</span> <span class="p">(</span>
                 <span class="n">conn</span><span class="p">,</span>
                 <span class="n">read_pref</span><span class="p">,</span>
             <span class="p">):</span>
@@ -1785,7 +1793,7 @@
                     <span class="k">return</span>
 
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">session_ids</span><span class="p">),</span> <span class="n">common</span><span class="o">.</span><span class="n">_MAX_END_SESSIONS</span><span class="p">):</span>
-                    <span class="n">spec</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;endSessions&quot;</span><span class="p">,</span> <span class="n">session_ids</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">common</span><span class="o">.</span><span class="n">_MAX_END_SESSIONS</span><span class="p">])])</span>
+                    <span class="n">spec</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;endSessions&quot;</span><span class="p">:</span> <span class="n">session_ids</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">common</span><span class="o">.</span><span class="n">_MAX_END_SESSIONS</span><span class="p">]}</span>
                     <span class="n">conn</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;admin&quot;</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">read_preference</span><span class="o">=</span><span class="n">read_pref</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">PyMongoError</span><span class="p">:</span>
             <span class="c1"># Drivers MUST ignore any errors returned by the endSessions</span>
@@ -1869,16 +1877,19 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">server_selector</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Selection</span><span class="p">],</span> <span class="n">Selection</span><span class="p">],</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">address</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_Address</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">deprioritized_servers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Server</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">operation_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Server</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Select a server to run an operation on this client.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `server_selector`: The server selector to use if the session is</span>
+<span class="sd">        :param server_selector: The server selector to use if the session is</span>
 <span class="sd">            not pinned and no address is given.</span>
-<span class="sd">          - `session`: The ClientSession for the next operation, or None. May</span>
+<span class="sd">        :param session: The ClientSession for the next operation, or None. May</span>
 <span class="sd">            be pinned to a mongos server address.</span>
-<span class="sd">          - `address` (optional): Address when sending a message</span>
+<span class="sd">        :param operation: The name of the operation that the server is being selected for.</span>
+<span class="sd">        :param address: Address when sending a message</span>
 <span class="sd">            to a specific server, used for getMore.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1889,11 +1900,18 @@
                 <span class="n">address</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">_pinned_address</span>
             <span class="k">if</span> <span class="n">address</span><span class="p">:</span>
                 <span class="c1"># We&#39;re running a getMore or this session is pinned to a mongos.</span>
-                <span class="n">server</span> <span class="o">=</span> <span class="n">topology</span><span class="o">.</span><span class="n">select_server_by_address</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+                <span class="n">server</span> <span class="o">=</span> <span class="n">topology</span><span class="o">.</span><span class="n">select_server_by_address</span><span class="p">(</span>
+                    <span class="n">address</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">operation_id</span><span class="o">=</span><span class="n">operation_id</span>
+                <span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">server</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">AutoReconnect</span><span class="p">(</span><span class="s2">&quot;server </span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2"> no longer available&quot;</span> <span class="o">%</span> <span class="n">address</span><span class="p">)</span>  <span class="c1"># noqa: UP031</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">server</span> <span class="o">=</span> <span class="n">topology</span><span class="o">.</span><span class="n">select_server</span><span class="p">(</span><span class="n">server_selector</span><span class="p">)</span>
+                <span class="n">server</span> <span class="o">=</span> <span class="n">topology</span><span class="o">.</span><span class="n">select_server</span><span class="p">(</span>
+                    <span class="n">server_selector</span><span class="p">,</span>
+                    <span class="n">operation</span><span class="p">,</span>
+                    <span class="n">deprioritized_servers</span><span class="o">=</span><span class="n">deprioritized_servers</span><span class="p">,</span>
+                    <span class="n">operation_id</span><span class="o">=</span><span class="n">operation_id</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="k">return</span> <span class="n">server</span>
         <span class="k">except</span> <span class="n">PyMongoError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="c1"># Server selection errors in a transaction are transient.</span>
@@ -1902,8 +1920,10 @@
                 <span class="n">session</span><span class="o">.</span><span class="n">_unpin</span><span class="p">()</span>
             <span class="k">raise</span>
 
-    <span class="k">def</span> <span class="nf">_conn_for_writes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ContextManager</span><span class="p">[</span><span class="n">Connection</span><span class="p">]:</span>
-        <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_server</span><span class="p">(</span><span class="n">writable_server_selector</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_conn_for_writes</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContextManager</span><span class="p">[</span><span class="n">Connection</span><span class="p">]:</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_server</span><span class="p">(</span><span class="n">writable_server_selector</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_checkout</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
 
     <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
@@ -1932,11 +1952,14 @@
             <span class="k">yield</span> <span class="n">conn</span><span class="p">,</span> <span class="n">read_preference</span>
 
     <span class="k">def</span> <span class="nf">_conn_for_reads</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">read_preference</span><span class="p">:</span> <span class="n">_ServerMode</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">read_preference</span><span class="p">:</span> <span class="n">_ServerMode</span><span class="p">,</span>
+        <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContextManager</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Connection</span><span class="p">,</span> <span class="n">_ServerMode</span><span class="p">]]:</span>
         <span class="k">assert</span> <span class="n">read_preference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;read_preference must not be None&quot;</span>
         <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_topology</span><span class="p">()</span>
-        <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_server</span><span class="p">(</span><span class="n">read_preference</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_server</span><span class="p">(</span><span class="n">read_preference</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_from_server</span><span class="p">(</span><span class="n">read_preference</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_should_pin_cursor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
@@ -1951,15 +1974,17 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Run a _Query/_GetMore operation and return a Response.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `operation`: a _Query or _GetMore object.</span>
-<span class="sd">          - `unpack_res`: A callable that decodes the wire protocol response.</span>
-<span class="sd">          - `address` (optional): Optional address when sending a message</span>
+<span class="sd">        :param operation: a _Query or _GetMore object.</span>
+<span class="sd">        :param unpack_res: A callable that decodes the wire protocol response.</span>
+<span class="sd">        :param address: Optional address when sending a message</span>
 <span class="sd">            to a specific server, used for getMore.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">operation</span><span class="o">.</span><span class="n">conn_mgr</span><span class="p">:</span>
             <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_server</span><span class="p">(</span>
-                <span class="n">operation</span><span class="o">.</span><span class="n">read_preference</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">address</span>
+                <span class="n">operation</span><span class="o">.</span><span class="n">read_preference</span><span class="p">,</span>
+                <span class="n">operation</span><span class="o">.</span><span class="n">session</span><span class="p">,</span>
+                <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="k">with</span> <span class="n">operation</span><span class="o">.</span><span class="n">conn_mgr</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
@@ -1971,6 +1996,7 @@
                         <span class="n">operation</span><span class="o">.</span><span class="n">read_preference</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_event_listeners</span><span class="p">,</span>
                         <span class="n">unpack_res</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="p">,</span>
                     <span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">_cmd</span><span class="p">(</span>
@@ -1981,7 +2007,12 @@
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
             <span class="n">operation</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>  <span class="c1"># Reset op in case of retry.</span>
             <span class="k">return</span> <span class="n">server</span><span class="o">.</span><span class="n">run_operation</span><span class="p">(</span>
-                <span class="n">conn</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">read_preference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_listeners</span><span class="p">,</span> <span class="n">unpack_res</span>
+                <span class="n">conn</span><span class="p">,</span>
+                <span class="n">operation</span><span class="p">,</span>
+                <span class="n">read_preference</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_event_listeners</span><span class="p">,</span>
+                <span class="n">unpack_res</span><span class="p">,</span>
+                <span class="bp">self</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable_read</span><span class="p">(</span>
@@ -1990,6 +2021,7 @@
             <span class="n">operation</span><span class="o">.</span><span class="n">session</span><span class="p">,</span>
             <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">,</span>
             <span class="n">retryable</span><span class="o">=</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">message</span><span class="o">.</span><span class="n">_Query</span><span class="p">),</span>
+            <span class="n">operation</span><span class="o">=</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_retry_with_session</span><span class="p">(</span>
@@ -1998,6 +2030,8 @@
         <span class="n">func</span><span class="p">:</span> <span class="n">_WriteCall</span><span class="p">[</span><span class="n">T</span><span class="p">],</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
         <span class="n">bulk</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_Bulk</span><span class="p">],</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">operation_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute an operation with at most one consecutive retries</span>
 
@@ -2015,7 +2049,9 @@
             <span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span>
             <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
             <span class="n">bulk</span><span class="o">=</span><span class="n">bulk</span><span class="p">,</span>
+            <span class="n">operation</span><span class="o">=</span><span class="n">operation</span><span class="p">,</span>
             <span class="n">retryable</span><span class="o">=</span><span class="n">retryable</span><span class="p">,</span>
+            <span class="n">operation_id</span><span class="o">=</span><span class="n">operation_id</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="nd">@_csot</span><span class="o">.</span><span class="n">apply</span>
@@ -2024,34 +2060,37 @@
         <span class="n">func</span><span class="p">:</span> <span class="n">_WriteCall</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="n">_ReadCall</span><span class="p">[</span><span class="n">T</span><span class="p">],</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
         <span class="n">bulk</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_Bulk</span><span class="p">],</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">is_read</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">address</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_Address</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">read_pref</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">retryable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">operation_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal retryable helper for all client transactions.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `func`: Callback function we want to retry</span>
-<span class="sd">          - `session`: Client Session on which the transaction should occur</span>
-<span class="sd">          - `bulk`: Abstraction to handle bulk write operations</span>
-<span class="sd">          - `is_read`: If this is an exclusive read transaction, defaults to False</span>
-<span class="sd">          - `address`: Server Address, defaults to None</span>
-<span class="sd">          - `read_pref`: Topology of read operation, defaults to None</span>
-<span class="sd">          - `retryable`: If the operation should be retried once, defaults to None</span>
+<span class="sd">        :param func: Callback function we want to retry</span>
+<span class="sd">        :param session: Client Session on which the transaction should occur</span>
+<span class="sd">        :param bulk: Abstraction to handle bulk write operations</span>
+<span class="sd">        :param operation: The name of the operation that the server is being selected for</span>
+<span class="sd">        :param is_read: If this is an exclusive read transaction, defaults to False</span>
+<span class="sd">        :param address: Server Address, defaults to None</span>
+<span class="sd">        :param read_pref: Topology of read operation, defaults to None</span>
+<span class="sd">        :param retryable: If the operation should be retried once, defaults to None</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          Output of the calling func()</span>
+<span class="sd">        :return: Output of the calling func()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_ClientConnectionRetryable</span><span class="p">(</span>
             <span class="n">mongo_client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span>
             <span class="n">bulk</span><span class="o">=</span><span class="n">bulk</span><span class="p">,</span>
+            <span class="n">operation</span><span class="o">=</span><span class="n">operation</span><span class="p">,</span>
             <span class="n">is_read</span><span class="o">=</span><span class="n">is_read</span><span class="p">,</span>
             <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
             <span class="n">read_pref</span><span class="o">=</span><span class="n">read_pref</span><span class="p">,</span>
             <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">,</span>
             <span class="n">retryable</span><span class="o">=</span><span class="n">retryable</span><span class="p">,</span>
+            <span class="n">operation_id</span><span class="o">=</span><span class="n">operation_id</span><span class="p">,</span>
         <span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_retryable_read</span><span class="p">(</span>
@@ -2059,8 +2098,10 @@
         <span class="n">func</span><span class="p">:</span> <span class="n">_ReadCall</span><span class="p">[</span><span class="n">T</span><span class="p">],</span>
         <span class="n">read_pref</span><span class="p">:</span> <span class="n">_ServerMode</span><span class="p">,</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">address</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_Address</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">retryable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">operation_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute an operation with consecutive retries if possible</span>
 
@@ -2069,11 +2110,12 @@
 
 <span class="sd">        Re-raises any exception thrown by func().</span>
 
-<span class="sd">          - `func`: Read call we want to execute</span>
-<span class="sd">          - `read_pref`: Desired topology of read operation</span>
-<span class="sd">          - `session`: Client session we should use to execute operation</span>
-<span class="sd">          - `address`: Optional address when sending a message, defaults to None</span>
-<span class="sd">          - `retryable`: if we should attempt retries</span>
+<span class="sd">        :param func: Read call we want to execute</span>
+<span class="sd">        :param read_pref: Desired topology of read operation</span>
+<span class="sd">        :param session: Client session we should use to execute operation</span>
+<span class="sd">        :param operation: The name of the operation that the server is being selected for</span>
+<span class="sd">        :param address: Optional address when sending a message, defaults to None</span>
+<span class="sd">        :param retryable: if we should attempt retries</span>
 <span class="sd">            (may not always be supported even if supplied), defaults to False</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -2086,10 +2128,12 @@
             <span class="n">func</span><span class="p">,</span>
             <span class="n">session</span><span class="p">,</span>
             <span class="kc">None</span><span class="p">,</span>
+            <span class="n">operation</span><span class="p">,</span>
             <span class="n">is_read</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">,</span>
             <span class="n">read_pref</span><span class="o">=</span><span class="n">read_pref</span><span class="p">,</span>
             <span class="n">retryable</span><span class="o">=</span><span class="n">retryable</span><span class="p">,</span>
+            <span class="n">operation_id</span><span class="o">=</span><span class="n">operation_id</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_retryable_write</span><span class="p">(</span>
@@ -2097,7 +2141,9 @@
         <span class="n">retryable</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">func</span><span class="p">:</span> <span class="n">_WriteCall</span><span class="p">[</span><span class="n">T</span><span class="p">],</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">bulk</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_Bulk</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">operation_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute an operation with consecutive retries if possible</span>
 
@@ -2106,14 +2152,14 @@
 
 <span class="sd">        Re-raises any exception thrown by func().</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `retryable`: if we should attempt retries (may not always be supported)</span>
-<span class="sd">          - `func`: write call we want to execute during a session</span>
-<span class="sd">          - `session`: Client session we will use to execute write operation</span>
-<span class="sd">          - `bulk`: bulk abstraction to execute operations in bulk, defaults to None</span>
+<span class="sd">        :param retryable: if we should attempt retries (may not always be supported)</span>
+<span class="sd">        :param func: write call we want to execute during a session</span>
+<span class="sd">        :param session: Client session we will use to execute write operation</span>
+<span class="sd">        :param operation: The name of the operation that the server is being selected for</span>
+<span class="sd">        :param bulk: bulk abstraction to execute operations in bulk, defaults to None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tmp_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retry_with_session</span><span class="p">(</span><span class="n">retryable</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">bulk</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retry_with_session</span><span class="p">(</span><span class="n">retryable</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">bulk</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MongoClient.__eq__">
 <a class="viewcode-back" href="../../CveXplore/database/MongoClient.__eq__.html#CveXplore.database.connection.mongodb.mongo_db.MongoClient.__eq__">[docs]</a>
@@ -2182,8 +2228,7 @@
 <span class="sd">        Raises :class:`~pymongo.errors.InvalidName` if an invalid</span>
 <span class="sd">        database name is used.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `name`: the name of the database to get</span>
+<span class="sd">        :param name: the name of the database to get</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
@@ -2201,8 +2246,7 @@
 <span class="sd">        Raises :class:`~pymongo.errors.InvalidName` if an invalid</span>
 <span class="sd">        database name is used.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `name`: the name of the database to get</span>
+<span class="sd">        :param name: the name of the database to get</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">database</span><span class="o">.</span><span class="n">Database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
 
@@ -2222,13 +2266,12 @@
 <span class="sd">        pinned connection or implicit session attached at the time the cursor</span>
 <span class="sd">        was closed or garbage collected.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `locks_allowed`: True if we are allowed to acquire locks.</span>
-<span class="sd">          - `cursor_id`: The cursor id which may be 0.</span>
-<span class="sd">          - `address`: The _CursorAddress.</span>
-<span class="sd">          - `conn_mgr`: The _ConnectionManager for the pinned connection or None.</span>
-<span class="sd">          - `session`: The cursor&#39;s session.</span>
-<span class="sd">          - `explicit_session`: True if the session was passed explicitly.</span>
+<span class="sd">        :param locks_allowed: True if we are allowed to acquire locks.</span>
+<span class="sd">        :param cursor_id: The cursor id which may be 0.</span>
+<span class="sd">        :param address: The _CursorAddress.</span>
+<span class="sd">        :param conn_mgr: The _ConnectionManager for the pinned connection or None.</span>
+<span class="sd">        :param session: The cursor&#39;s session.</span>
+<span class="sd">        :param explicit_session: True if the session was passed explicitly.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">locks_allowed</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">cursor_id</span><span class="p">:</span>
@@ -2296,10 +2339,10 @@
         <span class="k">if</span> <span class="n">address</span><span class="p">:</span>
             <span class="c1"># address could be a tuple or _CursorAddress, but</span>
             <span class="c1"># select_server_by_address needs (host, port).</span>
-            <span class="n">server</span> <span class="o">=</span> <span class="n">topology</span><span class="o">.</span><span class="n">select_server_by_address</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">address</span><span class="p">))</span>  <span class="c1"># type: ignore[arg-type]</span>
+            <span class="n">server</span> <span class="o">=</span> <span class="n">topology</span><span class="o">.</span><span class="n">select_server_by_address</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">address</span><span class="p">),</span> <span class="n">_Op</span><span class="o">.</span><span class="n">KILL_CURSORS</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Application called close_cursor() with no address.</span>
-            <span class="n">server</span> <span class="o">=</span> <span class="n">topology</span><span class="o">.</span><span class="n">select_server</span><span class="p">(</span><span class="n">writable_server_selector</span><span class="p">)</span>
+            <span class="n">server</span> <span class="o">=</span> <span class="n">topology</span><span class="o">.</span><span class="n">select_server</span><span class="p">(</span><span class="n">writable_server_selector</span><span class="p">,</span> <span class="n">_Op</span><span class="o">.</span><span class="n">KILL_CURSORS</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_checkout</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">address</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -2314,7 +2357,7 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">namespace</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">namespace</span>
         <span class="n">db</span><span class="p">,</span> <span class="n">coll</span> <span class="o">=</span> <span class="n">namespace</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">spec</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;killCursors&quot;</span><span class="p">,</span> <span class="n">coll</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;cursors&quot;</span><span class="p">,</span> <span class="n">cursor_ids</span><span class="p">)])</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;killCursors&quot;</span><span class="p">:</span> <span class="n">coll</span><span class="p">,</span> <span class="s2">&quot;cursors&quot;</span><span class="p">:</span> <span class="n">cursor_ids</span><span class="p">}</span>
         <span class="n">conn</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_process_kill_cursors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -2372,12 +2415,7 @@
                 <span class="n">helpers</span><span class="o">.</span><span class="n">_handle_exception</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__start_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">implicit</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ClientSession</span><span class="p">:</span>
-        <span class="c1"># Raises ConfigurationError if sessions are not supported.</span>
-        <span class="k">if</span> <span class="n">implicit</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_check_implicit_session_support</span><span class="p">()</span>
-            <span class="n">server_session</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">_EmptyServerSession</span><span class="p">,</span> <span class="n">_ServerSession</span><span class="p">]</span> <span class="o">=</span> <span class="n">_EmptyServerSession</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">server_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_server_session</span><span class="p">()</span>
+        <span class="n">server_session</span> <span class="o">=</span> <span class="n">_EmptyServerSession</span><span class="p">()</span>
         <span class="n">opts</span> <span class="o">=</span> <span class="n">client_session</span><span class="o">.</span><span class="n">SessionOptions</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">client_session</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server_session</span><span class="p">,</span> <span class="n">opts</span><span class="p">,</span> <span class="n">implicit</span><span class="p">)</span>
 
@@ -2401,8 +2439,7 @@
 <span class="sd">        or process at a time. A single :class:`ClientSession` cannot be used</span>
 <span class="sd">        to run multiple operations concurrently.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          An instance of :class:`~pymongo.client_session.ClientSession`.</span>
+<span class="sd">        :return: An instance of :class:`~pymongo.client_session.ClientSession`.</span>
 
 <span class="sd">        .. versionadded:: 3.6</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2413,10 +2450,6 @@
             <span class="n">snapshot</span><span class="o">=</span><span class="n">snapshot</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-
-    <span class="k">def</span> <span class="nf">_get_server_session</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_ServerSession</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal: start or resume a _ServerSession.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">get_server_session</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_return_server_session</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">server_session</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">_ServerSession</span><span class="p">,</span> <span class="n">_EmptyServerSession</span><span class="p">],</span> <span class="n">lock</span><span class="p">:</span> <span class="nb">bool</span>
@@ -2494,8 +2527,7 @@
     <span class="k">def</span> <span class="nf">server_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">client_session</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get information about the MongoDB server we&#39;re connected to.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
 
 <span class="sd">        .. versionchanged:: 3.6</span>
@@ -2519,29 +2551,27 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CommandCursor</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a cursor over the databases of the connected server.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): Optional parameters of the</span>
+<span class="sd">        :param kwargs: Optional parameters of the</span>
 <span class="sd">            `listDatabases command</span>
 <span class="sd">            &lt;https://mongodb.com/docs/manual/reference/command/listDatabases/&gt;`_</span>
 <span class="sd">            can be passed as keyword arguments to this method. The supported</span>
 <span class="sd">            options differ by server version.</span>
 
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          An instance of :class:`~pymongo.command_cursor.CommandCursor`.</span>
+<span class="sd">        :return: An instance of :class:`~pymongo.command_cursor.CommandCursor`.</span>
 
 <span class="sd">        .. versionadded:: 3.6</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;listDatabases&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;listDatabases&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
         <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
         <span class="n">admin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_default_options</span><span class="p">(</span><span class="s2">&quot;admin&quot;</span><span class="p">)</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">admin</span><span class="o">.</span><span class="n">_retryable_read_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">admin</span><span class="o">.</span><span class="n">_retryable_read_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">LIST_DATABASES</span><span class="p">)</span>
         <span class="c1"># listDatabases doesn&#39;t return a cursor (yet). Fake one.</span>
         <span class="n">cursor</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
@@ -2560,10 +2590,9 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a list of the names of all databases on the connected server.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
 <span class="sd">        .. versionchanged:: 4.1</span>
@@ -2588,13 +2617,12 @@
 <span class="sd">        Raises :class:`TypeError` if `name_or_database` is not an instance of</span>
 <span class="sd">        :class:`str` or :class:`~pymongo.database.Database`.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `name_or_database`: the name of a database to drop, or a</span>
+<span class="sd">        :param name_or_database: the name of a database to drop, or a</span>
 <span class="sd">            :class:`~pymongo.database.Database` instance representing the</span>
 <span class="sd">            database to drop</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
 <span class="sd">        .. versionchanged:: 4.1</span>
@@ -2618,7 +2646,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;name_or_database must be an instance of str or a Database&quot;</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">DROP_DATABASE</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
                 <span class="n">conn</span><span class="p">,</span>
                 <span class="p">{</span><span class="s2">&quot;dropDatabase&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="n">comment</span><span class="p">},</span>
@@ -2634,7 +2662,7 @@
     <span class="k">def</span> <span class="nf">get_default_database</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">default</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">codec_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">bson</span><span class="o">.</span><span class="n">CodecOptions</span><span class="p">[</span><span class="n">_DocumentTypeArg</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">codec_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CodecOptions</span><span class="p">[</span><span class="n">_DocumentTypeArg</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">read_preference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">write_concern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">WriteConcern</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">read_concern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ReadConcern</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2651,26 +2679,25 @@
 <span class="sd">        Useful in scripts where you want to choose which database to use</span>
 <span class="sd">        based only on the URI in a configuration file.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `default` (optional): the database name to use if no database name</span>
+<span class="sd">        :param default: the database name to use if no database name</span>
 <span class="sd">            was provided in the URI.</span>
-<span class="sd">          - `codec_options` (optional): An instance of</span>
+<span class="sd">        :param codec_options: An instance of</span>
 <span class="sd">            :class:`~bson.codec_options.CodecOptions`. If ``None`` (the</span>
 <span class="sd">            default) the :attr:`codec_options` of this :class:`MongoClient` is</span>
 <span class="sd">            used.</span>
-<span class="sd">          - `read_preference` (optional): The read preference to use. If</span>
+<span class="sd">        :param read_preference: The read preference to use. If</span>
 <span class="sd">            ``None`` (the default) the :attr:`read_preference` of this</span>
 <span class="sd">            :class:`MongoClient` is used. See :mod:`~pymongo.read_preferences`</span>
 <span class="sd">            for options.</span>
-<span class="sd">          - `write_concern` (optional): An instance of</span>
+<span class="sd">        :param write_concern: An instance of</span>
 <span class="sd">            :class:`~pymongo.write_concern.WriteConcern`. If ``None`` (the</span>
 <span class="sd">            default) the :attr:`write_concern` of this :class:`MongoClient` is</span>
 <span class="sd">            used.</span>
-<span class="sd">          - `read_concern` (optional): An instance of</span>
+<span class="sd">        :param read_concern: An instance of</span>
 <span class="sd">            :class:`~pymongo.read_concern.ReadConcern`. If ``None`` (the</span>
 <span class="sd">            default) the :attr:`read_concern` of this :class:`MongoClient` is</span>
 <span class="sd">            used.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
 <span class="sd">        .. versionchanged:: 4.1</span>
@@ -2698,7 +2725,7 @@
     <span class="k">def</span> <span class="nf">get_database</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">codec_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">bson</span><span class="o">.</span><span class="n">CodecOptions</span><span class="p">[</span><span class="n">_DocumentTypeArg</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">codec_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CodecOptions</span><span class="p">[</span><span class="n">_DocumentTypeArg</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">read_preference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">write_concern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">WriteConcern</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">read_concern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ReadConcern</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2721,23 +2748,22 @@
 <span class="sd">          &gt;&gt;&gt; db2.read_preference</span>
 <span class="sd">          Secondary(tag_sets=None)</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `name` (optional): The name of the database - a string. If ``None``</span>
+<span class="sd">        :param name: The name of the database - a string. If ``None``</span>
 <span class="sd">            (the default) the database named in the MongoDB connection URI is</span>
 <span class="sd">            returned.</span>
-<span class="sd">          - `codec_options` (optional): An instance of</span>
+<span class="sd">        :param codec_options: An instance of</span>
 <span class="sd">            :class:`~bson.codec_options.CodecOptions`. If ``None`` (the</span>
 <span class="sd">            default) the :attr:`codec_options` of this :class:`MongoClient` is</span>
 <span class="sd">            used.</span>
-<span class="sd">          - `read_preference` (optional): The read preference to use. If</span>
+<span class="sd">        :param read_preference: The read preference to use. If</span>
 <span class="sd">            ``None`` (the default) the :attr:`read_preference` of this</span>
 <span class="sd">            :class:`MongoClient` is used. See :mod:`~pymongo.read_preferences`</span>
 <span class="sd">            for options.</span>
-<span class="sd">          - `write_concern` (optional): An instance of</span>
+<span class="sd">        :param write_concern: An instance of</span>
 <span class="sd">            :class:`~pymongo.write_concern.WriteConcern`. If ``None`` (the</span>
 <span class="sd">            default) the :attr:`write_concern` of this :class:`MongoClient` is</span>
 <span class="sd">            used.</span>
-<span class="sd">          - `read_concern` (optional): An instance of</span>
+<span class="sd">        :param read_concern: An instance of</span>
 <span class="sd">            :class:`~pymongo.read_concern.ReadConcern`. If ``None`` (the</span>
 <span class="sd">            default) the :attr:`read_concern` of this :class:`MongoClient` is</span>
 <span class="sd">            used.</span>
@@ -2793,7 +2819,7 @@
     <span class="k">return</span> <span class="kc">None</span>
 
 
-<span class="k">def</span> <span class="nf">_add_retryable_write_error</span><span class="p">(</span><span class="n">exc</span><span class="p">:</span> <span class="n">PyMongoError</span><span class="p">,</span> <span class="n">max_wire_version</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">_add_retryable_write_error</span><span class="p">(</span><span class="n">exc</span><span class="p">:</span> <span class="n">PyMongoError</span><span class="p">,</span> <span class="n">max_wire_version</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">is_mongos</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">doc</span> <span class="o">=</span> <span class="n">_retryable_error_doc</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">doc</span><span class="p">:</span>
         <span class="n">code</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;code&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -2810,7 +2836,10 @@
             <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;errorLabels&quot;</span><span class="p">,</span> <span class="p">[]):</span>
                 <span class="n">exc</span><span class="o">.</span><span class="n">_add_error_label</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_RETRYABLE_ERROR_CODES</span><span class="p">:</span>
+            <span class="c1"># Do not consult writeConcernError for pre-4.4 mongos.</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">WriteConcernError</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_mongos</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_RETRYABLE_ERROR_CODES</span><span class="p">:</span>
                 <span class="n">exc</span><span class="o">.</span><span class="n">_add_error_label</span><span class="p">(</span><span class="s2">&quot;RetryableWriteError&quot;</span><span class="p">)</span>
 
     <span class="c1"># Connection errors are always retryable except NotPrimaryError and WaitQueueTimeoutError which is</span>
@@ -2902,11 +2931,13 @@
         <span class="n">mongo_client</span><span class="p">:</span> <span class="n">MongoClient</span><span class="p">,</span>
         <span class="n">func</span><span class="p">:</span> <span class="n">_WriteCall</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="n">_ReadCall</span><span class="p">[</span><span class="n">T</span><span class="p">],</span>
         <span class="n">bulk</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_Bulk</span><span class="p">],</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">is_read</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">read_pref</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">address</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_Address</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">retryable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">operation_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_retrying</span> <span class="o">=</span> <span class="kc">False</span>
@@ -2924,15 +2955,16 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_address</span> <span class="o">=</span> <span class="n">address</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_server</span><span class="p">:</span> <span class="n">Server</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_deprioritized_servers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Server</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span> <span class="o">=</span> <span class="n">operation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_operation_id</span> <span class="o">=</span> <span class="n">operation_id</span>
 
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs the supplied func() and attempts a retry</span>
 
-<span class="sd">        :Raises:</span>
-<span class="sd">            self._last_error: Last exception raised</span>
+<span class="sd">        :raises: self._last_error: Last exception raised</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            Result of the func() call</span>
+<span class="sd">        :return: Result of the func() call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Increment the transaction id up front to ensure any retry attempt</span>
         <span class="c1"># will use the proper txnNumber, even if server or socket selection</span>
@@ -2993,6 +3025,9 @@
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span> <span class="o">=</span> <span class="n">exc</span>
 
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">topology_description</span><span class="o">.</span><span class="n">topology_type</span> <span class="o">==</span> <span class="n">TOPOLOGY_TYPE</span><span class="o">.</span><span class="n">Sharded</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_deprioritized_servers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_server</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">_is_not_eligible_for_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if the exchange is not eligible for retry&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_retrying</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multiple_retries</span><span class="p">)</span>
@@ -3015,8 +3050,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if the ongoing client exchange experienced a exception previously.</span>
 <span class="sd">        If so, raise last error</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `check_csot`: Checks CSOT to ensure we are retrying with time remaining defaults to False</span>
+<span class="sd">        :param check_csot: Checks CSOT to ensure we are retrying with time remaining defaults to False</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_retrying</span><span class="p">():</span>
             <span class="n">remaining</span> <span class="o">=</span> <span class="n">_csot</span><span class="o">.</span><span class="n">remaining</span><span class="p">()</span>
@@ -3027,28 +3061,35 @@
     <span class="k">def</span> <span class="nf">_get_server</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Server</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieves a server object based on provided object context</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            Abstraction to connect to server</span>
+<span class="sd">        :return: Abstraction to connect to server</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_select_server</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_server_selector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_address</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_server_selector</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="p">,</span>
+            <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_address</span><span class="p">,</span>
+            <span class="n">deprioritized_servers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_deprioritized_servers</span><span class="p">,</span>
+            <span class="n">operation_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation_id</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_write</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrapper method for write-type retryable client executions</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            Output for func()&#39;s call</span>
+<span class="sd">        :return: Output for func()&#39;s call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">max_wire_version</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">is_mongos</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_server</span><span class="p">()</span>
-            <span class="n">supports_session</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server</span><span class="o">.</span><span class="n">description</span><span class="o">.</span><span class="n">retryable_writes_supported</span>
-            <span class="p">)</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_checkout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
                 <span class="n">max_wire_version</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">max_wire_version</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">supports_session</span><span class="p">:</span>
+                <span class="n">sessions_supported</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_session</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server</span><span class="o">.</span><span class="n">description</span><span class="o">.</span><span class="n">retryable_writes_supported</span>
+                    <span class="ow">and</span> <span class="n">conn</span><span class="o">.</span><span class="n">supports_sessions</span>
+                <span class="p">)</span>
+                <span class="n">is_mongos</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">is_mongos</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">sessions_supported</span><span class="p">:</span>
                     <span class="c1"># A retry is not possible because this server does</span>
                     <span class="c1"># not support sessions raise the last error.</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_check_last_error</span><span class="p">()</span>
@@ -3058,14 +3099,13 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable</span><span class="p">:</span>
                 <span class="k">raise</span>
             <span class="c1"># Add the RetryableWriteError label, if applicable.</span>
-            <span class="n">_add_retryable_write_error</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">max_wire_version</span><span class="p">)</span>
+            <span class="n">_add_retryable_write_error</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">max_wire_version</span><span class="p">,</span> <span class="n">is_mongos</span><span class="p">)</span>
             <span class="k">raise</span>
 
     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrapper method for read-type retryable client executions</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            Output for func()&#39;s call</span>
+<span class="sd">        :return: Output for func()&#39;s call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_server</span><span class="p">()</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_pref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Read Preference required on read calls&quot;</span>
@@ -3090,6 +3130,31 @@
         <span class="n">client</span><span class="o">.</span><span class="n">_after_fork</span><span class="p">()</span>
 
 
+<span class="k">def</span> <span class="nf">_detect_external_db</span><span class="p">(</span><span class="n">entity</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Detects external database hosts and logs an informational message at the INFO level.&quot;&quot;&quot;</span>
+    <span class="n">entity</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">cosmos_db_hosts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.cosmos.azure.com&quot;</span><span class="p">]</span>
+    <span class="n">document_db_hosts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.docdb.amazonaws.com&quot;</span><span class="p">,</span> <span class="s2">&quot;.docdb-elastic.amazonaws.com&quot;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">host</span> <span class="ow">in</span> <span class="n">cosmos_db_hosts</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">entity</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">host</span><span class="p">):</span>
+            <span class="n">_log_or_warn</span><span class="p">(</span>
+                <span class="n">_CLIENT_LOGGER</span><span class="p">,</span>
+                <span class="s2">&quot;You appear to be connected to a CosmosDB cluster. For more information regarding feature &quot;</span>
+                <span class="s2">&quot;compatibility and support please visit https://www.mongodb.com/supportability/cosmosdb&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">host</span> <span class="ow">in</span> <span class="n">document_db_hosts</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">entity</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">host</span><span class="p">):</span>
+            <span class="n">_log_or_warn</span><span class="p">(</span>
+                <span class="n">_CLIENT_LOGGER</span><span class="p">,</span>
+                <span class="s2">&quot;You appear to be connected to a DocumentDB cluster. For more information regarding feature &quot;</span>
+                <span class="s2">&quot;compatibility and support please visit https://www.mongodb.com/supportability/documentdb&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
 <span class="k">if</span> <span class="n">_HAS_REGISTER_AT_FORK</span><span class="p">:</span>
     <span class="c1"># This will run in the same thread as the fork was called.</span>
     <span class="c1"># If we fork in a critical region on the same thread, it should break.</span>
@@ -3102,7 +3167,7 @@
   <small>
     
       Last update:
-      Apr 23, 2024
+      May 23, 2024
     
   </small>
 </div>

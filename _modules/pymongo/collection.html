@@ -652,7 +652,9 @@
     <span class="n">UpdateOne</span><span class="p">,</span>
     <span class="n">_IndexKeyHint</span><span class="p">,</span>
     <span class="n">_IndexList</span><span class="p">,</span>
+    <span class="n">_Op</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pymongo.read_concern</span> <span class="kn">import</span> <span class="n">DEFAULT_READ_CONCERN</span><span class="p">,</span> <span class="n">ReadConcern</span>
 <span class="kn">from</span> <span class="nn">pymongo.read_preferences</span> <span class="kn">import</span> <span class="n">ReadPreference</span><span class="p">,</span> <span class="n">_ServerMode</span>
 <span class="kn">from</span> <span class="nn">pymongo.results</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">BulkWriteResult</span><span class="p">,</span>
@@ -662,7 +664,7 @@
     <span class="n">UpdateResult</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pymongo.typings</span> <span class="kn">import</span> <span class="n">_CollationIn</span><span class="p">,</span> <span class="n">_DocumentType</span><span class="p">,</span> <span class="n">_DocumentTypeArg</span><span class="p">,</span> <span class="n">_Pipeline</span>
-<span class="kn">from</span> <span class="nn">pymongo.write_concern</span> <span class="kn">import</span> <span class="n">WriteConcern</span>
+<span class="kn">from</span> <span class="nn">pymongo.write_concern</span> <span class="kn">import</span> <span class="n">DEFAULT_WRITE_CONCERN</span><span class="p">,</span> <span class="n">WriteConcern</span><span class="p">,</span> <span class="n">validate_boolean</span>
 
 <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
 
@@ -694,14 +696,11 @@
 
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-
-    <span class="kn">import</span> <span class="nn">bson</span>
     <span class="kn">from</span> <span class="nn">pymongo.aggregation</span> <span class="kn">import</span> <span class="n">_AggregationCommand</span>
     <span class="kn">from</span> <span class="nn">pymongo.client_session</span> <span class="kn">import</span> <span class="n">ClientSession</span>
     <span class="kn">from</span> <span class="nn">pymongo.collation</span> <span class="kn">import</span> <span class="n">Collation</span>
     <span class="kn">from</span> <span class="nn">pymongo.database</span> <span class="kn">import</span> <span class="n">Database</span>
     <span class="kn">from</span> <span class="nn">pymongo.pool</span> <span class="kn">import</span> <span class="n">Connection</span>
-    <span class="kn">from</span> <span class="nn">pymongo.read_concern</span> <span class="kn">import</span> <span class="n">ReadConcern</span>
     <span class="kn">from</span> <span class="nn">pymongo.server</span> <span class="kn">import</span> <span class="n">Server</span>
 
 
@@ -740,29 +739,28 @@
 <span class="sd">        use. The optional ``session`` argument is *only* used for the ``create``</span>
 <span class="sd">        command, it is not associated with the collection afterward.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `database`: the database to get a collection from</span>
-<span class="sd">          - `name`: the name of the collection to get</span>
-<span class="sd">          - `create` (optional): if ``True``, force collection</span>
+<span class="sd">        :param database: the database to get a collection from</span>
+<span class="sd">        :param name: the name of the collection to get</span>
+<span class="sd">        :param create: if ``True``, force collection</span>
 <span class="sd">            creation even without options being set</span>
-<span class="sd">          - `codec_options` (optional): An instance of</span>
+<span class="sd">        :param codec_options: An instance of</span>
 <span class="sd">            :class:`~bson.codec_options.CodecOptions`. If ``None`` (the</span>
 <span class="sd">            default) database.codec_options is used.</span>
-<span class="sd">          - `read_preference` (optional): The read preference to use. If</span>
+<span class="sd">        :param read_preference: The read preference to use. If</span>
 <span class="sd">            ``None`` (the default) database.read_preference is used.</span>
-<span class="sd">          - `write_concern` (optional): An instance of</span>
+<span class="sd">        :param write_concern: An instance of</span>
 <span class="sd">            :class:`~pymongo.write_concern.WriteConcern`. If ``None`` (the</span>
 <span class="sd">            default) database.write_concern is used.</span>
-<span class="sd">          - `read_concern` (optional): An instance of</span>
+<span class="sd">        :param read_concern: An instance of</span>
 <span class="sd">            :class:`~pymongo.read_concern.ReadConcern`. If ``None`` (the</span>
 <span class="sd">            default) database.read_concern is used.</span>
-<span class="sd">          - `collation` (optional): An instance of</span>
+<span class="sd">        :param collation: An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`. If a collation is provided,</span>
 <span class="sd">            it will be passed to the create collection command.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession` that is used with</span>
 <span class="sd">            the create collection command</span>
-<span class="sd">          - `**kwargs` (optional): additional keyword arguments will</span>
+<span class="sd">        :param kwargs: additional keyword arguments will</span>
 <span class="sd">            be passed as options for the create collection command</span>
 
 <span class="sd">        .. versionchanged:: 4.2</span>
@@ -841,13 +839,10 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">__create</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">collation</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_conn_for_reads</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">ClientSession</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContextManager</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Connection</span><span class="p">,</span> <span class="n">_ServerMode</span><span class="p">]]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_conn_for_reads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_preference_for</span><span class="p">(</span><span class="n">session</span><span class="p">),</span> <span class="n">session</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_conn_for_writes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ContextManager</span><span class="p">[</span><span class="n">Connection</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_conn_for_writes</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContextManager</span><span class="p">[</span><span class="n">Connection</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_command</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -866,30 +861,28 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal command helper.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `conn` - A Connection instance.</span>
-<span class="sd">          - `command` - The command itself, as a :class:`~bson.son.SON` instance.</span>
-<span class="sd">          - `read_preference` (optional) - The read preference to use.</span>
-<span class="sd">          - `codec_options` (optional) - An instance of</span>
+<span class="sd">        :param conn` - A Connection instance.</span>
+<span class="sd">        :param command` - The command itself, as a :class:`~bson.son.SON` instance.</span>
+<span class="sd">        :param read_preference` (optional) - The read preference to use.</span>
+<span class="sd">        :param codec_options` (optional) - An instance of</span>
 <span class="sd">            :class:`~bson.codec_options.CodecOptions`.</span>
-<span class="sd">          - `check`: raise OperationFailure if there are errors</span>
-<span class="sd">          - `allowable_errors`: errors to ignore if `check` is True</span>
-<span class="sd">          - `read_concern` (optional) - An instance of</span>
+<span class="sd">        :param check: raise OperationFailure if there are errors</span>
+<span class="sd">        :param allowable_errors: errors to ignore if `check` is True</span>
+<span class="sd">        :param read_concern` (optional) - An instance of</span>
 <span class="sd">            :class:`~pymongo.read_concern.ReadConcern`.</span>
-<span class="sd">          - `write_concern`: An instance of</span>
+<span class="sd">        :param write_concern: An instance of</span>
 <span class="sd">            :class:`~pymongo.write_concern.WriteConcern`.</span>
-<span class="sd">          - `collation` (optional) - An instance of</span>
+<span class="sd">        :param collation` (optional) - An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `retryable_write` (optional): True if this command is a retryable</span>
+<span class="sd">        :param retryable_write: True if this command is a retryable</span>
 <span class="sd">            write.</span>
-<span class="sd">          - `user_fields` (optional): Response fields that should be decoded</span>
+<span class="sd">        :param user_fields: Response fields that should be decoded</span>
 <span class="sd">            using the TypeDecoders from codec_options, passed to</span>
 <span class="sd">            bson._decode_all_selective.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          The result document.</span>
+<span class="sd">        :return: The result document.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_tmp_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">command</span><span class="p">(</span>
@@ -919,7 +912,7 @@
         <span class="n">qev2_required</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sends a create command with the given options.&quot;&quot;&quot;</span>
-        <span class="n">cmd</span><span class="p">:</span> <span class="n">SON</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;create&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)])</span>
+        <span class="n">cmd</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;create&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">encrypted_fields</span><span class="p">:</span>
             <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;encryptedFields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">encrypted_fields</span>
 
@@ -927,7 +920,7 @@
             <span class="k">if</span> <span class="s2">&quot;size&quot;</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
                 <span class="n">options</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">])</span>
             <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">CREATE</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">qev2_required</span> <span class="ow">and</span> <span class="n">conn</span><span class="o">.</span><span class="n">max_wire_version</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
                     <span class="s2">&quot;Driver support of Queryable Encryption is incompatible with server. &quot;</span>
@@ -951,8 +944,7 @@
 
 <span class="sd">        Raises InvalidName if an invalid collection name is used.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `name`: the name of the collection to get</span>
+<span class="sd">        :param name: the name of the collection to get</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
             <span class="n">full_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -1034,7 +1026,7 @@
 <a class="viewcode-back" href="../../CveXplore/database/CveSearchCollection.html#CveXplore.common.data_source_connection.Collection.with_options">[docs]</a>
     <span class="k">def</span> <span class="nf">with_options</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">codec_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">bson</span><span class="o">.</span><span class="n">CodecOptions</span><span class="p">[</span><span class="n">_DocumentTypeArg</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">codec_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CodecOptions</span><span class="p">[</span><span class="n">_DocumentTypeArg</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">read_preference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">write_concern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">WriteConcern</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">read_concern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ReadConcern</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1050,20 +1042,19 @@
 <span class="sd">          &gt;&gt;&gt; coll2.read_preference</span>
 <span class="sd">          Secondary(tag_sets=None)</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `codec_options` (optional): An instance of</span>
+<span class="sd">        :param codec_options: An instance of</span>
 <span class="sd">            :class:`~bson.codec_options.CodecOptions`. If ``None`` (the</span>
 <span class="sd">            default) the :attr:`codec_options` of this :class:`Collection`</span>
 <span class="sd">            is used.</span>
-<span class="sd">          - `read_preference` (optional): The read preference to use. If</span>
+<span class="sd">        :param read_preference: The read preference to use. If</span>
 <span class="sd">            ``None`` (the default) the :attr:`read_preference` of this</span>
 <span class="sd">            :class:`Collection` is used. See :mod:`~pymongo.read_preferences`</span>
 <span class="sd">            for options.</span>
-<span class="sd">          - `write_concern` (optional): An instance of</span>
+<span class="sd">        :param write_concern: An instance of</span>
 <span class="sd">            :class:`~pymongo.write_concern.WriteConcern`. If ``None`` (the</span>
 <span class="sd">            default) the :attr:`write_concern` of this :class:`Collection`</span>
 <span class="sd">            is used.</span>
-<span class="sd">          - `read_concern` (optional): An instance of</span>
+<span class="sd">        :param read_concern: An instance of</span>
 <span class="sd">            :class:`~pymongo.read_concern.ReadConcern`. If ``None`` (the</span>
 <span class="sd">            default) the :attr:`read_concern` of this :class:`Collection`</span>
 <span class="sd">            is used.</span>
@@ -1127,27 +1118,25 @@
 <span class="sd">          {&#39;y&#39;: 1, &#39;_id&#39;: ObjectId(&#39;54f62ee2fba5226811f634f1&#39;)}</span>
 <span class="sd">          {&#39;z&#39;: 1, &#39;_id&#39;: ObjectId(&#39;54f62ee28891e756a6e1abd5&#39;)}</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `requests`: A list of write operations (see examples above).</span>
-<span class="sd">          - `ordered` (optional): If ``True`` (the default) requests will be</span>
+<span class="sd">        :param requests: A list of write operations (see examples above).</span>
+<span class="sd">        :param ordered: If ``True`` (the default) requests will be</span>
 <span class="sd">            performed on the server serially, in the order provided. If an error</span>
 <span class="sd">            occurs all remaining operations are aborted. If ``False`` requests</span>
 <span class="sd">            will be performed on the server in arbitrary order, possibly in</span>
 <span class="sd">            parallel, and all operations will be attempted.</span>
-<span class="sd">          - `bypass_document_validation`: (optional) If ``True``, allows the</span>
+<span class="sd">        :param bypass_document_validation: (optional) If ``True``, allows the</span>
 <span class="sd">            write to opt-out of document level validation. Default is</span>
 <span class="sd">            ``False``.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `let` (optional): Map of parameter names and values. Values must be</span>
+<span class="sd">        :param let: Map of parameter names and values. Values must be</span>
 <span class="sd">            constant or closed expressions that do not reference document</span>
 <span class="sd">            fields. Parameters can then be accessed as variables in an</span>
 <span class="sd">            aggregate expression context (e.g. &quot;$$var&quot;).</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          An instance of :class:`~pymongo.results.BulkWriteResult`.</span>
+<span class="sd">        :return: An instance of :class:`~pymongo.results.BulkWriteResult`.</span>
 
 <span class="sd">        .. seealso:: :ref:`writes-and-ids`</span>
 
@@ -1176,7 +1165,7 @@
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">request</span><span class="si">!r}</span><span class="s2"> is not a valid request&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
 
         <span class="n">write_concern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_concern_for</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
-        <span class="n">bulk_api_result</span> <span class="o">=</span> <span class="n">blk</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">write_concern</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+        <span class="n">bulk_api_result</span> <span class="o">=</span> <span class="n">blk</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">write_concern</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">_Op</span><span class="o">.</span><span class="n">INSERT</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">bulk_api_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">BulkWriteResult</span><span class="p">(</span><span class="n">bulk_api_result</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">BulkWriteResult</span><span class="p">({},</span> <span class="kc">False</span><span class="p">)</span></div>
@@ -1195,7 +1184,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal helper for inserting a single document.&quot;&quot;&quot;</span>
         <span class="n">write_concern</span> <span class="o">=</span> <span class="n">write_concern</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_concern</span>
         <span class="n">acknowledged</span> <span class="o">=</span> <span class="n">write_concern</span><span class="o">.</span><span class="n">acknowledged</span>
-        <span class="n">command</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;insert&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;ordered&quot;</span><span class="p">,</span> <span class="n">ordered</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;documents&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">doc</span><span class="p">])])</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;insert&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;ordered&quot;</span><span class="p">:</span> <span class="n">ordered</span><span class="p">,</span> <span class="s2">&quot;documents&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">doc</span><span class="p">]}</span>
         <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">command</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
 
@@ -1217,7 +1206,9 @@
 
             <span class="n">_check_write_command_response</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_write</span><span class="p">(</span><span class="n">acknowledged</span><span class="p">,</span> <span class="n">_insert_command</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_write</span><span class="p">(</span>
+            <span class="n">acknowledged</span><span class="p">,</span> <span class="n">_insert_command</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">INSERT</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">RawBSONDocument</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">)</span>
@@ -1242,20 +1233,18 @@
 <span class="sd">          &gt;&gt;&gt; db.test.find_one({&#39;x&#39;: 1})</span>
 <span class="sd">          {&#39;x&#39;: 1, &#39;_id&#39;: ObjectId(&#39;54f112defba522406c9cc208&#39;)}</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `document`: The document to insert. Must be a mutable mapping</span>
+<span class="sd">        :param document: The document to insert. Must be a mutable mapping</span>
 <span class="sd">            type. If the document does not have an _id field one will be</span>
 <span class="sd">            added automatically.</span>
-<span class="sd">          - `bypass_document_validation`: (optional) If ``True``, allows the</span>
+<span class="sd">        :param bypass_document_validation: (optional) If ``True``, allows the</span>
 <span class="sd">            write to opt-out of document level validation. Default is</span>
 <span class="sd">            ``False``.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          - An instance of :class:`~pymongo.results.InsertOneResult`.</span>
+<span class="sd">        :return: - An instance of :class:`~pymongo.results.InsertOneResult`.</span>
 
 <span class="sd">        .. seealso:: :ref:`writes-and-ids`</span>
 
@@ -1313,23 +1302,21 @@
 <span class="sd">          &gt;&gt;&gt; db.test.count_documents({})</span>
 <span class="sd">          2</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `documents`: A iterable of documents to insert.</span>
-<span class="sd">          - `ordered` (optional): If ``True`` (the default) documents will be</span>
+<span class="sd">        :param documents: A iterable of documents to insert.</span>
+<span class="sd">        :param ordered: If ``True`` (the default) documents will be</span>
 <span class="sd">            inserted on the server serially, in the order provided. If an error</span>
 <span class="sd">            occurs all remaining inserts are aborted. If ``False``, documents</span>
 <span class="sd">            will be inserted on the server in arbitrary order, possibly in</span>
 <span class="sd">            parallel, and all document inserts will be attempted.</span>
-<span class="sd">          - `bypass_document_validation`: (optional) If ``True``, allows the</span>
+<span class="sd">        :param bypass_document_validation: (optional) If ``True``, allows the</span>
 <span class="sd">            write to opt-out of document level validation. Default is</span>
 <span class="sd">            ``False``.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          An instance of :class:`~pymongo.results.InsertManyResult`.</span>
+<span class="sd">        :return: An instance of :class:`~pymongo.results.InsertManyResult`.</span>
 
 <span class="sd">        .. seealso:: :ref:`writes-and-ids`</span>
 
@@ -1368,7 +1355,7 @@
         <span class="n">write_concern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_concern_for</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
         <span class="n">blk</span> <span class="o">=</span> <span class="n">_Bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ordered</span><span class="p">,</span> <span class="n">bypass_document_validation</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">)</span>
         <span class="n">blk</span><span class="o">.</span><span class="n">ops</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">gen</span><span class="p">())</span>
-        <span class="n">blk</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">write_concern</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
+        <span class="n">blk</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">write_concern</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">_Op</span><span class="o">.</span><span class="n">INSERT</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">InsertManyResult</span><span class="p">(</span><span class="n">inserted_ids</span><span class="p">,</span> <span class="n">write_concern</span><span class="o">.</span><span class="n">acknowledged</span><span class="p">)</span></div>
 
 
@@ -1392,13 +1379,16 @@
         <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal update / replace helper.&quot;&quot;&quot;</span>
-        <span class="n">common</span><span class="o">.</span><span class="n">validate_boolean</span><span class="p">(</span><span class="s2">&quot;upsert&quot;</span><span class="p">,</span> <span class="n">upsert</span><span class="p">)</span>
+        <span class="n">validate_boolean</span><span class="p">(</span><span class="s2">&quot;upsert&quot;</span><span class="p">,</span> <span class="n">upsert</span><span class="p">)</span>
         <span class="n">collation</span> <span class="o">=</span> <span class="n">validate_collation_or_none</span><span class="p">(</span><span class="n">collation</span><span class="p">)</span>
         <span class="n">write_concern</span> <span class="o">=</span> <span class="n">write_concern</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_concern</span>
         <span class="n">acknowledged</span> <span class="o">=</span> <span class="n">write_concern</span><span class="o">.</span><span class="n">acknowledged</span>
-        <span class="n">update_doc</span><span class="p">:</span> <span class="n">SON</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">SON</span><span class="p">(</span>
-            <span class="p">[(</span><span class="s2">&quot;q&quot;</span><span class="p">,</span> <span class="n">criteria</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="n">document</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;multi&quot;</span><span class="p">,</span> <span class="n">multi</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;upsert&quot;</span><span class="p">,</span> <span class="n">upsert</span><span class="p">)]</span>
-        <span class="p">)</span>
+        <span class="n">update_doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">criteria</span><span class="p">,</span>
+            <span class="s2">&quot;u&quot;</span><span class="p">:</span> <span class="n">document</span><span class="p">,</span>
+            <span class="s2">&quot;multi&quot;</span><span class="p">:</span> <span class="n">multi</span><span class="p">,</span>
+            <span class="s2">&quot;upsert&quot;</span><span class="p">:</span> <span class="n">upsert</span><span class="p">,</span>
+        <span class="p">}</span>
         <span class="k">if</span> <span class="n">collation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">acknowledged</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span><span class="s2">&quot;Collation is unsupported for unacknowledged writes.&quot;</span><span class="p">)</span>
@@ -1417,7 +1407,7 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">hint</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
             <span class="n">update_doc</span><span class="p">[</span><span class="s2">&quot;hint&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hint</span>
-        <span class="n">command</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;update&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;ordered&quot;</span><span class="p">,</span> <span class="n">ordered</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;updates&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">update_doc</span><span class="p">])])</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;ordered&quot;</span><span class="p">:</span> <span class="n">ordered</span><span class="p">,</span> <span class="s2">&quot;updates&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">update_doc</span><span class="p">]}</span>
         <span class="k">if</span> <span class="n">let</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">common</span><span class="o">.</span><span class="n">validate_is_mapping</span><span class="p">(</span><span class="s2">&quot;let&quot;</span><span class="p">,</span> <span class="n">let</span><span class="p">)</span>
             <span class="n">command</span><span class="p">[</span><span class="s2">&quot;let&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">let</span>
@@ -1458,6 +1448,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">criteria</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">document</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">_Pipeline</span><span class="p">],</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">upsert</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">multi</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">write_concern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">WriteConcern</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1496,7 +1487,10 @@
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_write</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">write_concern</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_concern</span><span class="p">)</span><span class="o">.</span><span class="n">acknowledged</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">multi</span><span class="p">,</span> <span class="n">_update</span><span class="p">,</span> <span class="n">session</span>
+            <span class="p">(</span><span class="n">write_concern</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_concern</span><span class="p">)</span><span class="o">.</span><span class="n">acknowledged</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">multi</span><span class="p">,</span>
+            <span class="n">_update</span><span class="p">,</span>
+            <span class="n">session</span><span class="p">,</span>
+            <span class="n">operation</span><span class="p">,</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Collection.replace_one">
@@ -1542,32 +1536,30 @@
 <span class="sd">          &gt;&gt;&gt; db.test.find_one({&#39;x&#39;: 1})</span>
 <span class="sd">          {&#39;x&#39;: 1, &#39;_id&#39;: ObjectId(&#39;54f11e5c8891e756a6e1abd4&#39;)}</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter`: A query that matches the document to replace.</span>
-<span class="sd">          - `replacement`: The new document.</span>
-<span class="sd">          - `upsert` (optional): If ``True``, perform an insert if no documents</span>
+<span class="sd">        :param filter: A query that matches the document to replace.</span>
+<span class="sd">        :param replacement: The new document.</span>
+<span class="sd">        :param upsert: If ``True``, perform an insert if no documents</span>
 <span class="sd">            match the filter.</span>
-<span class="sd">          - `bypass_document_validation`: (optional) If ``True``, allows the</span>
+<span class="sd">        :param bypass_document_validation: (optional) If ``True``, allows the</span>
 <span class="sd">            write to opt-out of document level validation. Default is</span>
 <span class="sd">            ``False``.</span>
-<span class="sd">          - `collation` (optional): An instance of</span>
+<span class="sd">        :param collation: An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`.</span>
-<span class="sd">          - `hint` (optional): An index to use to support the query</span>
+<span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
 <span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
 <span class="sd">            ``[(&#39;field&#39;, ASCENDING)]``). This option is only supported on</span>
 <span class="sd">            MongoDB 4.2 and above.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `let` (optional): Map of parameter names and values. Values must be</span>
+<span class="sd">        :param let: Map of parameter names and values. Values must be</span>
 <span class="sd">            constant or closed expressions that do not reference document</span>
 <span class="sd">            fields. Parameters can then be accessed as variables in an</span>
 <span class="sd">            aggregate expression context (e.g. &quot;$$var&quot;).</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">        :Returns:</span>
-<span class="sd">          - An instance of :class:`~pymongo.results.UpdateResult`.</span>
+<span class="sd">        :return: - An instance of :class:`~pymongo.results.UpdateResult`.</span>
 
 <span class="sd">        .. versionchanged:: 4.1</span>
 <span class="sd">           Added ``let`` parameter.</span>
@@ -1592,6 +1584,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_update_retryable</span><span class="p">(</span>
                 <span class="nb">filter</span><span class="p">,</span>
                 <span class="n">replacement</span><span class="p">,</span>
+                <span class="n">_Op</span><span class="o">.</span><span class="n">UPDATE</span><span class="p">,</span>
                 <span class="n">upsert</span><span class="p">,</span>
                 <span class="n">write_concern</span><span class="o">=</span><span class="n">write_concern</span><span class="p">,</span>
                 <span class="n">bypass_doc_val</span><span class="o">=</span><span class="n">bypass_document_validation</span><span class="p">,</span>
@@ -1653,35 +1646,33 @@
 <span class="sd">          &gt;&gt;&gt; db.test.find_one(result.upserted_id)</span>
 <span class="sd">          {&#39;_id&#39;: ObjectId(&#39;626a678eeaa80587d4bb3fb7&#39;), &#39;x&#39;: -7}</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter`: A query that matches the document to update.</span>
-<span class="sd">          - `update`: The modifications to apply.</span>
-<span class="sd">          - `upsert` (optional): If ``True``, perform an insert if no documents</span>
+<span class="sd">        :param filter: A query that matches the document to update.</span>
+<span class="sd">        :param update: The modifications to apply.</span>
+<span class="sd">        :param upsert: If ``True``, perform an insert if no documents</span>
 <span class="sd">            match the filter.</span>
-<span class="sd">          - `bypass_document_validation`: (optional) If ``True``, allows the</span>
+<span class="sd">        :param bypass_document_validation: (optional) If ``True``, allows the</span>
 <span class="sd">            write to opt-out of document level validation. Default is</span>
 <span class="sd">            ``False``.</span>
-<span class="sd">          - `collation` (optional): An instance of</span>
+<span class="sd">        :param collation: An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`.</span>
-<span class="sd">          - `array_filters` (optional): A list of filters specifying which</span>
+<span class="sd">        :param array_filters: A list of filters specifying which</span>
 <span class="sd">            array elements an update should apply.</span>
-<span class="sd">          - `hint` (optional): An index to use to support the query</span>
+<span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
 <span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
 <span class="sd">            ``[(&#39;field&#39;, ASCENDING)]``). This option is only supported on</span>
 <span class="sd">            MongoDB 4.2 and above.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `let` (optional): Map of parameter names and values. Values must be</span>
+<span class="sd">        :param let: Map of parameter names and values. Values must be</span>
 <span class="sd">            constant or closed expressions that do not reference document</span>
 <span class="sd">            fields. Parameters can then be accessed as variables in an</span>
 <span class="sd">            aggregate expression context (e.g. &quot;$$var&quot;).</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          - An instance of :class:`~pymongo.results.UpdateResult`.</span>
+<span class="sd">        :return: - An instance of :class:`~pymongo.results.UpdateResult`.</span>
 
 <span class="sd">        .. versionchanged:: 4.1</span>
 <span class="sd">           Added ``let`` parameter.</span>
@@ -1708,6 +1699,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_update_retryable</span><span class="p">(</span>
                 <span class="nb">filter</span><span class="p">,</span>
                 <span class="n">update</span><span class="p">,</span>
+                <span class="n">_Op</span><span class="o">.</span><span class="n">UPDATE</span><span class="p">,</span>
                 <span class="n">upsert</span><span class="p">,</span>
                 <span class="n">write_concern</span><span class="o">=</span><span class="n">write_concern</span><span class="p">,</span>
                 <span class="n">bypass_doc_val</span><span class="o">=</span><span class="n">bypass_document_validation</span><span class="p">,</span>
@@ -1757,35 +1749,33 @@
 <span class="sd">          {&#39;x&#39;: 4, &#39;_id&#39;: 1}</span>
 <span class="sd">          {&#39;x&#39;: 4, &#39;_id&#39;: 2}</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter`: A query that matches the documents to update.</span>
-<span class="sd">          - `update`: The modifications to apply.</span>
-<span class="sd">          - `upsert` (optional): If ``True``, perform an insert if no documents</span>
+<span class="sd">        :param filter: A query that matches the documents to update.</span>
+<span class="sd">        :param update: The modifications to apply.</span>
+<span class="sd">        :param upsert: If ``True``, perform an insert if no documents</span>
 <span class="sd">            match the filter.</span>
-<span class="sd">          - `bypass_document_validation` (optional): If ``True``, allows the</span>
+<span class="sd">        :param bypass_document_validation: If ``True``, allows the</span>
 <span class="sd">            write to opt-out of document level validation. Default is</span>
 <span class="sd">            ``False``.</span>
-<span class="sd">          - `collation` (optional): An instance of</span>
+<span class="sd">        :param collation: An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`.</span>
-<span class="sd">          - `array_filters` (optional): A list of filters specifying which</span>
+<span class="sd">        :param array_filters: A list of filters specifying which</span>
 <span class="sd">            array elements an update should apply.</span>
-<span class="sd">          - `hint` (optional): An index to use to support the query</span>
+<span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
 <span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
 <span class="sd">            ``[(&#39;field&#39;, ASCENDING)]``). This option is only supported on</span>
 <span class="sd">            MongoDB 4.2 and above.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `let` (optional): Map of parameter names and values. Values must be</span>
+<span class="sd">        :param let: Map of parameter names and values. Values must be</span>
 <span class="sd">            constant or closed expressions that do not reference document</span>
 <span class="sd">            fields. Parameters can then be accessed as variables in an</span>
 <span class="sd">            aggregate expression context (e.g. &quot;$$var&quot;).</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          - An instance of :class:`~pymongo.results.UpdateResult`.</span>
+<span class="sd">        :return: - An instance of :class:`~pymongo.results.UpdateResult`.</span>
 
 <span class="sd">        .. versionchanged:: 4.1</span>
 <span class="sd">           Added ``let`` parameter.</span>
@@ -1812,6 +1802,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_update_retryable</span><span class="p">(</span>
                 <span class="nb">filter</span><span class="p">,</span>
                 <span class="n">update</span><span class="p">,</span>
+                <span class="n">_Op</span><span class="o">.</span><span class="n">UPDATE</span><span class="p">,</span>
                 <span class="n">upsert</span><span class="p">,</span>
                 <span class="n">multi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">write_concern</span><span class="o">=</span><span class="n">write_concern</span><span class="p">,</span>
@@ -1837,12 +1828,11 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :meth:`~pymongo.database.Database.drop_collection`.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `encrypted_fields`: **(BETA)** Document that describes the encrypted fields for</span>
+<span class="sd">        :param encrypted_fields: **(BETA)** Document that describes the encrypted fields for</span>
 <span class="sd">            Queryable Encryption.</span>
 
 <span class="sd">        The following two calls are equivalent:</span>
@@ -1893,7 +1883,7 @@
         <span class="n">common</span><span class="o">.</span><span class="n">validate_is_mapping</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="n">criteria</span><span class="p">)</span>
         <span class="n">write_concern</span> <span class="o">=</span> <span class="n">write_concern</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_concern</span>
         <span class="n">acknowledged</span> <span class="o">=</span> <span class="n">write_concern</span><span class="o">.</span><span class="n">acknowledged</span>
-        <span class="n">delete_doc</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;q&quot;</span><span class="p">,</span> <span class="n">criteria</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="ow">not</span> <span class="n">multi</span><span class="p">))])</span>
+        <span class="n">delete_doc</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">criteria</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="ow">not</span> <span class="n">multi</span><span class="p">)}</span>
         <span class="n">collation</span> <span class="o">=</span> <span class="n">validate_collation_or_none</span><span class="p">(</span><span class="n">collation</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">collation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">acknowledged</span><span class="p">:</span>
@@ -1908,7 +1898,7 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">hint</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
             <span class="n">delete_doc</span><span class="p">[</span><span class="s2">&quot;hint&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hint</span>
-        <span class="n">command</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;delete&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;ordered&quot;</span><span class="p">,</span> <span class="n">ordered</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;deletes&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">delete_doc</span><span class="p">])])</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;delete&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;ordered&quot;</span><span class="p">:</span> <span class="n">ordered</span><span class="p">,</span> <span class="s2">&quot;deletes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">delete_doc</span><span class="p">]}</span>
 
         <span class="k">if</span> <span class="n">let</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">common</span><span class="o">.</span><span class="n">validate_is_document_type</span><span class="p">(</span><span class="s2">&quot;let&quot;</span><span class="p">,</span> <span class="n">let</span><span class="p">)</span>
@@ -1964,7 +1954,10 @@
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_write</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">write_concern</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_concern</span><span class="p">)</span><span class="o">.</span><span class="n">acknowledged</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">multi</span><span class="p">,</span> <span class="n">_delete</span><span class="p">,</span> <span class="n">session</span>
+            <span class="p">(</span><span class="n">write_concern</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_concern</span><span class="p">)</span><span class="o">.</span><span class="n">acknowledged</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">multi</span><span class="p">,</span>
+            <span class="n">_delete</span><span class="p">,</span>
+            <span class="n">session</span><span class="p">,</span>
+            <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">DELETE</span><span class="p">,</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Collection.delete_one">
@@ -1988,27 +1981,25 @@
 <span class="sd">          &gt;&gt;&gt; db.test.count_documents({&#39;x&#39;: 1})</span>
 <span class="sd">          2</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter`: A query that matches the document to delete.</span>
-<span class="sd">          - `collation` (optional): An instance of</span>
+<span class="sd">        :param filter: A query that matches the document to delete.</span>
+<span class="sd">        :param collation: An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`.</span>
-<span class="sd">          - `hint` (optional): An index to use to support the query</span>
+<span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
 <span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
 <span class="sd">            ``[(&#39;field&#39;, ASCENDING)]``). This option is only supported on</span>
 <span class="sd">            MongoDB 4.4 and above.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `let` (optional): Map of parameter names and values. Values must be</span>
+<span class="sd">        :param let: Map of parameter names and values. Values must be</span>
 <span class="sd">            constant or closed expressions that do not reference document</span>
 <span class="sd">            fields. Parameters can then be accessed as variables in an</span>
 <span class="sd">            aggregate expression context (e.g. &quot;$$var&quot;).</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          - An instance of :class:`~pymongo.results.DeleteResult`.</span>
+<span class="sd">        :return: - An instance of :class:`~pymongo.results.DeleteResult`.</span>
 
 <span class="sd">        .. versionchanged:: 4.1</span>
 <span class="sd">           Added ``let`` parameter.</span>
@@ -2058,27 +2049,25 @@
 <span class="sd">          &gt;&gt;&gt; db.test.count_documents({&#39;x&#39;: 1})</span>
 <span class="sd">          0</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter`: A query that matches the documents to delete.</span>
-<span class="sd">          - `collation` (optional): An instance of</span>
+<span class="sd">        :param filter: A query that matches the documents to delete.</span>
+<span class="sd">        :param collation: An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`.</span>
-<span class="sd">          - `hint` (optional): An index to use to support the query</span>
+<span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
 <span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
 <span class="sd">            ``[(&#39;field&#39;, ASCENDING)]``). This option is only supported on</span>
 <span class="sd">            MongoDB 4.4 and above.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `let` (optional): Map of parameter names and values. Values must be</span>
+<span class="sd">        :param let: Map of parameter names and values. Values must be</span>
 <span class="sd">            constant or closed expressions that do not reference document</span>
 <span class="sd">            fields. Parameters can then be accessed as variables in an</span>
 <span class="sd">            aggregate expression context (e.g. &quot;$$var&quot;).</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          - An instance of :class:`~pymongo.results.DeleteResult`.</span>
+<span class="sd">        :return: - An instance of :class:`~pymongo.results.DeleteResult`.</span>
 
 <span class="sd">        .. versionchanged:: 4.1</span>
 <span class="sd">           Added ``let`` parameter.</span>
@@ -2122,17 +2111,17 @@
 <span class="sd">        The :meth:`find_one` method obeys the :attr:`read_preference` of</span>
 <span class="sd">        this :class:`Collection`.</span>
 
-<span class="sd">        :Parameters:</span>
-
-<span class="sd">          - `filter` (optional): a dictionary specifying</span>
+<span class="sd">        :param filter: a dictionary specifying</span>
 <span class="sd">            the query to be performed OR any other type to be used as</span>
 <span class="sd">            the value for a query for ``&quot;_id&quot;``.</span>
 
-<span class="sd">          - `*args` (optional): any additional positional arguments</span>
+<span class="sd">        :param args: any additional positional arguments</span>
 <span class="sd">            are the same as the arguments to :meth:`find`.</span>
 
-<span class="sd">          - `**kwargs` (optional): any additional keyword arguments</span>
+<span class="sd">        :param kwargs: any additional keyword arguments</span>
 <span class="sd">            are the same as the arguments to :meth:`find`.</span>
+
+<span class="sd">            :: code-block: python</span>
 
 <span class="sd">              &gt;&gt;&gt; collection.find_one(max_time_ms=100)</span>
 
@@ -2169,28 +2158,27 @@
 <span class="sd">        The :meth:`find` method obeys the :attr:`read_preference` of</span>
 <span class="sd">        this :class:`Collection`.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter` (optional): A query document that selects which documents</span>
+<span class="sd">        :param filter: A query document that selects which documents</span>
 <span class="sd">            to include in the result set. Can be an empty document to include</span>
 <span class="sd">            all documents.</span>
-<span class="sd">          - `projection` (optional): a list of field names that should be</span>
+<span class="sd">        :param projection: a list of field names that should be</span>
 <span class="sd">            returned in the result set or a dict specifying the fields</span>
 <span class="sd">            to include or exclude. If `projection` is a list &quot;_id&quot; will</span>
 <span class="sd">            always be returned. Use a dict to exclude fields from</span>
 <span class="sd">            the result (e.g. projection={&#39;_id&#39;: False}).</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `skip` (optional): the number of documents to omit (from</span>
+<span class="sd">        :param skip: the number of documents to omit (from</span>
 <span class="sd">            the start of the result set) when returning the results</span>
-<span class="sd">          - `limit` (optional): the maximum number of results to</span>
+<span class="sd">        :param limit: the maximum number of results to</span>
 <span class="sd">            return. A limit of 0 (the default) is equivalent to setting no</span>
 <span class="sd">            limit.</span>
-<span class="sd">          - `no_cursor_timeout` (optional): if False (the default), any</span>
+<span class="sd">        :param no_cursor_timeout: if False (the default), any</span>
 <span class="sd">            returned cursor is closed by the server after 10 minutes of</span>
 <span class="sd">            inactivity. If set to True, the returned cursor will never</span>
 <span class="sd">            time out on the server. Care should be taken to ensure that</span>
 <span class="sd">            cursors with no_cursor_timeout turned on are properly closed.</span>
-<span class="sd">          - `cursor_type` (optional): the type of cursor to return. The valid</span>
+<span class="sd">        :param cursor_type: the type of cursor to return. The valid</span>
 <span class="sd">            options are defined by :class:`~pymongo.cursor.CursorType`:</span>
 
 <span class="sd">            - :attr:`~pymongo.cursor.CursorType.NON_TAILABLE` - the result of</span>
@@ -2213,53 +2201,53 @@
 <span class="sd">              results to the client without waiting for the client to request</span>
 <span class="sd">              each batch, reducing latency. See notes on compatibility below.</span>
 
-<span class="sd">          - `sort` (optional): a list of (key, direction) pairs</span>
+<span class="sd">        :param sort: a list of (key, direction) pairs</span>
 <span class="sd">            specifying the sort order for this query. See</span>
 <span class="sd">            :meth:`~pymongo.cursor.Cursor.sort` for details.</span>
-<span class="sd">          - `allow_partial_results` (optional): if True, mongos will return</span>
+<span class="sd">        :param allow_partial_results: if True, mongos will return</span>
 <span class="sd">            partial results if some shards are down instead of returning an</span>
 <span class="sd">            error.</span>
-<span class="sd">          - `oplog_replay` (optional): **DEPRECATED** - if True, set the</span>
+<span class="sd">        :param oplog_replay: **DEPRECATED** - if True, set the</span>
 <span class="sd">            oplogReplay query flag. Default: False.</span>
-<span class="sd">          - `batch_size` (optional): Limits the number of documents returned in</span>
+<span class="sd">        :param batch_size: Limits the number of documents returned in</span>
 <span class="sd">            a single batch.</span>
-<span class="sd">          - `collation` (optional): An instance of</span>
+<span class="sd">        :param collation: An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`.</span>
-<span class="sd">          - `return_key` (optional): If True, return only the index keys in</span>
+<span class="sd">        :param return_key: If True, return only the index keys in</span>
 <span class="sd">            each document.</span>
-<span class="sd">          - `show_record_id` (optional): If True, adds a field ``$recordId`` in</span>
+<span class="sd">        :param show_record_id: If True, adds a field ``$recordId`` in</span>
 <span class="sd">            each document with the storage engine&#39;s internal record identifier.</span>
-<span class="sd">          - `snapshot` (optional): **DEPRECATED** - If True, prevents the</span>
+<span class="sd">        :param snapshot: **DEPRECATED** - If True, prevents the</span>
 <span class="sd">            cursor from returning a document more than once because of an</span>
 <span class="sd">            intervening write operation.</span>
-<span class="sd">          - `hint` (optional): An index, in the same format as passed to</span>
+<span class="sd">        :param hint: An index, in the same format as passed to</span>
 <span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
 <span class="sd">            ``[(&#39;field&#39;, ASCENDING)]``). Pass this as an alternative to calling</span>
 <span class="sd">            :meth:`~pymongo.cursor.Cursor.hint` on the cursor to tell Mongo the</span>
 <span class="sd">            proper index to use for the query.</span>
-<span class="sd">          - `max_time_ms` (optional): Specifies a time limit for a query</span>
+<span class="sd">        :param max_time_ms: Specifies a time limit for a query</span>
 <span class="sd">            operation. If the specified time is exceeded, the operation will be</span>
 <span class="sd">            aborted and :exc:`~pymongo.errors.ExecutionTimeout` is raised. Pass</span>
 <span class="sd">            this as an alternative to calling</span>
 <span class="sd">            :meth:`~pymongo.cursor.Cursor.max_time_ms` on the cursor.</span>
-<span class="sd">          - `max_scan` (optional): **DEPRECATED** - The maximum number of</span>
+<span class="sd">        :param max_scan: **DEPRECATED** - The maximum number of</span>
 <span class="sd">            documents to scan. Pass this as an alternative to calling</span>
 <span class="sd">            :meth:`~pymongo.cursor.Cursor.max_scan` on the cursor.</span>
-<span class="sd">          - `min` (optional): A list of field, limit pairs specifying the</span>
+<span class="sd">        :param min: A list of field, limit pairs specifying the</span>
 <span class="sd">            inclusive lower bound for all keys of a specific index in order.</span>
 <span class="sd">            Pass this as an alternative to calling</span>
 <span class="sd">            :meth:`~pymongo.cursor.Cursor.min` on the cursor. ``hint`` must</span>
 <span class="sd">            also be passed to ensure the query utilizes the correct index.</span>
-<span class="sd">          - `max` (optional): A list of field, limit pairs specifying the</span>
+<span class="sd">        :param max: A list of field, limit pairs specifying the</span>
 <span class="sd">            exclusive upper bound for all keys of a specific index in order.</span>
 <span class="sd">            Pass this as an alternative to calling</span>
 <span class="sd">            :meth:`~pymongo.cursor.Cursor.max` on the cursor. ``hint`` must</span>
 <span class="sd">            also be passed to ensure the query utilizes the correct index.</span>
-<span class="sd">          - `comment` (optional): A string to attach to the query to help</span>
+<span class="sd">        :param comment: A string to attach to the query to help</span>
 <span class="sd">            interpret and trace the operation in the server logs and in profile</span>
 <span class="sd">            data. Pass this as an alternative to calling</span>
 <span class="sd">            :meth:`~pymongo.cursor.Cursor.comment` on the cursor.</span>
-<span class="sd">          - `allow_disk_use` (optional): if True, MongoDB may use temporary</span>
+<span class="sd">        :param allow_disk_use: if True, MongoDB may use temporary</span>
 <span class="sd">            disk files to store data exceeding the system memory limit while</span>
 <span class="sd">            processing a blocking sort operation. The option has no effect if</span>
 <span class="sd">            MongoDB can satisfy the specified sort using an index, or if the</span>
@@ -2376,7 +2364,7 @@
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
         <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span>
         <span class="n">read_preference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">],</span>
-        <span class="n">cmd</span><span class="p">:</span> <span class="n">SON</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+        <span class="n">cmd</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">collation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Collation</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal count command helper.&quot;&quot;&quot;</span>
@@ -2400,7 +2388,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span>
         <span class="n">read_preference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">],</span>
-        <span class="n">cmd</span><span class="p">:</span> <span class="n">SON</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+        <span class="n">cmd</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">collation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_CollationIn</span><span class="p">],</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -2436,10 +2424,9 @@
 <span class="sd">          - `maxTimeMS` (int): The maximum amount of time to allow this</span>
 <span class="sd">            operation to run, in milliseconds.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): See list of options above.</span>
+<span class="sd">        :param kwargs: See list of options above.</span>
 
 <span class="sd">        .. versionchanged:: 4.2</span>
 <span class="sd">           This method now always uses the `count`_ command. Due to an oversight in versions</span>
@@ -2462,11 +2449,11 @@
             <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span>
             <span class="n">read_preference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">],</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-            <span class="n">cmd</span><span class="p">:</span> <span class="n">SON</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">)])</span>
+            <span class="n">cmd</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">}</span>
             <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count_cmd</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">read_preference</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">collation</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable_non_cursor_read</span><span class="p">(</span><span class="n">_cmd</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable_non_cursor_read</span><span class="p">(</span><span class="n">_cmd</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">COUNT</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Collection.count_documents">
@@ -2516,15 +2503,14 @@
 <span class="sd">           | $nearSphere | `$geoWithin`_ with `$centerSphere`_ |</span>
 <span class="sd">           +-------------+-------------------------------------+</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter` (required): A query document that selects which documents</span>
+<span class="sd">        :param filter: A query document that selects which documents</span>
 <span class="sd">            to count in the collection. Can be an empty document to count all</span>
 <span class="sd">            documents.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): See list of options above.</span>
+<span class="sd">        :param kwargs: See list of options above.</span>
 
 
 <span class="sd">        .. versionadded:: 3.7</span>
@@ -2542,7 +2528,7 @@
         <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
         <span class="n">pipeline</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;$group&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}})</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;aggregate&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;cursor&quot;</span><span class="p">,</span> <span class="p">{})])</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;aggregate&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">,</span> <span class="s2">&quot;pipeline&quot;</span><span class="p">:</span> <span class="n">pipeline</span><span class="p">,</span> <span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="p">{}}</span>
         <span class="k">if</span> <span class="s2">&quot;hint&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;hint&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;hint&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;hint&quot;</span><span class="p">])</span>
         <span class="n">collation</span> <span class="o">=</span> <span class="n">validate_collation_or_none</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;collation&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
@@ -2559,18 +2545,19 @@
                 <span class="k">return</span> <span class="mi">0</span>
             <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable_non_cursor_read</span><span class="p">(</span><span class="n">_cmd</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable_non_cursor_read</span><span class="p">(</span><span class="n">_cmd</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">_Op</span><span class="o">.</span><span class="n">COUNT</span><span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="nf">_retryable_non_cursor_read</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span> <span class="n">Server</span><span class="p">,</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">]],</span> <span class="n">T</span><span class="p">],</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Non-cursor read helper to handle implicit session creation.&quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span>
         <span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">_tmp_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">_retryable_read</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_preference_for</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">s</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">_retryable_read</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_preference_for</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">s</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Collection.create_indexes">
 <a class="viewcode-back" href="../../CveXplore/database/CveSearchCollection.html#CveXplore.common.data_source_connection.Collection.create_indexes">[docs]</a>
@@ -2590,14 +2577,13 @@
 <span class="sd">          &gt;&gt;&gt; db.test.create_indexes([index1, index2])</span>
 <span class="sd">          [&quot;hello_world&quot;, &quot;goodbye_-1&quot;]</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `indexes`: A list of :class:`~pymongo.operations.IndexModel`</span>
+<span class="sd">        :param indexes: A list of :class:`~pymongo.operations.IndexModel`</span>
 <span class="sd">            instances.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): optional arguments to the createIndexes</span>
+<span class="sd">        :param kwargs: optional arguments to the createIndexes</span>
 <span class="sd">            command (like maxTimeMS) can be passed as keyword arguments.</span>
 
 
@@ -2629,16 +2615,15 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal createIndexes helper.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `indexes`: A list of :class:`~pymongo.operations.IndexModel`</span>
+<span class="sd">        :param indexes: A list of :class:`~pymongo.operations.IndexModel`</span>
 <span class="sd">            instances.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `**kwargs` (optional): optional arguments to the createIndexes</span>
+<span class="sd">        :param kwargs: optional arguments to the createIndexes</span>
 <span class="sd">            command (like maxTimeMS) can be passed as keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">CREATE_INDEXES</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="n">supports_quorum</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">max_wire_version</span> <span class="o">&gt;=</span> <span class="mi">9</span>
 
             <span class="k">def</span> <span class="nf">gen_indexes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -2651,7 +2636,7 @@
                     <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">document</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
                     <span class="k">yield</span> <span class="n">document</span>
 
-            <span class="n">cmd</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;createIndexes&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;indexes&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">gen_indexes</span><span class="p">()))])</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;createIndexes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;indexes&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">gen_indexes</span><span class="p">())}</span>
             <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">if</span> <span class="s2">&quot;commitQuorum&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">supports_quorum</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
@@ -2683,7 +2668,7 @@
 <span class="sd">        Takes either a single key or a list containing (key, direction) pairs</span>
 <span class="sd">        or keys.  If no direction is given, :data:`~pymongo.ASCENDING` will</span>
 <span class="sd">        be assumed.</span>
-<span class="sd">        The key(s) must be an instance of :class:`str`and the direction(s) must</span>
+<span class="sd">        The key(s) must be an instance of :class:`str` and the direction(s) must</span>
 <span class="sd">        be one of (:data:`~pymongo.ASCENDING`, :data:`~pymongo.DESCENDING`,</span>
 <span class="sd">        :data:`~pymongo.GEO2D`, :data:`~pymongo.GEOSPHERE`,</span>
 <span class="sd">        :data:`~pymongo.HASHED`, :data:`~pymongo.TEXT`).</span>
@@ -2747,14 +2732,13 @@
 <span class="sd">        .. note:: The :attr:`~pymongo.collection.Collection.write_concern` of</span>
 <span class="sd">           this collection is automatically applied to this operation.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `keys`: a single key or a list of (key, direction)</span>
+<span class="sd">        :param keys: a single key or a list of (key, direction)</span>
 <span class="sd">            pairs specifying the index to create</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): any additional index creation</span>
+<span class="sd">        :param kwargs: any additional index creation</span>
 <span class="sd">            options (see the above list) should be passed as keyword</span>
 <span class="sd">            arguments.</span>
 
@@ -2804,12 +2788,11 @@
 <span class="sd">        Can be used on non-existent collections or collections with no indexes.</span>
 <span class="sd">        Raises OperationFailure on an error.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): optional arguments to the createIndexes</span>
+<span class="sd">        :param kwargs: optional arguments to the createIndexes</span>
 <span class="sd">            command (like maxTimeMS) can be passed as keyword arguments.</span>
 
 <span class="sd">        .. note:: The :attr:`~pymongo.collection.Collection.write_concern` of</span>
@@ -2854,13 +2837,12 @@
 <span class="sd">          passing the `name` parameter to :meth:`create_index`) the index</span>
 <span class="sd">          **must** be dropped by name.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `index_or_name`: index (or name of index) to drop</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param index_or_name: index (or name of index) to drop</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): optional arguments to the createIndexes</span>
+<span class="sd">        :param kwargs: optional arguments to the createIndexes</span>
 <span class="sd">            command (like maxTimeMS) can be passed as keyword arguments.</span>
 
 
@@ -2885,11 +2867,11 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;index_or_name must be an instance of str or list&quot;</span><span class="p">)</span>
 
-        <span class="n">cmd</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;dropIndexes&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)])</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;dropIndexes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">}</span>
         <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">DROP_INDEXES</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
                 <span class="n">conn</span><span class="p">,</span>
                 <span class="n">cmd</span><span class="p">,</span>
@@ -2914,14 +2896,12 @@
 <span class="sd">          ...</span>
 <span class="sd">          SON([(&#39;v&#39;, 2), (&#39;key&#39;, SON([(&#39;_id&#39;, 1)])), (&#39;name&#39;, &#39;_id_&#39;)])</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          An instance of :class:`~pymongo.command_cursor.CommandCursor`.</span>
+<span class="sd">        :return: An instance of :class:`~pymongo.command_cursor.CommandCursor`.</span>
 
 <span class="sd">        .. versionchanged:: 4.1</span>
 <span class="sd">           Added ``comment`` parameter.</span>
@@ -2945,7 +2925,7 @@
             <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span>
             <span class="n">read_preference</span><span class="p">:</span> <span class="n">_ServerMode</span><span class="p">,</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CommandCursor</span><span class="p">[</span><span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-            <span class="n">cmd</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;listIndexes&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;cursor&quot;</span><span class="p">,</span> <span class="p">{})])</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;listIndexes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">,</span> <span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="p">{}}</span>
             <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
 
@@ -2971,7 +2951,9 @@
             <span class="k">return</span> <span class="n">cmd_cursor</span>
 
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_tmp_session</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_read</span><span class="p">(</span><span class="n">_cmd</span><span class="p">,</span> <span class="n">read_pref</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_read</span><span class="p">(</span>
+                <span class="n">_cmd</span><span class="p">,</span> <span class="n">read_pref</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">LIST_INDEXES</span>
+            <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Collection.index_information">
@@ -2999,10 +2981,9 @@
 <span class="sd">        {&#39;_id_&#39;: {&#39;key&#39;: [(&#39;_id&#39;, 1)]},</span>
 <span class="sd">         &#39;x_1&#39;: {&#39;unique&#39;: True, &#39;key&#39;: [(&#39;x&#39;, 1)]}}</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
 <span class="sd">        .. versionchanged:: 4.1</span>
@@ -3031,17 +3012,15 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CommandCursor</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a cursor over search indexes for the current collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `name` (optional): If given, the name of the index to search</span>
+<span class="sd">        :param name: If given, the name of the index to search</span>
 <span class="sd">            for.  Only indexes with matching index names will be returned.</span>
 <span class="sd">            If not given, all search indexes for the current collection</span>
 <span class="sd">            will be returned.</span>
-<span class="sd">          - `session` (optional): a :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param session: a :class:`~pymongo.client_session.ClientSession`.</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          A :class:`~pymongo.command_cursor.CommandCursor` over the result</span>
+<span class="sd">        :return: A :class:`~pymongo.command_cursor.CommandCursor` over the result</span>
 <span class="sd">          set.</span>
 
 <span class="sd">        .. note:: requires a MongoDB server version 7.0+ Atlas cluster.</span>
@@ -3054,7 +3033,10 @@
             <span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$listSearchIndexes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">}}]</span>
 
         <span class="n">coll</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_options</span><span class="p">(</span>
-            <span class="n">codec_options</span><span class="o">=</span><span class="n">DEFAULT_CODEC_OPTIONS</span><span class="p">,</span> <span class="n">read_preference</span><span class="o">=</span><span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY</span>
+            <span class="n">codec_options</span><span class="o">=</span><span class="n">DEFAULT_CODEC_OPTIONS</span><span class="p">,</span>
+            <span class="n">read_preference</span><span class="o">=</span><span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">,</span>
+            <span class="n">write_concern</span><span class="o">=</span><span class="n">DEFAULT_WRITE_CONCERN</span><span class="p">,</span>
+            <span class="n">read_concern</span><span class="o">=</span><span class="n">DEFAULT_READ_CONCERN</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="n">_CollectionAggregationCommand</span><span class="p">(</span>
             <span class="n">coll</span><span class="p">,</span>
@@ -3062,6 +3044,7 @@
             <span class="n">pipeline</span><span class="p">,</span>
             <span class="n">kwargs</span><span class="p">,</span>
             <span class="n">explicit_session</span><span class="o">=</span><span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">,</span>
             <span class="n">user_fields</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;firstBatch&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}},</span>
         <span class="p">)</span>
 
@@ -3070,6 +3053,7 @@
             <span class="n">cmd</span><span class="o">.</span><span class="n">get_read_preference</span><span class="p">(</span><span class="n">session</span><span class="p">),</span>  <span class="c1"># type: ignore[arg-type]</span>
             <span class="n">session</span><span class="p">,</span>
             <span class="n">retryable</span><span class="o">=</span><span class="ow">not</span> <span class="n">cmd</span><span class="o">.</span><span class="n">_performs_write</span><span class="p">,</span>
+            <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">LIST_SEARCH_INDEX</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -3084,27 +3068,25 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a single search index for the current collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `model`: The model for the new search index.</span>
+<span class="sd">        :param model: The model for the new search index.</span>
 <span class="sd">            It can be given as a :class:`~pymongo.operations.SearchIndexModel`</span>
 <span class="sd">            instance or a dictionary with a model &quot;definition&quot;  and optional</span>
 <span class="sd">            &quot;name&quot;.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): optional arguments to the createSearchIndexes</span>
+<span class="sd">        :param kwargs: optional arguments to the createSearchIndexes</span>
 <span class="sd">            command (like maxTimeMS) can be passed as keyword arguments.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          The name of the new search index.</span>
+<span class="sd">        :return: The name of the new search index.</span>
 
 <span class="sd">        .. note:: requires a MongoDB server version 7.0+ Atlas cluster.</span>
 
 <span class="sd">        .. versionadded:: 4.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">SearchIndexModel</span><span class="p">):</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">SearchIndexModel</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s2">&quot;definition&quot;</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">))</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">SearchIndexModel</span><span class="p">(</span><span class="o">**</span><span class="n">model</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_search_indexes</span><span class="p">([</span><span class="n">model</span><span class="p">],</span> <span class="n">session</span><span class="p">,</span> <span class="n">comment</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
@@ -3119,16 +3101,14 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create multiple search indexes for the current collection.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `models`: A list of :class:`~pymongo.operations.SearchIndexModel` instances.</span>
-<span class="sd">          - `session` (optional): a :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param models: A list of :class:`~pymongo.operations.SearchIndexModel` instances.</span>
+<span class="sd">        :param session: a :class:`~pymongo.client_session.ClientSession`.</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): optional arguments to the createSearchIndexes</span>
+<span class="sd">        :param kwargs: optional arguments to the createSearchIndexes</span>
 <span class="sd">            command (like maxTimeMS) can be passed as keyword arguments.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">            A list of the newly created search index names.</span>
+<span class="sd">        :return: A list of the newly created search index names.</span>
 
 <span class="sd">        .. note:: requires a MongoDB server version 7.0+ Atlas cluster.</span>
 
@@ -3145,10 +3125,10 @@
                     <span class="p">)</span>
                 <span class="k">yield</span> <span class="n">index</span><span class="o">.</span><span class="n">document</span>
 
-        <span class="n">cmd</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;createSearchIndexes&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;indexes&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">gen_indexes</span><span class="p">()))])</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;createSearchIndexes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;indexes&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">gen_indexes</span><span class="p">())}</span>
         <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">CREATE_SEARCH_INDEXES</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
                 <span class="n">conn</span><span class="p">,</span>
                 <span class="n">cmd</span><span class="p">,</span>
@@ -3169,24 +3149,23 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a search index by index name.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `name`: The name of the search index to be deleted.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param name: The name of the search index to be deleted.</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): optional arguments to the dropSearchIndexes</span>
+<span class="sd">        :param kwargs: optional arguments to the dropSearchIndexes</span>
 <span class="sd">            command (like maxTimeMS) can be passed as keyword arguments.</span>
 
 <span class="sd">        .. note:: requires a MongoDB server version 7.0+ Atlas cluster.</span>
 
 <span class="sd">        .. versionadded:: 4.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;dropSearchIndex&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)])</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;dropSearchIndex&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">}</span>
         <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">DROP_SEARCH_INDEXES</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
                 <span class="n">conn</span><span class="p">,</span>
                 <span class="n">cmd</span><span class="p">,</span>
@@ -3208,25 +3187,24 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update a search index by replacing the existing index definition with the provided definition.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `name`: The name of the search index to be updated.</span>
-<span class="sd">          - `definition`: The new search index definition.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param name: The name of the search index to be updated.</span>
+<span class="sd">        :param definition: The new search index definition.</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): optional arguments to the updateSearchIndexes</span>
+<span class="sd">        :param kwargs: optional arguments to the updateSearchIndexes</span>
 <span class="sd">            command (like maxTimeMS) can be passed as keyword arguments.</span>
 
 <span class="sd">        .. note:: requires a MongoDB server version 7.0+ Atlas cluster.</span>
 
 <span class="sd">        .. versionadded:: 4.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;updateSearchIndex&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;definition&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="p">)])</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;updateSearchIndex&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;definition&quot;</span><span class="p">:</span> <span class="n">definition</span><span class="p">}</span>
         <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">UPDATE_SEARCH_INDEX</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
                 <span class="n">conn</span><span class="p">,</span>
                 <span class="n">cmd</span><span class="p">,</span>
@@ -3250,10 +3228,9 @@
 <span class="sd">        information on the possible options. Returns an empty</span>
 <span class="sd">        dictionary if the collection has not been created yet.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
 <span class="sd">        .. versionchanged:: 3.6</span>
@@ -3315,6 +3292,7 @@
             <span class="n">cmd</span><span class="o">.</span><span class="n">get_read_preference</span><span class="p">(</span><span class="n">session</span><span class="p">),</span>  <span class="c1"># type: ignore[arg-type]</span>
             <span class="n">session</span><span class="p">,</span>
             <span class="n">retryable</span><span class="o">=</span><span class="ow">not</span> <span class="n">cmd</span><span class="o">.</span><span class="n">_performs_write</span><span class="p">,</span>
+            <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">AGGREGATE</span><span class="p">,</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Collection.aggregate">
@@ -3343,11 +3321,17 @@
 <span class="sd">        .. note:: The :attr:`~pymongo.collection.Collection.write_concern` of</span>
 <span class="sd">           this collection is automatically applied to this operation.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `pipeline`: a list of aggregation pipeline stages</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param pipeline: a list of aggregation pipeline stages</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `**kwargs` (optional): extra `aggregate command`_ parameters.</span>
+<span class="sd">        :param let: A dict of parameter names and values. Values must be</span>
+<span class="sd">            constant or closed expressions that do not reference document</span>
+<span class="sd">            fields. Parameters can then be accessed as variables in an</span>
+<span class="sd">            aggregate expression context (e.g. ``&quot;$$var&quot;``). This option is</span>
+<span class="sd">            only supported on MongoDB &gt;= 5.0.</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
+<span class="sd">            command.</span>
+<span class="sd">        :param kwargs: extra `aggregate command`_ parameters.</span>
 
 <span class="sd">        All optional `aggregate command`_ parameters should be passed as</span>
 <span class="sd">        keyword arguments to this method. Valid options include, but are not</span>
@@ -3363,17 +3347,9 @@
 <span class="sd">            returning aggregate results using a cursor.</span>
 <span class="sd">          - `collation` (optional): An instance of</span>
 <span class="sd">            :class:`~pymongo.collation.Collation`.</span>
-<span class="sd">          - `let` (dict): A dict of parameter names and values. Values must be</span>
-<span class="sd">            constant or closed expressions that do not reference document</span>
-<span class="sd">            fields. Parameters can then be accessed as variables in an</span>
-<span class="sd">            aggregate expression context (e.g. ``&quot;$$var&quot;``). This option is</span>
-<span class="sd">            only supported on MongoDB &gt;= 5.0.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
-<span class="sd">            command.</span>
 
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          A :class:`~pymongo.command_cursor.CommandCursor` over the result</span>
+<span class="sd">        :return: A :class:`~pymongo.command_cursor.CommandCursor` over the result</span>
 <span class="sd">          set.</span>
 
 <span class="sd">        .. versionchanged:: 4.1</span>
@@ -3530,47 +3506,45 @@
 <span class="sd">            ``ReadConcern(&quot;majority&quot;)`` in order to use the ``$changeStream``</span>
 <span class="sd">            stage.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `pipeline` (optional): A list of aggregation pipeline stages to</span>
+<span class="sd">        :param pipeline: A list of aggregation pipeline stages to</span>
 <span class="sd">            append to an initial ``$changeStream`` stage. Not all</span>
 <span class="sd">            pipeline stages are valid after a ``$changeStream`` stage, see the</span>
 <span class="sd">            MongoDB documentation on change streams for the supported stages.</span>
-<span class="sd">          - `full_document` (optional): The fullDocument to pass as an option</span>
+<span class="sd">        :param full_document: The fullDocument to pass as an option</span>
 <span class="sd">            to the ``$changeStream`` stage. Allowed values: &#39;updateLookup&#39;,</span>
 <span class="sd">            &#39;whenAvailable&#39;, &#39;required&#39;. When set to &#39;updateLookup&#39;, the</span>
 <span class="sd">            change notification for partial updates will include both a delta</span>
 <span class="sd">            describing the changes to the document, as well as a copy of the</span>
 <span class="sd">            entire document that was changed from some time after the change</span>
 <span class="sd">            occurred.</span>
-<span class="sd">          - `full_document_before_change`: Allowed values: &#39;whenAvailable&#39;</span>
+<span class="sd">        :param full_document_before_change: Allowed values: &#39;whenAvailable&#39;</span>
 <span class="sd">            and &#39;required&#39;. Change events may now result in a</span>
 <span class="sd">            &#39;fullDocumentBeforeChange&#39; response field.</span>
-<span class="sd">          - `resume_after` (optional): A resume token. If provided, the</span>
+<span class="sd">        :param resume_after: A resume token. If provided, the</span>
 <span class="sd">            change stream will start returning changes that occur directly</span>
 <span class="sd">            after the operation specified in the resume token. A resume token</span>
 <span class="sd">            is the _id value of a change document.</span>
-<span class="sd">          - `max_await_time_ms` (optional): The maximum time in milliseconds</span>
+<span class="sd">        :param max_await_time_ms: The maximum time in milliseconds</span>
 <span class="sd">            for the server to wait for changes before responding to a getMore</span>
 <span class="sd">            operation.</span>
-<span class="sd">          - `batch_size` (optional): The maximum number of documents to return</span>
+<span class="sd">        :param batch_size: The maximum number of documents to return</span>
 <span class="sd">            per batch.</span>
-<span class="sd">          - `collation` (optional): The :class:`~pymongo.collation.Collation`</span>
+<span class="sd">        :param collation: The :class:`~pymongo.collation.Collation`</span>
 <span class="sd">            to use for the aggregation.</span>
-<span class="sd">          - `start_at_operation_time` (optional): If provided, the resulting</span>
+<span class="sd">        :param start_at_operation_time: If provided, the resulting</span>
 <span class="sd">            change stream will only return changes that occurred at or after</span>
 <span class="sd">            the specified :class:`~bson.timestamp.Timestamp`. Requires</span>
 <span class="sd">            MongoDB &gt;= 4.0.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `start_after` (optional): The same as `resume_after` except that</span>
+<span class="sd">        :param start_after: The same as `resume_after` except that</span>
 <span class="sd">            `start_after` can resume notifications after an invalidate event.</span>
 <span class="sd">            This option and `resume_after` are mutually exclusive.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `show_expanded_events` (optional): Include expanded events such as DDL events like `dropIndexes`.</span>
+<span class="sd">        :param show_expanded_events: Include expanded events such as DDL events like `dropIndexes`.</span>
 
-<span class="sd">        :Returns:</span>
-<span class="sd">          A :class:`~pymongo.change_stream.CollectionChangeStream` cursor.</span>
+<span class="sd">        :return: A :class:`~pymongo.change_stream.CollectionChangeStream` cursor.</span>
 
 <span class="sd">        .. versionchanged:: 4.3</span>
 <span class="sd">           Added `show_expanded_events` parameter.</span>
@@ -3629,13 +3603,12 @@
 <span class="sd">        Raises :class:`~pymongo.errors.InvalidName`</span>
 <span class="sd">        if `new_name` is not a valid collection name.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `new_name`: new name for this collection</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param new_name: new name for this collection</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): additional arguments to the rename command</span>
+<span class="sd">        :param kwargs: additional arguments to the rename command</span>
 <span class="sd">            may be passed as keyword arguments to this helper method</span>
 <span class="sd">            (i.e. ``dropTarget=True``)</span>
 
@@ -3661,13 +3634,13 @@
             <span class="k">raise</span> <span class="n">InvalidName</span><span class="p">(</span><span class="s2">&quot;collection names must not contain &#39;$&#39;&quot;</span><span class="p">)</span>
 
         <span class="n">new_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">new_name</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;renameCollection&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__full_name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;to&quot;</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)])</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;renameCollection&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__full_name</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">:</span> <span class="n">new_name</span><span class="p">}</span>
         <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
         <span class="n">write_concern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_concern_for_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">RENAME</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_tmp_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">command</span><span class="p">(</span>
                     <span class="s2">&quot;admin&quot;</span><span class="p">,</span>
@@ -3706,16 +3679,15 @@
 <span class="sd">        The :meth:`distinct` method obeys the :attr:`read_preference` of</span>
 <span class="sd">        this :class:`Collection`.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `key`: name of the field for which we want to get the distinct</span>
+<span class="sd">        :param key: name of the field for which we want to get the distinct</span>
 <span class="sd">            values</span>
-<span class="sd">          - `filter` (optional): A query document that specifies the documents</span>
+<span class="sd">        :param filter: A query document that specifies the documents</span>
 <span class="sd">            from which to retrieve the distinct values.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): See list of options above.</span>
+<span class="sd">        :param kwargs: See list of options above.</span>
 
 <span class="sd">        .. versionchanged:: 3.6</span>
 <span class="sd">           Added ``session`` parameter.</span>
@@ -3726,7 +3698,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;key must be an instance of str&quot;</span><span class="p">)</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;distinct&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)])</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;distinct&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="n">key</span><span class="p">}</span>
         <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;query&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span><span class="s2">&quot;can&#39;t pass both filter and query&quot;</span><span class="p">)</span>
@@ -3752,7 +3724,7 @@
                 <span class="n">user_fields</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
             <span class="p">)[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable_non_cursor_read</span><span class="p">(</span><span class="n">_cmd</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable_non_cursor_read</span><span class="p">(</span><span class="n">_cmd</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">DISTINCT</span><span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="nf">_write_concern_for_cmd</span><span class="p">(</span>
@@ -3784,7 +3756,7 @@
                 <span class="s2">&quot;return_document must be ReturnDocument.BEFORE or ReturnDocument.AFTER&quot;</span>
             <span class="p">)</span>
         <span class="n">collation</span> <span class="o">=</span> <span class="n">validate_collation_or_none</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;collation&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;findAndModify&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;new&quot;</span><span class="p">,</span> <span class="n">return_document</span><span class="p">)])</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;findAndModify&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="nb">filter</span><span class="p">,</span> <span class="s2">&quot;new&quot;</span><span class="p">:</span> <span class="n">return_document</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">let</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">common</span><span class="o">.</span><span class="n">validate_is_mapping</span><span class="p">(</span><span class="s2">&quot;let&quot;</span><span class="p">,</span> <span class="n">let</span><span class="p">)</span>
             <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;let&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">let</span>
@@ -3794,7 +3766,7 @@
         <span class="k">if</span> <span class="n">sort</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;sort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">sort</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">upsert</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">common</span><span class="o">.</span><span class="n">validate_boolean</span><span class="p">(</span><span class="s2">&quot;upsert&quot;</span><span class="p">,</span> <span class="n">upsert</span><span class="p">)</span>
+            <span class="n">validate_boolean</span><span class="p">(</span><span class="s2">&quot;upsert&quot;</span><span class="p">,</span> <span class="n">upsert</span><span class="p">)</span>
             <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;upsert&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">upsert</span>
         <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -3837,7 +3809,10 @@
             <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_write</span><span class="p">(</span>
-            <span class="n">write_concern</span><span class="o">.</span><span class="n">acknowledged</span><span class="p">,</span> <span class="n">_find_and_modify</span><span class="p">,</span> <span class="n">session</span>
+            <span class="n">write_concern</span><span class="o">.</span><span class="n">acknowledged</span><span class="p">,</span>
+            <span class="n">_find_and_modify</span><span class="p">,</span>
+            <span class="n">session</span><span class="p">,</span>
+            <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">FIND_AND_MODIFY</span><span class="p">,</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Collection.find_one_and_delete">
@@ -3879,30 +3854,29 @@
 <span class="sd">          &gt;&gt;&gt; db.test.find_one_and_delete({&#39;x&#39;: 1}, projection={&#39;_id&#39;: False})</span>
 <span class="sd">          {&#39;x&#39;: 1}</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter`: A query that matches the document to delete.</span>
-<span class="sd">          - `projection` (optional): a list of field names that should be</span>
+<span class="sd">        :param filter: A query that matches the document to delete.</span>
+<span class="sd">        :param projection: a list of field names that should be</span>
 <span class="sd">            returned in the result document or a mapping specifying the fields</span>
 <span class="sd">            to include or exclude. If `projection` is a list &quot;_id&quot; will</span>
 <span class="sd">            always be returned. Use a mapping to exclude fields from</span>
 <span class="sd">            the result (e.g. projection={&#39;_id&#39;: False}).</span>
-<span class="sd">          - `sort` (optional): a list of (key, direction) pairs</span>
+<span class="sd">        :param sort: a list of (key, direction) pairs</span>
 <span class="sd">            specifying the sort order for the query. If multiple documents</span>
 <span class="sd">            match the query, they are sorted and the first is deleted.</span>
-<span class="sd">          - `hint` (optional): An index to use to support the query predicate</span>
+<span class="sd">        :param hint: An index to use to support the query predicate</span>
 <span class="sd">            specified either by its string name, or in the same format as</span>
 <span class="sd">            passed to :meth:`~pymongo.collection.Collection.create_index`</span>
 <span class="sd">            (e.g. ``[(&#39;field&#39;, ASCENDING)]``). This option is only supported</span>
 <span class="sd">            on MongoDB 4.4 and above.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `let` (optional): Map of parameter names and values. Values must be</span>
+<span class="sd">        :param let: Map of parameter names and values. Values must be</span>
 <span class="sd">            constant or closed expressions that do not reference document</span>
 <span class="sd">            fields. Parameters can then be accessed as variables in an</span>
 <span class="sd">            aggregate expression context (e.g. &quot;$$var&quot;).</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): additional command arguments can be passed</span>
+<span class="sd">        :param kwargs: additional command arguments can be passed</span>
 <span class="sd">            as keyword arguments (for example maxTimeMS can be used with</span>
 <span class="sd">            recent server versions).</span>
 
@@ -3971,40 +3945,39 @@
 <span class="sd">          {&#39;x&#39;: 1, &#39;_id&#39;: 1}</span>
 <span class="sd">          {&#39;x&#39;: 1, &#39;_id&#39;: 2}</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter`: A query that matches the document to replace.</span>
-<span class="sd">          - `replacement`: The replacement document.</span>
-<span class="sd">          - `projection` (optional): A list of field names that should be</span>
+<span class="sd">        :param filter: A query that matches the document to replace.</span>
+<span class="sd">        :param replacement: The replacement document.</span>
+<span class="sd">        :param projection: A list of field names that should be</span>
 <span class="sd">            returned in the result document or a mapping specifying the fields</span>
 <span class="sd">            to include or exclude. If `projection` is a list &quot;_id&quot; will</span>
 <span class="sd">            always be returned. Use a mapping to exclude fields from</span>
 <span class="sd">            the result (e.g. projection={&#39;_id&#39;: False}).</span>
-<span class="sd">          - `sort` (optional): a list of (key, direction) pairs</span>
+<span class="sd">        :param sort: a list of (key, direction) pairs</span>
 <span class="sd">            specifying the sort order for the query. If multiple documents</span>
 <span class="sd">            match the query, they are sorted and the first is replaced.</span>
-<span class="sd">          - `upsert` (optional): When ``True``, inserts a new document if no</span>
+<span class="sd">        :param upsert: When ``True``, inserts a new document if no</span>
 <span class="sd">            document matches the query. Defaults to ``False``.</span>
-<span class="sd">          - `return_document`: If</span>
+<span class="sd">        :param return_document: If</span>
 <span class="sd">            :attr:`ReturnDocument.BEFORE` (the default),</span>
 <span class="sd">            returns the original document before it was replaced, or ``None``</span>
 <span class="sd">            if no document matches. If</span>
 <span class="sd">            :attr:`ReturnDocument.AFTER`, returns the replaced</span>
 <span class="sd">            or inserted document.</span>
-<span class="sd">          - `hint` (optional): An index to use to support the query</span>
+<span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
 <span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
 <span class="sd">            ``[(&#39;field&#39;, ASCENDING)]``). This option is only supported on</span>
 <span class="sd">            MongoDB 4.4 and above.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `let` (optional): Map of parameter names and values. Values must be</span>
+<span class="sd">        :param let: Map of parameter names and values. Values must be</span>
 <span class="sd">            constant or closed expressions that do not reference document</span>
 <span class="sd">            fields. Parameters can then be accessed as variables in an</span>
 <span class="sd">            aggregate expression context (e.g. &quot;$$var&quot;).</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): additional command arguments can be passed</span>
+<span class="sd">        :param kwargs: additional command arguments can be passed</span>
 <span class="sd">            as keyword arguments (for example maxTimeMS can be used with</span>
 <span class="sd">            recent server versions).</span>
 
@@ -4121,41 +4094,40 @@
 <span class="sd">          ...     sort=[(&#39;_id&#39;, pymongo.DESCENDING)])</span>
 <span class="sd">          {&#39;_id&#39;: 701, &#39;done&#39;: True, &#39;result&#39;: {&#39;count&#39;: 17}}</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `filter`: A query that matches the document to update.</span>
-<span class="sd">          - `update`: The update operations to apply.</span>
-<span class="sd">          - `projection` (optional): A list of field names that should be</span>
+<span class="sd">        :param filter: A query that matches the document to update.</span>
+<span class="sd">        :param update: The update operations to apply.</span>
+<span class="sd">        :param projection: A list of field names that should be</span>
 <span class="sd">            returned in the result document or a mapping specifying the fields</span>
 <span class="sd">            to include or exclude. If `projection` is a list &quot;_id&quot; will</span>
 <span class="sd">            always be returned. Use a dict to exclude fields from</span>
 <span class="sd">            the result (e.g. projection={&#39;_id&#39;: False}).</span>
-<span class="sd">          - `sort` (optional): a list of (key, direction) pairs</span>
+<span class="sd">        :param sort: a list of (key, direction) pairs</span>
 <span class="sd">            specifying the sort order for the query. If multiple documents</span>
 <span class="sd">            match the query, they are sorted and the first is updated.</span>
-<span class="sd">          - `upsert` (optional): When ``True``, inserts a new document if no</span>
+<span class="sd">        :param upsert: When ``True``, inserts a new document if no</span>
 <span class="sd">            document matches the query. Defaults to ``False``.</span>
-<span class="sd">          - `return_document`: If</span>
+<span class="sd">        :param return_document: If</span>
 <span class="sd">            :attr:`ReturnDocument.BEFORE` (the default),</span>
 <span class="sd">            returns the original document before it was updated. If</span>
 <span class="sd">            :attr:`ReturnDocument.AFTER`, returns the updated</span>
 <span class="sd">            or inserted document.</span>
-<span class="sd">          - `array_filters` (optional): A list of filters specifying which</span>
+<span class="sd">        :param array_filters: A list of filters specifying which</span>
 <span class="sd">            array elements an update should apply.</span>
-<span class="sd">          - `hint` (optional): An index to use to support the query</span>
+<span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
 <span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
 <span class="sd">            ``[(&#39;field&#39;, ASCENDING)]``). This option is only supported on</span>
 <span class="sd">            MongoDB 4.4 and above.</span>
-<span class="sd">          - `session` (optional): a</span>
+<span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
-<span class="sd">          - `let` (optional): Map of parameter names and values. Values must be</span>
+<span class="sd">        :param let: Map of parameter names and values. Values must be</span>
 <span class="sd">            constant or closed expressions that do not reference document</span>
 <span class="sd">            fields. Parameters can then be accessed as variables in an</span>
 <span class="sd">            aggregate expression context (e.g. &quot;$$var&quot;).</span>
-<span class="sd">          - `comment` (optional): A user-provided comment to attach to this</span>
+<span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
-<span class="sd">          - `**kwargs` (optional): additional command arguments can be passed</span>
+<span class="sd">        :param kwargs: additional command arguments can be passed</span>
 <span class="sd">            as keyword arguments (for example maxTimeMS can be used with</span>
 <span class="sd">            recent server versions).</span>
 
@@ -4230,7 +4202,7 @@
   <small>
     
       Last update:
-      Apr 23, 2024
+      May 23, 2024
     
   </small>
 </div>

@@ -596,30 +596,36 @@ improper type. Returns an instance of
 this <a class="reference internal" href="Collection.html" title="CveXplore.common.data_source_connection.Collection (Python class) — A Mongo collection."><code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#filter" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span></code></a> (optional): A query document that selects which documents
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt><span class="sig-name descname">filter</span></dt><dd><p>A query document that selects which documents
 to include in the result set. Can be an empty document to include
-all documents.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">projection</span></code> (optional): a list of field names that should be
+all documents.</p>
+</dd>
+<dt><span class="sig-name descname">projection</span></dt><dd><p>a list of field names that should be
 returned in the result set or a dict specifying the fields
 to include or exclude. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">projection</span></code> is a list “_id” will
 always be returned. Use a dict to exclude fields from
-the result (e.g. projection={‘_id’: False}).</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">session</span></code> (optional): a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">ClientSession</span></code>.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">skip</span></code> (optional): the number of documents to omit (from
-the start of the result set) when returning the results</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">limit</span></code> (optional): the maximum number of results to
+the result (e.g. projection={‘_id’: False}).</p>
+</dd>
+<dt><span class="sig-name descname">session</span></dt><dd><p>a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ClientSession</span></code>.</p>
+</dd>
+<dt><span class="sig-name descname">skip</span></dt><dd><p>the number of documents to omit (from
+the start of the result set) when returning the results</p>
+</dd>
+<dt><span class="sig-name descname">limit</span></dt><dd><p>the maximum number of results to
 return. A limit of 0 (the default) is equivalent to setting no
-limit.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_cursor_timeout</span></code> (optional): if False (the default), any
+limit.</p>
+</dd>
+<dt><span class="sig-name descname">no_cursor_timeout</span></dt><dd><p>if False (the default), any
 returned cursor is closed by the server after 10 minutes of
 inactivity. If set to True, the returned cursor will never
 time out on the server. Care should be taken to ensure that
-cursors with no_cursor_timeout turned on are properly closed.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cursor_type</span></code> (optional): the type of cursor to return. The valid
+cursors with no_cursor_timeout turned on are properly closed.</p>
+</dd>
+<dt><span class="sig-name descname">cursor_type</span></dt><dd><p><p>the type of cursor to return. The valid
 options are defined by <code class="xref py py-class docutils literal notranslate"><span class="pre">CursorType</span></code>:</p>
-<ul>
+<ul class="simple">
 <li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">NON_TAILABLE</span></code> - the result of
 this find call will return a standard cursor over the result set.</p></li>
 <li><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">TAILABLE</span></code> - the result of this
@@ -639,60 +645,76 @@ find call will be an exhaust cursor. MongoDB will stream batched
 results to the client without waiting for the client to request
 each batch, reducing latency. See notes on compatibility below.</p></li>
 </ul>
-</li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code> (optional): a list of (key, direction) pairs
+</p>
+</dd>
+<dt><span class="sig-name descname">sort</span></dt><dd><p>a list of (key, direction) pairs
 specifying the sort order for this query. See
-<a class="reference internal" href="../database/Cursor.sort.html" title="pymongo.cursor.Cursor.sort (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sort()</span></code></a> for details.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">allow_partial_results</span></code> (optional): if True, mongos will return
+<a class="reference internal" href="../database/Cursor.sort.html" title="pymongo.cursor.Cursor.sort (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sort()</span></code></a> for details.</p>
+</dd>
+<dt><span class="sig-name descname">allow_partial_results</span></dt><dd><p>if True, mongos will return
 partial results if some shards are down instead of returning an
-error.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">oplog_replay</span></code> (optional): <strong>DEPRECATED</strong> - if True, set the
-oplogReplay query flag. Default: False.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_size</span></code> (optional): Limits the number of documents returned in
-a single batch.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">collation</span></code> (optional): An instance of
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Collation</span></code>.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">return_key</span></code> (optional): If True, return only the index keys in
-each document.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_record_id</span></code> (optional): If True, adds a field <code class="code highlight python docutils literal highlight-python"><span class="err">$</span><span class="n">recordId</span></code> in
-each document with the storage engine’s internal record identifier.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">snapshot</span></code> (optional): <strong>DEPRECATED</strong> - If True, prevents the
+error.</p>
+</dd>
+<dt><span class="sig-name descname">oplog_replay</span></dt><dd><p><strong>DEPRECATED</strong> - if True, set the
+oplogReplay query flag. Default: False.</p>
+</dd>
+<dt><span class="sig-name descname">batch_size</span></dt><dd><p>Limits the number of documents returned in
+a single batch.</p>
+</dd>
+<dt><span class="sig-name descname">collation</span></dt><dd><p>An instance of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Collation</span></code>.</p>
+</dd>
+<dt><span class="sig-name descname">return_key</span></dt><dd><p>If True, return only the index keys in
+each document.</p>
+</dd>
+<dt><span class="sig-name descname">show_record_id</span></dt><dd><p>If True, adds a field <code class="code highlight python docutils literal highlight-python"><span class="err">$</span><span class="n">recordId</span></code> in
+each document with the storage engine’s internal record identifier.</p>
+</dd>
+<dt><span class="sig-name descname">snapshot</span></dt><dd><p><strong>DEPRECATED</strong> - If True, prevents the
 cursor from returning a document more than once because of an
-intervening write operation.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hint</span></code> (optional): An index, in the same format as passed to
+intervening write operation.</p>
+</dd>
+<dt><span class="sig-name descname">hint</span></dt><dd><p>An index, in the same format as passed to
 <a class="reference internal" href="Collection.create_index.html" title="pymongo.collection.Collection.create_index (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_index()</span></code></a> (e.g.
 <code class="code highlight python docutils literal highlight-python"><span class="p">[(</span><span class="s1">&#39;field&#39;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)]</span></code>). Pass this as an alternative to calling
 <a class="reference internal" href="../database/Cursor.hint.html" title="pymongo.cursor.Cursor.hint (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">hint()</span></code></a> on the cursor to tell Mongo the
-proper index to use for the query.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_time_ms</span></code> (optional): Specifies a time limit for a query
+proper index to use for the query.</p>
+</dd>
+<dt><span class="sig-name descname">max_time_ms</span></dt><dd><p>Specifies a time limit for a query
 operation. If the specified time is exceeded, the operation will be
 aborted and <code class="xref py py-exc docutils literal notranslate"><span class="pre">ExecutionTimeout</span></code> is raised. Pass
 this as an alternative to calling
-<a class="reference internal" href="../database/Cursor.max_time_ms.html" title="pymongo.cursor.Cursor.max_time_ms (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">max_time_ms()</span></code></a> on the cursor.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_scan</span></code> (optional): <strong>DEPRECATED</strong> - The maximum number of
+<a class="reference internal" href="../database/Cursor.max_time_ms.html" title="pymongo.cursor.Cursor.max_time_ms (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">max_time_ms()</span></code></a> on the cursor.</p>
+</dd>
+<dt><span class="sig-name descname">max_scan</span></dt><dd><p><strong>DEPRECATED</strong> - The maximum number of
 documents to scan. Pass this as an alternative to calling
-<a class="reference internal" href="../database/Cursor.max_scan.html" title="pymongo.cursor.Cursor.max_scan (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">max_scan()</span></code></a> on the cursor.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#min" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a> (optional): A list of field, limit pairs specifying the
+<a class="reference internal" href="../database/Cursor.max_scan.html" title="pymongo.cursor.Cursor.max_scan (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">max_scan()</span></code></a> on the cursor.</p>
+</dd>
+<dt><span class="sig-name descname">min</span></dt><dd><p>A list of field, limit pairs specifying the
 inclusive lower bound for all keys of a specific index in order.
 Pass this as an alternative to calling
 <a class="reference internal" href="../database/Cursor.min.html" title="pymongo.cursor.Cursor.min (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">min()</span></code></a> on the cursor. <code class="code highlight python docutils literal highlight-python"><span class="n">hint</span></code> must
-also be passed to ensure the query utilizes the correct index.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#max" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a> (optional): A list of field, limit pairs specifying the
+also be passed to ensure the query utilizes the correct index.</p>
+</dd>
+<dt><span class="sig-name descname">max</span></dt><dd><p>A list of field, limit pairs specifying the
 exclusive upper bound for all keys of a specific index in order.
 Pass this as an alternative to calling
 <a class="reference internal" href="../database/Cursor.max.html" title="pymongo.cursor.Cursor.max (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">max()</span></code></a> on the cursor. <code class="code highlight python docutils literal highlight-python"><span class="n">hint</span></code> must
-also be passed to ensure the query utilizes the correct index.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">comment</span></code> (optional): A string to attach to the query to help
+also be passed to ensure the query utilizes the correct index.</p>
+</dd>
+<dt><span class="sig-name descname">comment</span></dt><dd><p>A string to attach to the query to help
 interpret and trace the operation in the server logs and in profile
 data. Pass this as an alternative to calling
-<a class="reference internal" href="../database/Cursor.comment.html" title="pymongo.cursor.Cursor.comment (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">comment()</span></code></a> on the cursor.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">allow_disk_use</span></code> (optional): if True, MongoDB may use temporary
+<a class="reference internal" href="../database/Cursor.comment.html" title="pymongo.cursor.Cursor.comment (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">comment()</span></code></a> on the cursor.</p>
+</dd>
+<dt><span class="sig-name descname">allow_disk_use</span></dt><dd><p>if True, MongoDB may use temporary
 disk files to store data exceeding the system memory limit while
 processing a blocking sort operation. The option has no effect if
 MongoDB can satisfy the specified sort using an index, or if the
 blocking sort requires less memory than the 100 MiB limit. This
-option is only supported on MongoDB 4.4 and above.</p></li>
-</ul>
+option is only supported on MongoDB 4.4 and above.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <div class="note admonition">
@@ -775,7 +797,7 @@ Soft deprecated the <code class="code highlight python docutils literal highligh
   <small>
     
       Last update:
-      Apr 23, 2024
+      May 23, 2024
     
   </small>
 </div>

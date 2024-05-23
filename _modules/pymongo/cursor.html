@@ -622,7 +622,6 @@
 <span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="kn">from</span> <span class="nn">pymongo.collation</span> <span class="kn">import</span> <span class="n">validate_collation_or_none</span>
 <span class="kn">from</span> <span class="nn">pymongo.common</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">validate_boolean</span><span class="p">,</span>
     <span class="n">validate_is_document_type</span><span class="p">,</span>
     <span class="n">validate_is_mapping</span><span class="p">,</span>
 <span class="p">)</span>
@@ -639,6 +638,7 @@
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pymongo.response</span> <span class="kn">import</span> <span class="n">PinnedResponse</span>
 <span class="kn">from</span> <span class="nn">pymongo.typings</span> <span class="kn">import</span> <span class="n">_Address</span><span class="p">,</span> <span class="n">_CollationIn</span><span class="p">,</span> <span class="n">_DocumentOut</span><span class="p">,</span> <span class="n">_DocumentType</span>
+<span class="kn">from</span> <span class="nn">pymongo.write_concern</span> <span class="kn">import</span> <span class="n">validate_boolean</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">_typeshed</span> <span class="kn">import</span> <span class="n">SupportsItems</span>
@@ -858,14 +858,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__comment</span> <span class="o">=</span> <span class="n">comment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__max_time_ms</span> <span class="o">=</span> <span class="n">max_time_ms</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__max_await_time_ms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__max</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">SON</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">_Sort</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">max</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__min</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">SON</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">_Sort</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__max</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">_Sort</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__min</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">_Sort</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">min</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__collation</span> <span class="o">=</span> <span class="n">validate_collation_or_none</span><span class="p">(</span><span class="n">collation</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__return_key</span> <span class="o">=</span> <span class="n">return_key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__show_record_id</span> <span class="o">=</span> <span class="n">show_record_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__allow_disk_use</span> <span class="o">=</span> <span class="n">allow_disk_use</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__snapshot</span> <span class="o">=</span> <span class="n">snapshot</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SON</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__set_hint</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
 
         <span class="c1"># Exhaust cursor support</span>
@@ -1069,17 +1069,12 @@
 
         <span class="k">if</span> <span class="n">operators</span><span class="p">:</span>
             <span class="c1"># Make a shallow copy so we can cleanly rewind or clone.</span>
-            <span class="n">spec</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__spec</span><span class="p">)</span>
+            <span class="n">spec</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__spec</span><span class="p">)</span>
 
             <span class="c1"># Allow-listed commands must be wrapped in $query.</span>
             <span class="k">if</span> <span class="s2">&quot;$query&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">spec</span><span class="p">:</span>
                 <span class="c1"># $query has to come first</span>
-                <span class="n">spec</span> <span class="o">=</span> <span class="n">SON</span><span class="p">([(</span><span class="s2">&quot;$query&quot;</span><span class="p">,</span> <span class="n">spec</span><span class="p">)])</span>
-
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">SON</span><span class="p">):</span>
-                <span class="c1"># Ensure the spec is SON. As order is important this will</span>
-                <span class="c1"># ensure its set before merging in any extra operators.</span>
-                <span class="n">spec</span> <span class="o">=</span> <span class="n">SON</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+                <span class="n">spec</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$query&quot;</span><span class="p">:</span> <span class="n">spec</span><span class="p">}</span>
 
             <span class="n">spec</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">operators</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">spec</span>
@@ -1091,7 +1086,7 @@
         <span class="k">elif</span> <span class="s2">&quot;query&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__spec</span> <span class="ow">and</span> <span class="p">(</span>
             <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__spec</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__spec</span><span class="p">))</span> <span class="o">==</span> <span class="s2">&quot;query&quot;</span>
         <span class="p">):</span>
-            <span class="k">return</span> <span class="n">SON</span><span class="p">({</span><span class="s2">&quot;$query&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__spec</span><span class="p">})</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;$query&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__spec</span><span class="p">}</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__spec</span>
 
@@ -1152,8 +1147,7 @@
 
 <span class="sd">        .. note:: `allow_disk_use` requires server version **&gt;= 4.4**</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `allow_disk_use`: if True, MongoDB may use temporary</span>
+<span class="sd">        :param allow_disk_use: if True, MongoDB may use temporary</span>
 <span class="sd">            disk files to store data exceeding the system memory limit while</span>
 <span class="sd">            processing a blocking sort operation.</span>
 
@@ -1177,8 +1171,7 @@
 <span class="sd">        has already been used. The last `limit` applied to this cursor</span>
 <span class="sd">        takes precedence. A limit of ``0`` is equivalent to no limit.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `limit`: the number of results to return</span>
+<span class="sd">        :param limit: the number of results to return</span>
 
 <span class="sd">        .. seealso:: The MongoDB documentation on `limit &lt;https://dochub.mongodb.org/core/limit&gt;`_.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1211,8 +1204,7 @@
 <span class="sd">        :class:`Cursor` has already been used. The last `batch_size`</span>
 <span class="sd">        applied to this cursor takes precedence.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `batch_size`: The size of each batch of results requested.</span>
+<span class="sd">        :param batch_size: The size of each batch of results requested.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;batch_size must be an integer&quot;</span><span class="p">)</span>
@@ -1235,8 +1227,7 @@
 <span class="sd">        already been used. The last `skip` applied to this cursor takes</span>
 <span class="sd">        precedence.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `skip`: the number of results to skip</span>
+<span class="sd">        :param skip: the number of results to skip</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">skip</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;skip must be an integer&quot;</span><span class="p">)</span>
@@ -1260,8 +1251,7 @@
 <span class="sd">        Raises :exc:`~pymongo.errors.InvalidOperation` if this :class:`Cursor`</span>
 <span class="sd">        has already been used.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `max_time_ms`: the time limit after which the operation is aborted</span>
+<span class="sd">        :param max_time_ms: the time limit after which the operation is aborted</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">max_time_ms</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">max_time_ms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;max_time_ms must be an integer or None&quot;</span><span class="p">)</span>
@@ -1284,8 +1274,7 @@
 
 <span class="sd">        .. note:: `max_await_time_ms` requires server version **&gt;= 3.2**</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `max_await_time_ms`: the time limit after which the operation is</span>
+<span class="sd">        :param max_await_time_ms: the time limit after which the operation is</span>
 <span class="sd">            aborted</span>
 
 <span class="sd">        .. versionadded:: 3.2</span>
@@ -1349,8 +1338,7 @@
 <span class="sd">        start value, or a stop value less than or equal to the start</span>
 <span class="sd">        value.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `index`: An integer or slice index to be applied to this cursor</span>
+<span class="sd">        :param index: An integer or slice index to be applied to this cursor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_okay_to_chain</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__empty</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1402,8 +1390,7 @@
 <span class="sd">        cursor has already been used. Only the last :meth:`max_scan`</span>
 <span class="sd">        applied to this cursor has any effect.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `max_scan`: the maximum number of documents to scan</span>
+<span class="sd">        :param max_scan: the maximum number of documents to scan</span>
 
 <span class="sd">        .. versionchanged:: 3.7</span>
 <span class="sd">          Deprecated :meth:`max_scan`. Support for this option is deprecated in</span>
@@ -1424,8 +1411,7 @@
 <span class="sd">        the query uses the expected index and starting in MongoDB 4.2</span>
 <span class="sd">        :meth:`~hint` will be required.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `spec`: a list of field, limit pairs specifying the exclusive</span>
+<span class="sd">        :param spec: a list of field, limit pairs specifying the exclusive</span>
 <span class="sd">            upper bound for all keys of a specific index in order.</span>
 
 <span class="sd">        .. versionchanged:: 3.8</span>
@@ -1437,7 +1423,7 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;spec must be an instance of list or tuple&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_okay_to_chain</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__max</span> <span class="o">=</span> <span class="n">SON</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__max</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
@@ -1450,8 +1436,7 @@
 <span class="sd">        the query uses the expected index and starting in MongoDB 4.2</span>
 <span class="sd">        :meth:`~hint` will be required.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `spec`: a list of field, limit pairs specifying the inclusive</span>
+<span class="sd">        :param spec: a list of field, limit pairs specifying the inclusive</span>
 <span class="sd">            lower bound for all keys of a specific index in order.</span>
 
 <span class="sd">        .. versionchanged:: 3.8</span>
@@ -1463,7 +1448,7 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;spec must be an instance of list or tuple&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_okay_to_chain</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__min</span> <span class="o">=</span> <span class="n">SON</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__min</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
@@ -1507,10 +1492,9 @@
 <span class="sd">        already been used. Only the last :meth:`sort` applied to this</span>
 <span class="sd">        cursor has any effect.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `key_or_list`: a single key or a list of (key, direction)</span>
+<span class="sd">        :param key_or_list: a single key or a list of (key, direction)</span>
 <span class="sd">            pairs specifying the keys to sort on</span>
-<span class="sd">          - `direction` (optional): only used if `key_or_list` is a single</span>
+<span class="sd">        :param direction: only used if `key_or_list` is a single</span>
 <span class="sd">            key, if not given :data:`~pymongo.ASCENDING` is assumed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_okay_to_chain</span><span class="p">()</span>
@@ -1533,8 +1517,7 @@
 <span class="sd">        :class:`~pymongo.collection.Collection` instance on which</span>
 <span class="sd">        :meth:`~pymongo.collection.Collection.find` was called.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `key`: name of key for which we want to get the distinct values</span>
+<span class="sd">        :param key: name of key for which we want to get the distinct values</span>
 
 <span class="sd">        .. seealso:: :meth:`pymongo.collection.Collection.distinct`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1604,8 +1587,7 @@
 <span class="sd">        cleared. The last hint applied to this cursor takes precedence</span>
 <span class="sd">        over all others.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `index`: index to hint on (as an index specifier)</span>
+<span class="sd">        :param index: index to hint on (as an index specifier)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_okay_to_chain</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__set_hint</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
@@ -1619,8 +1601,7 @@
 
 <span class="sd">        http://mongodb.com/docs/manual/reference/operator/comment/</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `comment`: A string to attach to the query to help interpret and</span>
+<span class="sd">        :param comment: A string to attach to the query to help interpret and</span>
 <span class="sd">            trace the operation in the server logs and in profile data.</span>
 
 <span class="sd">        .. versionadded:: 2.7</span>
@@ -1654,8 +1635,7 @@
 <span class="sd">        .. note:: MongoDB 4.4 drops support for :class:`~bson.code.Code`</span>
 <span class="sd">          with scope variables. Consider using `$expr`_ instead.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `code`: JavaScript expression to use as a filter</span>
+<span class="sd">        :param code: JavaScript expression to use as a filter</span>
 
 <span class="sd">        .. _$expr: https://mongodb.com/docs/manual/reference/operator/query/expr/</span>
 <span class="sd">        .. _$where: https://mongodb.com/docs/manual/reference/operator/query/where/</span>
@@ -1687,8 +1667,7 @@
 <span class="sd">        already been used. Only the last collation applied to this cursor has</span>
 <span class="sd">        any effect.</span>
 
-<span class="sd">        :Parameters:</span>
-<span class="sd">          - `collation`: An instance of :class:`~pymongo.collation.Collation`.</span>
+<span class="sd">        :param collation: An instance of :class:`~pymongo.collation.Collation`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_okay_to_chain</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__collation</span> <span class="o">=</span> <span class="n">validate_collation_or_none</span><span class="p">(</span><span class="n">collation</span><span class="p">)</span>
@@ -2046,7 +2025,7 @@
   <small>
     
       Last update:
-      Apr 23, 2024
+      May 23, 2024
     
   </small>
 </div>

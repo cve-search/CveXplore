@@ -576,13 +576,13 @@
 
 <dl class="py method objdesc">
 <dt class="sig sig-object highlight sig-wrap py">
-<span class="sig-prename descclassname"><span class="pre">CveXplore.common.data_source_connection.</span><span class="pre">Collection.</span></span><span class="sig-name descname"><span class="pre">create_index</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_IndexKeyHint</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ClientSession</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../../_modules/pymongo/collection.html#Collection.create_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">CveXplore.common.data_source_connection.</span><span class="pre">Collection.</span></span><span class="sig-name descname"><span class="pre">create_index</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-keys" title="CveXplore.common.data_source_connection.Collection.create_index.keys (Python parameter) — a single key or a list of (key, direction) pairs specifying the index to create"><span class="n"><span class="pre">keys</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_IndexKeyHint</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-session" title="CveXplore.common.data_source_connection.Collection.create_index.session (Python parameter) — a ClientSession."><span class="n"><span class="pre">session</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ClientSession</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-comment" title="CveXplore.common.data_source_connection.Collection.create_index.comment (Python parameter) — A user-provided comment to attach to this command."><span class="n"><span class="pre">comment</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><a class="n reference internal" href="#p-kwargs" title="CveXplore.common.data_source_connection.Collection.create_index.kwargs (Python parameter) — any additional index creation options (see the above list) should be passed as keyword arguments."><span class="n"><span class="pre">kwargs</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../../_modules/pymongo/collection.html#Collection.create_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Creates an index on this collection.</p>
 <p>Takes either a single key or a list containing (key, direction) pairs
 or keys.  If no direction is given, <code class="xref py py-data docutils literal notranslate"><span class="pre">ASCENDING</span></code> will
 be assumed.
-The key(s) must be an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">str`and</span> <span class="pre">the</span> <span class="pre">direction(s)</span> <span class="pre">must</span>
-<span class="pre">be</span> <span class="pre">one</span> <span class="pre">of</span> <span class="pre">(:data:`~pymongo.ASCENDING</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">DESCENDING</span></code>,
+The key(s) must be an instance of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> and the direction(s) must
+be one of (<code class="xref py py-data docutils literal notranslate"><span class="pre">ASCENDING</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">DESCENDING</span></code>,
 <code class="xref py py-data docutils literal notranslate"><span class="pre">GEO2D</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">GEOSPHERE</span></code>,
 <code class="xref py py-data docutils literal notranslate"><span class="pre">HASHED</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">TEXT</span></code>).</p>
 <p>To create a single key ascending index on the key <code class="code highlight python docutils literal highlight-python"><span class="s1">&#39;mike&#39;</span></code> we just
@@ -651,17 +651,21 @@ this collection is automatically applied to this operation.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd" id="parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code>: a single key or a list of (key, direction)
-pairs specifying the index to create</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">session</span></code> (optional): a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">ClientSession</span></code>.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">comment</span></code> (optional): A user-provided comment to attach to this
-command.</p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">**kwargs</span></code> (optional): any additional index creation
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="p-keys"><span class="n sig-name">keys</span><span class="p">:</span><span class="w"> </span><span class="n">_IndexKeyHint</span><a class="headerlink" href="#p-keys" title="Permalink to this definition">¶</a></dt><dd><p>a single key or a list of (key, direction)
+pairs specifying the index to create</p>
+</dd>
+<dt id="p-session"><span class="n sig-name">session</span><span class="p">:</span><span class="w"> </span><span class="n">ClientSession<span class="w"> </span><span class="p">|</span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)">None</a></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">None</span><a class="headerlink" href="#p-session" title="Permalink to this definition">¶</a></dt><dd><p>a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ClientSession</span></code>.</p>
+</dd>
+<dt id="p-comment"><span class="n sig-name">comment</span><span class="p">:</span><span class="w"> </span><span class="n">Any<span class="w"> </span><span class="p">|</span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)">None</a></span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="default_value">None</span><a class="headerlink" href="#p-comment" title="Permalink to this definition">¶</a></dt><dd><p>A user-provided comment to attach to this
+command.</p>
+</dd>
+<dt id="p-kwargs"><span class="o">**</span><span class="n sig-name">kwargs</span><span class="p">:</span><span class="w"> </span><span class="n">Any</span><a class="headerlink" href="#p-kwargs" title="Permalink to this definition">¶</a></dt><dd><p>any additional index creation
 options (see the above list) should be passed as keyword
-arguments.</p></li>
-</ul>
+arguments.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <div class="admonition versionchanged">
@@ -703,7 +707,7 @@ for the drop_dups and bucket_size aliases.</p>
   <small>
     
       Last update:
-      Apr 23, 2024
+      May 23, 2024
     
   </small>
 </div>
