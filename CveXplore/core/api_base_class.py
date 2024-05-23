@@ -89,17 +89,25 @@ class ApiBaseClass(object):
 
         request_api_resource.update(self.kwargs)
 
+        full_url = self._build_url(resource)
+        self.logger.debug(f"Making {method} request to URL: {full_url}")
+        self.logger.debug(f"Request headers: {request_api_resource['headers']}")
+        self.logger.debug(f"Request data: {data}")
+
         try:
             if method == self.methods.POST:
-                r = session.post(self._build_url(resource), **request_api_resource)
+                r = session.post(full_url, **request_api_resource)
             elif method == self.methods.PUT:
-                r = session.put(self._build_url(resource), **request_api_resource)
+                r = session.put(full_url, **request_api_resource)
             elif method == self.methods.PATCH:
-                r = session.patch(self._build_url(resource), **request_api_resource)
+                r = session.patch(full_url, **request_api_resource)
             elif method == self.methods.DELETE:
-                r = session.delete(self._build_url(resource), **request_api_resource)
+                r = session.delete(full_url, **request_api_resource)
             else:
-                r = session.get(self._build_url(resource), **request_api_resource)
+                r = session.get(full_url, **request_api_resource)
+
+            self.logger.debug(f"Received response: {r.status_code}")
+            self.logger.debug(f"Response content: {r.text}")
 
             try:
                 if isinstance(r, Response):
@@ -118,9 +126,11 @@ class ApiBaseClass(object):
 
             return the_response
         except requests.exceptions.ConnectionError as err:
-            raise requests.exceptions.ConnectionError(err)
+            self.logger.error(f"Connection error occurred: {err}")
+            raise
         except Exception as err:
-            raise Exception(err)
+            self.logger.error(f"An error occurred: {err}")
+            raise
 
     def get_session(
         self,
@@ -156,8 +166,8 @@ class ApiBaseClass(object):
     ) -> dict:
         """
         Method for requesting free format api resources
-
         """
+        self.logger.debug(f"API call with method: {method}, RESOURCE: {resource}")
         try:
             with self.get_session() as session:
                 result = self._connect(
@@ -168,10 +178,13 @@ class ApiBaseClass(object):
                     timeout=timeout,
                     return_response_object=return_response_object,
                 )
+                self.logger.debug(f"Received API response: {result}")
                 return result
-        except requests.ConnectionError:
+        except requests.ConnectionError as conn_err:
+            self.logger.error(f"Connection error occurred: {conn_err}")
             raise
-        except Exception:
+        except Exception as e:
+            self.logger.error(f"Error during API call: {e}")
             raise
 
     @property

@@ -10,6 +10,8 @@ from datetime import datetime, timedelta
 from json import JSONDecodeError
 from urllib.parse import urlencode
 
+from requests.exceptions import RequestException, HTTPError
+
 import aiohttp as aiohttp
 import requests
 from aiohttp import ContentTypeError
@@ -81,19 +83,22 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
             resource = urlencode(resource)
             if data == self.datasource.CVE:
                 if self.filter_rejected:
-                    return f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/?noRejected&{resource}"
+                    url = f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/?noRejected&{resource}"
                 else:
-                    return f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/?{resource}"
+                    url = f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/?{resource}"
             else:
-                return f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/?{resource}"
+                url = f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/?{resource}"
         else:
             if data == self.datasource.CVE:
                 if self.filter_rejected:
-                    return f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/?noRejected"
+                    url = f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/?noRejected"
                 else:
-                    return f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/"
+                    url = f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/"
             else:
-                return f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/"
+                url = f"{self.baseurl}/rest/json/{self.datasource_mapping[data]}/{self.api_path}/"
+
+        self.logger.debug(f"Built URL: {url}")
+        return url
 
     def _connect(
         self,
@@ -113,11 +118,27 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
             "proxies": self.proxies,
         }
 
+        full_url = self._build_url(resource, data=data)
+        self.logger.debug(f"Sending {method} request to URL: {full_url}")
+        self.logger.debug(f"Request headers: {request_api_resource['headers']}")
+        self.logger.debug(f"Request data: {data}")
+
         try:
-            self.logger.debug(f"Sending request: resource={resource}, data={data}")
-            r = session.get(
-                self._build_url(resource, data=data), **request_api_resource
-            )
+            if method == "GET":
+                r = session.get(full_url, **request_api_resource)
+            elif method == "POST":
+                r = session.post(full_url, data=data, **request_api_resource)
+            elif method == "PUT":
+                r = session.put(full_url, data=data, **request_api_resource)
+            elif method == "PATCH":
+                r = session.patch(full_url, data=data, **request_api_resource)
+            elif method == "DELETE":
+                r = session.delete(full_url, **request_api_resource)
+            else:
+                raise ValueError(f"Unsupported method: {method}")
+
+            self.logger.debug(f"Received response: {r.status_code}")
+            self.logger.debug(f"Response content: {r.text}")
 
             try:
                 if isinstance(r, Response):
@@ -146,8 +167,10 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
             return the_response
 
         except requests.exceptions.ConnectionError as err:
+            self.logger.error(f"Connection error occurred: {err}")
             raise requests.exceptions.ConnectionError(err)
         except Exception as err:
+            self.logger.error(f"An error occurred: {err}")
             raise Exception(err)
 
     def __repr__(self):
@@ -244,17 +267,29 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
                 last_mod_end_date=last_mod_end_date,
             )
 
-        self.logger.debug(f"Getting count for datasource: {datasource}")
+        self.logger.info(f"Getting count for datasource: {datasource}")
 
         try:
             ret_data = self.call(self.methods.GET, resource=resource, data=datasource)
 
             if not isinstance(ret_data, Response):
+                self.logger.debug(f"API response data: {ret_data}")
                 return ret_data["totalResults"]
             else:
+                self.logger.error(f"Unexpected response type: {ret_data}")
                 raise ApiDataRetrievalFailed(resource)
-        except Exception:
-            raise ApiMaxRetryError
+        except HTTPError as http_err:
+            self.logger.error(f"HTTP error occurred: {http_err}")
+            raise ApiMaxRetryError from http_err
+        except RequestException as req_err:
+            self.logger.error(f"Request exception occurred: {req_err}")
+            raise ApiMaxRetryError from req_err
+        except ApiDataRetrievalFailed as data_err:
+            self.logger.error(f"Data retrieval error: {data_err}")
+            raise
+        except Exception as err:
+            self.logger.error(f"An unexpected error occurred: {err}")
+            raise ApiMaxRetryError from err
 
     def get_all_data(
         self,
