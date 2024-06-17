@@ -144,7 +144,9 @@ class CveXplore(object):
         else:
             if self.datasource_type == "mongodb":
                 self._datasource_connection_details = {
-                    "host": f"{self.config.DATASOURCE_PROTOCOL}://{self.config.DATASOURCE_HOST}:{self.config.DATASOURCE_PORT}"
+                    "host": f"{self.config.DATASOURCE_PROTOCOL}://{self.config.DATASOURCE_HOST}:{self.config.DATASOURCE_PORT}" 
+                            if self.config.DATASOURCE_USER is None and self.config.DATASOURCE_PASSWORD is None
+                            else f"{self.config.DATASOURCE_PROTOCOL}://{self.config.DATASOURCE_USER}:{self.config.DATASOURCE_PASSWORD}@{self.config.DATASOURCE_HOST}:{self.config.DATASOURCE_PORT}" 
                 }
             elif self.datasource_type == "mysql":
                 self._datasource_connection_details = {
