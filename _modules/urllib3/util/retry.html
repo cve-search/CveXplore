@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.359ec555e2989f00f.min.css?v=b000af5c" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
         <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -603,6 +603,8 @@
 <span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">reraise</span>
 
 <span class="k">if</span> <span class="n">typing</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Self</span>
+
     <span class="kn">from</span> <span class="nn">..connectionpool</span> <span class="kn">import</span> <span class="n">ConnectionPool</span>
     <span class="kn">from</span> <span class="nn">..response</span> <span class="kn">import</span> <span class="n">BaseHTTPResponse</span>
 
@@ -771,7 +773,9 @@
     <span class="n">RETRY_AFTER_STATUS_CODES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span><span class="mi">413</span><span class="p">,</span> <span class="mi">429</span><span class="p">,</span> <span class="mi">503</span><span class="p">])</span>
 
     <span class="c1">#: Default headers to be used for ``remove_headers_on_redirect``</span>
-    <span class="n">DEFAULT_REMOVE_HEADERS_ON_REDIRECT</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span><span class="s2">&quot;Cookie&quot;</span><span class="p">,</span> <span class="s2">&quot;Authorization&quot;</span><span class="p">])</span>
+    <span class="n">DEFAULT_REMOVE_HEADERS_ON_REDIRECT</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;Cookie&quot;</span><span class="p">,</span> <span class="s2">&quot;Authorization&quot;</span><span class="p">,</span> <span class="s2">&quot;Proxy-Authorization&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
 
     <span class="c1">#: Default maximum backoff time.</span>
     <span class="n">DEFAULT_BACKOFF_MAX</span> <span class="o">=</span> <span class="mi">120</span>
@@ -829,7 +833,7 @@
 
 <div class="viewcode-block" id="Retry.new">
 <a class="viewcode-back" href="../../../CveXplore/core/Retry.new.html#CveXplore.core.api_base_class.Retry.new">[docs]</a>
-    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Retry</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
         <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">total</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">,</span>
             <span class="n">connect</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">,</span>
@@ -1045,7 +1049,7 @@
         <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_pool</span><span class="p">:</span> <span class="n">ConnectionPool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_stacktrace</span><span class="p">:</span> <span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Retry</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a new Retry object with incremented retry counters.</span>
 
 <span class="sd">        :param response: A response object, or None, if the server did not</span>
@@ -1155,7 +1159,7 @@
   <small>
     
       Last update:
-      May 23, 2024
+      Jun 17, 2024
     
   </small>
 </div>

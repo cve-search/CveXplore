@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.359ec555e2989f00f.min.css?v=b000af5c" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1937,8 +1937,9 @@
         <span class="c1"># always send primaryPreferred when directly connected to a repl set</span>
         <span class="c1"># member.</span>
         <span class="c1"># Thread safe: if the type is single it cannot change.</span>
-        <span class="n">topology</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_topology</span><span class="p">()</span>
-        <span class="n">single</span> <span class="o">=</span> <span class="n">topology</span><span class="o">.</span><span class="n">description</span><span class="o">.</span><span class="n">topology_type</span> <span class="o">==</span> <span class="n">TOPOLOGY_TYPE</span><span class="o">.</span><span class="n">Single</span>
+        <span class="c1"># NOTE: We already opened the Topology when selecting a server so there&#39;s no need</span>
+        <span class="c1"># to call _get_topology() again.</span>
+        <span class="n">single</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">description</span><span class="o">.</span><span class="n">topology_type</span> <span class="o">==</span> <span class="n">TOPOLOGY_TYPE</span><span class="o">.</span><span class="n">Single</span>
 
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_checkout</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">single</span><span class="p">:</span>
@@ -1958,7 +1959,6 @@
         <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContextManager</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Connection</span><span class="p">,</span> <span class="n">_ServerMode</span><span class="p">]]:</span>
         <span class="k">assert</span> <span class="n">read_preference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;read_preference must not be None&quot;</span>
-        <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_topology</span><span class="p">()</span>
         <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_server</span><span class="p">(</span><span class="n">read_preference</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_from_server</span><span class="p">(</span><span class="n">read_preference</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
 
@@ -3167,7 +3167,7 @@
   <small>
     
       Last update:
-      May 23, 2024
+      Jun 17, 2024
     
   </small>
 </div>
