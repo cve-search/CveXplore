@@ -1048,8 +1048,7 @@ class EPSSDownloads(CSVFileHandler):
         if epss is not None:
             self.queue.put(
                 DatabaseAction(
-                    action=DatabaseAction.actions.UpdateOne,
-                    doc=epss,
+                    action=DatabaseAction.actions.UpdateOne, doc=epss, upsert=False
                 )
             )
 
