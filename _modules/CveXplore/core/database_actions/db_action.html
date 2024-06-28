@@ -599,7 +599,7 @@
 
 <div class="viewcode-block" id="DatabaseAction.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseAction.__init__.html#CveXplore.core.database_actions.db_action.DatabaseAction.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">actions</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">actions</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">upsert</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a DatabaseAction object.</span>
 
@@ -608,7 +608,8 @@
 <span class="sd">            doc: Entry to perform action with</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">action</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">doc</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">doc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upsert</span> <span class="o">=</span> <span class="n">upsert</span></div>
 
 
     <span class="nd">@property</span>
@@ -624,7 +625,9 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">InsertOne</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">InsertOne</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">UpdateOne</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">UpdateOne</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]},</span> <span class="p">{</span><span class="s2">&quot;$set&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">},</span> <span class="n">upsert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="n">UpdateOne</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]},</span> <span class="p">{</span><span class="s2">&quot;$set&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">},</span> <span class="n">upsert</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">upsert</span>
+            <span class="p">)</span></div>
 
 </code></pre></div>
 
@@ -633,7 +636,7 @@
   <small>
     
       Last update:
-      Jun 17, 2024
+      Jun 28, 2024
     
   </small>
 </div>

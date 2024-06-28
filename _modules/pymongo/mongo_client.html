@@ -1448,6 +1448,7 @@
             <span class="n">server_monitoring_mode</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">server_monitoring_mode</span><span class="p">,</span>
         <span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_opened</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_background</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">connect</span><span class="p">:</span>
@@ -1490,10 +1491,13 @@
         <span class="c1"># this closure. When the client is freed, stop the executor soon.</span>
         <span class="n">self_ref</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">executor</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_kill_cursors_executor</span> <span class="o">=</span> <span class="n">executor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_opened</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">_after_fork</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets topology in a child after successfully forking.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_background</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_pid</span><span class="p">)</span>
+        <span class="c1"># Reset the session pool to avoid duplicate sessions in the child process.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_session_pool</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MongoClient</span><span class="p">:</span>
         <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__init_kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -1836,9 +1840,11 @@
 <span class="sd">        If this client was created with &quot;connect=False&quot;, calling _get_topology</span>
 <span class="sd">        launches the connection process in the background.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lock</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_kill_cursors_executor</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_opened</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lock</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_kill_cursors_executor</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_opened</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span>
 
     <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
@@ -2290,7 +2296,7 @@
             <span class="k">if</span> <span class="n">cursor_id</span> <span class="ow">or</span> <span class="n">conn_mgr</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_close_cursor_soon</span><span class="p">(</span><span class="n">cursor_id</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">conn_mgr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">session</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">explicit_session</span><span class="p">:</span>
-            <span class="n">session</span><span class="o">.</span><span class="n">_end_session</span><span class="p">(</span><span class="n">lock</span><span class="o">=</span><span class="n">locks_allowed</span><span class="p">)</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">end_session</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_close_cursor_soon</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2452,12 +2458,12 @@
 
 
     <span class="k">def</span> <span class="nf">_return_server_session</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">server_session</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">_ServerSession</span><span class="p">,</span> <span class="n">_EmptyServerSession</span><span class="p">],</span> <span class="n">lock</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">server_session</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">_ServerSession</span><span class="p">,</span> <span class="n">_EmptyServerSession</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal: return a _ServerSession to the pool.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server_session</span><span class="p">,</span> <span class="n">_EmptyServerSession</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">return_server_session</span><span class="p">(</span><span class="n">server_session</span><span class="p">,</span> <span class="n">lock</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">return_server_session</span><span class="p">(</span><span class="n">server_session</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_ensure_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;If provided session is None, lend a temporary session.&quot;&quot;&quot;</span>
@@ -3167,7 +3173,7 @@
   <small>
     
       Last update:
-      Jun 17, 2024
+      Jun 28, 2024
     
   </small>
 </div>
