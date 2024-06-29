@@ -77,8 +77,8 @@ class Configuration(object):
         os.getenv("DATASOURCE_PORT", int(os.getenv("MONGODB_PORT", 27017)))
     )
 
-    DATASOURCE_USER = os.getenv("DATASOURCE_USER", "cvexplore")
-    DATASOURCE_PASSWORD = os.getenv("DATASOURCE_PASSWORD", "cvexplore")
+    DATASOURCE_USER = os.getenv("DATASOURCE_USER", None)
+    DATASOURCE_PASSWORD = os.getenv("DATASOURCE_PASSWORD", None)
     DATASOURCE_DBNAME = os.getenv("DATASOURCE_DBNAME", "cvexplore")
 
     DATASOURCE_CONNECTION_DETAILS = None
