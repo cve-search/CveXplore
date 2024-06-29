@@ -79,7 +79,7 @@ class Configuration(object):
 
     DATASOURCE_USER = os.getenv("DATASOURCE_USER", None)
     DATASOURCE_PASSWORD = os.getenv("DATASOURCE_PASSWORD", None)
-    DATASOURCE_DBNAME = os.getenv("DATASOURCE_DBNAME", "cvexplore")
+    DATASOURCE_DBNAME = os.getenv("DATASOURCE_DBNAME", "cvedb")
 
     DATASOURCE_CONNECTION_DETAILS = None
 
