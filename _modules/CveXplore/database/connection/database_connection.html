@@ -596,14 +596,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">database_type</span> <span class="o">=</span> <span class="n">database_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database_init_parameters</span> <span class="o">=</span> <span class="n">database_init_parameters</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_database_connnections</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_database_connections</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;mongodb&quot;</span><span class="p">:</span> <span class="n">MongoDBConnection</span><span class="p">,</span>
             <span class="s2">&quot;api&quot;</span><span class="p">:</span> <span class="n">ApiDatabaseSource</span><span class="p">,</span>
             <span class="s2">&quot;mysql&quot;</span><span class="p">:</span> <span class="n">SQLBaseConnection</span><span class="p">,</span>
             <span class="s2">&quot;dummy&quot;</span><span class="p">:</span> <span class="n">DummyConnection</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_database_connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_connnections</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">database_type</span><span class="p">](</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_database_connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_connections</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">database_type</span><span class="p">](</span>
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">database_init_parameters</span>
         <span class="p">)</span></div>
 
@@ -619,7 +619,7 @@
   <small>
     
       Last update:
-      Jun 29, 2024
+      Jun 30, 2024
     
   </small>
 </div>

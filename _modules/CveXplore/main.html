@@ -735,7 +735,8 @@
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DATASOURCE_USER</span> <span class="ow">is</span> <span class="kc">None</span>
                         <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DATASOURCE_PASSWORD</span> <span class="ow">is</span> <span class="kc">None</span>
                         <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DATASOURCE_PROTOCOL</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DATASOURCE_USER</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DATASOURCE_PASSWORD</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DATASOURCE_HOST</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DATASOURCE_PORT</span><span class="si">}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
+                    <span class="p">),</span>
+                    <span class="s2">&quot;database&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DATASOURCE_DBNAME</span><span class="p">,</span>
                 <span class="p">}</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasource_type</span> <span class="o">==</span> <span class="s2">&quot;mysql&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_datasource_connection_details</span> <span class="o">=</span> <span class="p">{</span>
@@ -1298,7 +1299,7 @@
   <small>
     
       Last update:
-      Jun 29, 2024
+      Jun 30, 2024
     
   </small>
 </div>
