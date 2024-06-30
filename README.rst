@@ -107,8 +107,9 @@ Or via the the CveXplore object:
     >>> cvx.database.populate()
     >>> cvx.database.update()
 
-You can add your `nist api key <https://nvd.nist.gov/developers/request-an-api-key>`_ in the .env file.
-You can populate CveXplore without an api key, but it will limit the amount of parallel requests made to the NIST api.
+You can add your `NIST API Key <https://nvd.nist.gov/developers/request-an-api-key>`_ in the environment variable
+:code:`NVD_NIST_API_KEY` (e.g., in the :code:`~/.cvexplore/.env` file). You can populate CveXplore without an API key,
+but it will limit the amount of parallel requests made to the NIST API.
 
 Package usage
 -------------
