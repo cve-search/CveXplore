@@ -149,7 +149,8 @@ class CveXplore(object):
                         if self.config.DATASOURCE_USER is None
                         and self.config.DATASOURCE_PASSWORD is None
                         else f"{self.config.DATASOURCE_PROTOCOL}://{self.config.DATASOURCE_USER}:{self.config.DATASOURCE_PASSWORD}@{self.config.DATASOURCE_HOST}:{self.config.DATASOURCE_PORT}"
-                    )
+                    ),
+                    "database": self.config.DATASOURCE_DBNAME,
                 }
             elif self.datasource_type == "mysql":
                 self._datasource_connection_details = {

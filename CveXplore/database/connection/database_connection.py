@@ -10,14 +10,14 @@ class DatabaseConnection(object):
         self.database_type = database_type
         self.database_init_parameters = database_init_parameters
 
-        self._database_connnections = {
+        self._database_connections = {
             "mongodb": MongoDBConnection,
             "api": ApiDatabaseSource,
             "mysql": SQLBaseConnection,
             "dummy": DummyConnection,
         }
 
-        self._database_connection = self._database_connnections[self.database_type](
+        self._database_connection = self._database_connections[self.database_type](
             **self.database_init_parameters
         )
 
