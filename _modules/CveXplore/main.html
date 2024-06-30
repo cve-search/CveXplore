@@ -626,7 +626,14 @@
 <span class="kn">from</span> <span class="nn">CveXplore.errors.datasource</span> <span class="kn">import</span> <span class="n">UnsupportedDatasourceException</span>
 <span class="kn">from</span> <span class="nn">CveXplore.errors.validation</span> <span class="kn">import</span> <span class="n">CveNumberValidationError</span>
 <span class="kn">from</span> <span class="nn">CveXplore.objects.cvexplore_object</span> <span class="kn">import</span> <span class="n">CveXploreObject</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.celery_task_handler.task_handler</span> <span class="kn">import</span> <span class="n">TaskHandler</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">CveXplore.core.celery_task_handler.task_handler</span> <span class="kn">import</span> <span class="n">TaskHandler</span>
+<span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+    <span class="c1"># This is not a problem, because using the Celery backend is optional.</span>
+    <span class="c1"># This exception will be handled when loading the TaskHandler fails with</span>
+    <span class="c1"># a NameError, because we already have logging available there.</span>
+    <span class="k">pass</span>
 
 
 <span class="k">def</span> <span class="nf">_version</span><span class="p">():</span>
@@ -780,7 +787,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">capec</span> <span class="o">=</span> <span class="n">CapecDatabaseFunctions</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="s2">&quot;capec&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cwe</span> <span class="o">=</span> <span class="n">CWEDatabaseFunctions</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="s2">&quot;cwe&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">task_handler</span> <span class="o">=</span> <span class="n">TaskHandler</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">task_handler</span> <span class="o">=</span> <span class="n">TaskHandler</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Failed to load Celery TaskHandler; &quot;</span>
+                <span class="s2">&quot;continuing without the optional Celery backend.&quot;</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Initialized CveXplore version: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
