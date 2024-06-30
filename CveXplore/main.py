@@ -44,7 +44,14 @@ from CveXplore.errors import DatabaseIllegalCollection
 from CveXplore.errors.datasource import UnsupportedDatasourceException
 from CveXplore.errors.validation import CveNumberValidationError
 from CveXplore.objects.cvexplore_object import CveXploreObject
-from CveXplore.core.celery_task_handler.task_handler import TaskHandler
+
+try:
+    from CveXplore.core.celery_task_handler.task_handler import TaskHandler
+except ModuleNotFoundError:
+    # This is not a problem, because using the Celery backend is optional.
+    # This exception will be handled when loading the TaskHandler fails with
+    # a NameError, because we already have logging available there.
+    pass
 
 
 def _version():
@@ -193,7 +200,13 @@ class CveXplore(object):
         self.capec = CapecDatabaseFunctions(collection="capec")
         self.cwe = CWEDatabaseFunctions(collection="cwe")
 
-        self.task_handler = TaskHandler()
+        try:
+            self.task_handler = TaskHandler()
+        except NameError:
+            self.logger.info(
+                "Failed to load Celery TaskHandler; "
+                "continuing without the optional Celery backend."
+            )
 
         self.logger.info(f"Initialized CveXplore version: {self.version}")
 
