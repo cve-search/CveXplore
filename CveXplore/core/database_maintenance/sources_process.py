@@ -540,6 +540,8 @@ class CVEDownloads(NVDApiHandler):
             cve["vulnerable_configuration_stems"] = []
             cve["configurations"] = item["cve"]["configurations"]
             for node in item["cve"]["configurations"]:
+                if "nodes" not in node:
+                    continue
                 for cpe in node["nodes"]:
                     if "cpeMatch" in cpe:
                         for cpeuri in cpe["cpeMatch"]:
