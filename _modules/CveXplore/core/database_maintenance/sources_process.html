@@ -1165,6 +1165,8 @@
             <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;vulnerable_configuration_stems&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;configurations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;configurations&quot;</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;configurations&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="s2">&quot;nodes&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
+                    <span class="k">continue</span>
                 <span class="k">for</span> <span class="n">cpe</span> <span class="ow">in</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">]:</span>
                     <span class="k">if</span> <span class="s2">&quot;cpeMatch&quot;</span> <span class="ow">in</span> <span class="n">cpe</span><span class="p">:</span>
                         <span class="k">for</span> <span class="n">cpeuri</span> <span class="ow">in</span> <span class="n">cpe</span><span class="p">[</span><span class="s2">&quot;cpeMatch&quot;</span><span class="p">]:</span>
