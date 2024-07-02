@@ -66,11 +66,11 @@ class MainUpdater(UpdateBaseClass):
 
         return True
 
-    def update(self, update_source: str | list = None):
+    def update(self, update_source: str | list = None, manual_days: int = 0):
         """
         Method used for updating the database
         """
-        self.logger.info(f"Starting Database update....")
+        self.logger.info(f"Starting Database update...")
         start_time = time.time()
 
         if not self.do_initialize:
@@ -88,7 +88,16 @@ class MainUpdater(UpdateBaseClass):
             if update_source is None:
                 for source in self.sources:
                     up = source["updater"]()
-                    up.update()
+                    if manual_days > 0:
+                        if source["name"] in ("cpe", "cve"):
+                            up.update(manual_days=manual_days)
+                        else:
+                            self.logger.warning(
+                                f"Update interval in days not supported by source {source}; ignoring"
+                            )
+                            up.update()
+                    else:
+                        up.update()
 
             elif isinstance(update_source, list):
                 for source in update_source:
@@ -97,7 +106,16 @@ class MainUpdater(UpdateBaseClass):
                             x for x in self.sources if x["name"] == source
                         ][0]
                         up = update_this_source["updater"]()
-                        up.update()
+                        if manual_days > 0:
+                            if update_this_source["name"] in ("cpe", "cve"):
+                                up.update(manual_days=manual_days)
+                            else:
+                                self.logger.warning(
+                                    f"Update interval in days not supported by source {source}; ignoring"
+                                )
+                                up.update()
+                        else:
+                            up.update()
                     except IndexError:
                         raise UpdateSourceNotFound(
                             f"Provided source: {source} could not be found...."
@@ -109,7 +127,16 @@ class MainUpdater(UpdateBaseClass):
                         x for x in self.sources if x["name"] == update_source
                     ][0]
                     up = update_this_source["updater"]()
-                    up.update()
+                    if manual_days > 0:
+                        if update_this_source["name"] in ("cpe", "cve"):
+                            up.update(manual_days=manual_days)
+                        else:
+                            self.logger.warning(
+                                f"Update interval in days not supported by source {source}; ignoring"
+                            )
+                            up.update()
+                    else:
+                        up.update()
                 except IndexError:
                     raise UpdateSourceNotFound(
                         f"Provided source: {update_source} could not be found...."
