@@ -697,7 +697,7 @@
 
 <div class="viewcode-block" id="CPEDownloads.process_downloads">
 <a class="viewcode-back" href="../../../../CveXplore/core/CPEDownloads.process_downloads.html#CveXplore.core.database_maintenance.sources_process.CPEDownloads.process_downloads">[docs]</a>
-    <span class="k">def</span> <span class="nf">process_downloads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sites</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">process_downloads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sites</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to download and process files</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -754,29 +754,40 @@
                                     <span class="sa">f</span><span class="s2">&quot;Retrieval of api data on url: </span><span class="si">{</span><span class="n">data_list</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> failed....&quot;</span>
                                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
-                    <span class="p">{},</span> <span class="p">{</span><span class="s2">&quot;lastModified&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">sort</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;lastModified&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
-                <span class="p">)</span>
-
-                <span class="k">if</span> <span class="n">last_mod_start_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="s2">&quot;lastModified&quot;</span> <span class="ow">in</span> <span class="n">last_mod_start_date</span><span class="p">:</span>
-                        <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="n">last_mod_start_date</span><span class="p">[</span>
-                            <span class="s2">&quot;lastModified&quot;</span>
-                        <span class="p">]</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span>
-                            <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
-                        <span class="p">)</span>  <span class="c1"># add one second to prevent false results...</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-                            <span class="s2">&quot;Missing field &#39;lastModified&#39; from database query...&quot;</span>
-                        <span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="s2">&quot;No records found in the mongodb cpe collection..&quot;</span>
-                    <span class="p">)</span>
-                    <span class="k">return</span>
-
-                    <span class="c1"># Get datetime from runtime</span>
+                <span class="c1"># Get datetime from runtime</span>
                 <span class="n">last_mod_end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+                <span class="c1"># Use configured day interval or detect from the latest entry in the database</span>
+                <span class="k">if</span> <span class="n">manual_days</span> <span class="o">&gt;</span> <span class="mi">120</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Update interval over 120 days not supported by the NVD API; ignoring&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">if</span> <span class="n">manual_days</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">manual_days</span> <span class="o">&lt;=</span> <span class="mi">120</span><span class="p">:</span>
+                    <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="n">last_mod_end_date</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span>
+                        <span class="n">days</span><span class="o">=</span><span class="n">manual_days</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="p">]</span><span class="o">.</span><span class="n">find_one</span><span class="p">({},</span> <span class="p">{</span><span class="s2">&quot;lastModified&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">sort</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;lastModified&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
+
+                    <span class="k">if</span> <span class="n">last_mod_start_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="s2">&quot;lastModified&quot;</span> <span class="ow">in</span> <span class="n">last_mod_start_date</span><span class="p">:</span>
+                            <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="n">last_mod_start_date</span><span class="p">[</span>
+                                <span class="s2">&quot;lastModified&quot;</span>
+                            <span class="p">]</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span>
+                                <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+                            <span class="p">)</span>  <span class="c1"># add one second to prevent false results...</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                                <span class="s2">&quot;Missing field &#39;lastModified&#39; from database query...&quot;</span>
+                            <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                            <span class="s2">&quot;No records found in the mongodb cpe collection..&quot;</span>
+                        <span class="p">)</span>
+                        <span class="k">return</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Retrieving CPEs starting from </span><span class="si">{</span><span class="n">last_mod_start_date</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">total_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span>
@@ -832,10 +843,10 @@
 
 <div class="viewcode-block" id="CPEDownloads.update">
 <a class="viewcode-back" href="../../../../CveXplore/core/CPEDownloads.update.html#CveXplore.core.database_maintenance.sources_process.CPEDownloads.update">[docs]</a>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CPE database update started&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">process_downloads</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_downloads</span><span class="p">(</span><span class="n">manual_days</span><span class="o">=</span><span class="n">manual_days</span><span class="p">)</span>
 
         <span class="c1"># if collection is non-existent; assume it&#39;s not an update</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTableNames</span><span class="p">():</span>
@@ -1272,7 +1283,7 @@
 
 <div class="viewcode-block" id="CVEDownloads.process_downloads">
 <a class="viewcode-back" href="../../../../CveXplore/core/CVEDownloads.process_downloads.html#CveXplore.core.database_maintenance.sources_process.CVEDownloads.process_downloads">[docs]</a>
-    <span class="k">def</span> <span class="nf">process_downloads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sites</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">process_downloads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sites</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to download and process files</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1329,25 +1340,40 @@
                                     <span class="sa">f</span><span class="s2">&quot;Retrieval of api data on url: </span><span class="si">{</span><span class="n">data_list</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> failed....&quot;</span>
                                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
-                    <span class="p">{},</span> <span class="p">{</span><span class="s2">&quot;lastModified&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">sort</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;lastModified&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
-                <span class="p">)</span>
-
-                <span class="k">if</span> <span class="n">last_mod_start_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="s2">&quot;lastModified&quot;</span> <span class="ow">in</span> <span class="n">last_mod_start_date</span><span class="p">:</span>
-                        <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="n">last_mod_start_date</span><span class="p">[</span><span class="s2">&quot;lastModified&quot;</span><span class="p">]</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-                            <span class="s2">&quot;Missing field &#39;lastModified&#39; from database query...&quot;</span>
-                        <span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="s2">&quot;No records found in the mongodb cves collection..&quot;</span>
-                    <span class="p">)</span>
-                    <span class="k">return</span>
-
-                    <span class="c1"># Get datetime from runtime</span>
+                <span class="c1"># Get datetime from runtime</span>
                 <span class="n">last_mod_end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+                <span class="c1"># Use configured day interval or detect from the latest entry in the database</span>
+                <span class="k">if</span> <span class="n">manual_days</span> <span class="o">&gt;</span> <span class="mi">120</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Update interval over 120 days not supported by the NVD API; ignoring&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">if</span> <span class="n">manual_days</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">manual_days</span> <span class="o">&lt;=</span> <span class="mi">120</span><span class="p">:</span>
+                    <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="n">last_mod_end_date</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span>
+                        <span class="n">days</span><span class="o">=</span><span class="n">manual_days</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="p">]</span><span class="o">.</span><span class="n">find_one</span><span class="p">({},</span> <span class="p">{</span><span class="s2">&quot;lastModified&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">sort</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;lastModified&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
+
+                    <span class="k">if</span> <span class="n">last_mod_start_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="s2">&quot;lastModified&quot;</span> <span class="ow">in</span> <span class="n">last_mod_start_date</span><span class="p">:</span>
+                            <span class="n">last_mod_start_date</span> <span class="o">=</span> <span class="n">last_mod_start_date</span><span class="p">[</span>
+                                <span class="s2">&quot;lastModified&quot;</span>
+                            <span class="p">]</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span>
+                                <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+                            <span class="p">)</span>  <span class="c1"># add one second to prevent false results...</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                                <span class="s2">&quot;Missing field &#39;lastModified&#39; from database query...&quot;</span>
+                            <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                            <span class="s2">&quot;No records found in the mongodb cpe collection..&quot;</span>
+                        <span class="p">)</span>
+                        <span class="k">return</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Retrieving CVEs starting from </span><span class="si">{</span><span class="n">last_mod_start_date</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">total_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_handler</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span>
@@ -1403,10 +1429,10 @@
 
 <div class="viewcode-block" id="CVEDownloads.update">
 <a class="viewcode-back" href="../../../../CveXplore/core/CVEDownloads.update.html#CveXplore.core.database_maintenance.sources_process.CVEDownloads.update">[docs]</a>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CVE database update started&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">process_downloads</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_downloads</span><span class="p">(</span><span class="n">manual_days</span><span class="o">=</span><span class="n">manual_days</span><span class="p">)</span>
 
         <span class="c1"># if collection is non-existent; assume it&#39;s not an update</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTableNames</span><span class="p">():</span>
@@ -1784,7 +1810,7 @@
   <small>
     
       Last update:
-      Jul 01, 2024
+      Jul 03, 2024
     
   </small>
 </div>

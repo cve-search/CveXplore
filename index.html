@@ -747,6 +747,12 @@ $<span class="w"> </span>cvexplore<span class="w"> </span>database<span class="w
 <p>You can add your <a class="reference external" href="https://nvd.nist.gov/developers/request-an-api-key">NIST API Key</a> in the environment variable
 <code class="code docutils literal notranslate"><span class="pre">NVD_NIST_API_KEY</span></code> (e.g., in the <code class="code docutils literal notranslate"><span class="pre">~/.cvexplore/.env</span></code> file). You can populate CveXplore without an API key,
 but it will limit the amount of parallel requests made to the NIST API.</p>
+<p>For the NVD API, the update starts from the last modified document in the database. In case of missing CPEs or CVEs
+caused by failures during the regular updates you can manually update entries for 1–120 days. (If the period is longer
+than 120 days you would need to re-populate the entire database.) Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">manual_days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</code></pre></div>
+</div>
 <h2 id="package-usage">Package usage<a class="headerlink" href="#package-usage" title="Link to this heading">¶</a></h2>
 <h3 id="instantiation">Instantiation<a class="headerlink" href="#instantiation" title="Link to this heading">¶</a></h3>
 <p>CveXplore can be instantiated with different parameters, depending to which data source you’re going to connect to.
@@ -812,7 +818,7 @@ Commands:
   <small>
     
       Last update:
-      Jul 01, 2024
+      Jul 03, 2024
     
   </small>
 </div>
