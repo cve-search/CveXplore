@@ -111,6 +111,14 @@ You can add your `NIST API Key <https://nvd.nist.gov/developers/request-an-api-k
 :code:`NVD_NIST_API_KEY` (e.g., in the :code:`~/.cvexplore/.env` file). You can populate CveXplore without an API key,
 but it will limit the amount of parallel requests made to the NIST API.
 
+For the NVD API, the update starts from the last modified document in the database. In case of missing CPEs or CVEs
+caused by failures during the regular updates you can manually update entries for 1–120 days. (If the period is longer
+than 120 days you would need to re-populate the entire database.) Example:
+
+.. code-block:: python
+
+    >>> cvx.database.update(manual_days=7)
+
 Package usage
 -------------
 

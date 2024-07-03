@@ -66,11 +66,11 @@ class MainUpdater(UpdateBaseClass):
 
         return True
 
-    def update(self, update_source: str | list = None):
+    def update(self, update_source: str | list = None, manual_days: int = 0):
         """
         Method used for updating the database
         """
-        self.logger.info(f"Starting Database update....")
+        self.logger.info(f"Starting Database update...")
         start_time = time.time()
 
         if not self.do_initialize:
@@ -80,42 +80,35 @@ class MainUpdater(UpdateBaseClass):
                 )
                 self.database_migrator.db_upgrade()
 
-        if update_source is not None:
-            if not isinstance(update_source, str | list):
+        if update_source is None:
+            # update all sources
+            update_source = [source["name"] for source in self.sources]
+        elif isinstance(update_source, str):
+            # update a single source
+            update_source = [update_source]
+        else:
+            # update list of sources
+            if not isinstance(update_source, list):
                 raise ValueError("Wrong 'update_source' parameter type received!")
 
-        try:
-            if update_source is None:
-                for source in self.sources:
-                    up = source["updater"]()
-                    up.update()
-
-            elif isinstance(update_source, list):
-                for source in update_source:
-                    try:
-                        update_this_source = [
-                            x for x in self.sources if x["name"] == source
-                        ][0]
-                        up = update_this_source["updater"]()
-                        up.update()
-                    except IndexError:
-                        raise UpdateSourceNotFound(
-                            f"Provided source: {source} could not be found...."
+        for source in update_source:
+            try:
+                update_this_source = [x for x in self.sources if x["name"] == source][0]
+                up = update_this_source["updater"]()
+                if manual_days > 0:
+                    if update_this_source["name"] in ("cpe", "cve"):
+                        up.update(manual_days=manual_days)
+                    else:
+                        self.logger.warning(
+                            f"Update interval in days not supported by source {source}; ignoring"
                         )
-            else:
-                # single string then....
-                try:
-                    update_this_source = [
-                        x for x in self.sources if x["name"] == update_source
-                    ][0]
-                    up = update_this_source["updater"]()
+                        up.update()
+                else:
                     up.update()
-                except IndexError:
-                    raise UpdateSourceNotFound(
-                        f"Provided source: {update_source} could not be found...."
-                    )
-        except UpdateSourceNotFound:
-            raise
+            except IndexError:
+                raise UpdateSourceNotFound(
+                    f"Provided source: {source} could not be found...."
+                )
 
         self.database_indexer.create_indexes()
 

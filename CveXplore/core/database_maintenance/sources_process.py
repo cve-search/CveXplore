@@ -99,7 +99,7 @@ class CPEDownloads(NVDApiHandler):
 
         return cpe
 
-    def process_downloads(self, sites: list | None = None):
+    def process_downloads(self, sites: list | None = None, manual_days: int = 0):
         """
         Method to download and process files
         """
@@ -156,29 +156,40 @@ class CPEDownloads(NVDApiHandler):
                                     f"Retrieval of api data on url: {data_list.args[0]} failed...."
                                 )
             else:
-                last_mod_start_date = self.database[self.feed_type.lower()].find_one(
-                    {}, {"lastModified": 1}, sort=[("lastModified", -1)]
-                )
-
-                if last_mod_start_date is not None:
-                    if "lastModified" in last_mod_start_date:
-                        last_mod_start_date = last_mod_start_date[
-                            "lastModified"
-                        ] + datetime.timedelta(
-                            0, 1
-                        )  # add one second to prevent false results...
-                    else:
-                        raise KeyError(
-                            "Missing field 'lastModified' from database query..."
-                        )
-                else:
-                    self.logger.warning(
-                        "No records found in the mongodb cpe collection.."
-                    )
-                    return
-
-                    # Get datetime from runtime
+                # Get datetime from runtime
                 last_mod_end_date = datetime.datetime.now()
+
+                # Use configured day interval or detect from the latest entry in the database
+                if manual_days > 120:
+                    self.logger.warning(
+                        f"Update interval over 120 days not supported by the NVD API; ignoring"
+                    )
+                if manual_days > 0 and manual_days <= 120:
+                    last_mod_start_date = last_mod_end_date - datetime.timedelta(
+                        days=manual_days
+                    )
+                else:
+                    last_mod_start_date = self.database[
+                        self.feed_type.lower()
+                    ].find_one({}, {"lastModified": 1}, sort=[("lastModified", -1)])
+
+                    if last_mod_start_date is not None:
+                        if "lastModified" in last_mod_start_date:
+                            last_mod_start_date = last_mod_start_date[
+                                "lastModified"
+                            ] + datetime.timedelta(
+                                0, 1
+                            )  # add one second to prevent false results...
+                        else:
+                            raise KeyError(
+                                "Missing field 'lastModified' from database query..."
+                            )
+                    else:
+                        self.logger.warning(
+                            "No records found in the mongodb cpe collection.."
+                        )
+                        return
+                self.logger.info(f"Retrieving CPEs starting from {last_mod_start_date}")
 
                 try:
                     total_results = self.api_handler.get_count(
@@ -231,10 +242,10 @@ class CPEDownloads(NVDApiHandler):
             f"Duration: {datetime.timedelta(seconds=time.time() - start_time)}"
         )
 
-    def update(self, **kwargs):
+    def update(self, manual_days: int = 0):
         self.logger.info("CPE database update started")
 
-        self.process_downloads()
+        self.process_downloads(manual_days=manual_days)
 
         # if collection is non-existent; assume it's not an update
         if self.feed_type.lower() not in self.getTableNames():
@@ -644,7 +655,7 @@ class CVEDownloads(NVDApiHandler):
 
         return cve
 
-    def process_downloads(self, sites: list = None):
+    def process_downloads(self, sites: list = None, manual_days: int = 0):
         """
         Method to download and process files
         """
@@ -701,25 +712,40 @@ class CVEDownloads(NVDApiHandler):
                                     f"Retrieval of api data on url: {data_list.args[0]} failed...."
                                 )
             else:
-                last_mod_start_date = self.database[self.feed_type.lower()].find_one(
-                    {}, {"lastModified": 1}, sort=[("lastModified", -1)]
-                )
-
-                if last_mod_start_date is not None:
-                    if "lastModified" in last_mod_start_date:
-                        last_mod_start_date = last_mod_start_date["lastModified"]
-                    else:
-                        raise KeyError(
-                            "Missing field 'lastModified' from database query..."
-                        )
-                else:
-                    self.logger.warning(
-                        "No records found in the mongodb cves collection.."
-                    )
-                    return
-
-                    # Get datetime from runtime
+                # Get datetime from runtime
                 last_mod_end_date = datetime.datetime.now()
+
+                # Use configured day interval or detect from the latest entry in the database
+                if manual_days > 120:
+                    self.logger.warning(
+                        f"Update interval over 120 days not supported by the NVD API; ignoring"
+                    )
+                if manual_days > 0 and manual_days <= 120:
+                    last_mod_start_date = last_mod_end_date - datetime.timedelta(
+                        days=manual_days
+                    )
+                else:
+                    last_mod_start_date = self.database[
+                        self.feed_type.lower()
+                    ].find_one({}, {"lastModified": 1}, sort=[("lastModified", -1)])
+
+                    if last_mod_start_date is not None:
+                        if "lastModified" in last_mod_start_date:
+                            last_mod_start_date = last_mod_start_date[
+                                "lastModified"
+                            ] + datetime.timedelta(
+                                0, 1
+                            )  # add one second to prevent false results...
+                        else:
+                            raise KeyError(
+                                "Missing field 'lastModified' from database query..."
+                            )
+                    else:
+                        self.logger.warning(
+                            "No records found in the mongodb cpe collection.."
+                        )
+                        return
+                self.logger.info(f"Retrieving CVEs starting from {last_mod_start_date}")
 
                 try:
                     total_results = self.api_handler.get_count(
@@ -772,10 +798,10 @@ class CVEDownloads(NVDApiHandler):
             f"Duration: {datetime.timedelta(seconds=time.time() - start_time)}"
         )
 
-    def update(self):
+    def update(self, manual_days: int = 0):
         self.logger.info("CVE database update started")
 
-        self.process_downloads()
+        self.process_downloads(manual_days=manual_days)
 
         # if collection is non-existent; assume it's not an update
         if self.feed_type.lower() not in self.getTableNames():
