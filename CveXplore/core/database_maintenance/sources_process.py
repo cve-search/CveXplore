@@ -997,22 +997,20 @@ class CWEDownloads(XMLFileHandler):
     def file_to_queue(self, file_tuple: Tuple[str, str]):
         working_dir, filename = file_tuple
 
-        for f in glob.glob(f"{working_dir}/*.xml"):
-            filename = f
+        for filename in glob.glob(f"{working_dir}/*.xml"):
+            self.parser.parse(filename)
+            x = 0
+            for cwe in self.ch.cwe:
+                try:
+                    cwe["related_weaknesses"] = list(set(cwe["related_weaknesses"]))
+                    cwe["description"] = cwe["Description"]
+                    cwe.pop("Description")
+                except KeyError:
+                    pass
+                self.process_item(cwe)
+                x += 1
 
-        self.parser.parse(f"file://{filename}")
-        x = 0
-        for cwe in self.ch.cwe:
-            try:
-                cwe["related_weaknesses"] = list(set(cwe["related_weaknesses"]))
-                cwe["description"] = cwe["Description"]
-                cwe.pop("Description")
-            except KeyError:
-                pass
-            self.process_item(cwe)
-            x += 1
-
-        self.logger.debug(f"Processed {x} entries from file: {filename}")
+            self.logger.debug(f"Processed {x} entries from file: {filename}")
 
         try:
             self.logger.debug(f"Removing working dir: {working_dir}")
