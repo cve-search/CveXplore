@@ -7,7 +7,6 @@ import colors
 from CveXplore.common.config import Configuration
 from CveXplore.core.logging.formatters.task_formatter import TaskFormatter
 from CveXplore.core.logging.handlers.gelf_handler import GelfUDPHandler
-from CveXplore.core.logging.handlers.syslog_handler import FullSysLogHandler
 
 CRITICAL = 50
 FATAL = CRITICAL
@@ -77,6 +76,11 @@ class AppLogger(logging.Logger):
                     ),
                 )
             else:
+                # Import syslog_handler only if configured (for Windows compatibility)
+                from CveXplore.core.logging.handlers.syslog_handler import (
+                    FullSysLogHandler,
+                )
+
                 syslog = FullSysLogHandler(
                     address=(syslog_server, syslog_port),
                     facility=FullSysLogHandler.LOG_LOCAL0,
