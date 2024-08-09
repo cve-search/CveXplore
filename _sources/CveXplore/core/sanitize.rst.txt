@@ -6,5 +6,5 @@
 
 
 
-.. python-apigen-entity-page::  CveXplore.core.database_indexer.db_indexer.sanitize
+.. python-apigen-entity-page::  CveXplore.core.general.utils.sanitize
 

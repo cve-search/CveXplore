@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -596,7 +596,7 @@
 <span class="c1"># Convert cpe2.2 url encoded to cpe2.3 char escaped</span>
 <span class="c1"># cpe:2.3:o:cisco:ios:12.2%281%29 to cpe:2.3:o:cisco:ios:12.2\(1\)</span>
 <div class="viewcode-block" id="unquote">
-<a class="viewcode-back" href="../../../../CveXplore/database/unquote.html#CveXplore.common.cpe_converters.unquote">[docs]</a>
+<a class="viewcode-back" href="../../../../CveXplore/database/unquote.html#CveXplore.database.helpers.cpe_conversion.unquote">[docs]</a>
 <span class="k">def</span> <span class="nf">unquote</span><span class="p">(</span><span class="n">cpe</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;%([0-9a-fA-F]</span><span class="si">{2}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
         <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">16</span><span class="p">)),</span> <span class="n">cpe</span>
@@ -607,7 +607,7 @@
 <span class="c1"># Convert cpe2.3 char escaped to cpe2.2 url encoded</span>
 <span class="c1"># cpe:2.3:o:cisco:ios:12.2\(1\) to cpe:2.3:o:cisco:ios:12.2%281%29</span>
 <div class="viewcode-block" id="quote">
-<a class="viewcode-back" href="../../../../CveXplore/database/quote.html#CveXplore.common.cpe_converters.quote">[docs]</a>
+<a class="viewcode-back" href="../../../../CveXplore/database/quote.html#CveXplore.database.helpers.cpe_conversion.quote">[docs]</a>
 <span class="k">def</span> <span class="nf">quote</span><span class="p">(</span><span class="n">cpe</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">cpe</span> <span class="o">=</span> <span class="n">cpe</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">-&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
     <span class="n">cpe</span> <span class="o">=</span> <span class="n">cpe</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
@@ -618,7 +618,7 @@
 
 
 <div class="viewcode-block" id="WFN">
-<a class="viewcode-back" href="../../../../CveXplore/database/WFN.html#CveXplore.common.cpe_converters.WFN">[docs]</a>
+<a class="viewcode-back" href="../../../../CveXplore/database/WFN.html#CveXplore.database.helpers.cpe_conversion.WFN">[docs]</a>
 <span class="k">class</span> <span class="nc">WFN</span><span class="p">:</span>
     <span class="c1"># Default every value to * which is ANY</span>
     <span class="n">part</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span>
@@ -636,7 +636,7 @@
     <span class="c1"># Pack entries unsupported by URI (CPE2.2) representation in to an extended edition string</span>
     <span class="c1"># As described in part 6.1.2.1.3 of the specification</span>
 <div class="viewcode-block" id="WFN.pack_edition">
-<a class="viewcode-back" href="../../../../CveXplore/database/WFN.pack_edition.html#CveXplore.common.cpe_converters.WFN.pack_edition">[docs]</a>
+<a class="viewcode-back" href="../../../../CveXplore/database/WFN.pack_edition.html#CveXplore.database.helpers.cpe_conversion.WFN.pack_edition">[docs]</a>
     <span class="k">def</span> <span class="nf">pack_edition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">packed_edition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edition</span>
         <span class="k">if</span> <span class="p">(</span>
@@ -659,7 +659,7 @@
 
     <span class="c1"># Unpack entries from extended edition string</span>
 <div class="viewcode-block" id="WFN.unpack_edition">
-<a class="viewcode-back" href="../../../../CveXplore/database/WFN.unpack_edition.html#CveXplore.common.cpe_converters.WFN.unpack_edition">[docs]</a>
+<a class="viewcode-back" href="../../../../CveXplore/database/WFN.unpack_edition.html#CveXplore.database.helpers.cpe_conversion.WFN.unpack_edition">[docs]</a>
     <span class="k">def</span> <span class="nf">unpack_edition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edition_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="c1"># The packed edition string should always have the same amount of columns if present</span>
         <span class="c1"># If there is less its malformed or not a packed edition</span>
@@ -686,7 +686,7 @@
 
     <span class="c1"># Bind values from WFN object to a CPE URI (2.2)</span>
 <div class="viewcode-block" id="WFN.bind_to_uri">
-<a class="viewcode-back" href="../../../../CveXplore/database/WFN.bind_to_uri.html#CveXplore.common.cpe_converters.WFN.bind_to_uri">[docs]</a>
+<a class="viewcode-back" href="../../../../CveXplore/database/WFN.bind_to_uri.html#CveXplore.database.helpers.cpe_conversion.WFN.bind_to_uri">[docs]</a>
     <span class="k">def</span> <span class="nf">bind_to_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">cpe_uri</span> <span class="o">=</span> <span class="s2">&quot;cpe:/</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">part</span><span class="p">,</span>
@@ -704,7 +704,7 @@
 
     <span class="c1"># Bind values from WFN to a CPE formatted string (2.3)</span>
 <div class="viewcode-block" id="WFN.bind_to_fs">
-<a class="viewcode-back" href="../../../../CveXplore/database/WFN.bind_to_fs.html#CveXplore.common.cpe_converters.WFN.bind_to_fs">[docs]</a>
+<a class="viewcode-back" href="../../../../CveXplore/database/WFN.bind_to_fs.html#CveXplore.database.helpers.cpe_conversion.WFN.bind_to_fs">[docs]</a>
     <span class="k">def</span> <span class="nf">bind_to_fs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">cpe_fs</span> <span class="o">=</span> <span class="s2">&quot;cpe:2.3:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">part</span><span class="p">,</span>
@@ -727,7 +727,7 @@
 
     <span class="c1"># Unbinds WFN values from a CPE URI (2.2 format)</span>
 <div class="viewcode-block" id="WFN.unbind_from_uri">
-<a class="viewcode-back" href="../../../../CveXplore/database/WFN.unbind_from_uri.html#CveXplore.common.cpe_converters.WFN.unbind_from_uri">[docs]</a>
+<a class="viewcode-back" href="../../../../CveXplore/database/WFN.unbind_from_uri.html#CveXplore.database.helpers.cpe_conversion.WFN.unbind_from_uri">[docs]</a>
     <span class="k">def</span> <span class="nf">unbind_from_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpe_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">cpe_components</span> <span class="o">=</span> <span class="n">cpe_uri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
         <span class="c1"># Using a loop to easily deal with variable length CPE uris</span>
@@ -754,7 +754,7 @@
 
     <span class="c1"># Unbinds WFN values from a CPE FS (2.3 format)</span>
 <div class="viewcode-block" id="WFN.unbind_from_fs">
-<a class="viewcode-back" href="../../../../CveXplore/database/WFN.unbind_from_fs.html#CveXplore.common.cpe_converters.WFN.unbind_from_fs">[docs]</a>
+<a class="viewcode-back" href="../../../../CveXplore/database/WFN.unbind_from_fs.html#CveXplore.database.helpers.cpe_conversion.WFN.unbind_from_fs">[docs]</a>
     <span class="k">def</span> <span class="nf">unbind_from_fs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpe_fs</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="c1"># Convert special character sequences such as &quot;\:&quot; to URI format e.g. &quot;%3a&quot; before splitting</span>
         <span class="n">cpe_fs</span> <span class="o">=</span> <span class="n">quote</span><span class="p">(</span><span class="n">cpe_fs</span><span class="p">)</span>
@@ -789,7 +789,7 @@
 
 <span class="c1"># Convert CPE 2.2 format (URI) to CPE 2.3 format (FS)</span>
 <div class="viewcode-block" id="cpe_uri_to_fs">
-<a class="viewcode-back" href="../../../../CveXplore/database/cpe_uri_to_fs.html#CveXplore.common.cpe_converters.cpe_uri_to_fs">[docs]</a>
+<a class="viewcode-back" href="../../../../CveXplore/database/cpe_uri_to_fs.html#CveXplore.database.helpers.cpe_conversion.cpe_uri_to_fs">[docs]</a>
 <span class="k">def</span> <span class="nf">cpe_uri_to_fs</span><span class="p">(</span><span class="n">uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">wfn</span> <span class="o">=</span> <span class="n">WFN</span><span class="p">()</span>
     <span class="n">wfn</span><span class="o">.</span><span class="n">unbind_from_uri</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
@@ -799,7 +799,7 @@
 
 <span class="c1"># Convert CPE 2.3 format (FS) to CPE 2.2 format (URI)</span>
 <div class="viewcode-block" id="cpe_fs_to_uri">
-<a class="viewcode-back" href="../../../../CveXplore/database/cpe_fs_to_uri.html#CveXplore.common.cpe_converters.cpe_fs_to_uri">[docs]</a>
+<a class="viewcode-back" href="../../../../CveXplore/database/cpe_fs_to_uri.html#CveXplore.database.helpers.cpe_conversion.cpe_fs_to_uri">[docs]</a>
 <span class="k">def</span> <span class="nf">cpe_fs_to_uri</span><span class="p">(</span><span class="n">fs</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">wfn</span> <span class="o">=</span> <span class="n">WFN</span><span class="p">()</span>
     <span class="n">wfn</span><span class="o">.</span><span class="n">unbind_from_fs</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
@@ -812,7 +812,7 @@
   <small>
     
       Last update:
-      Jul 05, 2024
+      Aug 09, 2024
     
   </small>
 </div>
@@ -853,7 +853,7 @@
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    7.3.7.
+    7.4.7.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   

@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
         <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1793,6 +1793,17 @@
                         <span class="k">else</span><span class="p">:</span>
                             <span class="n">join_transaction_mode</span> <span class="o">=</span> <span class="s2">&quot;rollback_only&quot;</span>
 
+                        <span class="k">if</span> <span class="n">local_connect</span><span class="p">:</span>
+                            <span class="n">util</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                                <span class="s2">&quot;The engine provided as bind produced a &quot;</span>
+                                <span class="s2">&quot;connection that is already in a transaction. &quot;</span>
+                                <span class="s2">&quot;This is usually caused by a core event, &quot;</span>
+                                <span class="s2">&quot;such as &#39;engine_connect&#39;, that has left a &quot;</span>
+                                <span class="s2">&quot;transaction open. The effective join &quot;</span>
+                                <span class="s2">&quot;transaction mode used by this session is &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">join_transaction_mode</span><span class="si">!r}</span><span class="s2">. To silence this &quot;</span>
+                                <span class="s2">&quot;warning, do not leave transactions open&quot;</span>
+                            <span class="p">)</span>
                     <span class="k">if</span> <span class="n">join_transaction_mode</span> <span class="ow">in</span> <span class="p">(</span>
                         <span class="s2">&quot;control_fully&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;rollback_only&quot;</span><span class="p">,</span>
@@ -5895,7 +5906,7 @@
   <small>
     
       Last update:
-      Jul 05, 2024
+      Aug 09, 2024
     
   </small>
 </div>
@@ -5936,7 +5947,7 @@
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    7.3.7.
+    7.4.7.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   

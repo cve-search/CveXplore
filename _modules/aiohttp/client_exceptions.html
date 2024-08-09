@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -584,10 +584,10 @@
 
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">.http_parser</span> <span class="kn">import</span> <span class="n">RawResponseMessage</span>
-<span class="kn">from</span> <span class="nn">.typedefs</span> <span class="kn">import</span> <span class="n">LooseHeaders</span>
+<span class="kn">from</span> <span class="nn">.typedefs</span> <span class="kn">import</span> <span class="n">LooseHeaders</span><span class="p">,</span> <span class="n">StrOrURL</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">ssl</span>
@@ -611,6 +611,8 @@
     <span class="s2">&quot;ClientSSLError&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ClientConnectorSSLError&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ClientConnectorCertificateError&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ConnectionTimeoutError&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SocketTimeoutError&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ServerConnectionError&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ServerTimeoutError&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ServerDisconnectedError&quot;</span><span class="p">,</span>
@@ -621,6 +623,11 @@
     <span class="s2">&quot;ContentTypeError&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ClientPayloadError&quot;</span><span class="p">,</span>
     <span class="s2">&quot;InvalidURL&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;InvalidUrlClientError&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RedirectClientError&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NonHttpUrlClientError&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;InvalidUrlRedirectClientError&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NonHttpUrlRedirectClientError&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -675,7 +682,7 @@
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, message=</span><span class="si">{!r}</span><span class="s2">, url=</span><span class="si">{!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">request_info</span><span class="o">.</span><span class="n">real_url</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_info</span><span class="o">.</span><span class="n">real_url</span><span class="p">),</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -827,6 +834,14 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Server timeout error.&quot;&quot;&quot;</span>
 
 
+<span class="k">class</span> <span class="nc">ConnectionTimeoutError</span><span class="p">(</span><span class="n">ServerTimeoutError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Connection timeout error.&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">SocketTimeoutError</span><span class="p">(</span><span class="n">ServerTimeoutError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Socket timeout error.&quot;&quot;&quot;</span>
+
+
 <span class="k">class</span> <span class="nc">ServerFingerprintMismatch</span><span class="p">(</span><span class="n">ServerConnectionError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;SSL certificate does not match expected fingerprint.&quot;&quot;&quot;</span>
 
@@ -856,17 +871,52 @@
 
     <span class="c1"># Derive from ValueError for backward compatibility</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="n">StrOrURL</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># The type of url is not yarl.URL because the exception can be raised</span>
         <span class="c1"># on URL(url) call</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
+
+        <span class="k">if</span> <span class="n">description</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StrOrURL</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_url</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;str | None&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_url</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_url</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">InvalidUrlClientError</span><span class="p">(</span><span class="n">InvalidURL</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Invalid URL client error.&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">RedirectClientError</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Client redirect error.&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">NonHttpUrlClientError</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Non http URL client error.&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">InvalidUrlRedirectClientError</span><span class="p">(</span><span class="n">InvalidUrlClientError</span><span class="p">,</span> <span class="n">RedirectClientError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Invalid URL redirect client error.&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">NonHttpUrlRedirectClientError</span><span class="p">(</span><span class="n">NonHttpUrlClientError</span><span class="p">,</span> <span class="n">RedirectClientError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Non http URL redirect client error.&quot;&quot;&quot;</span>
 
 
 <span class="k">class</span> <span class="nc">ClientSSLError</span><span class="p">(</span><span class="n">ClientConnectorError</span><span class="p">):</span>
@@ -936,7 +986,7 @@
   <small>
     
       Last update:
-      Jul 05, 2024
+      Aug 09, 2024
     
   </small>
 </div>
@@ -977,7 +1027,7 @@
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    7.3.7.
+    7.4.7.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
