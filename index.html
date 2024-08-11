@@ -322,6 +322,21 @@
   
   
     <li class="md-nav__item">
+      <a href="database/settings.html" class="md-nav__link">
+        <span class="md-ellipsis">Settings</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="database/models.html" class="md-nav__link">
         <span class="md-ellipsis">SQL Models</span>
       </a>
@@ -693,7 +708,7 @@ interact with objects rather then with raw data.</p>
 <h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">¶</a></h2>
 <p>As stated you will need to have one of two things; in order to fully use this package you need access to:</p>
 <ul class="simple">
-<li><p>A cve-search mongodb instance</p></li>
+<li><p>MongoDB; either an empty or an already populated cve-search mongodb instance</p></li>
 </ul>
 <p>OR</p>
 <ul class="simple">
@@ -722,15 +737,17 @@ them as an extra requirement. To install the mysql module only, specify:</p>
 </code></pre></div>
 </div>
 <h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
-<p>Check <a class="reference external" href="https://cve-search.github.io/CveXplore/">github pages documentation</a></p>
+<p>Check <a class="reference external" href="https://cve-search.github.io/CveXplore/">github pages documentation</a>.</p>
+<p>Most of the following configuration including the configuration directory path can be altered using
+<a class="reference external" href="https://cve-search.github.io/CveXplore/general/settings.html">settings</a> from environment variables.</p>
 <h2 id="general">General<a class="headerlink" href="#general" title="Link to this heading">¶</a></h2>
 <h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h3>
-<p>CveXplore automatically creates a config folder in ‘~/.cvexplore’. CveXplore stores several configuration
-files in here such as the .env for general configuration and the .sources.ini for data sources configuration.</p>
+<p>CveXplore automatically creates a config folder in <code class="docutils literal notranslate"><span class="pre">~/.cvexplore</span></code>. CveXplore stores several configuration
+files in here such as the <code class="docutils literal notranslate"><span class="pre">.env</span></code> for general configuration and the <code class="docutils literal notranslate"><span class="pre">.sources.ini</span></code> for data sources configuration.</p>
 <h3 id="logging">Logging<a class="headerlink" href="#logging" title="Link to this heading">¶</a></h3>
-<p>CveXplore stores all logs in the ‘~/.cvexplore/log’ folder:</p>
+<p>CveXplore stores all logs in the <code class="docutils literal notranslate"><span class="pre">~/.cvexplore/log</span></code> folder:</p>
 <ul class="simple">
-<li><p>update_populate.log; logging produced during database updates and database initialization.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">update_populate.log</span></code>; logging produced during database updates and database initialization.</p></li>
 </ul>
 <h3 id="local-database-populate-update">Local Database populate / update<a class="headerlink" href="#local-database-populate-update" title="Link to this heading">¶</a></h3>
 <p>As of version 0.2.5 CveXplore can populate and update a local mongodb instance from either the command line:</p>
@@ -820,7 +837,7 @@ Commands:
   <small>
     
       Last update:
-      Aug 10, 2024
+      Aug 11, 2024
     
   </small>
 </div>
