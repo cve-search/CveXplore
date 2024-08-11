@@ -15,11 +15,6 @@ Common
 
    Available options: ``mongodb``, ``api``, ``mysql``.
 
-.. confval:: DATASOURCE_CONNECTION_DETAIL
-
-   Unconfigurable via environment variables. By default automatically built from the following settings that are
-   appropriate for the selected ``DATASOURCE_TYPE``, but can be overwritten in the code using CveXplore as a library.
-
 .. confval:: DATASOURCE_PROTOCOL
 
    *This actually defaults to* ``mongodb`` *but that breaks the documentation automation.*
@@ -44,9 +39,19 @@ Common
 
    Database name at the data source.
 
+.. confval:: DATASOURCE_CONNECTION_DETAILS
+
+   *Not configurable via environment variables.*
+   
+   By default automatically built from the settings that are appropriate for the selected ``DATASOURCE_TYPE``,
+   but documented here as this **can be overwritten in the code** using CveXplore as a library,
+   which **would cause many of these settings not to be honored**.
+
 .. confval:: API_CONNECTION_DETAILS
 
-   **Deprecated** and replaced by `DATASOURCE_CONNECTION_DETAILS`. Will be removed in the 0.4 release.
+   *Not configurable via environment variables.*
+
+   **Deprecated** (replaced by ``DATASOURCE_CONNECTION_DETAILS``). Will be removed in the 0.4 release.
 
 MongoDB
 *******
@@ -61,7 +66,9 @@ MongoDB
 
 .. confval:: MONGODB_CONNECTION_DETAILS
 
-   **Deprecated** and replaced by `DATASOURCE_CONNECTION_DETAILS`. Will be removed in the 0.4 release.
+   *Not configurable via environment variables.*
+
+   **Deprecated** (replaced by ``DATASOURCE_CONNECTION_DETAILS``). Will be removed in the 0.4 release.
 
 SQL
 ***
