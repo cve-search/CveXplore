@@ -2,7 +2,7 @@ Settings
 --------
 
 The backend by default looks for an .env file in ``${HOME}/.cvexplore`` folder, if certain values need to be
-overwritten you can do it there.
+overwritten you can do it either there or pass them directly as environment variables.
 
 The following config variables are the configuration settings for the backend:
 

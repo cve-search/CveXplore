@@ -25,9 +25,10 @@ interact with objects rather then with raw data.
 
 Dependencies
 ------------
+
 As stated you will need to have one of two things; in order to fully use this package you need access to:
 
-* A cve-search mongodb instance
+* MongoDB; either an empty or an already populated cve-search mongodb instance
 
 OR
 
@@ -68,7 +69,11 @@ Or simple install all modules:
 
 Documentation
 -------------
-Check `github pages documentation <https://cve-search.github.io/CveXplore/>`_
+
+Check `github pages documentation <https://cve-search.github.io/CveXplore/>`_.
+
+Most of the following configuration including the configuration directory path can be altered using
+`settings <https://cve-search.github.io/CveXplore/general/settings.html>`_ from environment variables.
 
 General
 -------
@@ -76,15 +81,15 @@ General
 Configuration
 *************
 
-CveXplore automatically creates a config folder in '~/.cvexplore'. CveXplore stores several configuration
-files in here such as the .env for general configuration and the .sources.ini for data sources configuration.
+CveXplore automatically creates a config folder in ``~/.cvexplore``. CveXplore stores several configuration
+files in here such as the ``.env`` for general configuration and the ``.sources.ini`` for data sources configuration.
 
 Logging
 *******
 
-CveXplore stores all logs in the '~/.cvexplore/log' folder:
+CveXplore stores all logs in the ``~/.cvexplore/log`` folder:
 
-* update_populate.log; logging produced during database updates and database initialization.
+* ``update_populate.log``; logging produced during database updates and database initialization.
 
 Local Database populate / update
 ********************************
