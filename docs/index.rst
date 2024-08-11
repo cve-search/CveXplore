@@ -15,6 +15,7 @@ Welcome to CveXplore's documentation!
    :caption: Database:
    :hidden:
 
+   /database/settings
    /database/models
 
 .. toctree::
