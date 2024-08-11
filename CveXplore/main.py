@@ -94,7 +94,7 @@ class CveXplore(object):
         Args:
             kwargs['datasource_type']: Which datasource to query.
             kwargs['datasource_connection_details']: Provide the connection details needed to establish a connection \
-            to the datasource. The connection details should be in line with the datasource it's documentation.
+            to the datasource. The connection details should be in line with the datasource's documentation.
 
         """
         self.__version = VERSION
