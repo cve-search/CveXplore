@@ -47,6 +47,7 @@ class Cpe(DatasourceConnection):
                 "id",
                 "cvss",
                 "cvss3",
+                "cvss4",
                 "published",
                 "modified",
                 "summary",

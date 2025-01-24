@@ -38,6 +38,7 @@ class GenericDatabaseFactory(DatasourceConnection):
             "cves": [
                 "cvss",
                 "cvss3",
+                "cvss4",
                 "summary",
                 "vendors",
                 "products",

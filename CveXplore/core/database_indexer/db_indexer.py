@@ -52,6 +52,7 @@ class DatabaseIndexer(UpdateBaseClass):
                 MongoAddIndex(index=[("lastModified", ASCENDING)], name="lastModified"),
                 MongoAddIndex(index=[("cvss", ASCENDING)], name="cvss"),
                 MongoAddIndex(index=[("cvss3", ASCENDING)], name="cvss3"),
+                MongoAddIndex(index=[("cvss4", ASCENDING)], name="cvss4"),
                 MongoAddIndex(index=[("summary", TEXT)], name="summary"),
                 MongoAddIndex(index=[("vendors", ASCENDING)], name="vendors"),
                 MongoAddIndex(index=[("products", ASCENDING)], name="products"),

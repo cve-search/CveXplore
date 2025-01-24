@@ -4,6 +4,7 @@ class CvesDatabaseFunctions:
     id: GenericDatabaseFieldsFunctions
     cvss: GenericDatabaseFieldsFunctions
     cvss3: GenericDatabaseFieldsFunctions
+    cvss4: GenericDatabaseFieldsFunctions
     summary: GenericDatabaseFieldsFunctions
     vendors: GenericDatabaseFieldsFunctions
     products: GenericDatabaseFieldsFunctions
