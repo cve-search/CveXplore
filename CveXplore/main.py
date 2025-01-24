@@ -422,6 +422,9 @@ class CveXplore(object):
             if "cvss3" in dict_filter:
                 if isinstance(dict_filter["cvss3"], str):
                     dict_filter["cvss3"] = float(dict_filter["cvss3"])
+            if "cvss4" in dict_filter:
+                if isinstance(dict_filter["cvss4"], str):
+                    dict_filter["cvss4"] = float(dict_filter["cvss4"])
 
             if "exploitabilityScore" in dict_filter:
                 if isinstance(dict_filter["exploitabilityScore"], str):
