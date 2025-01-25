@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,13 +595,13 @@
   </a>
 
 <h1>Source code for CveXplore.core.database_indexer.db_indexer</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
 
-<span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">TEXT</span><span class="p">,</span> <span class="n">ASCENDING</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo</span><span class="w"> </span><span class="kn">import</span> <span class="n">TEXT</span><span class="p">,</span> <span class="n">ASCENDING</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_maintenance.update_base_class</span> <span class="kn">import</span> <span class="n">UpdateBaseClass</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.general.utils</span> <span class="kn">import</span> <span class="n">sanitize</span>
-<span class="kn">from</span> <span class="nn">CveXplore.database.connection.base.db_connection_base</span> <span class="kn">import</span> <span class="n">DatabaseConnectionBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_maintenance.update_base_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">UpdateBaseClass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.general.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">sanitize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.database.connection.base.db_connection_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseConnectionBase</span>
 
 <span class="n">MongoUniqueIndex</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;MongoUniqueIndex&quot;</span><span class="p">,</span> <span class="s2">&quot;index name unique&quot;</span><span class="p">)</span>
 <span class="n">MongoAddIndex</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;MongoAddIndex&quot;</span><span class="p">,</span> <span class="s2">&quot;index name&quot;</span><span class="p">)</span>
@@ -609,14 +609,14 @@
 
 <div class="viewcode-block" id="DatabaseIndexer">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseIndexer.html#CveXplore.core.database_indexer.db_indexer.DatabaseIndexer">[docs]</a>
-<span class="k">class</span> <span class="nc">DatabaseIndexer</span><span class="p">(</span><span class="n">UpdateBaseClass</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DatabaseIndexer</span><span class="p">(</span><span class="n">UpdateBaseClass</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class processing the Mongodb indexes</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="DatabaseIndexer.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseIndexer.__init__.html#CveXplore.core.database_indexer.db_indexer.DatabaseIndexer.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datasource</span><span class="p">:</span> <span class="n">DatabaseConnectionBase</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datasource</span><span class="p">:</span> <span class="n">DatabaseConnectionBase</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">logger_name</span><span class="o">=</span><span class="vm">__name__</span><span class="p">)</span>
 
         <span class="n">database</span> <span class="o">=</span> <span class="n">datasource</span>
@@ -653,6 +653,7 @@
                 <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;lastModified&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;lastModified&quot;</span><span class="p">),</span>
                 <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;cvss&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cvss&quot;</span><span class="p">),</span>
                 <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;cvss3&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cvss3&quot;</span><span class="p">),</span>
+                <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;cvss4&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cvss4&quot;</span><span class="p">),</span>
                 <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;summary&quot;</span><span class="p">),</span>
                 <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;vendors&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vendors&quot;</span><span class="p">),</span>
                 <span class="n">MongoAddIndex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;products&quot;</span><span class="p">),</span>
@@ -693,13 +694,13 @@
 
 <div class="viewcode-block" id="DatabaseIndexer.getInfo">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseIndexer.getInfo.html#CveXplore.core.database_indexer.db_indexer.DatabaseIndexer.getInfo">[docs]</a>
-    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">sanitize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="n">collection</span><span class="p">}))</span></div>
 
 
 <div class="viewcode-block" id="DatabaseIndexer.create_indexes">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseIndexer.create_indexes.html#CveXplore.core.database_indexer.db_indexer.DatabaseIndexer.create_indexes">[docs]</a>
-    <span class="k">def</span> <span class="nf">create_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">collection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexes</span><span class="p">[</span><span class="n">collection</span><span class="p">]:</span>
@@ -732,14 +733,14 @@
 
 <div class="viewcode-block" id="DatabaseIndexer.iter_indexes">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseIndexer.iter_indexes.html#CveXplore.core.database_indexer.db_indexer.DatabaseIndexer.iter_indexes">[docs]</a>
-    <span class="k">def</span> <span class="nf">iter_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">iter_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_via4_indexes</span><span class="p">():</span>
             <span class="k">yield</span> <span class="n">each</span></div>
 
 
 <div class="viewcode-block" id="DatabaseIndexer.get_via4_indexes">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseIndexer.get_via4_indexes.html#CveXplore.core.database_indexer.db_indexer.DatabaseIndexer.get_via4_indexes">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_via4_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_via4_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">via4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInfo</span><span class="p">(</span><span class="s2">&quot;via4&quot;</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">via4</span><span class="p">:</span>
@@ -750,7 +751,7 @@
 
 <div class="viewcode-block" id="DatabaseIndexer.setIndex">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseIndexer.setIndex.html#CveXplore.core.database_indexer.db_indexer.DatabaseIndexer.setIndex">[docs]</a>
-    <span class="k">def</span> <span class="nf">setIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Success to create index </span><span class="si">%s</span><span class="s2"> on </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
@@ -765,7 +766,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

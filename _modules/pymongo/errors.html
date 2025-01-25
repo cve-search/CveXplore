@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -609,43 +609,47 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Exceptions raised by PyMongo.&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="sd">&quot;&quot;&quot;Exceptions raised by PyMongo.</span>
 
-<span class="kn">from</span> <span class="nn">ssl</span> <span class="kn">import</span> <span class="n">SSLCertVerificationError</span> <span class="k">as</span> <span class="n">_CertificateError</span>  <span class="c1"># noqa: F401</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
+<span class="sd">.. seealso:: This module is compatible with both the synchronous and asynchronous PyMongo APIs.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">bson.errors</span> <span class="kn">import</span> <span class="n">InvalidDocument</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ssl</span><span class="w"> </span><span class="kn">import</span> <span class="n">SSLCertVerificationError</span> <span class="k">as</span> <span class="n">_CertificateError</span>  <span class="c1"># noqa: F401</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">bson.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">InvalidDocument</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pymongo.typings</span> <span class="kn">import</span> <span class="n">_DocumentOut</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.results</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientBulkWriteResult</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.typings</span><span class="w"> </span><span class="kn">import</span> <span class="n">_DocumentOut</span>
 
 
-<span class="k">class</span> <span class="nc">PyMongoError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyMongoError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all PyMongo exceptions.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">error_labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">error_labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="n">message</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_error_labels</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">error_labels</span> <span class="ow">or</span> <span class="p">[])</span>
 
-    <span class="k">def</span> <span class="nf">has_error_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_error_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True if this error contains the given label.</span>
 
 <span class="sd">        .. versionadded:: 3.7</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_labels</span>
 
-    <span class="k">def</span> <span class="nf">_add_error_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_error_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the given label to this error.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_error_labels</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_remove_error_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_remove_error_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the given label from this error.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_error_labels</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;True if this error was caused by a timeout.</span>
 
 <span class="sd">        .. versionadded:: 4.2</span>
@@ -653,15 +657,15 @@
         <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="k">class</span> <span class="nc">ProtocolError</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProtocolError</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised for failures related to the wire protocol.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">ConnectionFailure</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConnectionFailure</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a connection to the database cannot be made or is lost.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">WaitQueueTimeoutError</span><span class="p">(</span><span class="n">ConnectionFailure</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WaitQueueTimeoutError</span><span class="p">(</span><span class="n">ConnectionFailure</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when an operation times out waiting to checkout a connection from the pool.</span>
 
 <span class="sd">    Subclass of :exc:`~pymongo.errors.ConnectionFailure`.</span>
@@ -670,11 +674,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
 
 
-<span class="k">class</span> <span class="nc">AutoReconnect</span><span class="p">(</span><span class="n">ConnectionFailure</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AutoReconnect</span><span class="p">(</span><span class="n">ConnectionFailure</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a connection to the database is lost and an attempt to</span>
 <span class="sd">    auto-reconnect will be made.</span>
 
@@ -690,7 +694,7 @@
     <span class="n">errors</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span>
     <span class="n">details</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">error_labels</span> <span class="o">=</span> <span class="kc">None</span>
@@ -701,7 +705,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="n">errors</span> <span class="ow">or</span> <span class="p">[]</span>
 
 
-<span class="k">class</span> <span class="nc">NetworkTimeout</span><span class="p">(</span><span class="n">AutoReconnect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NetworkTimeout</span><span class="p">(</span><span class="n">AutoReconnect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An operation on an open connection exceeded socketTimeoutMS.</span>
 
 <span class="sd">    The remaining connections in the pool stay open. In the case of a write</span>
@@ -711,11 +715,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
 
 
-<span class="k">def</span> <span class="nf">_format_detailed_error</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_format_detailed_error</span><span class="p">(</span>
     <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -723,7 +727,7 @@
     <span class="k">return</span> <span class="n">message</span>
 
 
-<span class="k">class</span> <span class="nc">NotPrimaryError</span><span class="p">(</span><span class="n">AutoReconnect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NotPrimaryError</span><span class="p">(</span><span class="n">AutoReconnect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The server responded &quot;not primary&quot; or &quot;node is recovering&quot;.</span>
 
 <span class="sd">    These errors result from a query, write, or command. The operation failed</span>
@@ -739,7 +743,7 @@
 <span class="sd">    .. versionadded:: 3.12</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">_format_detailed_error</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">errors</span><span class="p">),</span> <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">)</span>
@@ -747,7 +751,7 @@
 
 <div class="viewcode-block" id="ServerSelectionTimeoutError">
 <a class="viewcode-back" href="../../CveXplore/database/ServerSelectionTimeoutError.html#CveXplore.core.database_maintenance.download_handler.ServerSelectionTimeoutError">[docs]</a>
-<span class="k">class</span> <span class="nc">ServerSelectionTimeoutError</span><span class="p">(</span><span class="n">AutoReconnect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ServerSelectionTimeoutError</span><span class="p">(</span><span class="n">AutoReconnect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Thrown when no MongoDB server is available for an operation</span>
 
 <span class="sd">    If there is no suitable server for an operation PyMongo tries for</span>
@@ -760,23 +764,23 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
 
-<span class="k">class</span> <span class="nc">ConfigurationError</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigurationError</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when something is incorrectly configured.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">OperationFailure</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OperationFailure</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a database operation fails.</span>
 
 <span class="sd">    .. versionadded:: 2.7</span>
 <span class="sd">       The :attr:`details` attribute.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">code</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -792,16 +796,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__max_wire_version</span> <span class="o">=</span> <span class="n">max_wire_version</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_max_wire_version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_max_wire_version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__max_wire_version</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The error code returned by the server, if any.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__code</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">details</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">details</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The complete error document returned by the server.</span>
 
 <span class="sd">        Depending on the error that occurred, the error document</span>
@@ -813,11 +817,11 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__details</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__code</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">50</span><span class="p">,)</span>
 
 
-<span class="k">class</span> <span class="nc">CursorNotFound</span><span class="p">(</span><span class="n">OperationFailure</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CursorNotFound</span><span class="p">(</span><span class="n">OperationFailure</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised while iterating query results if the cursor is</span>
 <span class="sd">    invalidated on the server.</span>
 
@@ -825,7 +829,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">ExecutionTimeout</span><span class="p">(</span><span class="n">OperationFailure</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExecutionTimeout</span><span class="p">(</span><span class="n">OperationFailure</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a database operation times out, exceeding the $maxTimeMS</span>
 <span class="sd">    set in the query or command option.</span>
 
@@ -835,25 +839,25 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
 
 
-<span class="k">class</span> <span class="nc">WriteConcernError</span><span class="p">(</span><span class="n">OperationFailure</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WriteConcernError</span><span class="p">(</span><span class="n">OperationFailure</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base exception type for errors raised due to write concern.</span>
 
 <span class="sd">    .. versionadded:: 3.0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">WriteError</span><span class="p">(</span><span class="n">OperationFailure</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WriteError</span><span class="p">(</span><span class="n">OperationFailure</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base exception type for errors raised during write operations.</span>
 
 <span class="sd">    .. versionadded:: 3.0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">WTimeoutError</span><span class="p">(</span><span class="n">WriteConcernError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WTimeoutError</span><span class="p">(</span><span class="n">WriteConcernError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a database operation times out (i.e. wtimeout expires)</span>
 <span class="sd">    before replication completes.</span>
 
@@ -864,22 +868,22 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
 
 
-<span class="k">class</span> <span class="nc">DuplicateKeyError</span><span class="p">(</span><span class="n">WriteError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DuplicateKeyError</span><span class="p">(</span><span class="n">WriteError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when an insert or update fails due to a duplicate key error.&quot;&quot;&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">_wtimeout_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_wtimeout_error</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if this writeConcernError doc is a caused by a timeout.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">error</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;code&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">50</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;errInfo&quot;</span> <span class="ow">in</span> <span class="n">error</span> <span class="ow">and</span> <span class="n">error</span><span class="p">[</span><span class="s2">&quot;errInfo&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;wtimeout&quot;</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="BulkWriteError">
 <a class="viewcode-back" href="../../CveXplore/core/BulkWriteError.html#CveXplore.core.database_maintenance.download_handler.BulkWriteError">[docs]</a>
-<span class="k">class</span> <span class="nc">BulkWriteError</span><span class="p">(</span><span class="n">OperationFailure</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BulkWriteError</span><span class="p">(</span><span class="n">OperationFailure</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception class for bulk write errors.</span>
 
 <span class="sd">    .. versionadded:: 2.7</span>
@@ -887,14 +891,14 @@
 
     <span class="n">details</span><span class="p">:</span> <span class="n">_DocumentOut</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">_DocumentOut</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">_DocumentOut</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;batch op errors occurred&quot;</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">details</span><span class="p">,)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="c1"># Check the last writeConcernError and last writeError to determine if this</span>
         <span class="c1"># BulkWriteError was caused by a timeout.</span>
         <span class="n">wces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;writeConcernErrors&quot;</span><span class="p">,</span> <span class="p">[])</span>
@@ -908,30 +912,86 @@
 
 
 
+<span class="k">class</span><span class="w"> </span><span class="nc">ClientBulkWriteException</span><span class="p">(</span><span class="n">OperationFailure</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception class for client-level bulk write errors.&quot;&quot;&quot;</span>
+
+    <span class="n">details</span><span class="p">:</span> <span class="n">_DocumentOut</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">_DocumentOut</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;batch op errors occurred&quot;</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">details</span><span class="p">,)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A top-level error that occurred when attempting to</span>
+<span class="sd">        communicate with the server or execute the bulk write.</span>
+
+<span class="sd">        This value may not be populated if the exception was</span>
+<span class="sd">        thrown due to errors occurring on individual writes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_concern_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">WriteConcernError</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write concern errors that occurred during the bulk write.</span>
+
+<span class="sd">        This list may have multiple items if more than one</span>
+<span class="sd">        server command was required to execute the bulk write.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;writeConcernErrors&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">WriteError</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Errors that occurred during the execution of individual write operations.</span>
+
+<span class="sd">        This list will contain at most one entry if the bulk write was ordered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;writeErrors&quot;</span><span class="p">,</span> <span class="p">{})</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">partial_result</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientBulkWriteResult</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The results of any successful operations that were</span>
+<span class="sd">        performed before the error was encountered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.results</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientBulkWriteResult</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;anySuccessful&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">ClientBulkWriteResult</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">details</span><span class="p">,</span>  <span class="c1"># type: ignore[arg-type]</span>
+                <span class="n">acknowledged</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">has_verbose_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+
 <div class="viewcode-block" id="InvalidOperation">
 <a class="viewcode-back" href="../../CveXplore/core/InvalidOperation.html#CveXplore.core.database_maintenance.download_handler.InvalidOperation">[docs]</a>
-<span class="k">class</span> <span class="nc">InvalidOperation</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InvalidOperation</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a client attempts to perform an invalid operation.&quot;&quot;&quot;</span></div>
 
 
 
-<span class="k">class</span> <span class="nc">InvalidName</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InvalidName</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when an invalid name is used.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">CollectionInvalid</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CollectionInvalid</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when collection validation fails.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">InvalidURI</span><span class="p">(</span><span class="n">ConfigurationError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InvalidURI</span><span class="p">(</span><span class="n">ConfigurationError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when trying to parse an invalid mongodb URI.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">DocumentTooLarge</span><span class="p">(</span><span class="n">InvalidDocument</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DocumentTooLarge</span><span class="p">(</span><span class="n">InvalidDocument</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when an encoded document is too large for the connected server.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">EncryptionError</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EncryptionError</span><span class="p">(</span><span class="n">PyMongoError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when encryption or decryption fails.</span>
 
 <span class="sd">    This error always wraps another exception which can be retrieved via the</span>
@@ -940,34 +1000,34 @@
 <span class="sd">    .. versionadded:: 3.9</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cause</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cause</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cause</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__cause</span> <span class="o">=</span> <span class="n">cause</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">cause</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="ne">Exception</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cause</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="ne">Exception</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The exception that caused this encryption or decryption error.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cause</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cause</span><span class="p">,</span> <span class="n">PyMongoError</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cause</span><span class="o">.</span><span class="n">timeout</span>
         <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="k">class</span> <span class="nc">EncryptedCollectionError</span><span class="p">(</span><span class="n">EncryptionError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EncryptedCollectionError</span><span class="p">(</span><span class="n">EncryptionError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when creating a collection with encrypted_fields fails.</span>
 
 <span class="sd">    .. versionadded:: 4.4</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cause</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">encrypted_fields</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cause</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">encrypted_fields</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cause</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__encrypted_fields</span> <span class="o">=</span> <span class="n">encrypted_fields</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">encrypted_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">encrypted_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The encrypted_fields document that allows inferring which data keys are *known* to be created.</span>
 
 <span class="sd">        Note that the returned document is not guaranteed to contain information about *all* of the data keys that</span>
@@ -978,7 +1038,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__encrypted_fields</span>
 
 
-<span class="k">class</span> <span class="nc">_OperationCancelled</span><span class="p">(</span><span class="n">AutoReconnect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_OperationCancelled</span><span class="p">(</span><span class="n">AutoReconnect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Internal error raised when a socket operation is cancelled.&quot;&quot;&quot;</span>
 </code></pre></div>
 
@@ -987,7 +1047,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

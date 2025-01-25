@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,15 +595,15 @@
   </a>
 
 <h1>Source code for CveXplore.core.logging.logger_class</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">logging.handlers</span> <span class="kn">import</span> <span class="n">RotatingFileHandler</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">logging.handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">RotatingFileHandler</span>
 
-<span class="kn">import</span> <span class="nn">colors</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">colors</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.common.config</span> <span class="kn">import</span> <span class="n">Configuration</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.logging.formatters.task_formatter</span> <span class="kn">import</span> <span class="n">TaskFormatter</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.logging.handlers.gelf_handler</span> <span class="kn">import</span> <span class="n">GelfUDPHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.common.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Configuration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.logging.formatters.task_formatter</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaskFormatter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.logging.handlers.gelf_handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">GelfUDPHandler</span>
 
 <span class="n">CRITICAL</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">FATAL</span> <span class="o">=</span> <span class="n">CRITICAL</span>
@@ -625,10 +625,10 @@
 
 <div class="viewcode-block" id="AppLogger">
 <a class="viewcode-back" href="../../../../CveXplore/core/AppLogger.html#CveXplore.core.logging.logger_class.AppLogger">[docs]</a>
-<span class="k">class</span> <span class="nc">AppLogger</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AppLogger</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">):</span>
 <div class="viewcode-block" id="AppLogger.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/AppLogger.__init__.html#CveXplore.core.logging.logger_class.AppLogger.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">NOTSET</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">NOTSET</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span> <span class="o">=</span> <span class="n">TaskFormatter</span><span class="p">(</span>
             <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(task_name)s</span><span class="s2"> - </span><span class="si">%(name)-8s</span><span class="s2"> - </span><span class="si">%(levelname)-8s</span><span class="s2"> - [</span><span class="si">%(task_id)s</span><span class="s2">] </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
         <span class="p">)</span>
@@ -678,7 +678,7 @@
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Import syslog_handler only if configured (for Windows compatibility)</span>
-                <span class="kn">from</span> <span class="nn">CveXplore.core.logging.handlers.syslog_handler</span> <span class="kn">import</span> <span class="p">(</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.logging.handlers.syslog_handler</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
                     <span class="n">FullSysLogHandler</span><span class="p">,</span>
                 <span class="p">)</span>
 
@@ -695,7 +695,7 @@
 
 <div class="viewcode-block" id="AppLogger.debug">
 <a class="viewcode-back" href="../../../../CveXplore/core/AppLogger.debug.html#CveXplore.core.logging.logger_class.AppLogger.debug">[docs]</a>
-    <span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Log ‘msg % args’ with severity ‘DEBUG’ and color *MAGENTA.</span>
 
@@ -715,7 +715,7 @@
 
 <div class="viewcode-block" id="AppLogger.info">
 <a class="viewcode-back" href="../../../../CveXplore/core/AppLogger.info.html#CveXplore.core.logging.logger_class.AppLogger.info">[docs]</a>
-    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Log ‘msg % args’ with severity ‘INFO’ and color *WHITE*.</span>
 
@@ -735,7 +735,7 @@
 
 <div class="viewcode-block" id="AppLogger.warning">
 <a class="viewcode-back" href="../../../../CveXplore/core/AppLogger.warning.html#CveXplore.core.logging.logger_class.AppLogger.warning">[docs]</a>
-    <span class="k">def</span> <span class="nf">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Log ‘msg % args’ with severity ‘WARNING’ and color *YELLOW*.</span>
 
@@ -755,7 +755,7 @@
 
 <div class="viewcode-block" id="AppLogger.error">
 <a class="viewcode-back" href="../../../../CveXplore/core/AppLogger.error.html#CveXplore.core.logging.logger_class.AppLogger.error">[docs]</a>
-    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Log ‘msg % args’ with severity ‘ERROR’ and color *RED*.</span>
 
@@ -777,7 +777,7 @@
 
 <div class="viewcode-block" id="AppLogger.critical">
 <a class="viewcode-back" href="../../../../CveXplore/core/AppLogger.critical.html#CveXplore.core.logging.logger_class.AppLogger.critical">[docs]</a>
-    <span class="k">def</span> <span class="nf">critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Log ‘msg % args’ with severity ‘CRITICAL’ and color *RED*.</span>
 
@@ -804,7 +804,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

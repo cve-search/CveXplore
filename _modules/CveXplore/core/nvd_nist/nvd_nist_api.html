@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,32 +595,32 @@
   </a>
 
 <h1>Source code for CveXplore.core.nvd_nist.nvd_nist_api</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">uuid</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span>
-<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlencode</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">json</span><span class="w"> </span><span class="kn">import</span> <span class="n">JSONDecodeError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span>
 
-<span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="kn">import</span> <span class="n">RequestException</span><span class="p">,</span> <span class="n">HTTPError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">requests.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">RequestException</span><span class="p">,</span> <span class="n">HTTPError</span>
 
-<span class="kn">import</span> <span class="nn">aiohttp</span> <span class="k">as</span> <span class="nn">aiohttp</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">ContentTypeError</span>
-<span class="kn">from</span> <span class="nn">aioretry</span> <span class="kn">import</span> <span class="n">retry</span><span class="p">,</span> <span class="n">RetryPolicyStrategy</span><span class="p">,</span> <span class="n">RetryInfo</span>
-<span class="kn">from</span> <span class="nn">requests</span> <span class="kn">import</span> <span class="n">Response</span>
-<span class="kn">from</span> <span class="nn">requests.adapters</span> <span class="kn">import</span> <span class="n">HTTPAdapter</span><span class="p">,</span> <span class="n">Retry</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">aiohttp</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">aiohttp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiohttp</span><span class="w"> </span><span class="kn">import</span> <span class="n">ContentTypeError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aioretry</span><span class="w"> </span><span class="kn">import</span> <span class="n">retry</span><span class="p">,</span> <span class="n">RetryPolicyStrategy</span><span class="p">,</span> <span class="n">RetryInfo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">requests</span><span class="w"> </span><span class="kn">import</span> <span class="n">Response</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">requests.adapters</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPAdapter</span><span class="p">,</span> <span class="n">Retry</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.common.config</span> <span class="kn">import</span> <span class="n">Configuration</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.api_base_class</span> <span class="kn">import</span> <span class="n">ApiBaseClass</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_maintenance.update_base_class</span> <span class="kn">import</span> <span class="n">UpdateBaseClass</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.logging.logger_class</span> <span class="kn">import</span> <span class="n">AppLogger</span>
-<span class="kn">from</span> <span class="nn">CveXplore.errors.apis</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.common.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Configuration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.api_base_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">ApiBaseClass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_maintenance.update_base_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">UpdateBaseClass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.logging.logger_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.errors.apis</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ApiErrorException</span><span class="p">,</span>
     <span class="n">ApiDataError</span><span class="p">,</span>
     <span class="n">ApiDataRetrievalFailed</span><span class="p">,</span>
@@ -632,10 +632,10 @@
 
 <div class="viewcode-block" id="NvdNistApi">
 <a class="viewcode-back" href="../../../../CveXplore/core/NvdNistApi.html#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi">[docs]</a>
-<span class="k">class</span> <span class="nc">NvdNistApi</span><span class="p">(</span><span class="n">ApiBaseClass</span><span class="p">,</span> <span class="n">UpdateBaseClass</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NvdNistApi</span><span class="p">(</span><span class="n">ApiBaseClass</span><span class="p">,</span> <span class="n">UpdateBaseClass</span><span class="p">):</span>
 <div class="viewcode-block" id="NvdNistApi.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/NvdNistApi.__init__.html#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">baseurl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://services.nvd.nist.gov&quot;</span><span class="p">,</span>
         <span class="n">api_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;2.0&quot;</span><span class="p">,</span>
@@ -679,11 +679,11 @@
 
 <div class="viewcode-block" id="NvdNistApi.get_url_only">
 <a class="viewcode-back" href="../../../../CveXplore/core/NvdNistApi.get_url_only.html#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.get_url_only">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_url_only</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_url_only</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_url</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_build_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">resource</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">resource</span> <span class="o">=</span> <span class="n">urlencode</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">data</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">CVE</span><span class="p">:</span>
@@ -705,7 +705,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Built URL: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">url</span>
 
-    <span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_connect</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">resource</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
@@ -780,14 +780,14 @@
 
 <div class="viewcode-block" id="NvdNistApi.__repr__">
 <a class="viewcode-back" href="../../../../CveXplore/core/NvdNistApi.__repr__.html#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return a string representation of the obj&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; NvdNistApi:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">baseurl</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
 
 
 <div class="viewcode-block" id="NvdNistApi.get_cves_from_start_year">
 <a class="viewcode-back" href="../../../../CveXplore/core/NvdNistApi.get_cves_from_start_year.html#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.get_cves_from_start_year">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_cves_from_start_year</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_cves_from_start_year</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">CVE_START_YEAR</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">start_date_iso</span> <span class="o">=</span> <span class="n">start_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 
@@ -804,7 +804,7 @@
 
 <div class="viewcode-block" id="NvdNistApi.check_date_range">
 <a class="viewcode-back" href="../../../../CveXplore/core/NvdNistApi.check_date_range.html#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.check_date_range">[docs]</a>
-    <span class="k">def</span> <span class="nf">check_date_range</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_date_range</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">resource</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">last_mod_start_date</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -829,7 +829,7 @@
 
 <div class="viewcode-block" id="NvdNistApi.get_session">
 <a class="viewcode-back" href="../../../../CveXplore/core/NvdNistApi.get_session.html#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.get_session">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_session</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_session</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
         <span class="n">backoff_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
@@ -871,7 +871,7 @@
 
 <div class="viewcode-block" id="NvdNistApi.get_count">
 <a class="viewcode-back" href="../../../../CveXplore/core/NvdNistApi.get_count.html#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.get_count">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_count</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_count</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">datasource</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">last_mod_start_date</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -899,21 +899,21 @@
                 <span class="k">raise</span> <span class="n">ApiDataRetrievalFailed</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">HTTPError</span> <span class="k">as</span> <span class="n">http_err</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;HTTP error occurred: </span><span class="si">{</span><span class="n">http_err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">ApiMaxRetryError</span> <span class="kn">from</span> <span class="nn">http_err</span>
+            <span class="k">raise</span> <span class="n">ApiMaxRetryError</span> <span class="kn">from</span><span class="w"> </span><span class="nn">http_err</span>
         <span class="k">except</span> <span class="n">RequestException</span> <span class="k">as</span> <span class="n">req_err</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Request exception occurred: </span><span class="si">{</span><span class="n">req_err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">ApiMaxRetryError</span> <span class="kn">from</span> <span class="nn">req_err</span>
+            <span class="k">raise</span> <span class="n">ApiMaxRetryError</span> <span class="kn">from</span><span class="w"> </span><span class="nn">req_err</span>
         <span class="k">except</span> <span class="n">ApiDataRetrievalFailed</span> <span class="k">as</span> <span class="n">data_err</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data retrieval error: </span><span class="si">{</span><span class="n">data_err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">raise</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An unexpected error occurred: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">ApiMaxRetryError</span> <span class="kn">from</span> <span class="nn">err</span></div>
+            <span class="k">raise</span> <span class="n">ApiMaxRetryError</span> <span class="kn">from</span><span class="w"> </span><span class="nn">err</span></div>
 
 
 <div class="viewcode-block" id="NvdNistApi.get_all_data">
 <a class="viewcode-back" href="../../../../CveXplore/core/NvdNistApi.get_all_data.html#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.get_all_data">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_all_data</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_all_data</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">data_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">last_mod_start_date</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -959,10 +959,10 @@
 
 <div class="viewcode-block" id="ApiData">
 <a class="viewcode-back" href="../../../../CveXplore/core/ApiData.html#CveXplore.core.nvd_nist.nvd_nist_api.ApiData">[docs]</a>
-<span class="k">class</span> <span class="nc">ApiData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ApiData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <div class="viewcode-block" id="ApiData.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/ApiData.__init__.html#CveXplore.core.nvd_nist.nvd_nist_api.ApiData.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">results_per_page</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -979,14 +979,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">resource</span> <span class="o">=</span> <span class="n">resource</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">ApiDataIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="retry_policy">
 <a class="viewcode-back" href="../../../../CveXplore/core/retry_policy.html#CveXplore.core.nvd_nist.nvd_nist_api.retry_policy">[docs]</a>
-<span class="k">def</span> <span class="nf">retry_policy</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">RetryInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RetryPolicyStrategy</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">retry_policy</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">RetryInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RetryPolicyStrategy</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    - It will always retry until succeeded</span>
 <span class="sd">    - If fails for the first time, it will retry immediately,</span>
@@ -1014,10 +1014,10 @@
 
 <div class="viewcode-block" id="ApiDataIterator">
 <a class="viewcode-back" href="../../../../CveXplore/core/ApiDataIterator.html#CveXplore.core.nvd_nist.nvd_nist_api.ApiDataIterator">[docs]</a>
-<span class="k">class</span> <span class="nc">ApiDataIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ApiDataIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <div class="viewcode-block" id="ApiDataIterator.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/ApiDataIterator.__init__.html#CveXplore.core.nvd_nist.nvd_nist_api.ApiDataIterator.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_data</span><span class="p">:</span> <span class="n">ApiData</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_data</span><span class="p">:</span> <span class="n">ApiData</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">Configuration</span>
 
@@ -1043,10 +1043,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">workload</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_current_index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_results</span>
             <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_length</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_results</span>
@@ -1114,7 +1114,7 @@
 
 <div class="viewcode-block" id="ApiDataIterator.process_async">
 <a class="viewcode-back" href="../../../../CveXplore/core/ApiDataIterator.process_async.html#CveXplore.core.nvd_nist.nvd_nist_api.ApiDataIterator.process_async">[docs]</a>
-    <span class="k">def</span> <span class="nf">process_async</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_async</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
         <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">loop</span><span class="p">))</span>
@@ -1123,7 +1123,7 @@
 
 
     <span class="nd">@retry</span><span class="p">(</span><span class="n">retry_policy</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">request_id</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
@@ -1180,7 +1180,7 @@
 
 <div class="viewcode-block" id="ApiDataIterator.fetch_all">
 <a class="viewcode-back" href="../../../../CveXplore/core/ApiDataIterator.fetch_all.html#CveXplore.core.nvd_nist.nvd_nist_api.ApiDataIterator.fetch_all">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">fetch_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loop</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fetch_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loop</span><span class="p">):</span>
         <span class="n">sem</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="mi">30</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sem_factor</span><span class="p">))</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">sem</span><span class="p">:</span>
             <span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span>
@@ -1210,7 +1210,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

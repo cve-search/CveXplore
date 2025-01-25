@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,12 +595,12 @@
   </a>
 
 <h1>Source code for CveXplore.core.logging.handlers.syslog_handler</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">socket</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span> <span class="nn">logging.handlers</span> <span class="kn">import</span> <span class="n">SysLogHandler</span><span class="p">,</span> <span class="n">SYSLOG_UDP_PORT</span>
-<span class="kn">from</span> <span class="nn">syslog</span> <span class="kn">import</span> <span class="n">LOG_USER</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">logging.handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SysLogHandler</span><span class="p">,</span> <span class="n">SYSLOG_UDP_PORT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">syslog</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG_USER</span>
 
 <span class="n">NILVALUE</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span>
 
@@ -613,10 +613,10 @@
 
 <div class="viewcode-block" id="FullSysLogHandler">
 <a class="viewcode-back" href="../../../../../CveXplore/core/FullSysLogHandler.html#CveXplore.core.logging.handlers.syslog_handler.FullSysLogHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">FullSysLogHandler</span><span class="p">(</span><span class="n">SysLogHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FullSysLogHandler</span><span class="p">(</span><span class="n">SysLogHandler</span><span class="p">):</span>
 <div class="viewcode-block" id="FullSysLogHandler.__init__">
 <a class="viewcode-back" href="../../../../../CveXplore/core/FullSysLogHandler.__init__.html#CveXplore.core.logging.handlers.syslog_handler.FullSysLogHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">appname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">address</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">SYSLOG_UDP_PORT</span><span class="p">),</span>
@@ -651,38 +651,38 @@
 
 <div class="viewcode-block" id="FullSysLogHandler.get_hostname">
 <a class="viewcode-back" href="../../../../../CveXplore/core/FullSysLogHandler.get_hostname.html#CveXplore.core.logging.handlers.syslog_handler.FullSysLogHandler.get_hostname">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_hostname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_hostname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;hostname&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FullSysLogHandler.get_appname">
 <a class="viewcode-back" href="../../../../../CveXplore/core/FullSysLogHandler.get_appname.html#CveXplore.core.logging.handlers.syslog_handler.FullSysLogHandler.get_appname">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_appname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_appname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;appname&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">appname</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FullSysLogHandler.get_procid">
 <a class="viewcode-back" href="../../../../../CveXplore/core/FullSysLogHandler.get_procid.html#CveXplore.core.logging.handlers.syslog_handler.FullSysLogHandler.get_procid">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_procid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_procid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="c1"># returns the record.name field instead of procid; which is the python logger id; e.g. web.app.run</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">procid</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FullSysLogHandler.get_msgid">
 <a class="viewcode-back" href="../../../../../CveXplore/core/FullSysLogHandler.get_msgid.html#CveXplore.core.logging.handlers.syslog_handler.FullSysLogHandler.get_msgid">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_msgid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_msgid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;msgid&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">msgid</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FullSysLogHandler.get_enterprise_id">
 <a class="viewcode-back" href="../../../../../CveXplore/core/FullSysLogHandler.get_enterprise_id.html#CveXplore.core.logging.handlers.syslog_handler.FullSysLogHandler.get_enterprise_id">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_enterprise_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_enterprise_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;enterprise_id&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">enterprise_id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FullSysLogHandler.get_structured_data">
 <a class="viewcode-back" href="../../../../../CveXplore/core/FullSysLogHandler.get_structured_data.html#CveXplore.core.logging.handlers.syslog_handler.FullSysLogHandler.get_structured_data">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_structured_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_structured_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="n">structured_data</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="n">structured_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">structured_data</span><span class="p">)</span>
         <span class="n">structured_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;structured_data&quot;</span><span class="p">,</span> <span class="p">{}))</span>
@@ -691,7 +691,7 @@
 
 <div class="viewcode-block" id="FullSysLogHandler.emit">
 <a class="viewcode-back" href="../../../../../CveXplore/core/FullSysLogHandler.emit.html#CveXplore.core.logging.handlers.syslog_handler.FullSysLogHandler.emit">[docs]</a>
-    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Emit a record.</span>
 
@@ -813,7 +813,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

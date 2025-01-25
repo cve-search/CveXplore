@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -597,11 +597,11 @@
 <h1>Source code for json.decoder</h1><div class="highlight"><pre>
 <span></span><code><span class="sd">&quot;&quot;&quot;Implementation of JSONDecoder</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
-<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">scanner</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">json</span><span class="w"> </span><span class="kn">import</span> <span class="n">scanner</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">_json</span> <span class="kn">import</span> <span class="n">scanstring</span> <span class="k">as</span> <span class="n">c_scanstring</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">_json</span><span class="w"> </span><span class="kn">import</span> <span class="n">scanstring</span> <span class="k">as</span> <span class="n">c_scanstring</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">c_scanstring</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -616,7 +616,7 @@
 
 <div class="viewcode-block" id="JSONDecodeError">
 <a class="viewcode-back" href="../../CveXplore/common/JSONDecodeError.html#CveXplore.common.config.JSONDecodeError">[docs]</a>
-<span class="k">class</span> <span class="nc">JSONDecodeError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">JSONDecodeError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of ValueError with the following additional properties:</span>
 
 <span class="sd">    msg: The unformatted error message</span>
@@ -627,7 +627,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Note that this exception is used from _json</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">doc</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">doc</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
         <span class="n">lineno</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="n">colno</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">doc</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
         <span class="n">errmsg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: line </span><span class="si">%d</span><span class="s1"> column </span><span class="si">%d</span><span class="s1"> (char </span><span class="si">%d</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">colno</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
@@ -638,7 +638,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lineno</span> <span class="o">=</span> <span class="n">lineno</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">colno</span> <span class="o">=</span> <span class="n">colno</span>
 
-    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span></div>
 
 
@@ -656,7 +656,7 @@
     <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\b</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="k">def</span> <span class="nf">_decode_uXXXX</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_decode_uXXXX</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
     <span class="n">esc</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">5</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">esc</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">and</span> <span class="n">esc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s1">&#39;xX&#39;</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
@@ -666,7 +666,7 @@
     <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid </span><span class="se">\\</span><span class="s2">uXXXX escape&quot;</span>
     <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">py_scanstring</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">py_scanstring</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">_b</span><span class="o">=</span><span class="n">BACKSLASH</span><span class="p">,</span> <span class="n">_m</span><span class="o">=</span><span class="n">STRINGCHUNK</span><span class="o">.</span><span class="n">match</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Scan the string s for a JSON string. End is the index of the</span>
 <span class="sd">    character in s after the quote that started the JSON string.</span>
@@ -704,7 +704,7 @@
             <span class="n">esc</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Unterminated string starting at&quot;</span><span class="p">,</span>
-                                  <span class="n">s</span><span class="p">,</span> <span class="n">begin</span><span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
+                                  <span class="n">s</span><span class="p">,</span> <span class="n">begin</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
         <span class="c1"># If not a unicode escape sequence, must be in the lookup table</span>
         <span class="k">if</span> <span class="n">esc</span> <span class="o">!=</span> <span class="s1">&#39;u&#39;</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
@@ -733,7 +733,7 @@
 <span class="n">WHITESPACE_STR</span> <span class="o">=</span> <span class="s1">&#39; </span><span class="se">\t\n\r</span><span class="s1">&#39;</span>
 
 
-<span class="k">def</span> <span class="nf">JSONObject</span><span class="p">(</span><span class="n">s_and_end</span><span class="p">,</span> <span class="n">strict</span><span class="p">,</span> <span class="n">scan_once</span><span class="p">,</span> <span class="n">object_hook</span><span class="p">,</span> <span class="n">object_pairs_hook</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">JSONObject</span><span class="p">(</span><span class="n">s_and_end</span><span class="p">,</span> <span class="n">strict</span><span class="p">,</span> <span class="n">scan_once</span><span class="p">,</span> <span class="n">object_hook</span><span class="p">,</span> <span class="n">object_pairs_hook</span><span class="p">,</span>
                <span class="n">memo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_w</span><span class="o">=</span><span class="n">WHITESPACE</span><span class="o">.</span><span class="n">match</span><span class="p">,</span> <span class="n">_ws</span><span class="o">=</span><span class="n">WHITESPACE_STR</span><span class="p">):</span>
     <span class="n">s</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">s_and_end</span>
     <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -785,7 +785,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">value</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">scan_once</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Expecting value&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
+            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Expecting value&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
         <span class="n">pairs_append</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">nextchar</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">]</span>
@@ -814,7 +814,7 @@
         <span class="n">pairs</span> <span class="o">=</span> <span class="n">object_hook</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pairs</span><span class="p">,</span> <span class="n">end</span>
 
-<span class="k">def</span> <span class="nf">JSONArray</span><span class="p">(</span><span class="n">s_and_end</span><span class="p">,</span> <span class="n">scan_once</span><span class="p">,</span> <span class="n">_w</span><span class="o">=</span><span class="n">WHITESPACE</span><span class="o">.</span><span class="n">match</span><span class="p">,</span> <span class="n">_ws</span><span class="o">=</span><span class="n">WHITESPACE_STR</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">JSONArray</span><span class="p">(</span><span class="n">s_and_end</span><span class="p">,</span> <span class="n">scan_once</span><span class="p">,</span> <span class="n">_w</span><span class="o">=</span><span class="n">WHITESPACE</span><span class="o">.</span><span class="n">match</span><span class="p">,</span> <span class="n">_ws</span><span class="o">=</span><span class="n">WHITESPACE_STR</span><span class="p">):</span>
     <span class="n">s</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">s_and_end</span>
     <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">nextchar</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">:</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
@@ -829,7 +829,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">value</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">scan_once</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Expecting value&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
+            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Expecting value&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
         <span class="n">_append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="n">nextchar</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">:</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">nextchar</span> <span class="ow">in</span> <span class="n">_ws</span><span class="p">:</span>
@@ -851,7 +851,7 @@
     <span class="k">return</span> <span class="n">values</span><span class="p">,</span> <span class="n">end</span>
 
 
-<span class="k">class</span> <span class="nc">JSONDecoder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">JSONDecoder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple JSON &lt;https://json.org&gt; decoder</span>
 
 <span class="sd">    Performs the following translations in decoding by default:</span>
@@ -881,7 +881,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">object_hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parse_float</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">object_hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parse_float</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">parse_int</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parse_constant</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">object_pairs_hook</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;``object_hook``, if specified, will be called with the result</span>
@@ -929,7 +929,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">scan_once</span> <span class="o">=</span> <span class="n">scanner</span><span class="o">.</span><span class="n">make_scanner</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">_w</span><span class="o">=</span><span class="n">WHITESPACE</span><span class="o">.</span><span class="n">match</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">_w</span><span class="o">=</span><span class="n">WHITESPACE</span><span class="o">.</span><span class="n">match</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the Python representation of ``s`` (a ``str`` instance</span>
 <span class="sd">        containing a JSON document).</span>
 
@@ -940,7 +940,7 @@
             <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Extra data&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 
-    <span class="k">def</span> <span class="nf">raw_decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">raw_decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Decode a JSON document from ``s`` (a ``str`` beginning with</span>
 <span class="sd">        a JSON document) and return a 2-tuple of the Python</span>
 <span class="sd">        representation and the index in ``s`` where the document ended.</span>
@@ -952,7 +952,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">obj</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_once</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Expecting value&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
+            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Expecting value&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
         <span class="k">return</span> <span class="n">obj</span><span class="p">,</span> <span class="n">end</span>
 </code></pre></div>
 
@@ -961,7 +961,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

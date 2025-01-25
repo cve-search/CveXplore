@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,21 +595,21 @@
   </a>
 
 <h1>Source code for pygelf.handlers</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">ssl</span>
-<span class="kn">import</span> <span class="nn">socket</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">ssl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">httplib</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">httplib</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">http.client</span> <span class="k">as</span> <span class="nn">httplib</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">http.client</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">httplib</span>
 
-<span class="kn">from</span> <span class="nn">logging.handlers</span> <span class="kn">import</span> <span class="n">SocketHandler</span><span class="p">,</span> <span class="n">DatagramHandler</span>
-<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">Handler</span> <span class="k">as</span> <span class="n">LoggingHandler</span>
-<span class="kn">from</span> <span class="nn">pygelf</span> <span class="kn">import</span> <span class="n">gelf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">logging.handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SocketHandler</span><span class="p">,</span> <span class="n">DatagramHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">Handler</span> <span class="k">as</span> <span class="n">LoggingHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pygelf</span><span class="w"> </span><span class="kn">import</span> <span class="n">gelf</span>
 
 
-<span class="k">class</span> <span class="nc">BaseHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;1.1&#39;</span><span class="p">,</span> <span class="n">include_extra_fields</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;1.1&#39;</span><span class="p">,</span> <span class="n">include_extra_fields</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">static_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json_default</span><span class="o">=</span><span class="n">gelf</span><span class="o">.</span><span class="n">object_to_json</span><span class="p">,</span> <span class="n">additional_env_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Logging handler that transforms each record into GELF (graylog extended log format) and sends it over TCP.</span>
@@ -634,7 +634,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">compress</span> <span class="o">=</span> <span class="n">compress</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">json_default</span> <span class="o">=</span> <span class="n">json_default</span>
 
-    <span class="k">def</span> <span class="nf">convert_record_to_gelf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">convert_record_to_gelf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">gelf</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span>
             <span class="n">gelf</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_fields</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_env_fields</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_extra_fields</span><span class="p">),</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">compress</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_default</span>
@@ -643,11 +643,11 @@
 
 <div class="viewcode-block" id="GelfTcpHandler">
 <a class="viewcode-back" href="../../CveXplore/core/GelfTcpHandler.html#CveXplore.core.logging.handlers.gelf_handler.GelfTcpHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">GelfTcpHandler</span><span class="p">(</span><span class="n">BaseHandler</span><span class="p">,</span> <span class="n">SocketHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GelfTcpHandler</span><span class="p">(</span><span class="n">BaseHandler</span><span class="p">,</span> <span class="n">SocketHandler</span><span class="p">):</span>
 
 <div class="viewcode-block" id="GelfTcpHandler.__init__">
 <a class="viewcode-back" href="../../CveXplore/core/GelfTcpHandler.__init__.html#CveXplore.core.logging.handlers.gelf_handler.GelfTcpHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Logging handler that transforms each record into GELF (graylog extended log format) and sends it over TCP.</span>
 
@@ -661,7 +661,7 @@
 
 <div class="viewcode-block" id="GelfTcpHandler.makePickle">
 <a class="viewcode-back" href="../../CveXplore/core/GelfTlsHandler.html#CveXplore.core.logging.handlers.gelf_handler.GelfTcpHandler.makePickle">[docs]</a>
-    <span class="k">def</span> <span class="nf">makePickle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">makePickle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; if you send the message over tcp, it should always be null terminated or the input will reject it &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_record_to_gelf</span><span class="p">(</span><span class="n">record</span><span class="p">)</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span></div>
 </div>
@@ -670,11 +670,11 @@
 
 <div class="viewcode-block" id="GelfUdpHandler">
 <a class="viewcode-back" href="../../CveXplore/core/GelfUdpHandler.html#CveXplore.core.logging.handlers.gelf_handler.GelfUdpHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">GelfUdpHandler</span><span class="p">(</span><span class="n">BaseHandler</span><span class="p">,</span> <span class="n">DatagramHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GelfUdpHandler</span><span class="p">(</span><span class="n">BaseHandler</span><span class="p">,</span> <span class="n">DatagramHandler</span><span class="p">):</span>
 
 <div class="viewcode-block" id="GelfUdpHandler.__init__">
 <a class="viewcode-back" href="../../CveXplore/core/GelfUdpHandler.__init__.html#CveXplore.core.logging.handlers.gelf_handler.GelfUdpHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1300</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1300</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Logging handler that transforms each record into GELF (graylog extended log format) and sends it over UDP.</span>
 <span class="sd">        If message length exceeds chunk_size, the message splits into multiple chunks.</span>
@@ -694,7 +694,7 @@
 
 <div class="viewcode-block" id="GelfUdpHandler.send">
 <a class="viewcode-back" href="../../CveXplore/core/GelfUdpHandler.send.html#CveXplore.core.logging.handlers.gelf_handler.GelfUdpHandler.send">[docs]</a>
-    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">:</span>
             <span class="n">DatagramHandler</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
             <span class="k">return</span>
@@ -706,7 +706,7 @@
 
 <div class="viewcode-block" id="GelfUdpHandler.makePickle">
 <a class="viewcode-back" href="../../CveXplore/core/GelfUdpHandler.makePickle.html#CveXplore.core.logging.handlers.gelf_handler.GelfUdpHandler.makePickle">[docs]</a>
-    <span class="k">def</span> <span class="nf">makePickle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">makePickle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_record_to_gelf</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
 </div>
 
@@ -714,11 +714,11 @@
 
 <div class="viewcode-block" id="GelfTlsHandler">
 <a class="viewcode-back" href="../../CveXplore/core/GelfTlsHandler.html#CveXplore.core.logging.handlers.gelf_handler.GelfTlsHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">GelfTlsHandler</span><span class="p">(</span><span class="n">GelfTcpHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GelfTlsHandler</span><span class="p">(</span><span class="n">GelfTcpHandler</span><span class="p">):</span>
 
 <div class="viewcode-block" id="GelfTlsHandler.__init__">
 <a class="viewcode-back" href="../../CveXplore/core/GelfTlsHandler.__init__.html#CveXplore.core.logging.handlers.gelf_handler.GelfTlsHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ca_certs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">certfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keyfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ca_certs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">certfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keyfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        TCP GELF logging handler with TLS support</span>
 
@@ -745,7 +745,7 @@
 
 <div class="viewcode-block" id="GelfTlsHandler.makeSocket">
 <a class="viewcode-back" href="../../CveXplore/core/GelfTlsHandler.makeSocket.html#CveXplore.core.logging.handlers.gelf_handler.GelfTlsHandler.makeSocket">[docs]</a>
-    <span class="k">def</span> <span class="nf">makeSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">makeSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">plain_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">plain_socket</span><span class="p">,</span> <span class="s1">&#39;settimeout&#39;</span><span class="p">):</span>
@@ -760,9 +760,9 @@
 
 
 
-<span class="k">class</span> <span class="nc">GelfHttpHandler</span><span class="p">(</span><span class="n">BaseHandler</span><span class="p">,</span> <span class="n">LoggingHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GelfHttpHandler</span><span class="p">(</span><span class="n">BaseHandler</span><span class="p">,</span> <span class="n">LoggingHandler</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/gelf&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/gelf&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Logging handler that transforms each record into GELF (graylog extended log format) and sends it over HTTP.</span>
 
@@ -786,15 +786,15 @@
         <span class="k">if</span> <span class="n">compress</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;gzip,deflate&#39;</span>
 
-    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_record_to_gelf</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">httplib</span><span class="o">.</span><span class="n">HTTPConnection</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
         <span class="n">connection</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">GelfHttpsHandler</span><span class="p">(</span><span class="n">BaseHandler</span><span class="p">,</span> <span class="n">LoggingHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GelfHttpsHandler</span><span class="p">(</span><span class="n">BaseHandler</span><span class="p">,</span> <span class="n">LoggingHandler</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/gelf&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ca_certs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">certfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keyfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keyfile_password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/gelf&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ca_certs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">certfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keyfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keyfile_password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Logging handler that transforms each record into GELF (graylog extended log format) and sends it over HTTP.</span>
 
@@ -842,7 +842,7 @@
         <span class="k">if</span> <span class="n">compress</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;gzip,deflate&#39;</span>
 
-    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_record_to_gelf</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">httplib</span><span class="o">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
         <span class="n">connection</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
@@ -853,7 +853,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

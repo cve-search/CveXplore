@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -602,28 +602,28 @@
 <span class="sd">This module contains the primary objects that power Requests.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 
 <span class="c1"># Import encoding now, to avoid implicit import later.</span>
 <span class="c1"># Implicit import within threads may cause LookupError when standard library is in a ZIP,</span>
 <span class="c1"># such as in Embedded Python. See https://github.com/psf/requests/issues/3578.</span>
-<span class="kn">import</span> <span class="nn">encodings.idna</span>  <span class="c1"># noqa: F401</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">UnsupportedOperation</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">encodings.idna</span>  <span class="c1"># noqa: F401</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnsupportedOperation</span>
 
-<span class="kn">from</span> <span class="nn">urllib3.exceptions</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib3.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">DecodeError</span><span class="p">,</span>
     <span class="n">LocationParseError</span><span class="p">,</span>
     <span class="n">ProtocolError</span><span class="p">,</span>
     <span class="n">ReadTimeoutError</span><span class="p">,</span>
     <span class="n">SSLError</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">urllib3.fields</span> <span class="kn">import</span> <span class="n">RequestField</span>
-<span class="kn">from</span> <span class="nn">urllib3.filepost</span> <span class="kn">import</span> <span class="n">encode_multipart_formdata</span>
-<span class="kn">from</span> <span class="nn">urllib3.util</span> <span class="kn">import</span> <span class="n">parse_url</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib3.fields</span><span class="w"> </span><span class="kn">import</span> <span class="n">RequestField</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib3.filepost</span><span class="w"> </span><span class="kn">import</span> <span class="n">encode_multipart_formdata</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib3.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_url</span>
 
-<span class="kn">from</span> <span class="nn">._internal_utils</span> <span class="kn">import</span> <span class="n">to_native_string</span><span class="p">,</span> <span class="n">unicode_is_ascii</span>
-<span class="kn">from</span> <span class="nn">.auth</span> <span class="kn">import</span> <span class="n">HTTPBasicAuth</span>
-<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._internal_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_native_string</span><span class="p">,</span> <span class="n">unicode_is_ascii</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPBasicAuth</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.compat</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">Callable</span><span class="p">,</span>
     <span class="n">JSONDecodeError</span><span class="p">,</span>
     <span class="n">Mapping</span><span class="p">,</span>
@@ -632,10 +632,10 @@
     <span class="n">chardet</span><span class="p">,</span>
     <span class="n">cookielib</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">json</span> <span class="k">as</span> <span class="n">complexjson</span>
-<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">urlencode</span><span class="p">,</span> <span class="n">urlsplit</span><span class="p">,</span> <span class="n">urlunparse</span>
-<span class="kn">from</span> <span class="nn">.cookies</span> <span class="kn">import</span> <span class="n">_copy_cookie_jar</span><span class="p">,</span> <span class="n">cookiejar_from_dict</span><span class="p">,</span> <span class="n">get_cookie_header</span>
-<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.compat</span><span class="w"> </span><span class="kn">import</span> <span class="n">json</span> <span class="k">as</span> <span class="n">complexjson</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.compat</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span><span class="p">,</span> <span class="n">urlsplit</span><span class="p">,</span> <span class="n">urlunparse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.cookies</span><span class="w"> </span><span class="kn">import</span> <span class="n">_copy_cookie_jar</span><span class="p">,</span> <span class="n">cookiejar_from_dict</span><span class="p">,</span> <span class="n">get_cookie_header</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ChunkedEncodingError</span><span class="p">,</span>
     <span class="ne">ConnectionError</span><span class="p">,</span>
     <span class="n">ContentDecodingError</span><span class="p">,</span>
@@ -643,14 +643,14 @@
     <span class="n">InvalidJSONError</span><span class="p">,</span>
     <span class="n">InvalidURL</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">RequestsJSONDecodeError</span>
-<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">MissingSchema</span>
-<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">SSLError</span> <span class="k">as</span> <span class="n">RequestsSSLError</span>
-<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">StreamConsumedError</span>
-<span class="kn">from</span> <span class="nn">.hooks</span> <span class="kn">import</span> <span class="n">default_hooks</span>
-<span class="kn">from</span> <span class="nn">.status_codes</span> <span class="kn">import</span> <span class="n">codes</span>
-<span class="kn">from</span> <span class="nn">.structures</span> <span class="kn">import</span> <span class="n">CaseInsensitiveDict</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">RequestsJSONDecodeError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">MissingSchema</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SSLError</span> <span class="k">as</span> <span class="n">RequestsSSLError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamConsumedError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.hooks</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_hooks</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.status_codes</span><span class="w"> </span><span class="kn">import</span> <span class="n">codes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.structures</span><span class="w"> </span><span class="kn">import</span> <span class="n">CaseInsensitiveDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">check_header_validity</span><span class="p">,</span>
     <span class="n">get_auth_from_url</span><span class="p">,</span>
     <span class="n">guess_filename</span><span class="p">,</span>
@@ -678,9 +678,9 @@
 <span class="n">ITER_CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">512</span>
 
 
-<span class="k">class</span> <span class="nc">RequestEncodingMixin</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RequestEncodingMixin</span><span class="p">:</span>
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">path_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">path_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Build the path URL to use.&quot;&quot;&quot;</span>
 
         <span class="n">url</span> <span class="o">=</span> <span class="p">[]</span>
@@ -701,7 +701,7 @@
         <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_encode_params</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_encode_params</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode parameters in a piece of data.</span>
 
 <span class="sd">        Will successfully encode parameters when passed as a dict or a list of</span>
@@ -731,7 +731,7 @@
             <span class="k">return</span> <span class="n">data</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_encode_files</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_encode_files</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Build the body for a multipart/form-data request.</span>
 
 <span class="sd">        Will successfully encode files when passed as a dict or a list of</span>
@@ -800,8 +800,8 @@
         <span class="k">return</span> <span class="n">body</span><span class="p">,</span> <span class="n">content_type</span>
 
 
-<span class="k">class</span> <span class="nc">RequestHooksMixin</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">register_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">hook</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RequestHooksMixin</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">hook</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Properly register a hook.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">event</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hooks</span><span class="p">:</span>
@@ -812,7 +812,7 @@
         <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">hook</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hooks</span><span class="p">[</span><span class="n">event</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">h</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hook</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">Callable</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">deregister_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">hook</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deregister_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">hook</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Deregister a previously registered hook.</span>
 <span class="sd">        Returns True if the hook existed, False if not.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -824,7 +824,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="k">class</span> <span class="nc">Request</span><span class="p">(</span><span class="n">RequestHooksMixin</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Request</span><span class="p">(</span><span class="n">RequestHooksMixin</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A user-created :class:`Request &lt;Request&gt;` object.</span>
 
 <span class="sd">    Used to prepare a :class:`PreparedRequest &lt;PreparedRequest&gt;`, which is sent to the server.</span>
@@ -852,7 +852,7 @@
 <span class="sd">      &lt;PreparedRequest [GET]&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -887,10 +887,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">auth</span> <span class="o">=</span> <span class="n">auth</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="n">cookies</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Request [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="si">}</span><span class="s2">]&gt;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs a :class:`PreparedRequest &lt;PreparedRequest&gt;` for transmission and returns it.&quot;&quot;&quot;</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">()</span>
         <span class="n">p</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
@@ -908,7 +908,7 @@
         <span class="k">return</span> <span class="n">p</span>
 
 
-<span class="k">class</span> <span class="nc">PreparedRequest</span><span class="p">(</span><span class="n">RequestEncodingMixin</span><span class="p">,</span> <span class="n">RequestHooksMixin</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PreparedRequest</span><span class="p">(</span><span class="n">RequestEncodingMixin</span><span class="p">,</span> <span class="n">RequestHooksMixin</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The fully mutable :class:`PreparedRequest &lt;PreparedRequest&gt;` object,</span>
 <span class="sd">    containing the exact bytes that will be sent to the server.</span>
 
@@ -929,7 +929,7 @@
 <span class="sd">      &lt;Response [200]&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1">#: HTTP verb to send to the server.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1">#: HTTP URL to send the request to.</span>
@@ -946,7 +946,7 @@
         <span class="c1">#: integer denoting starting position of a readable file-like body.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_body_position</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -974,10 +974,10 @@
         <span class="c1"># This MUST go after prepare_auth. Authenticators could add a hook</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prepare_hooks</span><span class="p">(</span><span class="n">hooks</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;PreparedRequest [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="si">}</span><span class="s2">]&gt;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">PreparedRequest</span><span class="p">()</span>
         <span class="n">p</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span>
         <span class="n">p</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span>
@@ -988,15 +988,15 @@
         <span class="n">p</span><span class="o">.</span><span class="n">_body_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_body_position</span>
         <span class="k">return</span> <span class="n">p</span>
 
-    <span class="k">def</span> <span class="nf">prepare_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepares the given HTTP method.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">to_native_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_get_idna_encoded_host</span><span class="p">(</span><span class="n">host</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">idna</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_idna_encoded_host</span><span class="p">(</span><span class="n">host</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">idna</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">host</span> <span class="o">=</span> <span class="n">idna</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">uts46</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
@@ -1004,7 +1004,7 @@
             <span class="k">raise</span> <span class="ne">UnicodeError</span>
         <span class="k">return</span> <span class="n">host</span>
 
-    <span class="k">def</span> <span class="nf">prepare_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepares the given HTTP URL.&quot;&quot;&quot;</span>
         <span class="c1">#: Accept objects that have string representations.</span>
         <span class="c1">#: We&#39;re unable to blindly call unicode/str functions</span>
@@ -1078,7 +1078,7 @@
         <span class="n">url</span> <span class="o">=</span> <span class="n">requote_uri</span><span class="p">(</span><span class="n">urlunparse</span><span class="p">([</span><span class="n">scheme</span><span class="p">,</span> <span class="n">netloc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">fragment</span><span class="p">]))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
 
-    <span class="k">def</span> <span class="nf">prepare_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepares the given HTTP headers.&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">CaseInsensitiveDict</span><span class="p">()</span>
@@ -1089,7 +1089,7 @@
                 <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">header</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="n">to_native_string</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="k">def</span> <span class="nf">prepare_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepares the given HTTP body data.&quot;&quot;&quot;</span>
 
         <span class="c1"># Check if file, fo, generator, iterator.</span>
@@ -1167,7 +1167,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">body</span>
 
-    <span class="k">def</span> <span class="nf">prepare_content_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_content_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepare Content-Length header based on request method and body&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">length</span> <span class="o">=</span> <span class="n">super_len</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
@@ -1183,7 +1183,7 @@
             <span class="c1"># but don&#39;t provide one. (i.e. not GET or HEAD)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Content-Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
 
-    <span class="k">def</span> <span class="nf">prepare_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepares the given HTTP auth data.&quot;&quot;&quot;</span>
 
         <span class="c1"># If no Auth is explicitly provided, extract it from the URL first.</span>
@@ -1205,7 +1205,7 @@
             <span class="c1"># Recompute Content-Length</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">prepare_content_length</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">prepare_cookies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cookies</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_cookies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cookies</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepares the given HTTP cookie data.</span>
 
 <span class="sd">        This function eventually generates a ``Cookie`` header from the</span>
@@ -1225,7 +1225,7 @@
         <span class="k">if</span> <span class="n">cookie_header</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Cookie&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cookie_header</span>
 
-    <span class="k">def</span> <span class="nf">prepare_hooks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hooks</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_hooks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hooks</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepares the given hooks.&quot;&quot;&quot;</span>
         <span class="c1"># hooks can be passed as None to the prepare method and to this</span>
         <span class="c1"># method. To prevent iterating over None, simply use an empty list</span>
@@ -1237,7 +1237,7 @@
 
 <div class="viewcode-block" id="Response">
 <a class="viewcode-back" href="../../CveXplore/core/Response.html#CveXplore.core.api_base_class.Response">[docs]</a>
-<span class="k">class</span> <span class="nc">Response</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Response</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The :class:`Response &lt;Response&gt;` object, which contains a</span>
 <span class="sd">    server&#39;s response to an HTTP request.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1257,7 +1257,7 @@
 
 <div class="viewcode-block" id="Response.__init__">
 <a class="viewcode-back" href="../../CveXplore/core/Response.__init__.html#CveXplore.core.api_base_class.Response.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_content</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_content_consumed</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_next</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1305,13 +1305,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">request</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Consume everything; accessing the content attribute makes</span>
         <span class="c1"># sure the content has been fully read.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content_consumed</span><span class="p">:</span>
@@ -1319,7 +1319,7 @@
 
         <span class="k">return</span> <span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__attrs__</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
@@ -1329,13 +1329,13 @@
 
 <div class="viewcode-block" id="Response.__repr__">
 <a class="viewcode-back" href="../../CveXplore/core/Response.__repr__.html#CveXplore.core.api_base_class.Response.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Response [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">]&gt;&quot;</span></div>
 
 
 <div class="viewcode-block" id="Response.__bool__">
 <a class="viewcode-back" href="../../CveXplore/core/Response.__bool__.html#CveXplore.core.api_base_class.Response.__bool__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if :attr:`status_code` is less than 400.</span>
 
 <span class="sd">        This attribute checks if the status code of the response is between</span>
@@ -1348,7 +1348,7 @@
 
 <div class="viewcode-block" id="Response.__nonzero__">
 <a class="viewcode-back" href="../../CveXplore/core/Response.__nonzero__.html#CveXplore.core.api_base_class.Response.__nonzero__">[docs]</a>
-    <span class="k">def</span> <span class="nf">__nonzero__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__nonzero__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if :attr:`status_code` is less than 400.</span>
 
 <span class="sd">        This attribute checks if the status code of the response is between</span>
@@ -1361,13 +1361,13 @@
 
 <div class="viewcode-block" id="Response.__iter__">
 <a class="viewcode-back" href="../../CveXplore/core/Response.__iter__.html#CveXplore.core.api_base_class.Response.__iter__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Allows you to use a response as an iterator.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if :attr:`status_code` is less than 400, False if not.</span>
 
 <span class="sd">        This attribute checks if the status code of the response is between</span>
@@ -1382,14 +1382,14 @@
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_redirect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_redirect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;True if this Response is a well-formed HTTP redirect that could have</span>
 <span class="sd">        been processed automatically (by :meth:`Session.resolve_redirects`).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;location&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="n">REDIRECT_STATI</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_permanent_redirect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_permanent_redirect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;True if this Response one of the permanent versions of redirect.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;location&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="p">(</span>
             <span class="n">codes</span><span class="o">.</span><span class="n">moved_permanently</span><span class="p">,</span>
@@ -1397,18 +1397,18 @@
         <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a PreparedRequest for the next request in a redirect chain, if there is one.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">apparent_encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apparent_encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The apparent encoding, provided by the charset_normalizer or chardet libraries.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">chardet</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">)[</span><span class="s2">&quot;encoding&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Response.iter_content">
 <a class="viewcode-back" href="../../CveXplore/core/Response.iter_content.html#CveXplore.core.api_base_class.Response.iter_content">[docs]</a>
-    <span class="k">def</span> <span class="nf">iter_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">decode_unicode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">iter_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">decode_unicode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterates over the response data.  When stream=True is set on the</span>
 <span class="sd">        request, this avoids reading the content at once into memory for</span>
 <span class="sd">        large responses.  The chunk size is the number of bytes it should</span>
@@ -1425,7 +1425,7 @@
 <span class="sd">        available encoding based on the response.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">generate</span><span class="p">():</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">():</span>
             <span class="c1"># Special case for urllib3.</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="p">,</span> <span class="s2">&quot;stream&quot;</span><span class="p">):</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -1469,7 +1469,7 @@
 
 <div class="viewcode-block" id="Response.iter_lines">
 <a class="viewcode-back" href="../../CveXplore/core/Response.iter_lines.html#CveXplore.core.api_base_class.Response.iter_lines">[docs]</a>
-    <span class="k">def</span> <span class="nf">iter_lines</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">iter_lines</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">ITER_CHUNK_SIZE</span><span class="p">,</span> <span class="n">decode_unicode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterates over the response data, one line at a time.  When</span>
@@ -1505,7 +1505,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Content of the response, in bytes.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
@@ -1524,7 +1524,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Content of the response, in unicode.</span>
 
 <span class="sd">        If Response.encoding is None, encoding will be guessed using</span>
@@ -1563,7 +1563,7 @@
 
 <div class="viewcode-block" id="Response.json">
 <a class="viewcode-back" href="../../CveXplore/core/Response.json.html#CveXplore.core.api_base_class.Response.json">[docs]</a>
-    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the json-encoded content of a response, if any.</span>
 
 <span class="sd">        :param \*\*kwargs: Optional arguments that ``json.loads`` takes.</span>
@@ -1598,7 +1598,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the parsed header links of the response, if any.&quot;&quot;&quot;</span>
 
         <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;link&quot;</span><span class="p">)</span>
@@ -1616,7 +1616,7 @@
 
 <div class="viewcode-block" id="Response.raise_for_status">
 <a class="viewcode-back" href="../../CveXplore/core/Response.raise_for_status.html#CveXplore.core.api_base_class.Response.raise_for_status">[docs]</a>
-    <span class="k">def</span> <span class="nf">raise_for_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">raise_for_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Raises :class:`HTTPError`, if one occurred.&quot;&quot;&quot;</span>
 
         <span class="n">http_error_msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -1648,7 +1648,7 @@
 
 <div class="viewcode-block" id="Response.close">
 <a class="viewcode-back" href="../../CveXplore/core/Response.close.html#CveXplore.core.api_base_class.Response.close">[docs]</a>
-    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Releases the connection back to the pool. Once this method has been</span>
 <span class="sd">        called the underlying ``raw`` object must not be accessed again.</span>
 
@@ -1669,7 +1669,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

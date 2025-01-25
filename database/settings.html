@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -925,46 +925,46 @@ overwritten you can do it either there or pass them directly as environment vari
 <h2 id="common">Common<a class="headerlink" href="#common" title="Link to this heading">¶</a></h2>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-DATASOURCE_TYPE">
-<span class="sig-name descname"><span class="pre">DATASOURCE_TYPE</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;mysql&#39;</span></code><a class="headerlink" href="#confval-DATASOURCE_TYPE" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DATASOURCE_TYPE</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;mysql&#39;</span></code><a class="headerlink" href="#confval-DATASOURCE_TYPE" title="Link to this definition">¶</a></dt>
 <dd><p><em>This actually defaults to</em> <code class="docutils literal notranslate"><span class="pre">mongodb</span></code> <em>but that breaks the documentation automation.</em></p>
 <p>Available options: <code class="docutils literal notranslate"><span class="pre">mongodb</span></code>, <code class="docutils literal notranslate"><span class="pre">api</span></code>, <code class="docutils literal notranslate"><span class="pre">mysql</span></code>.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-DATASOURCE_PROTOCOL">
-<span class="sig-name descname"><span class="pre">DATASOURCE_PROTOCOL</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;mysql&#39;</span></code><a class="headerlink" href="#confval-DATASOURCE_PROTOCOL" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DATASOURCE_PROTOCOL</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;mysql&#39;</span></code><a class="headerlink" href="#confval-DATASOURCE_PROTOCOL" title="Link to this definition">¶</a></dt>
 <dd><p><em>This actually defaults to</em> <code class="docutils literal notranslate"><span class="pre">mongodb</span></code> <em>but that breaks the documentation automation.</em></p>
 <p>Used to build the URL; e.g., <code class="docutils literal notranslate"><span class="pre">mongodb</span></code>, <code class="docutils literal notranslate"><span class="pre">https</span></code> or <code class="xref any docutils literal notranslate"><span class="pre">http`</span></code>.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-DATASOURCE_DBAPI">
-<span class="sig-name descname"><span class="pre">DATASOURCE_DBAPI</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;pymysql&#39;</span></code><a class="headerlink" href="#confval-DATASOURCE_DBAPI" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DATASOURCE_DBAPI</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;pymysql&#39;</span></code><a class="headerlink" href="#confval-DATASOURCE_DBAPI" title="Link to this definition">¶</a></dt>
 <dd><p><em>This actually defaults to</em> <code class="docutils literal notranslate"><span class="pre">None</span></code> <em>but that breaks the documentation automation.</em></p>
 <p>DBAPI extension for the protocol. E.g. <code class="docutils literal notranslate"><span class="pre">srv</span></code> in <code class="docutils literal notranslate"><span class="pre">mongodb+srv://</span></code> or <code class="docutils literal notranslate"><span class="pre">pymysql</span></code> in  <code class="docutils literal notranslate"><span class="pre">mysql+pymysql://</span></code>.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-DATASOURCE_USER">
-<span class="sig-name descname"><span class="pre">DATASOURCE_USER</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-DATASOURCE_USER" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DATASOURCE_USER</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-DATASOURCE_USER" title="Link to this definition">¶</a></dt>
 <dd><p>Username for the data source (database or API).</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-DATASOURCE_PASSWORD">
-<span class="sig-name descname"><span class="pre">DATASOURCE_PASSWORD</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-DATASOURCE_PASSWORD" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DATASOURCE_PASSWORD</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-DATASOURCE_PASSWORD" title="Link to this definition">¶</a></dt>
 <dd><p>Password for the data source (database or API).</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-DATASOURCE_DBNAME">
-<span class="sig-name descname"><span class="pre">DATASOURCE_DBNAME</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;cvedb&#39;</span></code><a class="headerlink" href="#confval-DATASOURCE_DBNAME" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DATASOURCE_DBNAME</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;cvedb&#39;</span></code><a class="headerlink" href="#confval-DATASOURCE_DBNAME" title="Link to this definition">¶</a></dt>
 <dd><p>Database name at the data source.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-DATASOURCE_CONNECTION_DETAILS">
-<span class="sig-name descname"><span class="pre">DATASOURCE_CONNECTION_DETAILS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-DATASOURCE_CONNECTION_DETAILS" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DATASOURCE_CONNECTION_DETAILS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-DATASOURCE_CONNECTION_DETAILS" title="Link to this definition">¶</a></dt>
 <dd><p><em>Not configurable via environment variables.</em></p>
 <p>By default automatically built from the settings that are appropriate for the selected <code class="docutils literal notranslate"><span class="pre">DATASOURCE_TYPE</span></code>,
 but documented here as this <strong>can be overwritten in the code</strong> using CveXplore as a library,
@@ -973,7 +973,7 @@ which <strong>would cause many of these settings not to be honored</strong>.</p>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-API_CONNECTION_DETAILS">
-<span class="sig-name descname"><span class="pre">API_CONNECTION_DETAILS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-API_CONNECTION_DETAILS" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">API_CONNECTION_DETAILS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-API_CONNECTION_DETAILS" title="Link to this definition">¶</a></dt>
 <dd><p><em>Not configurable via environment variables.</em></p>
 <p><strong>Deprecated</strong> (replaced by <code class="docutils literal notranslate"><span class="pre">DATASOURCE_CONNECTION_DETAILS</span></code>). Will be removed in the 0.4 release.</p>
 </dd></dl>
@@ -981,19 +981,19 @@ which <strong>would cause many of these settings not to be honored</strong>.</p>
 <h2 id="mongodb">MongoDB<a class="headerlink" href="#mongodb" title="Link to this heading">¶</a></h2>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-MONGODB_HOST">
-<span class="sig-name descname"><span class="pre">MONGODB_HOST</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;127.0.0.1&#39;</span></code><a class="headerlink" href="#confval-MONGODB_HOST" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">MONGODB_HOST</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;127.0.0.1&#39;</span></code><a class="headerlink" href="#confval-MONGODB_HOST" title="Link to this definition">¶</a></dt>
 <dd><p>MongoDB hostname (without the protocal that should be defined with <code class="docutils literal notranslate"><span class="pre">DATASOURCE_PROTOCOL</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">DATASOURCE_DBAPI</span></code>).</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-MONGODB_PORT">
-<span class="sig-name descname"><span class="pre">MONGODB_PORT</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mi">27017</span></code><a class="headerlink" href="#confval-MONGODB_PORT" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">MONGODB_PORT</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mi">27017</span></code><a class="headerlink" href="#confval-MONGODB_PORT" title="Link to this definition">¶</a></dt>
 <dd><p>MongoDB port number.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-MONGODB_CONNECTION_DETAILS">
-<span class="sig-name descname"><span class="pre">MONGODB_CONNECTION_DETAILS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-MONGODB_CONNECTION_DETAILS" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">MONGODB_CONNECTION_DETAILS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-MONGODB_CONNECTION_DETAILS" title="Link to this definition">¶</a></dt>
 <dd><p><em>Not configurable via environment variables.</em></p>
 <p><strong>Deprecated</strong> (replaced by <code class="docutils literal notranslate"><span class="pre">DATASOURCE_CONNECTION_DETAILS</span></code>). Will be removed in the 0.4 release.</p>
 </dd></dl>
@@ -1001,20 +1001,20 @@ which <strong>would cause many of these settings not to be honored</strong>.</p>
 <h2 id="sql">SQL<a class="headerlink" href="#sql" title="Link to this heading">¶</a></h2>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight sig-wrap std" id="confval-SQLALCHEMY_DATABASE_URI">
-<span class="sig-name descname"><span class="pre">SQLALCHEMY_DATABASE_URI</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;mysql+pymysql://None:None@127.0.0.1:27017/cvedb&#39;</span></code><a class="headerlink" href="#confval-SQLALCHEMY_DATABASE_URI" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">SQLALCHEMY_DATABASE_URI</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;mysql+pymysql://None:None@127.0.0.1:27017/cvedb&#39;</span></code><a class="headerlink" href="#confval-SQLALCHEMY_DATABASE_URI" title="Link to this definition">¶</a></dt>
 <dd><p>Built from other environment variables, but can be manually overwritten.</p>
 <p>Defaults to <code class="docutils literal notranslate"><span class="pre">{DATASOURCE_PROTOCOL}[+{DATASOURCE_DBAPI}]://{DATASOURCE_USER}:{DATASOURCE_PASSWORD}&#64;{DATASOURCE_HOST}:{DATASOURCE_PORT}/{DATASOURCE_DBNAME}</span></code>.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-SQLALCHEMY_TRACK_MODIFICATIONS">
-<span class="sig-name descname"><span class="pre">SQLALCHEMY_TRACK_MODIFICATIONS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">False</span></code><a class="headerlink" href="#confval-SQLALCHEMY_TRACK_MODIFICATIONS" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">SQLALCHEMY_TRACK_MODIFICATIONS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">False</span></code><a class="headerlink" href="#confval-SQLALCHEMY_TRACK_MODIFICATIONS" title="Link to this definition">¶</a></dt>
 <dd><p>See <a class="reference external" href="https://docs.sqlalchemy.org/en/20/orm/session_events.html">https://docs.sqlalchemy.org/en/20/orm/session_events.html</a></p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight sig-wrap std" id="confval-SQLALCHEMY_ENGINE_OPTIONS">
-<span class="sig-name descname"><span class="pre">SQLALCHEMY_ENGINE_OPTIONS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="p">{</span><span class="s1">&#39;pool_recycle&#39;</span><span class="p">:</span> <span class="mi">299</span><span class="p">,</span> <span class="s1">&#39;pool_timeout&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span></code><a class="headerlink" href="#confval-SQLALCHEMY_ENGINE_OPTIONS" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">SQLALCHEMY_ENGINE_OPTIONS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><span class="pre">dict</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="p">{</span><span class="s1">&#39;pool_recycle&#39;</span><span class="p">:</span> <span class="mi">299</span><span class="p">,</span> <span class="s1">&#39;pool_timeout&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span></code><a class="headerlink" href="#confval-SQLALCHEMY_ENGINE_OPTIONS" title="Link to this definition">¶</a></dt>
 <dd><p>See <a class="reference external" href="https://docs.sqlalchemy.org/en/20/core/engines.html">https://docs.sqlalchemy.org/en/20/core/engines.html</a></p>
 </dd></dl>
 
@@ -1025,7 +1025,7 @@ which <strong>would cause many of these settings not to be honored</strong>.</p>
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

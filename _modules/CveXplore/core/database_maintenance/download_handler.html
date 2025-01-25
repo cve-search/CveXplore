@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,37 +595,37 @@
   </a>
 
 <h1>Source code for CveXplore.core.database_maintenance.download_handler</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">gzip</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">zipfile</span>
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
-<span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copy</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gzip</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">zipfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">islice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shutil</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
 
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">dateutil.parser</span> <span class="kn">import</span> <span class="n">parse</span> <span class="k">as</span> <span class="n">parse_datetime</span>
-<span class="kn">from</span> <span class="nn">pymongo.errors</span> <span class="kn">import</span> <span class="n">BulkWriteError</span><span class="p">,</span> <span class="n">InvalidOperation</span>
-<span class="kn">from</span> <span class="nn">requests.adapters</span> <span class="kn">import</span> <span class="n">HTTPAdapter</span>
-<span class="kn">from</span> <span class="nn">tqdm.contrib.concurrent</span> <span class="kn">import</span> <span class="n">thread_map</span>
-<span class="kn">from</span> <span class="nn">urllib3</span> <span class="kn">import</span> <span class="n">Retry</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dateutil.parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span> <span class="k">as</span> <span class="n">parse_datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">BulkWriteError</span><span class="p">,</span> <span class="n">InvalidOperation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">requests.adapters</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPAdapter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.contrib.concurrent</span><span class="w"> </span><span class="kn">import</span> <span class="n">thread_map</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib3</span><span class="w"> </span><span class="kn">import</span> <span class="n">Retry</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.common.config</span> <span class="kn">import</span> <span class="n">Configuration</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.general.utils</span> <span class="kn">import</span> <span class="n">sanitize</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.worker_queue.worker_q</span> <span class="kn">import</span> <span class="n">WorkerQueue</span>
-<span class="kn">from</span> <span class="nn">..database_indexer.db_indexer</span> <span class="kn">import</span> <span class="n">DatabaseIndexer</span>
-<span class="kn">from</span> <span class="nn">..logging.handlers.cve_explore_rfh</span> <span class="kn">import</span> <span class="n">CveExploreUpdateRfhHandler</span>
-<span class="kn">from</span> <span class="nn">..logging.handlers.cve_explore_stream</span> <span class="kn">import</span> <span class="n">CveExploreUpdateStreamHandler</span>
-<span class="kn">from</span> <span class="nn">..logging.logger_class</span> <span class="kn">import</span> <span class="n">AppLogger</span>
-<span class="kn">from</span> <span class="nn">...database.connection.database_connection</span> <span class="kn">import</span> <span class="n">DatabaseConnection</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.common.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Configuration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.general.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">sanitize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.worker_queue.worker_q</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkerQueue</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..database_indexer.db_indexer</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseIndexer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..logging.handlers.cve_explore_rfh</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveExploreUpdateRfhHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..logging.handlers.cve_explore_stream</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveExploreUpdateStreamHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..logging.logger_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...database.connection.database_connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseConnection</span>
 
 <span class="n">thread_local</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">local</span><span class="p">()</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">setLoggerClass</span><span class="p">(</span><span class="n">AppLogger</span><span class="p">)</span>
@@ -635,7 +635,7 @@
 
 <div class="viewcode-block" id="DownloadHandler">
 <a class="viewcode-back" href="../../../../CveXplore/core/DownloadHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">DownloadHandler</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DownloadHandler</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    DownloadHandler is the base class for all downloads and subsequent processing of the downloaded content.</span>
 <span class="sd">    Each download script has a derived class which handles specifics for that type of content / download.</span>
@@ -643,7 +643,7 @@
 
 <div class="viewcode-block" id="DownloadHandler.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/DownloadHandler.__init__.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">feed_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">logger_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -721,14 +721,14 @@
 
 <div class="viewcode-block" id="DownloadHandler.__repr__">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return string representation of object&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
 
 
 <div class="viewcode-block" id="DownloadHandler.get_session">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.get_session">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_session</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_session</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
         <span class="n">backoff_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
@@ -764,7 +764,7 @@
 
 <div class="viewcode-block" id="DownloadHandler.process_downloads">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.process_downloads">[docs]</a>
-    <span class="k">def</span> <span class="nf">process_downloads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sites</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_downloads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sites</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to download and process files</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -807,7 +807,7 @@
 
 <div class="viewcode-block" id="DownloadHandler.chunk_list">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.chunk_list">[docs]</a>
-    <span class="k">def</span> <span class="nf">chunk_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">chunk_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Yield successive n-sized chunks from lst.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -815,7 +815,7 @@
             <span class="k">yield</span> <span class="n">lst</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">number</span><span class="p">]</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_db_bulk_writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">initialization_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_db_bulk_writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">initialization_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to act as worker for writing queued entries into the database</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -846,7 +846,7 @@
 
 <div class="viewcode-block" id="DownloadHandler.store_file">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.store_file">[docs]</a>
-    <span class="k">def</span> <span class="nf">store_file</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">store_file</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">response_content</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">content_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -908,7 +908,7 @@
 
 <div class="viewcode-block" id="DownloadHandler.source_changed">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.source_changed">[docs]</a>
-    <span class="k">def</span> <span class="nf">source_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">source_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to check whether the source file has changed since last update using HEAD instead of GET.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -965,7 +965,7 @@
 
 <div class="viewcode-block" id="DownloadHandler.download_site">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.download_site">[docs]</a>
-    <span class="k">def</span> <span class="nf">download_site</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">download_site</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">url</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;file&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scheduling local hosted file: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -1055,19 +1055,19 @@
 
 <div class="viewcode-block" id="DownloadHandler.dropCollection">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.dropCollection">[docs]</a>
-    <span class="k">def</span> <span class="nf">dropCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dropCollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="DownloadHandler.getTableNames">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.getTableNames">[docs]</a>
-    <span class="k">def</span> <span class="nf">getTableNames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getTableNames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">list_collection_names</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="DownloadHandler.setColInfo">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.setColInfo">[docs]</a>
-    <span class="k">def</span> <span class="nf">setColInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setColInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="n">collection</span><span class="p">]</span><span class="o">.</span><span class="n">update_one</span><span class="p">(</span>
             <span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="n">collection</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;$set&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="n">data</span><span class="p">}},</span> <span class="n">upsert</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span></div>
@@ -1075,25 +1075,25 @@
 
 <div class="viewcode-block" id="DownloadHandler.delColInfo">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.delColInfo">[docs]</a>
-    <span class="k">def</span> <span class="nf">delColInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delColInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">delete_one</span><span class="p">({</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="n">collection</span><span class="p">})</span></div>
 
 
 <div class="viewcode-block" id="DownloadHandler.getCPEVersionInformation">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.getCPEVersionInformation">[docs]</a>
-    <span class="k">def</span> <span class="nf">getCPEVersionInformation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCPEVersionInformation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">sanitize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s2">&quot;cpe&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="DownloadHandler.getInfo">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.getInfo">[docs]</a>
-    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">sanitize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="n">collection</span><span class="p">}))</span></div>
 
 
 <div class="viewcode-block" id="DownloadHandler.setColUpdate">
 <a class="viewcode-back" href="../../../../CveXplore/core/XMLFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.setColUpdate">[docs]</a>
-    <span class="k">def</span> <span class="nf">setColUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">date</span><span class="p">:</span> <span class="n">datetime</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setColUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">date</span><span class="p">:</span> <span class="n">datetime</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update_one</span><span class="p">(</span>
             <span class="p">{</span><span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="n">collection</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;$set&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;lastModified&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">}},</span> <span class="n">upsert</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span></div>
@@ -1102,28 +1102,28 @@
 <div class="viewcode-block" id="DownloadHandler.process_item">
 <a class="viewcode-back" href="../../../../CveXplore/core/JSONFileHandler.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.process_item">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <div class="viewcode-block" id="DownloadHandler.file_to_queue">
 <a class="viewcode-back" href="../../../../CveXplore/core/DownloadHandler.file_to_queue.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.file_to_queue">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <div class="viewcode-block" id="DownloadHandler.update">
 <a class="viewcode-back" href="../../../../CveXplore/core/DownloadHandler.update.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.update">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <div class="viewcode-block" id="DownloadHandler.populate">
 <a class="viewcode-back" href="../../../../CveXplore/core/DownloadHandler.populate.html#CveXplore.core.database_maintenance.download_handler.DownloadHandler.populate">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 </div>
 
@@ -1134,7 +1134,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

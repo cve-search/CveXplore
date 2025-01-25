@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,24 +595,24 @@
   </a>
 
 <h1>Source code for CveXplore.core.logging.handlers.gelf_handler</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">logging.handlers</span> <span class="kn">import</span> <span class="n">SocketHandler</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">logging.handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SocketHandler</span>
 
-<span class="kn">from</span> <span class="nn">pygelf</span> <span class="kn">import</span> <span class="n">GelfUdpHandler</span><span class="p">,</span> <span class="n">GelfTcpHandler</span><span class="p">,</span> <span class="n">GelfTlsHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pygelf</span><span class="w"> </span><span class="kn">import</span> <span class="n">GelfUdpHandler</span><span class="p">,</span> <span class="n">GelfTcpHandler</span><span class="p">,</span> <span class="n">GelfTlsHandler</span>
 
 
 <div class="viewcode-block" id="SocketHandler">
 <a class="viewcode-back" href="../../../../../CveXplore/core/SocketHandler.html#CveXplore.core.logging.handlers.gelf_handler.SocketHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">SocketHandler</span><span class="p">(</span><span class="n">SocketHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SocketHandler</span><span class="p">(</span><span class="n">SocketHandler</span><span class="p">):</span>
 <div class="viewcode-block" id="SocketHandler.__init__">
 <a class="viewcode-back" href="../../../../../CveXplore/core/SocketHandler.__init__.html#CveXplore.core.logging.handlers.gelf_handler.SocketHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span></div>
 
 
 <div class="viewcode-block" id="SocketHandler.emit">
 <a class="viewcode-back" href="../../../../../CveXplore/core/SocketHandler.emit.html#CveXplore.core.logging.handlers.gelf_handler.SocketHandler.emit">[docs]</a>
-    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Emit a record.</span>
 
@@ -637,10 +637,10 @@
 
 <div class="viewcode-block" id="GelfUDPHandler">
 <a class="viewcode-back" href="../../../../../CveXplore/core/GelfUDPHandler.html#CveXplore.core.logging.handlers.gelf_handler.GelfUDPHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">GelfUDPHandler</span><span class="p">(</span><span class="n">GelfUdpHandler</span><span class="p">,</span> <span class="n">SocketHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GelfUDPHandler</span><span class="p">(</span><span class="n">GelfUdpHandler</span><span class="p">,</span> <span class="n">SocketHandler</span><span class="p">):</span>
 <div class="viewcode-block" id="GelfUDPHandler.__init__">
 <a class="viewcode-back" href="../../../../../CveXplore/core/GelfUDPHandler.__init__.html#CveXplore.core.logging.handlers.gelf_handler.GelfUDPHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </div>
 
@@ -648,10 +648,10 @@
 
 <div class="viewcode-block" id="GelfTCPHandler">
 <a class="viewcode-back" href="../../../../../CveXplore/core/GelfTCPHandler.html#CveXplore.core.logging.handlers.gelf_handler.GelfTCPHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">GelfTCPHandler</span><span class="p">(</span><span class="n">GelfTcpHandler</span><span class="p">,</span> <span class="n">SocketHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GelfTCPHandler</span><span class="p">(</span><span class="n">GelfTcpHandler</span><span class="p">,</span> <span class="n">SocketHandler</span><span class="p">):</span>
 <div class="viewcode-block" id="GelfTCPHandler.__init__">
 <a class="viewcode-back" href="../../../../../CveXplore/core/GelfTCPHandler.__init__.html#CveXplore.core.logging.handlers.gelf_handler.GelfTCPHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span></div>
 </div>
 
@@ -659,10 +659,10 @@
 
 <div class="viewcode-block" id="GelfTLSHandler">
 <a class="viewcode-back" href="../../../../../CveXplore/core/GelfTLSHandler.html#CveXplore.core.logging.handlers.gelf_handler.GelfTLSHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">GelfTLSHandler</span><span class="p">(</span><span class="n">GelfTlsHandler</span><span class="p">,</span> <span class="n">SocketHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GelfTLSHandler</span><span class="p">(</span><span class="n">GelfTlsHandler</span><span class="p">,</span> <span class="n">SocketHandler</span><span class="p">):</span>
 <div class="viewcode-block" id="GelfTLSHandler.__init__">
 <a class="viewcode-back" href="../../../../../CveXplore/core/GelfTLSHandler.__init__.html#CveXplore.core.logging.handlers.gelf_handler.GelfTLSHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span></div>
 </div>
 
@@ -673,7 +673,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

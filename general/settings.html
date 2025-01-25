@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1174,52 +1174,52 @@ There are more environment variable available for configuring database &amp; bac
 <h2 id="general">General<a class="headerlink" href="#general" title="Link to this heading">¶</a></h2>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-USER_HOME_DIR">
-<span class="sig-name descname"><span class="pre">USER_HOME_DIR</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;$</span><span class="si">{HOME}</span><span class="s1">/.cvexplore&#39;</span></code><a class="headerlink" href="#confval-USER_HOME_DIR" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">USER_HOME_DIR</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;$</span><span class="si">{HOME}</span><span class="s1">/.cvexplore&#39;</span></code><a class="headerlink" href="#confval-USER_HOME_DIR" title="Link to this definition">¶</a></dt>
 <dd><p>Directory to use as main directory for storing data, config files and sources initialization files.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-CVE_START_YEAR">
-<span class="sig-name descname"><span class="pre">CVE_START_YEAR</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mi">2000</span></code><a class="headerlink" href="#confval-CVE_START_YEAR" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CVE_START_YEAR</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mi">2000</span></code><a class="headerlink" href="#confval-CVE_START_YEAR" title="Link to this definition">¶</a></dt>
 <dd><p>The year CVE database population starts from.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-CPE_FILTER_DEPRECATED">
-<span class="sig-name descname"><span class="pre">CPE_FILTER_DEPRECATED</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">True</span></code><a class="headerlink" href="#confval-CPE_FILTER_DEPRECATED" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CPE_FILTER_DEPRECATED</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">True</span></code><a class="headerlink" href="#confval-CPE_FILTER_DEPRECATED" title="Link to this definition">¶</a></dt>
 <dd><p>Filter out deprecated CPEs.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight sig-wrap std" id="confval-SOURCES">
-<span class="sig-name descname"><span class="pre">SOURCES</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="p">{</span><span class="s1">&#39;cwe&#39;</span><span class="p">:</span> <span class="s1">&#39;https://cwe.mitre.org/data/xml/cwec_latest.xml.zip&#39;</span><span class="p">,</span> <span class="s1">&#39;capec&#39;</span><span class="p">:</span> <span class="s1">&#39;https://capec.mitre.org/data/xml/capec_latest.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;via4&#39;</span><span class="p">:</span> <span class="s1">&#39;https://www.cve-search.org/feeds/via4.json&#39;</span><span class="p">,</span> <span class="s1">&#39;epss&#39;</span><span class="p">:</span> <span class="s1">&#39;https://epss.cyentia.com/epss_scores-current.csv.gz&#39;</span><span class="p">}</span></code><a class="headerlink" href="#confval-SOURCES" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">SOURCES</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><span class="pre">dict</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="p">{</span><span class="s1">&#39;cwe&#39;</span><span class="p">:</span> <span class="s1">&#39;https://cwe.mitre.org/data/xml/cwec_latest.xml.zip&#39;</span><span class="p">,</span> <span class="s1">&#39;capec&#39;</span><span class="p">:</span> <span class="s1">&#39;https://capec.mitre.org/data/xml/capec_latest.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;via4&#39;</span><span class="p">:</span> <span class="s1">&#39;https://www.cve-search.org/feeds/via4.json&#39;</span><span class="p">,</span> <span class="s1">&#39;epss&#39;</span><span class="p">:</span> <span class="s1">&#39;https://epss.cyentia.com/epss_scores-current.csv.gz&#39;</span><span class="p">}</span></code><a class="headerlink" href="#confval-SOURCES" title="Link to this definition">¶</a></dt>
 <dd><p>Dictionary of external source URLs used for populating the database (in addition to NVD API).</p>
 </dd></dl>
 
 <h2 id="nist-nvd-api">NIST NVD API<a class="headerlink" href="#nist-nvd-api" title="Link to this heading">¶</a></h2>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-NVD_NIST_API_KEY">
-<span class="sig-name descname"><span class="pre">NVD_NIST_API_KEY</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-NVD_NIST_API_KEY" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">NVD_NIST_API_KEY</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-NVD_NIST_API_KEY" title="Link to this definition">¶</a></dt>
 <dd><p>You can populate CveXplore without an API key, but it will limit the amount of parallel requests made to the NIST API.</p>
 <p>Request an API key from <a class="reference external" href="https://nvd.nist.gov/developers/request-an-api-key">https://nvd.nist.gov/developers/request-an-api-key</a></p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-NVD_NIST_NO_REJECTED">
-<span class="sig-name descname"><span class="pre">NVD_NIST_NO_REJECTED</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">True</span></code><a class="headerlink" href="#confval-NVD_NIST_NO_REJECTED" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">NVD_NIST_NO_REJECTED</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">True</span></code><a class="headerlink" href="#confval-NVD_NIST_NO_REJECTED" title="Link to this definition">¶</a></dt>
 <dd><p>Do not import rejected CVEs from the NIST NVD API.</p>
 </dd></dl>
 
 <h2 id="downloads">Downloads<a class="headerlink" href="#downloads" title="Link to this heading">¶</a></h2>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-MAX_DOWNLOAD_WORKERS">
-<span class="sig-name descname"><span class="pre">MAX_DOWNLOAD_WORKERS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mi">10</span></code><a class="headerlink" href="#confval-MAX_DOWNLOAD_WORKERS" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">MAX_DOWNLOAD_WORKERS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mi">10</span></code><a class="headerlink" href="#confval-MAX_DOWNLOAD_WORKERS" title="Link to this definition">¶</a></dt>
 <dd><p>Maximum count of file download workers.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-DOWNLOAD_SEM_FACTOR">
-<span class="sig-name descname"><span class="pre">DOWNLOAD_SEM_FACTOR</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mf">0.0</span></code><a class="headerlink" href="#confval-DOWNLOAD_SEM_FACTOR" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DOWNLOAD_SEM_FACTOR</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mf">0.0</span></code><a class="headerlink" href="#confval-DOWNLOAD_SEM_FACTOR" title="Link to this definition">¶</a></dt>
 <dd><p>This factor determines the amount of simultaneous requests made towards the NIST API;
 The set amount of client requests (30) get divided with the sem factor, so the lower
 it is set, the more simultaneous requests are made.</p>
@@ -1228,19 +1228,19 @@ it is set, the more simultaneous requests are made.</p>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-DOWNLOAD_SLEEP_MIN">
-<span class="sig-name descname"><span class="pre">DOWNLOAD_SLEEP_MIN</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mf">0.5</span></code><a class="headerlink" href="#confval-DOWNLOAD_SLEEP_MIN" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DOWNLOAD_SLEEP_MIN</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mf">0.5</span></code><a class="headerlink" href="#confval-DOWNLOAD_SLEEP_MIN" title="Link to this definition">¶</a></dt>
 <dd><p>Minimum time randomized sleep between (aiohttp) requests to NVD API.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-DOWNLOAD_SLEEP_MAX">
-<span class="sig-name descname"><span class="pre">DOWNLOAD_SLEEP_MAX</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mf">2.5</span></code><a class="headerlink" href="#confval-DOWNLOAD_SLEEP_MAX" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DOWNLOAD_SLEEP_MAX</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mf">2.5</span></code><a class="headerlink" href="#confval-DOWNLOAD_SLEEP_MAX" title="Link to this definition">¶</a></dt>
 <dd><p>Minimum time randomized sleep between (aiohttp) requests to NVD API.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-DOWNLOAD_BATCH_RANGE">
-<span class="sig-name descname"><span class="pre">DOWNLOAD_BATCH_RANGE</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-DOWNLOAD_BATCH_RANGE" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DOWNLOAD_BATCH_RANGE</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-DOWNLOAD_BATCH_RANGE" title="Link to this definition">¶</a></dt>
 <dd><p>Count of requests made in the time window of <code class="docutils literal notranslate"><span class="pre">36</span></code> seconds.</p>
 <p>See <a class="reference external" href="https://nvd.nist.gov/general/news/API-Key-Announcement">https://nvd.nist.gov/general/news/API-Key-Announcement</a></p>
 <p>Defaults to <code class="docutils literal notranslate"><span class="pre">45</span></code> if <code class="docutils literal notranslate"><span class="pre">NVD_NIST_API_KEY</span></code> is set, and to <code class="docutils literal notranslate"><span class="pre">5</span></code> without.</p>
@@ -1251,7 +1251,7 @@ it is set, the more simultaneous requests are made.</p>
 <p>As CveXplore is using both urllib3 and aiohttp for the connections, the proxy needs to be configured twice in forms supported by each.</p>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-HTTP_PROXY_DICT">
-<span class="sig-name descname"><span class="pre">HTTP_PROXY_DICT</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="p">{}</span></code><a class="headerlink" href="#confval-HTTP_PROXY_DICT" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">HTTP_PROXY_DICT</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><span class="pre">dict</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="p">{}</span></code><a class="headerlink" href="#confval-HTTP_PROXY_DICT" title="Link to this definition">¶</a></dt>
 <dd><p>Dictionary of proxies used for HTTP &amp; HTTPS connections.</p>
 <p>This is used by urllib3 connections for both NVD API and other sources.</p>
 <p>E.g., <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">&quot;http&quot;:</span> <span class="pre">&quot;http://proxy.example.com:8080&quot;,</span> <span class="pre">&quot;https&quot;:</span> <span class="pre">&quot;http://proxy.example.com:8080&quot;</span> <span class="pre">}</span></code></p>
@@ -1259,7 +1259,7 @@ it is set, the more simultaneous requests are made.</p>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-HTTP_PROXY_STRING">
-<span class="sig-name descname"><span class="pre">HTTP_PROXY_STRING</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;&#39;</span></code><a class="headerlink" href="#confval-HTTP_PROXY_STRING" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">HTTP_PROXY_STRING</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;&#39;</span></code><a class="headerlink" href="#confval-HTTP_PROXY_STRING" title="Link to this definition">¶</a></dt>
 <dd><p>String presentation of the proxy.</p>
 <p>This is used by aiohttp for multiple asynchronous request to NVD API.</p>
 <p>E.g., <code class="docutils literal notranslate"><span class="pre">http://proxy.example.com:8080</span></code></p>
@@ -1268,62 +1268,62 @@ it is set, the more simultaneous requests are made.</p>
 <h2 id="logging">Logging<a class="headerlink" href="#logging" title="Link to this heading">¶</a></h2>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-LOGGING_TO_FILE">
-<span class="sig-name descname"><span class="pre">LOGGING_TO_FILE</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">True</span></code><a class="headerlink" href="#confval-LOGGING_TO_FILE" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">LOGGING_TO_FILE</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">True</span></code><a class="headerlink" href="#confval-LOGGING_TO_FILE" title="Link to this definition">¶</a></dt>
 <dd><p>Use file logging.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-LOGGING_FILE_PATH">
-<span class="sig-name descname"><span class="pre">LOGGING_FILE_PATH</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;$</span><span class="si">{HOME}</span><span class="s1">/.cvexplore/log&#39;</span></code><a class="headerlink" href="#confval-LOGGING_FILE_PATH" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">LOGGING_FILE_PATH</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;$</span><span class="si">{HOME}</span><span class="s1">/.cvexplore/log&#39;</span></code><a class="headerlink" href="#confval-LOGGING_FILE_PATH" title="Link to this definition">¶</a></dt>
 <dd><p>Path for the log directory.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-LOGGING_MAX_FILE_SIZE">
-<span class="sig-name descname"><span class="pre">LOGGING_MAX_FILE_SIZE</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mi">104857600</span></code><a class="headerlink" href="#confval-LOGGING_MAX_FILE_SIZE" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">LOGGING_MAX_FILE_SIZE</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mi">104857600</span></code><a class="headerlink" href="#confval-LOGGING_MAX_FILE_SIZE" title="Link to this definition">¶</a></dt>
 <dd><p>Maximum size for a log file.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-LOGGING_BACKLOG">
-<span class="sig-name descname"><span class="pre">LOGGING_BACKLOG</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mi">5</span></code><a class="headerlink" href="#confval-LOGGING_BACKLOG" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">LOGGING_BACKLOG</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mi">5</span></code><a class="headerlink" href="#confval-LOGGING_BACKLOG" title="Link to this definition">¶</a></dt>
 <dd><p>How many files to keep at log rotate.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-LOGGING_FILE_NAME">
-<span class="sig-name descname"><span class="pre">LOGGING_FILE_NAME</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;./cvexplore.log&#39;</span></code><a class="headerlink" href="#confval-LOGGING_FILE_NAME" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">LOGGING_FILE_NAME</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;./cvexplore.log&#39;</span></code><a class="headerlink" href="#confval-LOGGING_FILE_NAME" title="Link to this definition">¶</a></dt>
 <dd><p>Filename for log file.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-LOGGING_LEVEL">
-<span class="sig-name descname"><span class="pre">LOGGING_LEVEL</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;DEBUG&#39;</span></code><a class="headerlink" href="#confval-LOGGING_LEVEL" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">LOGGING_LEVEL</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;DEBUG&#39;</span></code><a class="headerlink" href="#confval-LOGGING_LEVEL" title="Link to this definition">¶</a></dt>
 <dd><p>Short name of the maximum severity level of messages to be logged in log files.</p>
 <p><code class="docutils literal notranslate"><span class="pre">DEBUG</span> <span class="pre">&gt;</span> <span class="pre">INFO</span> <span class="pre">(</span> <span class="pre">&gt;</span> <span class="pre">NOTICE</span> <span class="pre">&gt;</span> <span class="pre">WARNING</span> <span class="pre">&gt;</span> <span class="pre">ERR</span> <span class="pre">&gt;</span> <span class="pre">CRIT</span> <span class="pre">&gt;</span> <span class="pre">ALERT</span> <span class="pre">&gt;</span> <span class="pre">EMERG</span> <span class="pre">)</span></code></p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-SYSLOG_ENABLE">
-<span class="sig-name descname"><span class="pre">SYSLOG_ENABLE</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">False</span></code><a class="headerlink" href="#confval-SYSLOG_ENABLE" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">SYSLOG_ENABLE</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">False</span></code><a class="headerlink" href="#confval-SYSLOG_ENABLE" title="Link to this definition">¶</a></dt>
 <dd><p>Use syslog logging.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-SYSLOG_SERVER">
-<span class="sig-name descname"><span class="pre">SYSLOG_SERVER</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;172.16.1.1&#39;</span></code><a class="headerlink" href="#confval-SYSLOG_SERVER" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">SYSLOG_SERVER</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;172.16.1.1&#39;</span></code><a class="headerlink" href="#confval-SYSLOG_SERVER" title="Link to this definition">¶</a></dt>
 <dd><p>IP address of the syslog server.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-SYSLOG_PORT">
-<span class="sig-name descname"><span class="pre">SYSLOG_PORT</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mi">5140</span></code><a class="headerlink" href="#confval-SYSLOG_PORT" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">SYSLOG_PORT</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mi">5140</span></code><a class="headerlink" href="#confval-SYSLOG_PORT" title="Link to this definition">¶</a></dt>
 <dd><p>Port of the syslog server.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-SYSLOG_LEVEL">
-<span class="sig-name descname"><span class="pre">SYSLOG_LEVEL</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;DEBUG&#39;</span></code><a class="headerlink" href="#confval-SYSLOG_LEVEL" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">SYSLOG_LEVEL</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;DEBUG&#39;</span></code><a class="headerlink" href="#confval-SYSLOG_LEVEL" title="Link to this definition">¶</a></dt>
 <dd><p>Short name of the maximum severity level of messages to be logged in syslog.</p>
 <p><code class="docutils literal notranslate"><span class="pre">DEBUG</span> <span class="pre">&gt;</span> <span class="pre">INFO</span> <span class="pre">(</span> <span class="pre">&gt;</span> <span class="pre">NOTICE</span> <span class="pre">&gt;</span> <span class="pre">WARNING</span> <span class="pre">&gt;</span> <span class="pre">ERR</span> <span class="pre">&gt;</span> <span class="pre">CRIT</span> <span class="pre">&gt;</span> <span class="pre">ALERT</span> <span class="pre">&gt;</span> <span class="pre">EMERG</span> <span class="pre">)</span></code></p>
 <p>See <a class="reference external" href="https://www.rfc-editor.org/rfc/rfc5424.html#section-6.2.1">https://www.rfc-editor.org/rfc/rfc5424.html#section-6.2.1</a></p>
@@ -1331,7 +1331,7 @@ it is set, the more simultaneous requests are made.</p>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-GELF_SYSLOG">
-<span class="sig-name descname"><span class="pre">GELF_SYSLOG</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">True</span></code><a class="headerlink" href="#confval-GELF_SYSLOG" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">GELF_SYSLOG</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">True</span></code><a class="headerlink" href="#confval-GELF_SYSLOG" title="Link to this definition">¶</a></dt>
 <dd><p>GELF format allows for additional fields to be submitted with each log record; Key values of this dict should
 start with underscores; e.g. {“_environment”: “SPECIAL”} would append an environment field with the value of
 ‘SPECIAL’ to each log record.</p>
@@ -1339,14 +1339,14 @@ start with underscores; e.g. {“_environment”: “SPECIAL”} would append an
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-GELF_SYSLOG_ADDITIONAL_FIELDS">
-<span class="sig-name descname"><span class="pre">GELF_SYSLOG_ADDITIONAL_FIELDS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="p">{}</span></code><a class="headerlink" href="#confval-GELF_SYSLOG_ADDITIONAL_FIELDS" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">GELF_SYSLOG_ADDITIONAL_FIELDS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><span class="pre">dict</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="p">{}</span></code><a class="headerlink" href="#confval-GELF_SYSLOG_ADDITIONAL_FIELDS" title="Link to this definition">¶</a></dt>
 <dd><p>See <a class="reference external" href="https://github.com/keeprocking/pygelf?tab=readme-ov-file#static-fields">https://github.com/keeprocking/pygelf?tab=readme-ov-file#static-fields</a></p>
 </dd></dl>
 
 <h2 id="redis">Redis<a class="headerlink" href="#redis" title="Link to this heading">¶</a></h2>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-REDIS_URL">
-<span class="sig-name descname"><span class="pre">REDIS_URL</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;redis://127.0.0.1:6379/&#39;</span></code><a class="headerlink" href="#confval-REDIS_URL" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">REDIS_URL</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="s1">&#39;redis://127.0.0.1:6379/&#39;</span></code><a class="headerlink" href="#confval-REDIS_URL" title="Link to this definition">¶</a></dt>
 <dd><p>Url to be used for contacting redis cache.</p>
 </dd></dl>
 
@@ -1357,7 +1357,7 @@ start with underscores; e.g. {“_environment”: “SPECIAL”} would append an
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

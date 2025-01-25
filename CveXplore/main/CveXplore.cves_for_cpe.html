@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1095,11 +1095,11 @@
 
 <dl class="py method objdesc">
 <dt class="sig sig-object highlight sig-wrap py">
-<span class="sig-prename descclassname"><span class="pre">CveXplore.</span></span><span class="sig-name descname"><span class="pre">cves_for_cpe</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-cpe_string" title="CveXplore.CveXplore.cves_for_cpe.cpe_string (Python parameter) — CPE string to search for."><span class="n"><span class="pre">cpe_string</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../objects/CveXploreObject.html" title="CveXplore.objects.cvexplore_object.CveXploreObject (Python class) — CveXploreObject is the base object for all database collection objects"><span class="pre">CveXploreObject</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span></span><a class="reference internal" href="../../_modules/CveXplore/main.html#CveXplore.cves_for_cpe"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">CveXplore.</span></span><span class="sig-name descname"><span class="pre">cves_for_cpe</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-cpe_string" title="CveXplore.CveXplore.cves_for_cpe.cpe_string (Python parameter) — CPE string to search for."><span class="n"><span class="pre">cpe_string</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../objects/CveXploreObject.html" title="CveXplore.objects.cvexplore_object.CveXploreObject (Python class) — CveXploreObject is the base object for all database collection objects"><span class="pre">CveXploreObject</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span></span><a class="reference internal" href="../../_modules/CveXplore/main.html#CveXplore.cves_for_cpe"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Method for retrieving Cves that match a single CPE string. By default, the search will be made matching
 the configuration fields of the cves documents.</p>
 <p class="example rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cves</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">cves_for_cpe</span><span class="p">(</span><span class="s2">&quot;cpe:2.3:o:microsoft:windows_7:*:sp1:*:*:*:*:*:*&quot;</span><span class="p">)</span>
 </code></pre></div>
@@ -1107,7 +1107,7 @@ the configuration fields of the cves documents.</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
-<dt id="p-cpe_string"><span class="n sig-name">cpe_string</span><span class="p">:</span><span class="w"> </span><span class="n"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></span></span><a class="headerlink" href="#p-cpe_string" title="Permalink to this definition">¶</a></dt><dd><p>CPE string to search for.</p>
+<dt id="p-cpe_string"><span class="n sig-name">cpe_string</span><span class="p">:</span><span class="w"> </span><span class="n"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></span></span><a class="headerlink" href="#p-cpe_string" title="Permalink to this definition">¶</a></dt><dd><p>CPE string to search for.</p>
 </dd>
 </dl>
 </dd>
@@ -1124,7 +1124,7 @@ the configuration fields of the cves documents.</p>
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

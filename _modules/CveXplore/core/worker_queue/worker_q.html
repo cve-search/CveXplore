@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,17 +595,17 @@
   </a>
 
 <h1>Source code for CveXplore.core.worker_queue.worker_q</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">from</span> <span class="nn">queue</span> <span class="kn">import</span> <span class="n">Empty</span><span class="p">,</span> <span class="n">Queue</span>
+<span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">queue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Empty</span><span class="p">,</span> <span class="n">Queue</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_actions.db_action</span> <span class="kn">import</span> <span class="n">DatabaseAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_actions.db_action</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseAction</span>
 
 
 <div class="viewcode-block" id="WorkerQueue">
 <a class="viewcode-back" href="../../../../CveXplore/core/WorkerQueue.html#CveXplore.core.worker_queue.worker_q.WorkerQueue">[docs]</a>
-<span class="k">class</span> <span class="nc">WorkerQueue</span><span class="p">(</span><span class="n">Queue</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WorkerQueue</span><span class="p">(</span><span class="n">Queue</span><span class="p">):</span>
 <div class="viewcode-block" id="WorkerQueue.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/WorkerQueue.__init__.html#CveXplore.core.worker_queue.worker_q.WorkerQueue.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">maxsize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">maxsize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">maxsize</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maxsize</span> <span class="o">=</span> <span class="n">maxsize</span>
@@ -613,19 +613,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">closed</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">qsize</span><span class="p">()</span>
 
 <div class="viewcode-block" id="WorkerQueue.__repr__">
 <a class="viewcode-back" href="../../../../CveXplore/core/WorkerQueue.__repr__.html#CveXplore.core.worker_queue.worker_q.WorkerQueue.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; WorkerQueue:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -639,13 +639,13 @@
 
 <div class="viewcode-block" id="WorkerQueue.getall">
 <a class="viewcode-back" href="../../../../CveXplore/core/WorkerQueue.getall.html#CveXplore.core.worker_queue.worker_q.WorkerQueue.getall">[docs]</a>
-    <span class="k">def</span> <span class="nf">getall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="WorkerQueue.clear">
 <a class="viewcode-back" href="../../../../CveXplore/core/WorkerQueue.clear.html#CveXplore.core.worker_queue.worker_q.WorkerQueue.clear">[docs]</a>
-    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">not_empty</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">not_full</span><span class="o">.</span><span class="n">notify</span><span class="p">()</span></div>
@@ -658,7 +658,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

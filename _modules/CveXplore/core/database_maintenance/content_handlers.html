@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,20 +595,20 @@
   </a>
 
 <h1>Source code for CveXplore.core.database_maintenance.content_handlers</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">xml.sax.handler</span> <span class="kn">import</span> <span class="n">ContentHandler</span>
+<span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">xml.sax.handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">ContentHandler</span>
 
 
 <div class="viewcode-block" id="CapecHandler">
 <a class="viewcode-back" href="../../../../CveXplore/core/CapecHandler.html#CveXplore.core.database_maintenance.content_handlers.CapecHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">CapecHandler</span><span class="p">(</span><span class="n">ContentHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CapecHandler</span><span class="p">(</span><span class="n">ContentHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class handling the CAPEC XML parsing</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CapecHandler.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/CapecHandler.__init__.html#CveXplore.core.database_maintenance.content_handlers.CapecHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">capec</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Attack_Pattern_Catalog_tag</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Attack_Patterns_tag</span> <span class="o">=</span> <span class="kc">False</span>
@@ -676,7 +676,7 @@
 
 <div class="viewcode-block" id="CapecHandler.startElement">
 <a class="viewcode-back" href="../../../../CveXplore/core/CapecHandler.startElement.html#CveXplore.core.database_maintenance.content_handlers.CapecHandler.startElement">[docs]</a>
-    <span class="k">def</span> <span class="nf">startElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">startElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Attack_Pattern_Catalog&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Attack_Pattern_Catalog_tag</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Attack_Patterns&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">Attack_Pattern_Catalog_tag</span><span class="p">:</span>
@@ -767,7 +767,7 @@
 
 <div class="viewcode-block" id="CapecHandler.characters">
 <a class="viewcode-back" href="../../../../CveXplore/core/CapecHandler.characters.html#CveXplore.core.database_maintenance.content_handlers.CapecHandler.characters">[docs]</a>
-    <span class="k">def</span> <span class="nf">characters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ch</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">characters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ch</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Description_tag</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Summary_ch</span> <span class="o">+=</span> <span class="n">ch</span>
 
@@ -805,7 +805,7 @@
 
 <div class="viewcode-block" id="CapecHandler.endElement">
 <a class="viewcode-back" href="../../../../CveXplore/core/CapecHandler.endElement.html#CveXplore.core.database_maintenance.content_handlers.CapecHandler.endElement">[docs]</a>
-    <span class="k">def</span> <span class="nf">endElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">endElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Description&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">Attack_step_tag</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Summary</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Summary_ch</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Summary_ch</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
@@ -971,14 +971,14 @@
 
 <div class="viewcode-block" id="CWEHandler">
 <a class="viewcode-back" href="../../../../CveXplore/core/CWEHandler.html#CveXplore.core.database_maintenance.content_handlers.CWEHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">CWEHandler</span><span class="p">(</span><span class="n">ContentHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CWEHandler</span><span class="p">(</span><span class="n">ContentHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class handling the CWE XML parsing</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CWEHandler.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/CWEHandler.__init__.html#CveXplore.core.database_maintenance.content_handlers.CWEHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cwe</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">description_tag</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">category_tag</span> <span class="o">=</span> <span class="kc">False</span>
@@ -989,7 +989,7 @@
 
 <div class="viewcode-block" id="CWEHandler.startElement">
 <a class="viewcode-back" href="../../../../CveXplore/core/CWEHandler.startElement.html#CveXplore.core.database_maintenance.content_handlers.CWEHandler.startElement">[docs]</a>
-    <span class="k">def</span> <span class="nf">startElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">startElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Weakness&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">weakness_tag</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">statement</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -1047,14 +1047,14 @@
 
 <div class="viewcode-block" id="CWEHandler.characters">
 <a class="viewcode-back" href="../../../../CveXplore/core/CWEHandler.characters.html#CveXplore.core.database_maintenance.content_handlers.CWEHandler.characters">[docs]</a>
-    <span class="k">def</span> <span class="nf">characters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ch</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">characters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ch</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">description_tag</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">+=</span> <span class="n">ch</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;       &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CWEHandler.endElement">
 <a class="viewcode-back" href="../../../../CveXplore/core/CWEHandler.endElement.html#CveXplore.core.database_maintenance.content_handlers.CWEHandler.endElement">[docs]</a>
-    <span class="k">def</span> <span class="nf">endElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">endElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Description&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">weakness_tag</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">description_tag</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span>
@@ -1084,7 +1084,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

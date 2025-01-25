@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -616,7 +616,7 @@
 
 <span class="c1"># ===== ERRORHANDLER =====</span>
 
-<span class="k">class</span> <span class="nc">ErrorHandler</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ErrorHandler</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Basic interface for SAX error handlers.</span>
 
 <span class="sd">    If you create an object that implements this interface, then</span>
@@ -626,15 +626,15 @@
 <span class="sd">    recoverable errors, and unrecoverable errors. All methods take a</span>
 <span class="sd">    SAXParseException as the only parameter.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception</span><span class="p">):</span>
         <span class="s2">&quot;Handle a recoverable error.&quot;</span>
         <span class="k">raise</span> <span class="n">exception</span>
 
-    <span class="k">def</span> <span class="nf">fatalError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fatalError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception</span><span class="p">):</span>
         <span class="s2">&quot;Handle a non-recoverable error.&quot;</span>
         <span class="k">raise</span> <span class="n">exception</span>
 
-    <span class="k">def</span> <span class="nf">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception</span><span class="p">):</span>
         <span class="s2">&quot;Handle a warning.&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
 
@@ -643,7 +643,7 @@
 
 <div class="viewcode-block" id="ContentHandler">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">ContentHandler</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ContentHandler</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Interface for receiving logical document content events.</span>
 
 <span class="sd">    This is the main callback interface in SAX, and the one most</span>
@@ -652,13 +652,13 @@
 
 <div class="viewcode-block" id="ContentHandler.__init__">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.__init__.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_locator</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="ContentHandler.setDocumentLocator">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.setDocumentLocator.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.setDocumentLocator">[docs]</a>
-    <span class="k">def</span> <span class="nf">setDocumentLocator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setDocumentLocator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Called by the parser to give the application a locator for</span>
 <span class="sd">        locating the origin of document events.</span>
 
@@ -684,7 +684,7 @@
 
 <div class="viewcode-block" id="ContentHandler.startDocument">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.startDocument.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.startDocument">[docs]</a>
-    <span class="k">def</span> <span class="nf">startDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">startDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Receive notification of the beginning of a document.</span>
 
 <span class="sd">        The SAX parser will invoke this method only once, before any</span>
@@ -694,7 +694,7 @@
 
 <div class="viewcode-block" id="ContentHandler.endDocument">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.endDocument.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.endDocument">[docs]</a>
-    <span class="k">def</span> <span class="nf">endDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">endDocument</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Receive notification of the end of a document.</span>
 
 <span class="sd">        The SAX parser will invoke this method only once, and it will</span>
@@ -706,7 +706,7 @@
 
 <div class="viewcode-block" id="ContentHandler.startPrefixMapping">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.startPrefixMapping.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.startPrefixMapping">[docs]</a>
-    <span class="k">def</span> <span class="nf">startPrefixMapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">uri</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">startPrefixMapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">uri</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Begin the scope of a prefix-URI Namespace mapping.</span>
 
 <span class="sd">        The information from this event is not necessary for normal</span>
@@ -732,7 +732,7 @@
 
 <div class="viewcode-block" id="ContentHandler.endPrefixMapping">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.endPrefixMapping.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.endPrefixMapping">[docs]</a>
-    <span class="k">def</span> <span class="nf">endPrefixMapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">endPrefixMapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;End the scope of a prefix-URI mapping.</span>
 
 <span class="sd">        See startPrefixMapping for details. This event will always</span>
@@ -742,7 +742,7 @@
 
 <div class="viewcode-block" id="ContentHandler.startElement">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.startElement.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.startElement">[docs]</a>
-    <span class="k">def</span> <span class="nf">startElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">startElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Signals the start of an element in non-namespace mode.</span>
 
 <span class="sd">        The name parameter contains the raw XML 1.0 name of the</span>
@@ -753,7 +753,7 @@
 
 <div class="viewcode-block" id="ContentHandler.endElement">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.endElement.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.endElement">[docs]</a>
-    <span class="k">def</span> <span class="nf">endElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">endElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Signals the end of an element in non-namespace mode.</span>
 
 <span class="sd">        The name parameter contains the name of the element type, just</span>
@@ -762,7 +762,7 @@
 
 <div class="viewcode-block" id="ContentHandler.startElementNS">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.startElementNS.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.startElementNS">[docs]</a>
-    <span class="k">def</span> <span class="nf">startElementNS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">qname</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">startElementNS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">qname</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Signals the start of an element in namespace mode.</span>
 
 <span class="sd">        The name parameter contains the name of the element type as a</span>
@@ -777,7 +777,7 @@
 
 <div class="viewcode-block" id="ContentHandler.endElementNS">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.endElementNS.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.endElementNS">[docs]</a>
-    <span class="k">def</span> <span class="nf">endElementNS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">qname</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">endElementNS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">qname</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Signals the end of an element in namespace mode.</span>
 
 <span class="sd">        The name parameter contains the name of the element type, just</span>
@@ -786,7 +786,7 @@
 
 <div class="viewcode-block" id="ContentHandler.characters">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.characters.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.characters">[docs]</a>
-    <span class="k">def</span> <span class="nf">characters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">characters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Receive notification of character data.</span>
 
 <span class="sd">        The Parser will call this method to report each chunk of</span>
@@ -799,7 +799,7 @@
 
 <div class="viewcode-block" id="ContentHandler.ignorableWhitespace">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.ignorableWhitespace.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.ignorableWhitespace">[docs]</a>
-    <span class="k">def</span> <span class="nf">ignorableWhitespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">whitespace</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ignorableWhitespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">whitespace</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Receive notification of ignorable whitespace in element content.</span>
 
 <span class="sd">        Validating Parsers must use this method to report each chunk</span>
@@ -816,7 +816,7 @@
 
 <div class="viewcode-block" id="ContentHandler.processingInstruction">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.processingInstruction.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.processingInstruction">[docs]</a>
-    <span class="k">def</span> <span class="nf">processingInstruction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">processingInstruction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Receive notification of a processing instruction.</span>
 
 <span class="sd">        The Parser will invoke this method once for each processing</span>
@@ -830,7 +830,7 @@
 
 <div class="viewcode-block" id="ContentHandler.skippedEntity">
 <a class="viewcode-back" href="../../../CveXplore/core/ContentHandler.skippedEntity.html#CveXplore.core.database_maintenance.content_handlers.ContentHandler.skippedEntity">[docs]</a>
-    <span class="k">def</span> <span class="nf">skippedEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">skippedEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Receive notification of a skipped entity.</span>
 
 <span class="sd">        The Parser will invoke this method once for each entity</span>
@@ -847,29 +847,29 @@
 
 <span class="c1"># ===== DTDHandler =====</span>
 
-<span class="k">class</span> <span class="nc">DTDHandler</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DTDHandler</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle DTD events.</span>
 
 <span class="sd">    This interface specifies only those DTD events required for basic</span>
 <span class="sd">    parsing (unparsed entities and attributes).&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">notationDecl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">publicId</span><span class="p">,</span> <span class="n">systemId</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">notationDecl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">publicId</span><span class="p">,</span> <span class="n">systemId</span><span class="p">):</span>
         <span class="s2">&quot;Handle a notation declaration event.&quot;</span>
 
-    <span class="k">def</span> <span class="nf">unparsedEntityDecl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">publicId</span><span class="p">,</span> <span class="n">systemId</span><span class="p">,</span> <span class="n">ndata</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unparsedEntityDecl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">publicId</span><span class="p">,</span> <span class="n">systemId</span><span class="p">,</span> <span class="n">ndata</span><span class="p">):</span>
         <span class="s2">&quot;Handle an unparsed entity declaration event.&quot;</span>
 
 
 <span class="c1"># ===== ENTITYRESOLVER =====</span>
 
-<span class="k">class</span> <span class="nc">EntityResolver</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EntityResolver</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Basic interface for resolving entities. If you create an object</span>
 <span class="sd">    implementing this interface, then register the object with your</span>
 <span class="sd">    Parser, the parser will call the method in your object to</span>
 <span class="sd">    resolve all external entities. Note that DefaultHandler implements</span>
 <span class="sd">    this interface with the default behaviour.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">resolveEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">publicId</span><span class="p">,</span> <span class="n">systemId</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resolveEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">publicId</span><span class="p">,</span> <span class="n">systemId</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve the system identifier of an entity and return either</span>
 <span class="sd">        the system identifier to read from as a string, or an InputSource</span>
 <span class="sd">        to read from.&quot;&quot;&quot;</span>
@@ -984,7 +984,7 @@
                   <span class="n">property_interning_dict</span><span class="p">]</span>
 
 
-<span class="k">class</span> <span class="nc">LexicalHandler</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LexicalHandler</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Optional SAX2 handler for lexical events.</span>
 
 <span class="sd">    This handler is used to obtain lexical information about an XML</span>
@@ -997,13 +997,13 @@
 <span class="sd">    method with the property identifier</span>
 <span class="sd">    &#39;http://xml.org/sax/properties/lexical-handler&#39;.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">comment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">comment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reports a comment anywhere in the document (including the</span>
 <span class="sd">        DTD and outside the document element).</span>
 
 <span class="sd">        content is a string that holds the contents of the comment.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">startDTD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">public_id</span><span class="p">,</span> <span class="n">system_id</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">startDTD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">public_id</span><span class="p">,</span> <span class="n">system_id</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Report the start of the DTD declarations, if the document</span>
 <span class="sd">        has an associated DTD.</span>
 
@@ -1016,16 +1016,16 @@
 <span class="sd">        and system_id the system identfier of the external subset (or</span>
 <span class="sd">        None if none were supplied).&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">endDTD</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">endDTD</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Signals the end of DTD declarations.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">startCDATA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">startCDATA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reports the beginning of a CDATA marked section.</span>
 
 <span class="sd">        The contents of the CDATA marked section will be reported</span>
 <span class="sd">        through the characters event.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">endCDATA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">endCDATA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reports the end of a CDATA marked section.&quot;&quot;&quot;</span>
 </code></pre></div>
 
@@ -1034,7 +1034,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -830,95 +830,99 @@
 <td><p>FLOAT?</p></td>
 <td><p>CVSS3 of the CVE</p></td>
 </tr>
-<tr class="row-odd"><td><p>cvssSource</p></td>
+<tr class="row-odd"><td><p>cvss4</p></td>
+<td><p>FLOAT?</p></td>
+<td><p>CVSS4 of the CVE</p></td>
+</tr>
+<tr class="row-even"><td><p>cvssSource</p></td>
 <td><p>VARCHAR(50)?</p></td>
 <td><p>Source of the CVSS of the CVE</p></td>
 </tr>
-<tr class="row-even"><td><p>cvssTime</p></td>
+<tr class="row-odd"><td><p>cvssTime</p></td>
 <td><p>DATETIME?</p></td>
 <td><p>Time of the CVSS of the CVE</p></td>
 </tr>
-<tr class="row-odd"><td><p>cvssVector</p></td>
+<tr class="row-even"><td><p>cvssVector</p></td>
 <td><p>VARCHAR(100)?</p></td>
 <td><p>Vector of the CVSS of the CVE</p></td>
 </tr>
-<tr class="row-even"><td><p>configurations</p></td>
+<tr class="row-odd"><td><p>configurations</p></td>
 <td><p>JSON?</p></td>
 <td><p>Vulnerable configurations of the CVE</p></td>
 </tr>
-<tr class="row-odd"><td><p>cwe</p></td>
+<tr class="row-even"><td><p>cwe</p></td>
 <td><p>VARCHAR(50)?</p></td>
 <td><p>Related CWEs to the CVE</p></td>
 </tr>
-<tr class="row-even"><td><p>epss</p></td>
+<tr class="row-odd"><td><p>epss</p></td>
 <td><p>FLOAT?</p></td>
 <td><p>Epss of the CVE</p></td>
 </tr>
-<tr class="row-odd"><td><p>epssMetric</p></td>
+<tr class="row-even"><td><p>epssMetric</p></td>
 <td><p>JSON?</p></td>
 <td><p>Epss metric of the CVE</p></td>
 </tr>
-<tr class="row-even"><td><p>exploitabilityScore</p></td>
+<tr class="row-odd"><td><p>exploitabilityScore</p></td>
 <td><p>FLOAT?</p></td>
 <td><p>Exploitability Score of the CVE</p></td>
 </tr>
-<tr class="row-odd"><td><p>impact</p></td>
+<tr class="row-even"><td><p>impact</p></td>
 <td><p>JSON?</p></td>
 <td><p>Impact of the CVE</p></td>
 </tr>
-<tr class="row-even"><td><p>impactScore</p></td>
+<tr class="row-odd"><td><p>impactScore</p></td>
 <td><p>FLOAT?</p></td>
 <td><p>Impact score of the CVE</p></td>
 </tr>
-<tr class="row-odd"><td><p>lastModified</p></td>
+<tr class="row-even"><td><p>lastModified</p></td>
 <td><p>DATETIME?</p></td>
 <td><p>Last modified time of the CVE</p></td>
 </tr>
-<tr class="row-even"><td><p>modified</p></td>
+<tr class="row-odd"><td><p>modified</p></td>
 <td><p>DATETIME?</p></td>
 <td><p>Modified time of the CVE</p></td>
 </tr>
-<tr class="row-odd"><td><p>products</p></td>
+<tr class="row-even"><td><p>products</p></td>
 <td><p>JSON?</p></td>
 <td><p>Related products to the CVE</p></td>
 </tr>
-<tr class="row-even"><td><p>published</p></td>
+<tr class="row-odd"><td><p>published</p></td>
 <td><p>DATETIME?</p></td>
 <td><p>Published time of the CVE</p></td>
 </tr>
-<tr class="row-odd"><td><p>references</p></td>
+<tr class="row-even"><td><p>references</p></td>
 <td><p>JSON?</p></td>
 <td><p>References associated to the CVE</p></td>
 </tr>
-<tr class="row-even"><td><p>status</p></td>
+<tr class="row-odd"><td><p>status</p></td>
 <td><p>VARCHAR(25)?</p></td>
 <td><p>Status of the CVE</p></td>
 </tr>
-<tr class="row-odd"><td><p>summary</p></td>
+<tr class="row-even"><td><p>summary</p></td>
 <td><p>TEXT?</p></td>
 <td><p>Summary of the CVE</p></td>
 </tr>
-<tr class="row-even"><td><p>vendors</p></td>
+<tr class="row-odd"><td><p>vendors</p></td>
 <td><p>JSON?</p></td>
 <td><p>Related vendors of the CVE</p></td>
 </tr>
-<tr class="row-odd"><td><p>vulnerable_configuration</p></td>
+<tr class="row-even"><td><p>vulnerable_configuration</p></td>
 <td><p>JSON?</p></td>
 <td><p>Vulnerable configurations to the CVE</p></td>
 </tr>
-<tr class="row-even"><td><p>vulnerable_configuration_cpe_2_2</p></td>
+<tr class="row-odd"><td><p>vulnerable_configuration_cpe_2_2</p></td>
 <td><p>JSON?</p></td>
 <td><p>Vulnerable configurations to the CVE</p></td>
 </tr>
-<tr class="row-odd"><td><p>vulnerable_configuration_stems</p></td>
+<tr class="row-even"><td><p>vulnerable_configuration_stems</p></td>
 <td><p>JSON?</p></td>
 <td><p>Vulnerable configuration stems to the CVE</p></td>
 </tr>
-<tr class="row-even"><td><p>vulnerable_product</p></td>
+<tr class="row-odd"><td><p>vulnerable_product</p></td>
 <td><p>JSON?</p></td>
 <td><p>Vulnerable products to the CVE</p></td>
 </tr>
-<tr class="row-odd"><td><p>vulnerable_product_stems</p></td>
+<tr class="row-even"><td><p>vulnerable_product_stems</p></td>
 <td><p>JSON?</p></td>
 <td><p>Vulnerable product stems to the CVE</p></td>
 </tr>
@@ -934,6 +938,7 @@
 <li><p>ix_cves_assigner (assigner)</p></li>
 <li><p>ix_cves_cvss (cvss)</p></li>
 <li><p>ix_cves_cvss3 (cvss3)</p></li>
+<li><p>ix_cves_cvss4 (cvss4)</p></li>
 <li><p>ix_cves_cwe (cwe)</p></li>
 <li><p>ix_cves_epss (epss)</p></li>
 <li><p>ix_cves_id (id)</p></li>
@@ -1044,7 +1049,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

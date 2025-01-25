@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -616,21 +616,21 @@
 <span class="sd">expatreader -- Driver that allows use of the Expat parser with SAX.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">.xmlreader</span> <span class="kn">import</span> <span class="n">InputSource</span>
-<span class="kn">from</span> <span class="nn">.handler</span> <span class="kn">import</span> <span class="n">ContentHandler</span><span class="p">,</span> <span class="n">ErrorHandler</span>
-<span class="kn">from</span> <span class="nn">._exceptions</span> <span class="kn">import</span> <span class="n">SAXException</span><span class="p">,</span> <span class="n">SAXNotRecognizedException</span><span class="p">,</span> \
+<span class="kn">from</span><span class="w"> </span><span class="nn">.xmlreader</span><span class="w"> </span><span class="kn">import</span> <span class="n">InputSource</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">ContentHandler</span><span class="p">,</span> <span class="n">ErrorHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SAXException</span><span class="p">,</span> <span class="n">SAXNotRecognizedException</span><span class="p">,</span> \
                         <span class="n">SAXParseException</span><span class="p">,</span> <span class="n">SAXNotSupportedException</span><span class="p">,</span> \
                         <span class="n">SAXReaderNotAvailable</span>
 
 
-<span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">errorHandler</span><span class="o">=</span><span class="n">ErrorHandler</span><span class="p">()):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">errorHandler</span><span class="o">=</span><span class="n">ErrorHandler</span><span class="p">()):</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">make_parser</span><span class="p">()</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">setContentHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">setErrorHandler</span><span class="p">(</span><span class="n">errorHandler</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">parseString</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">errorHandler</span><span class="o">=</span><span class="n">ErrorHandler</span><span class="p">()):</span>
-    <span class="kn">import</span> <span class="nn">io</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parseString</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">errorHandler</span><span class="o">=</span><span class="n">ErrorHandler</span><span class="p">()):</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
     <span class="k">if</span> <span class="n">errorHandler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">errorHandler</span> <span class="o">=</span> <span class="n">ErrorHandler</span><span class="p">()</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">make_parser</span><span class="p">()</span>
@@ -652,9 +652,9 @@
 <span class="c1"># tell modulefinder that importing sax potentially imports expatreader</span>
 <span class="n">_false</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">if</span> <span class="n">_false</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">xml.sax.expatreader</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">xml.sax.expatreader</span>
 
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">sys</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">ignore_environment</span> <span class="ow">and</span> <span class="s2">&quot;PY_SAX_PARSER&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
     <span class="n">default_parser_list</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PY_SAX_PARSER&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
 <span class="k">del</span> <span class="n">os</span>
@@ -666,7 +666,7 @@
 
 <div class="viewcode-block" id="make_parser">
 <a class="viewcode-back" href="../../CveXplore/core/make_parser.html#CveXplore.core.database_maintenance.sources_process.make_parser">[docs]</a>
-<span class="k">def</span> <span class="nf">make_parser</span><span class="p">(</span><span class="n">parser_list</span><span class="o">=</span><span class="p">()):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_parser</span><span class="p">(</span><span class="n">parser_list</span><span class="o">=</span><span class="p">()):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates and returns a SAX parser.</span>
 
 <span class="sd">    Creates the first parser it is able to instantiate of the ones</span>
@@ -678,7 +678,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_create_parser</span><span class="p">(</span><span class="n">parser_name</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">sys</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
             <span class="k">if</span> <span class="n">parser_name</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
                 <span class="c1"># The parser module was found, but importing it</span>
                 <span class="c1"># failed unexpectedly, pass this exception through</span>
@@ -694,13 +694,13 @@
 <span class="c1"># --- Internal utility methods used by make_parser</span>
 
 <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="p">[</span> <span class="p">:</span> <span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;java&quot;</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">_create_parser</span><span class="p">(</span><span class="n">parser_name</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">org.python.core</span> <span class="kn">import</span> <span class="n">imp</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_parser</span><span class="p">(</span><span class="n">parser_name</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">org.python.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">imp</span>
         <span class="n">drv_module</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">importName</span><span class="p">(</span><span class="n">parser_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">globals</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">drv_module</span><span class="o">.</span><span class="n">create_parser</span><span class="p">()</span>
 
 <span class="k">else</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">_create_parser</span><span class="p">(</span><span class="n">parser_name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_parser</span><span class="p">(</span><span class="n">parser_name</span><span class="p">):</span>
         <span class="n">drv_module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">parser_name</span><span class="p">,{},{},[</span><span class="s1">&#39;create_parser&#39;</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">drv_module</span><span class="o">.</span><span class="n">create_parser</span><span class="p">()</span>
 
@@ -712,7 +712,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

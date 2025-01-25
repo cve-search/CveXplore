@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -593,13 +593,13 @@
 <dt class="sig sig-object highlight sig-wrap py">
 <span class="sig-prename descclassname"><span class="pre">CveXplore.core.database_maintenance.download_handler.</span></span><span class="sig-name descname"><span class="pre">thread_map</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#" title="CveXplore.core.database_maintenance.download_handler.thread_map.fn (Python parameter)"><span class="n"><span class="pre">fn</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span><a class="n reference internal" href="#" title="CveXplore.core.database_maintenance.download_handler.thread_map.iterables (Python parameter)"><span class="n"><span class="pre">iterables</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><a class="n reference internal" href="#" title="CveXplore.core.database_maintenance.download_handler.thread_map.tqdm_kwargs (Python parameter)"><span class="n"><span class="pre">tqdm_kwargs</span></span></a></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tqdm/contrib/concurrent.html#thread_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Equivalent of <code class="xref py py-obj docutils literal notranslate"><span class="pre">list(map(fn,</span> <span class="pre">*iterables))</span></code>
-driven by <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concurrent.futures.ThreadPoolExecutor</span></code></a>.</p>
+driven by <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concurrent.futures.ThreadPoolExecutor</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
 <dt><span class="sig-name descname">tqdm_class</span><span class="p"> : </span><span class="desctype"><span class="desctype">optional</span></span></dt><dd><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tqdm</span></code> class to use for bars [default: tqdm.auto.tqdm].</p>
 </dd>
-<dt><span class="sig-name descname">max_workers</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a>, optional</span></span></dt><dd><p>Maximum number of workers to spawn; passed to
+<dt><span class="sig-name descname">max_workers</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a>, optional</span></span></dt><dd><p>Maximum number of workers to spawn; passed to
 <code class="xref py py-obj docutils literal notranslate"><span class="pre">concurrent.futures.ThreadPoolExecutor.__init__</span></code>.
 [default: max(32, cpu_count() + 4)].</p>
 </dd>
@@ -615,7 +615,7 @@ driven by <a class="reference external" href="https://docs.python.org/3/library/
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,35 +595,36 @@
   </a>
 
 <h1>Source code for redis.client</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">redis._parsers.encoders</span> <span class="kn">import</span> <span class="n">Encoder</span>
-<span class="kn">from</span> <span class="nn">redis._parsers.helpers</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis._parsers.encoders</span><span class="w"> </span><span class="kn">import</span> <span class="n">Encoder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis._parsers.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">_RedisCallbacks</span><span class="p">,</span>
     <span class="n">_RedisCallbacksRESP2</span><span class="p">,</span>
     <span class="n">_RedisCallbacksRESP3</span><span class="p">,</span>
     <span class="n">bool_ok</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">redis.commands</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis.cache</span><span class="w"> </span><span class="kn">import</span> <span class="n">CacheConfig</span><span class="p">,</span> <span class="n">CacheInterface</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis.commands</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CoreCommands</span><span class="p">,</span>
     <span class="n">RedisModuleCommands</span><span class="p">,</span>
     <span class="n">SentinelCommands</span><span class="p">,</span>
     <span class="n">list_or_args</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">redis.connection</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis.connection</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AbstractConnection</span><span class="p">,</span>
     <span class="n">ConnectionPool</span><span class="p">,</span>
     <span class="n">SSLConnection</span><span class="p">,</span>
     <span class="n">UnixDomainSocketConnection</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">redis.credentials</span> <span class="kn">import</span> <span class="n">CredentialProvider</span>
-<span class="kn">from</span> <span class="nn">redis.exceptions</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">CredentialProvider</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="ne">ConnectionError</span><span class="p">,</span>
     <span class="n">ExecAbortError</span><span class="p">,</span>
     <span class="n">PubSubError</span><span class="p">,</span>
@@ -632,9 +633,9 @@
     <span class="ne">TimeoutError</span><span class="p">,</span>
     <span class="n">WatchError</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">redis.lock</span> <span class="kn">import</span> <span class="n">Lock</span>
-<span class="kn">from</span> <span class="nn">redis.retry</span> <span class="kn">import</span> <span class="n">Retry</span>
-<span class="kn">from</span> <span class="nn">redis.utils</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis.lock</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lock</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis.retry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Retry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">HIREDIS_AVAILABLE</span><span class="p">,</span>
     <span class="n">_set_info_logger</span><span class="p">,</span>
     <span class="n">get_lib_version</span><span class="p">,</span>
@@ -649,40 +650,40 @@
 <span class="n">NEVER_DECODE</span> <span class="o">=</span> <span class="s2">&quot;NEVER_DECODE&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">CaseInsensitiveDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CaseInsensitiveDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
     <span class="s2">&quot;Case insensitive dict implementation. Assumes string keys only.&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span> <span class="o">=</span> <span class="n">v</span>
 
-    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">default</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">v</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">CaseInsensitiveDict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">AbstractRedis</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AbstractRedis</span><span class="p">:</span>
     <span class="k">pass</span>
 
 
 <div class="viewcode-block" id="Redis">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.html#CveXplore.core.celery_task_handler.task_handler.Redis">[docs]</a>
-<span class="k">class</span> <span class="nc">Redis</span><span class="p">(</span><span class="n">RedisModuleCommands</span><span class="p">,</span> <span class="n">CoreCommands</span><span class="p">,</span> <span class="n">SentinelCommands</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Redis</span><span class="p">(</span><span class="n">RedisModuleCommands</span><span class="p">,</span> <span class="n">CoreCommands</span><span class="p">,</span> <span class="n">SentinelCommands</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implementation of the Redis protocol.</span>
 
@@ -700,7 +701,7 @@
 <div class="viewcode-block" id="Redis.from_url">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.from_url.html#CveXplore.core.celery_task_handler.task_handler.Redis.from_url">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_url</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Redis&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_url</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Redis&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a Redis client object configured from the given URL</span>
 
@@ -754,7 +755,7 @@
 <div class="viewcode-block" id="Redis.from_pool">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.from_pool.html#CveXplore.core.celery_task_handler.task_handler.Redis.from_pool">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_pool</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_pool</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Redis&quot;</span><span class="p">],</span>
         <span class="n">connection_pool</span><span class="p">:</span> <span class="n">ConnectionPool</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Redis&quot;</span><span class="p">:</span>
@@ -772,7 +773,7 @@
 
 <div class="viewcode-block" id="Redis.__init__">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.__init__.html#CveXplore.core.celery_task_handler.task_handler.Redis.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
         <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">,</span>
@@ -817,6 +818,8 @@
         <span class="n">redis_connect_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">credential_provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CredentialProvider</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">protocol</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CacheInterface</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cache_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CacheConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a new Redis client.</span>
@@ -909,12 +912,26 @@
                             <span class="s2">&quot;ssl_ciphers&quot;</span><span class="p">:</span> <span class="n">ssl_ciphers</span><span class="p">,</span>
                         <span class="p">}</span>
                     <span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">cache_config</span> <span class="ow">or</span> <span class="n">cache</span><span class="p">)</span> <span class="ow">and</span> <span class="n">protocol</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">]:</span>
+                    <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;cache&quot;</span><span class="p">:</span> <span class="n">cache</span><span class="p">,</span>
+                            <span class="s2">&quot;cache_config&quot;</span><span class="p">:</span> <span class="n">cache_config</span><span class="p">,</span>
+                        <span class="p">}</span>
+                    <span class="p">)</span>
             <span class="n">connection_pool</span> <span class="o">=</span> <span class="n">ConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">auto_close_connection_pool</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">auto_close_connection_pool</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span> <span class="o">=</span> <span class="n">connection_pool</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">cache_config</span> <span class="ow">or</span> <span class="n">cache</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_protocol</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">RedisError</span><span class="p">(</span><span class="s2">&quot;Client caching is only supported with RESP version 3&quot;</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">single_connection_client</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
@@ -929,7 +946,7 @@
 
 <div class="viewcode-block" id="Redis.__repr__">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.__repr__.html#CveXplore.core.celery_task_handler.task_handler.Redis.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="p">)</span><span class="si">}</span><span class="s2">)&gt;&quot;</span>
@@ -938,41 +955,41 @@
 
 <div class="viewcode-block" id="Redis.get_encoder">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.get_encoder.html#CveXplore.core.celery_task_handler.task_handler.Redis.get_encoder">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_encoder</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Encoder&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_encoder</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Encoder&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the connection pool&#39;s encoder&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_encoder</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Redis.get_connection_kwargs">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.get_connection_kwargs.html#CveXplore.core.celery_task_handler.task_handler.Redis.get_connection_kwargs">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_connection_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_connection_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the connection&#39;s key-word arguments&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">connection_kwargs</span></div>
 
 
 <div class="viewcode-block" id="Redis.get_retry">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.get_retry.html#CveXplore.core.celery_task_handler.task_handler.Redis.get_retry">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Retry&quot;</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Retry&quot;</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_connection_kwargs</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retry&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Redis.set_retry">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.set_retry.html#CveXplore.core.celery_task_handler.task_handler.Redis.set_retry">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="s2">&quot;Retry&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="s2">&quot;Retry&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_connection_kwargs</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;retry&quot;</span><span class="p">:</span> <span class="n">retry</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">set_retry</span><span class="p">(</span><span class="n">retry</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Redis.set_response_callback">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.set_response_callback.html#CveXplore.core.celery_task_handler.task_handler.Redis.set_response_callback">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_response_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_response_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set a custom Response Callback&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response_callbacks</span><span class="p">[</span><span class="n">command</span><span class="p">]</span> <span class="o">=</span> <span class="n">callback</span></div>
 
 
 <div class="viewcode-block" id="Redis.load_external_module">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.load_external_module.html#CveXplore.core.celery_task_handler.task_handler.Redis.load_external_module">[docs]</a>
-    <span class="k">def</span> <span class="nf">load_external_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">funcname</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_external_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">funcname</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function can be used to add externally defined redis modules,</span>
 <span class="sd">        and their namespaces to the redis client.</span>
@@ -998,7 +1015,7 @@
 
 <div class="viewcode-block" id="Redis.pipeline">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.pipeline.html#CveXplore.core.celery_task_handler.task_handler.Redis.pipeline">[docs]</a>
-    <span class="k">def</span> <span class="nf">pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shard_hint</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Pipeline&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shard_hint</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Pipeline&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a new pipeline object that can queue multiple commands for</span>
 <span class="sd">        later execution. ``transaction`` indicates whether all commands</span>
@@ -1013,7 +1030,7 @@
 
 <div class="viewcode-block" id="Redis.transaction">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.transaction.html#CveXplore.core.celery_task_handler.task_handler.Redis.transaction">[docs]</a>
-    <span class="k">def</span> <span class="nf">transaction</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">transaction</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s2">&quot;Pipeline&quot;</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span> <span class="o">*</span><span class="n">watches</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1040,7 +1057,7 @@
 
 <div class="viewcode-block" id="Redis.lock">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.lock.html#CveXplore.core.celery_task_handler.task_handler.Redis.lock">[docs]</a>
-    <span class="k">def</span> <span class="nf">lock</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">lock</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1117,7 +1134,7 @@
 
 <div class="viewcode-block" id="Redis.pubsub">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.pubsub.html#CveXplore.core.celery_task_handler.task_handler.Redis.pubsub">[docs]</a>
-    <span class="k">def</span> <span class="nf">pubsub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pubsub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a Publish/Subscribe object. With this object, you can</span>
 <span class="sd">        subscribe to channels and listen for messages that get published to</span>
@@ -1128,30 +1145,30 @@
 
 <div class="viewcode-block" id="Redis.monitor">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.monitor.html#CveXplore.core.celery_task_handler.task_handler.Redis.monitor">[docs]</a>
-    <span class="k">def</span> <span class="nf">monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Monitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Redis.client">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.client.html#CveXplore.core.celery_task_handler.task_handler.Redis.client">[docs]</a>
-    <span class="k">def</span> <span class="nf">client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
             <span class="n">connection_pool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="p">,</span> <span class="n">single_connection_client</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Redis.close">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.close.html#CveXplore.core.celery_task_handler.task_handler.Redis.close">[docs]</a>
-    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># In case a connection property does not yet exist</span>
         <span class="c1"># (due to a crash earlier in the Redis() constructor), return</span>
         <span class="c1"># immediately as there is nothing to clean-up.</span>
@@ -1167,14 +1184,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_send_command_parse_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">command_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_send_command_parse_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">command_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send a command and parse the response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">conn</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_response</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">command_name</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_disconnect_raise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_disconnect_raise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Close the connection and raise an exception</span>
 <span class="sd">        if retry_on_error is not set or the error</span>
@@ -1190,12 +1207,15 @@
     <span class="c1"># COMMAND EXECUTION AND PROTOCOL PARSING</span>
 <div class="viewcode-block" id="Redis.execute_command">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.execute_command.html#CveXplore.core.celery_task_handler.task_handler.Redis.execute_command">[docs]</a>
-    <span class="k">def</span> <span class="nf">execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute a command and return a parsed response&quot;&quot;&quot;</span>
         <span class="n">pool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span>
         <span class="n">command_name</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="ow">or</span> <span class="n">pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">command_name</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
-
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">retry</span><span class="o">.</span><span class="n">call_with_retry</span><span class="p">(</span>
                 <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_command_parse_response</span><span class="p">(</span>
@@ -1205,12 +1225,11 @@
             <span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">:</span>
-                <span class="n">pool</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span></div>
-
+                <span class="n">pool</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Redis.parse_response">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.parse_response.html#CveXplore.core.celery_task_handler.task_handler.Redis.parse_response">[docs]</a>
-    <span class="k">def</span> <span class="nf">parse_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">command_name</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">command_name</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses a response from the Redis server&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">NEVER_DECODE</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
@@ -1226,9 +1245,18 @@
         <span class="k">if</span> <span class="n">EMPTY_RESPONSE</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
             <span class="n">options</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">EMPTY_RESPONSE</span><span class="p">)</span>
 
+        <span class="c1"># Remove keys entry, it needs only for cache.</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;keys&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">command_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_callbacks</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_callbacks</span><span class="p">[</span><span class="n">command_name</span><span class="p">](</span><span class="n">response</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span></div>
+
+
+<div class="viewcode-block" id="Redis.get_cache">
+<a class="viewcode-back" href="../../CveXplore/core/Redis.get_cache.html#CveXplore.core.celery_task_handler.task_handler.Redis.get_cache">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CacheInterface</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">cache</span></div>
 </div>
 
 
@@ -1236,7 +1264,7 @@
 <span class="n">StrictRedis</span> <span class="o">=</span> <span class="n">Redis</span>
 
 
-<span class="k">class</span> <span class="nc">Monitor</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Monitor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Monitor is useful for handling the MONITOR command to the redis server.</span>
 <span class="sd">    next_command() method returns one command from monitor</span>
@@ -1246,11 +1274,11 @@
     <span class="n">monitor_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\[(\d+) (.*?)\] (.*)&quot;</span><span class="p">)</span>
     <span class="n">command_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&quot;(.*?)(?&lt;!</span><span class="se">\\</span><span class="s1">)&quot;&#39;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_pool</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_pool</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span> <span class="o">=</span> <span class="n">connection_pool</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="s2">&quot;MONITOR&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s2">&quot;MONITOR&quot;</span><span class="p">)</span>
         <span class="c1"># check that monitor returns &#39;OK&#39;, but don&#39;t return it to user</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">read_response</span><span class="p">()</span>
@@ -1258,11 +1286,11 @@
             <span class="k">raise</span> <span class="n">RedisError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MONITOR failed: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">next_command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">next_command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the response from a monitor command&quot;&quot;&quot;</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">read_response</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
@@ -1297,13 +1325,13 @@
             <span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="n">command</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">listen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">listen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Listen for commands coming to the server.&quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_command</span><span class="p">()</span>
 
 
-<span class="k">class</span> <span class="nc">PubSub</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PubSub</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    PubSub provides publish, subscribe and listen support to Redis channels.</span>
 
@@ -1316,7 +1344,7 @@
     <span class="n">UNSUBSCRIBE_MESSAGE_TYPES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;unsubscribe&quot;</span><span class="p">,</span> <span class="s2">&quot;punsubscribe&quot;</span><span class="p">,</span> <span class="s2">&quot;sunsubscribe&quot;</span><span class="p">)</span>
     <span class="n">HEALTH_CHECK_MESSAGE</span> <span class="o">=</span> <span class="s2">&quot;redis-py-health-check&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">connection_pool</span><span class="p">,</span>
         <span class="n">shard_hint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1344,13 +1372,13 @@
             <span class="n">_set_info_logger</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PubSub&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PubSub&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># if this object went out of scope prior to shutting down</span>
             <span class="c1"># subscriptions, close the connection manually before</span>
@@ -1359,7 +1387,7 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">deregister_connect_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span><span class="p">)</span>
@@ -1374,10 +1402,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pending_unsubscribe_patterns</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subscribed_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="s2">&quot;Re-subscribe to any channels and patterns previously subscribed to&quot;</span>
         <span class="c1"># NOTE: for python3, we can&#39;t pass bytestrings as keyword arguments</span>
         <span class="c1"># so we need to decode channel/pattern names back to unicode strings</span>
@@ -1403,11 +1431,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">ssubscribe</span><span class="p">(</span><span class="o">**</span><span class="n">shard_channels</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">subscribed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">subscribed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Indicates if there are subscriptions to any channels or patterns&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribed_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute a publish/subscribe command&quot;&quot;&quot;</span>
 
         <span class="c1"># NOTE: don&#39;t parse the response in this function -- it could pull a</span>
@@ -1422,14 +1450,14 @@
             <span class="c1"># were listening to when we were disconnected</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">register_connect_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_handler_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">HIREDIS_AVAILABLE</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">set_push_handler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">push_handler_func</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">set_pubsub_push_handler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">push_handler_func</span><span class="p">)</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;check_health&quot;</span><span class="p">:</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribed</span><span class="p">}</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribed</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">clean_health_check_responses</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">connection</span><span class="p">,</span> <span class="n">connection</span><span class="o">.</span><span class="n">send_command</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">clean_health_check_responses</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clean_health_check_responses</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If any health check responses are present, clean them</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1443,11 +1471,11 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">PubSubError</span><span class="p">(</span>
                         <span class="s2">&quot;A non health check response was cleaned by &quot;</span>
-                        <span class="s2">&quot;execute_command: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+                        <span class="s2">&quot;execute_command: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
                     <span class="p">)</span>
             <span class="n">ttl</span> <span class="o">-=</span> <span class="mi">1</span>
 
-    <span class="k">def</span> <span class="nf">_disconnect_raise_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_disconnect_raise_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Close the connection and raise an exception</span>
 <span class="sd">        if retry_on_error is not set or the error is not one</span>
@@ -1462,7 +1490,7 @@
             <span class="k">raise</span> <span class="n">error</span>
         <span class="n">conn</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Connect manually upon disconnection. If the Redis server is down,</span>
 <span class="sd">        this will fail and raise a ConnectionError as desired.</span>
@@ -1475,7 +1503,7 @@
             <span class="k">lambda</span> <span class="n">error</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_raise_connect</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">),</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">parse_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the response from a publish/subscribe command&quot;&quot;&quot;</span>
         <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>
         <span class="k">if</span> <span class="n">conn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1486,7 +1514,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">check_health</span><span class="p">()</span>
 
-        <span class="k">def</span> <span class="nf">try_read</span><span class="p">():</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">try_read</span><span class="p">():</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">block</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">conn</span><span class="o">.</span><span class="n">can_read</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">):</span>
                     <span class="k">return</span> <span class="kc">None</span>
@@ -1502,7 +1530,7 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">response</span>
 
-    <span class="k">def</span> <span class="nf">is_health_check_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_health_check_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check if the response is a health check response.</span>
 <span class="sd">        If there are no subscriptions redis responds to PING command with a</span>
@@ -1513,7 +1541,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">health_check_response_b</span><span class="p">,</span>  <span class="c1"># If there wasn&#39;t</span>
         <span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">check_health</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_health</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>
         <span class="k">if</span> <span class="n">conn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
@@ -1525,7 +1553,7 @@
             <span class="n">conn</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s2">&quot;PING&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">HEALTH_CHECK_MESSAGE</span><span class="p">,</span> <span class="n">check_health</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">health_check_response_counter</span> <span class="o">+=</span> <span class="mi">1</span>
 
-    <span class="k">def</span> <span class="nf">_normalize_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_normalize_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        normalize channel/pattern names to be either bytes or strings</span>
 <span class="sd">        based on whether responses are automatically decoded. this saves us</span>
@@ -1535,7 +1563,7 @@
         <span class="n">decode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">decode</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">decode</span><span class="p">(</span><span class="n">encode</span><span class="p">(</span><span class="n">k</span><span class="p">)):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
-    <span class="k">def</span> <span class="nf">psubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">psubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Subscribe to channel patterns. Patterns supplied as keyword arguments</span>
 <span class="sd">        expect a pattern name as the key and a callable as the value. A</span>
@@ -1561,7 +1589,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pending_unsubscribe_patterns</span><span class="o">.</span><span class="n">difference_update</span><span class="p">(</span><span class="n">new_patterns</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret_val</span>
 
-    <span class="k">def</span> <span class="nf">punsubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">punsubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Unsubscribe from the supplied patterns. If empty, unsubscribe from</span>
 <span class="sd">        all patterns.</span>
@@ -1574,7 +1602,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pending_unsubscribe_patterns</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">patterns</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">(</span><span class="s2">&quot;PUNSUBSCRIBE&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Subscribe to channels. Channels supplied as keyword arguments expect</span>
 <span class="sd">        a channel name as the key and a callable as the value. A channel&#39;s</span>
@@ -1600,7 +1628,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pending_unsubscribe_channels</span><span class="o">.</span><span class="n">difference_update</span><span class="p">(</span><span class="n">new_channels</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret_val</span>
 
-    <span class="k">def</span> <span class="nf">unsubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unsubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Unsubscribe from the supplied channels. If empty, unsubscribe from</span>
 <span class="sd">        all channels</span>
@@ -1613,7 +1641,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pending_unsubscribe_channels</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">(</span><span class="s2">&quot;UNSUBSCRIBE&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">ssubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">target_node</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ssubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">target_node</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Subscribes the client to the specified shard channels.</span>
 <span class="sd">        Channels supplied as keyword arguments expect a channel name as the key</span>
@@ -1639,7 +1667,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pending_unsubscribe_shard_channels</span><span class="o">.</span><span class="n">difference_update</span><span class="p">(</span><span class="n">new_s_channels</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret_val</span>
 
-    <span class="k">def</span> <span class="nf">sunsubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">target_node</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sunsubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">target_node</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Unsubscribe from the supplied shard_channels. If empty, unsubscribe from</span>
 <span class="sd">        all shard_channels</span>
@@ -1652,14 +1680,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pending_unsubscribe_shard_channels</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">s_channels</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">(</span><span class="s2">&quot;SUNSUBSCRIBE&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">listen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">listen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Listen for messages on channels this client has been subscribed to&quot;</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribed</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_message</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_response</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">response</span>
 
-    <span class="k">def</span> <span class="nf">get_message</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_message</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ignore_subscribe_messages</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1690,14 +1718,14 @@
 
     <span class="n">get_sharded_message</span> <span class="o">=</span> <span class="n">get_message</span>
 
-    <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Ping the Redis server</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PING&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">]</span> <span class="k">if</span> <span class="n">message</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;PING&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">handle_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">ignore_subscribe_messages</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">ignore_subscribe_messages</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parses a pub/sub message. If the channel or pattern was subscribed to</span>
 <span class="sd">        with a message handler, the handler is invoked instead of a parsed</span>
@@ -1771,7 +1799,7 @@
 
         <span class="k">return</span> <span class="n">message</span>
 
-    <span class="k">def</span> <span class="nf">run_in_thread</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_in_thread</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">sleep_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
         <span class="n">daemon</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -1796,8 +1824,8 @@
         <span class="k">return</span> <span class="n">thread</span>
 
 
-<span class="k">class</span> <span class="nc">PubSubWorkerThread</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PubSubWorkerThread</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">pubsub</span><span class="p">,</span>
         <span class="n">sleep_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -1813,7 +1841,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">exception_handler</span> <span class="o">=</span> <span class="n">exception_handler</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_running</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_running</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_running</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
@@ -1828,14 +1856,14 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">exception_handler</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">pubsub</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="n">pubsub</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># trip the flag so the run loop exits. the run loop will</span>
         <span class="c1"># close the pubsub connection, which disconnects the socket</span>
         <span class="c1"># and returns the connection to the pool.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_running</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
 
-<span class="k">class</span> <span class="nc">Pipeline</span><span class="p">(</span><span class="n">Redis</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Pipeline</span><span class="p">(</span><span class="n">Redis</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Pipelines provide a way to transmit multiple commands to the Redis server</span>
 <span class="sd">    in one transmission.  This is convenient for batch processing, such as</span>
@@ -1856,7 +1884,7 @@
 
     <span class="n">UNWATCH_COMMANDS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;DISCARD&quot;</span><span class="p">,</span> <span class="s2">&quot;EXEC&quot;</span><span class="p">,</span> <span class="s2">&quot;UNWATCH&quot;</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_pool</span><span class="p">,</span> <span class="n">response_callbacks</span><span class="p">,</span> <span class="n">transaction</span><span class="p">,</span> <span class="n">shard_hint</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_pool</span><span class="p">,</span> <span class="n">response_callbacks</span><span class="p">,</span> <span class="n">transaction</span><span class="p">,</span> <span class="n">shard_hint</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span> <span class="o">=</span> <span class="n">connection_pool</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response_callbacks</span> <span class="o">=</span> <span class="n">response_callbacks</span>
@@ -1866,26 +1894,26 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">watching</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Pipeline&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Pipeline&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">command_stack</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Pipeline instances should always evaluate to True&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">command_stack</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scripts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="c1"># make sure to reset the connection state in the event that we were</span>
@@ -1908,11 +1936,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the pipeline&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">multi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">multi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Start a transactional block of the pipeline after WATCH commands</span>
 <span class="sd">        are issued. End the transactional block with `execute`.</span>
@@ -1925,12 +1953,12 @@
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">explicit_transaction</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">watching</span> <span class="ow">or</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WATCH&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">explicit_transaction</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">immediate_execute_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_execute_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_disconnect_reset_raise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_disconnect_reset_raise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Close the connection, reset watching state and</span>
 <span class="sd">        raise an exception if we were watching,</span>
@@ -1955,7 +1983,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
             <span class="k">raise</span>
 
-    <span class="k">def</span> <span class="nf">immediate_execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">immediate_execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Execute a command immediately, but don&#39;t auto-retry on a</span>
 <span class="sd">        ConnectionError if we&#39;re already WATCHing a variable. Used when</span>
@@ -1976,7 +2004,7 @@
             <span class="k">lambda</span> <span class="n">error</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_reset_raise</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">),</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">pipeline_execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Pipeline&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pipeline_execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Pipeline&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Stage a command to be executed when execute() is next called</span>
 
@@ -1991,7 +2019,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">command_stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">args</span><span class="p">,</span> <span class="n">options</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="nf">_execute_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">commands</span><span class="p">,</span> <span class="n">raise_on_error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_execute_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">commands</span><span class="p">,</span> <span class="n">raise_on_error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
         <span class="n">cmds</span> <span class="o">=</span> <span class="n">chain</span><span class="p">([((</span><span class="s2">&quot;MULTI&quot;</span><span class="p">,),</span> <span class="p">{})],</span> <span class="n">commands</span><span class="p">,</span> <span class="p">[((</span><span class="s2">&quot;EXEC&quot;</span><span class="p">,),</span> <span class="p">{})])</span>
         <span class="n">all_cmds</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">pack_commands</span><span class="p">(</span>
             <span class="p">[</span><span class="n">args</span> <span class="k">for</span> <span class="n">args</span><span class="p">,</span> <span class="n">options</span> <span class="ow">in</span> <span class="n">cmds</span> <span class="k">if</span> <span class="n">EMPTY_RESPONSE</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">]</span>
@@ -2052,13 +2080,15 @@
         <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">commands</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
                 <span class="n">args</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">cmd</span>
+                <span class="c1"># Remove keys entry, it needs only for cache.</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;keys&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="n">command_name</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">command_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_callbacks</span><span class="p">:</span>
                     <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_callbacks</span><span class="p">[</span><span class="n">command_name</span><span class="p">](</span><span class="n">r</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
             <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span>
 
-    <span class="k">def</span> <span class="nf">_execute_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">commands</span><span class="p">,</span> <span class="n">raise_on_error</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_execute_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">commands</span><span class="p">,</span> <span class="n">raise_on_error</span><span class="p">):</span>
         <span class="c1"># build up all commands into a single request to increase network perf</span>
         <span class="n">all_cmds</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">pack_commands</span><span class="p">([</span><span class="n">args</span> <span class="k">for</span> <span class="n">args</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">commands</span><span class="p">])</span>
         <span class="n">connection</span><span class="o">.</span><span class="n">send_packed_command</span><span class="p">(</span><span class="n">all_cmds</span><span class="p">)</span>
@@ -2074,13 +2104,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">raise_first_error</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span>
 
-    <span class="k">def</span> <span class="nf">raise_first_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">commands</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">raise_first_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">commands</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">ResponseError</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">annotate_exception</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">commands</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
                 <span class="k">raise</span> <span class="n">r</span>
 
-    <span class="k">def</span> <span class="nf">annotate_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">annotate_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">safe_str</span><span class="p">,</span> <span class="n">command</span><span class="p">))</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Command # </span><span class="si">{</span><span class="n">number</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">) of pipeline &quot;</span>
@@ -2088,7 +2118,7 @@
         <span class="p">)</span>
         <span class="n">exception</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">msg</span><span class="p">,)</span> <span class="o">+</span> <span class="n">exception</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
-    <span class="k">def</span> <span class="nf">parse_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">command_name</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">command_name</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">Redis</span><span class="o">.</span><span class="n">parse_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">command_name</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">command_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">UNWATCH_COMMANDS</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">watching</span> <span class="o">=</span> <span class="kc">False</span>
@@ -2096,7 +2126,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">watching</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">result</span>
 
-    <span class="k">def</span> <span class="nf">load_scripts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_scripts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># make sure all scripts that are about to be run on this pipeline exist</span>
         <span class="n">scripts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scripts</span><span class="p">)</span>
         <span class="n">immediate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">immediate_execute_command</span>
@@ -2109,7 +2139,7 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">exist</span><span class="p">:</span>
                     <span class="n">s</span><span class="o">.</span><span class="n">sha</span> <span class="o">=</span> <span class="n">immediate</span><span class="p">(</span><span class="s2">&quot;SCRIPT LOAD&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">script</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_disconnect_raise_reset</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_disconnect_raise_reset</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">conn</span><span class="p">:</span> <span class="n">AbstractConnection</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">,</span>
@@ -2137,7 +2167,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
             <span class="k">raise</span> <span class="n">error</span>
 
-    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_on_error</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_on_error</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute all the commands in the current pipeline&quot;&quot;&quot;</span>
         <span class="n">stack</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_stack</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">stack</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">watching</span><span class="p">:</span>
@@ -2164,20 +2194,20 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">discard</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">discard</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Flushes all previously queued commands</span>
 <span class="sd">        See: https://redis.io/commands/DISCARD</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">(</span><span class="s2">&quot;DISCARD&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">watch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">watch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Watches the values at keys ``names``&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">explicit_transaction</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">RedisError</span><span class="p">(</span><span class="s2">&quot;Cannot issue a WATCH after a MULTI&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">(</span><span class="s2">&quot;WATCH&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">unwatch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unwatch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Unwatches all previously specified keys&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">watching</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">(</span><span class="s2">&quot;UNWATCH&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">True</span>
 </code></pre></div>
@@ -2187,7 +2217,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

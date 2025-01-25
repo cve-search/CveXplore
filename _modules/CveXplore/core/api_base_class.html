@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,26 +595,26 @@
   </a>
 
 <h1>Source code for CveXplore.core.api_base_class</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">json</span><span class="w"> </span><span class="kn">import</span> <span class="n">JSONDecodeError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">requests</span> <span class="kn">import</span> <span class="n">Response</span>
-<span class="kn">from</span> <span class="nn">requests.adapters</span> <span class="kn">import</span> <span class="n">HTTPAdapter</span><span class="p">,</span> <span class="n">Retry</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">requests</span><span class="w"> </span><span class="kn">import</span> <span class="n">Response</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">requests.adapters</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPAdapter</span><span class="p">,</span> <span class="n">Retry</span>
 
 
 <div class="viewcode-block" id="ApiBaseClass">
 <a class="viewcode-back" href="../../../CveXplore/core/ApiBaseClass.html#CveXplore.core.api_base_class.ApiBaseClass">[docs]</a>
-<span class="k">class</span> <span class="nc">ApiBaseClass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ApiBaseClass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The GenericApi class serves as a base class for all API&#39;s used within CveXplore</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ApiBaseClass.__init__">
 <a class="viewcode-back" href="../../../CveXplore/core/ApiBaseClass.__init__.html#CveXplore.core.api_base_class.ApiBaseClass.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">baseurl</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">api_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -647,12 +647,12 @@
 
 <div class="viewcode-block" id="ApiBaseClass.__repr__">
 <a class="viewcode-back" href="../../../CveXplore/core/ApiBaseClass.__repr__.html#CveXplore.core.api_base_class.ApiBaseClass.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return a string representation of the obj&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; GenericApi:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">baseurl</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_build_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Internal method to build a url to use when executing commands</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -661,7 +661,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">baseurl</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">resource</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_connect</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">resource</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -739,7 +739,7 @@
 
 <div class="viewcode-block" id="ApiBaseClass.get_session">
 <a class="viewcode-back" href="../../../CveXplore/core/ApiBaseClass.get_session.html#CveXplore.core.api_base_class.ApiBaseClass.get_session">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_session</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_session</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">backoff_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
@@ -766,7 +766,7 @@
 
 <div class="viewcode-block" id="ApiBaseClass.call">
 <a class="viewcode-back" href="../../../CveXplore/core/NvdNistApi.html#CveXplore.core.api_base_class.ApiBaseClass.call">[docs]</a>
-    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">resource</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -799,7 +799,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">__default_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__default_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Property to return the default headers</span>
 
@@ -813,7 +813,7 @@
         <span class="p">}</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">headers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">headers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Property to return the current headers</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -822,7 +822,7 @@
 
 <div class="viewcode-block" id="ApiBaseClass.set_header_field">
 <a class="viewcode-back" href="../../../CveXplore/core/NvdNistApi.html#CveXplore.core.api_base_class.ApiBaseClass.set_header_field">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_header_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_header_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to add a header and set it&#39;s value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -834,7 +834,7 @@
 
 <div class="viewcode-block" id="ApiBaseClass.del_header_field">
 <a class="viewcode-back" href="../../../CveXplore/core/NvdNistApi.html#CveXplore.core.api_base_class.ApiBaseClass.del_header_field">[docs]</a>
-    <span class="k">def</span> <span class="nf">del_header_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">del_header_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to delete a header field</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -846,7 +846,7 @@
 
 <div class="viewcode-block" id="ApiBaseClass.reset_headers">
 <a class="viewcode-back" href="../../../CveXplore/core/NvdNistApi.html#CveXplore.core.api_base_class.ApiBaseClass.reset_headers">[docs]</a>
-    <span class="k">def</span> <span class="nf">reset_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to reset the headers to the default values</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -856,7 +856,7 @@
 
 <div class="viewcode-block" id="ApiBaseClass.clear_headers">
 <a class="viewcode-back" href="../../../CveXplore/core/NvdNistApi.html#CveXplore.core.api_base_class.ApiBaseClass.clear_headers">[docs]</a>
-    <span class="k">def</span> <span class="nf">clear_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to clear the headers and the myheaders to None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -870,7 +870,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

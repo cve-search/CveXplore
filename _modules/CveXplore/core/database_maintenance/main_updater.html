@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,14 +595,14 @@
   </a>
 
 <h1>Source code for CveXplore.core.database_maintenance.main_updater</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_indexer.db_indexer</span> <span class="kn">import</span> <span class="n">DatabaseIndexer</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_maintenance.sources_process</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_indexer.db_indexer</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseIndexer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_maintenance.sources_process</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CPEDownloads</span><span class="p">,</span>
     <span class="n">CVEDownloads</span><span class="p">,</span>
     <span class="n">CWEDownloads</span><span class="p">,</span>
@@ -610,26 +610,26 @@
     <span class="n">VIADownloads</span><span class="p">,</span>
     <span class="n">EPSSDownloads</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_maintenance.update_base_class</span> <span class="kn">import</span> <span class="n">UpdateBaseClass</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_migration.database_migrator</span> <span class="kn">import</span> <span class="n">DatabaseMigrator</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_version.db_version_checker</span> <span class="kn">import</span> <span class="n">DatabaseVersionChecker</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.logging.logger_class</span> <span class="kn">import</span> <span class="n">AppLogger</span>
-<span class="kn">from</span> <span class="nn">CveXplore.database.connection.base.db_connection_base</span> <span class="kn">import</span> <span class="n">DatabaseConnectionBase</span>
-<span class="kn">from</span> <span class="nn">CveXplore.errors</span> <span class="kn">import</span> <span class="n">UpdateSourceNotFound</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_maintenance.update_base_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">UpdateBaseClass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_migration.database_migrator</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseMigrator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_version.db_version_checker</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseVersionChecker</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.logging.logger_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.database.connection.base.db_connection_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseConnectionBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">UpdateSourceNotFound</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">setLoggerClass</span><span class="p">(</span><span class="n">AppLogger</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="MainUpdater">
 <a class="viewcode-back" href="../../../../CveXplore/core/MainUpdater.html#CveXplore.core.database_maintenance.main_updater.MainUpdater">[docs]</a>
-<span class="k">class</span> <span class="nc">MainUpdater</span><span class="p">(</span><span class="n">UpdateBaseClass</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MainUpdater</span><span class="p">(</span><span class="n">UpdateBaseClass</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The MainUpdater class is the main class for performing database database_maintenance tasks</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="MainUpdater.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/MainUpdater.__init__.html#CveXplore.core.database_maintenance.main_updater.MainUpdater.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datasource</span><span class="p">:</span> <span class="n">DatabaseConnectionBase</span><span class="p">,</span> <span class="n">datasource_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datasource</span><span class="p">:</span> <span class="n">DatabaseConnectionBase</span><span class="p">,</span> <span class="n">datasource_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Init a new MainUpdater class</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -656,19 +656,19 @@
 
 <div class="viewcode-block" id="MainUpdater.__repr__">
 <a class="viewcode-back" href="../../../../CveXplore/core/MainUpdater.__repr__.html#CveXplore.core.database_maintenance.main_updater.MainUpdater.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt;MainUpdater&gt;&gt;&quot;</span></div>
 
 
 <div class="viewcode-block" id="MainUpdater.validate_schema">
 <a class="viewcode-back" href="../../../../CveXplore/core/MainUpdater.validate_schema.html#CveXplore.core.database_maintenance.main_updater.MainUpdater.validate_schema">[docs]</a>
-    <span class="k">def</span> <span class="nf">validate_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema_checker</span><span class="o">.</span><span class="n">validate_schema</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="MainUpdater.reset_download_sources_to_default">
 <a class="viewcode-back" href="../../../../CveXplore/core/MainUpdater.reset_download_sources_to_default.html#CveXplore.core.database_maintenance.main_updater.MainUpdater.reset_download_sources_to_default">[docs]</a>
-    <span class="k">def</span> <span class="nf">reset_download_sources_to_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset_download_sources_to_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">sources</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_SOURCES</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">USER_HOME_DIR</span><span class="p">,</span> <span class="s2">&quot;.sources.ini&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -679,7 +679,7 @@
 
 <div class="viewcode-block" id="MainUpdater.update">
 <a class="viewcode-back" href="../../../../CveXplore/core/MainUpdater.update.html#CveXplore.core.database_maintenance.main_updater.MainUpdater.update">[docs]</a>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update_source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update_source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method used for updating the database</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -737,7 +737,7 @@
 
 <div class="viewcode-block" id="MainUpdater.populate">
 <a class="viewcode-back" href="../../../../CveXplore/core/MainUpdater.populate.html#CveXplore.core.database_maintenance.main_updater.MainUpdater.populate">[docs]</a>
-    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">populate_source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">populate_source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method used for updating the database</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -799,7 +799,7 @@
 
 <div class="viewcode-block" id="MainUpdater.initialize">
 <a class="viewcode-back" href="../../../../CveXplore/core/MainUpdater.initialize.html#CveXplore.core.database_maintenance.main_updater.MainUpdater.initialize">[docs]</a>
-    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to initialize a new (fresh) instance of a cvedb database</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -839,7 +839,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

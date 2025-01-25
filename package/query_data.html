@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -713,7 +713,7 @@
 <h2 id="free-format-query">Free format query<a class="headerlink" href="#free-format-query" title="Link to this heading">¶</a></h2>
 <p>Besides this restriction the queries can be free format on given parameters (returning a direct object or a
 list of objects); to get a ‘capec’ with the id of 1 you could use:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">get_single_store_entry</span><span class="p">(</span><span class="s2">&quot;capec&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span>
@@ -722,7 +722,7 @@ list of objects); to get a ‘capec’ with the id of 1 you could use:</p>
 </div>
 <p>The above example is perfect when you would expect a single result from your query; if a query to a single collection
 could yield multiple results you better use:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">get_single_store_entries</span><span class="p">((</span><span class="s2">&quot;cves&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;cvss&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$eq&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">}}))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span>
@@ -740,7 +740,7 @@ could yield multiple results you better use:</p>
 </div>
 <p>This type of query has a default limit of 10; which can be altered to a higher number if needed or disabled by setting
 the limit to 0:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">get_single_store_entries</span><span class="p">((</span><span class="s2">&quot;cves&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;cvss&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$eq&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">}}),</span> <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
@@ -748,7 +748,7 @@ the limit to 0:</p>
 </code></pre></div>
 </div>
 <p>If you need to query multiple collections at once you could use:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">get_multi_store_entries</span><span class="p">([(</span><span class="s2">&quot;CWE&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;78&quot;</span><span class="p">}),</span> <span class="p">(</span><span class="s2">&quot;cves&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;CVE-2009-0018&quot;</span><span class="p">})])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span>
@@ -758,7 +758,7 @@ the limit to 0:</p>
 <h2 id="collection-specific-query">Collection specific query<a class="headerlink" href="#collection-specific-query" title="Link to this heading">¶</a></h2>
 <p>By using the collection specific attributes you can drill down to a specific field to query (returning an iterator to
 iterate over the requested results):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">capec</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
@@ -772,7 +772,7 @@ iterate over the requested results):</p>
 <p>The collection specific find method does not adhere to the default limit of 10</p>
 </div>
 <p>If you would limit (or sort / skip) the returned results you could append additional commands to your original query:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">cves</span><span class="o">.</span><span class="n">cvss</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
@@ -784,7 +784,7 @@ iterate over the requested results):</p>
 </code></pre></div>
 </div>
 <p>If you would like to sort the results:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">cves</span><span class="o">.</span><span class="n">cvss</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">DESCENDING</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
@@ -803,7 +803,7 @@ iterate over the requested results):</p>
 <h2 id="collection-regex-query">Collection Regex query<a class="headerlink" href="#collection-regex-query" title="Link to this heading">¶</a></h2>
 <p>If you would like to perform a regex search; the collection specific attributes have a search method available (returning an iterator to
 iterate over the requested results):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvex</span><span class="o">.</span><span class="n">cves</span><span class="o">.</span><span class="n">assigner</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;eaton\.com$&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
@@ -818,7 +818,7 @@ iterate over the requested results):</p>
 <h2 id="collection-specific-functions">Collection specific functions<a class="headerlink" href="#collection-specific-functions" title="Link to this heading">¶</a></h2>
 <p>Some collections are equipped with specific functions; like the ‘cves’ collection has a function to query cve’s based
 on a given vendor:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">cves</span><span class="o">.</span><span class="n">get_cves_for_vendor</span><span class="p">(</span><span class="s2">&quot;microsoft&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span>
@@ -956,7 +956,7 @@ capecs from the CVE-2018-8540, could be done directly:</p>
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -620,11 +620,11 @@
 <span class="sd">To use, simply &#39;import logging.handlers&#39; and log away!</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">io</span><span class="o">,</span> <span class="nn">logging</span><span class="o">,</span> <span class="nn">socket</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">pickle</span><span class="o">,</span> <span class="nn">struct</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">stat</span> <span class="kn">import</span> <span class="n">ST_DEV</span><span class="p">,</span> <span class="n">ST_INO</span><span class="p">,</span> <span class="n">ST_MTIME</span>
-<span class="kn">import</span> <span class="nn">queue</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span><span class="o">,</span><span class="w"> </span><span class="nn">logging</span><span class="o">,</span><span class="w"> </span><span class="nn">socket</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">pickle</span><span class="o">,</span><span class="w"> </span><span class="nn">struct</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">stat</span><span class="w"> </span><span class="kn">import</span> <span class="n">ST_DEV</span><span class="p">,</span> <span class="n">ST_INO</span><span class="p">,</span> <span class="n">ST_MTIME</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">queue</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 
 <span class="c1">#</span>
 <span class="c1"># Some constants...</span>
@@ -639,7 +639,7 @@
 
 <span class="n">_MIDNIGHT</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span>  <span class="c1"># number of seconds in a day</span>
 
-<span class="k">class</span> <span class="nc">BaseRotatingHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseRotatingHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base class for handlers that rotate log files at a certain point.</span>
 <span class="sd">    Not meant to be instantiated directly.  Instead, use RotatingFileHandler</span>
@@ -648,7 +648,7 @@
     <span class="n">namer</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">rotator</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Use the specified filename for streamed logging</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -659,7 +659,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">encoding</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="n">errors</span>
 
-    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Emit a record.</span>
 
@@ -673,7 +673,7 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">handleError</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">rotation_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rotation_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Modify the filename of a log file when rotating.</span>
 
@@ -692,7 +692,7 @@
             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">namer</span><span class="p">(</span><span class="n">default_name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 
-    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        When rotating, rotate the current log.</span>
 
@@ -715,14 +715,14 @@
 
 <div class="viewcode-block" id="RotatingFileHandler">
 <a class="viewcode-back" href="../../CveXplore/core/RotatingFileHandler.html#CveXplore.core.logging.handlers.cve_explore_rfh.RotatingFileHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">RotatingFileHandler</span><span class="p">(</span><span class="n">BaseRotatingHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RotatingFileHandler</span><span class="p">(</span><span class="n">BaseRotatingHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Handler for logging to a set of files, which switches from one file</span>
 <span class="sd">    to the next when the current file reaches a certain size.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="RotatingFileHandler.__init__">
 <a class="viewcode-back" href="../../CveXplore/core/RotatingFileHandler.__init__.html#CveXplore.core.logging.handlers.cve_explore_rfh.RotatingFileHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">maxBytes</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">backupCount</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">maxBytes</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">backupCount</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                  <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Open the specified file and use it as the stream for logging.</span>
@@ -761,7 +761,7 @@
 
 <div class="viewcode-block" id="RotatingFileHandler.doRollover">
 <a class="viewcode-back" href="../../CveXplore/core/RotatingFileHandler.doRollover.html#CveXplore.core.logging.handlers.cve_explore_rfh.RotatingFileHandler.doRollover">[docs]</a>
-    <span class="k">def</span> <span class="nf">doRollover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">doRollover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Do a rollover, as described in __init__().</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -787,7 +787,7 @@
 
 <div class="viewcode-block" id="RotatingFileHandler.shouldRollover">
 <a class="viewcode-back" href="../../CveXplore/core/RotatingFileHandler.shouldRollover.html#CveXplore.core.logging.handlers.cve_explore_rfh.RotatingFileHandler.shouldRollover">[docs]</a>
-    <span class="k">def</span> <span class="nf">shouldRollover</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shouldRollover</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine if rollover should occur.</span>
 
@@ -808,7 +808,7 @@
 </div>
 
 
-<span class="k">class</span> <span class="nc">TimedRotatingFileHandler</span><span class="p">(</span><span class="n">BaseRotatingHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TimedRotatingFileHandler</span><span class="p">(</span><span class="n">BaseRotatingHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Handler for logging to a file, rotating the log file at certain timed</span>
 <span class="sd">    intervals.</span>
@@ -816,7 +816,7 @@
 <span class="sd">    If backupCount is &gt; 0, when rollover is done, no more than backupCount</span>
 <span class="sd">    files are kept - the oldest ones are deleted.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">backupCount</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">backupCount</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                  <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">utc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">atTime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">encoding</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">text_encoding</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span>
@@ -877,7 +877,7 @@
             <span class="n">t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rolloverAt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">computeRollover</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">computeRollover</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">currentTime</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">computeRollover</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">currentTime</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Work out the rollover time based on the specified time.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -950,7 +950,7 @@
                     <span class="n">result</span> <span class="o">=</span> <span class="n">newRolloverAt</span>
         <span class="k">return</span> <span class="n">result</span>
 
-    <span class="k">def</span> <span class="nf">shouldRollover</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shouldRollover</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine if rollover should occur.</span>
 
@@ -969,7 +969,7 @@
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">getFilesToDelete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getFilesToDelete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine the files to delete when rolling over.</span>
 
@@ -1011,7 +1011,7 @@
             <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">backupCount</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">result</span>
 
-    <span class="k">def</span> <span class="nf">doRollover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">doRollover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        do a rollover; in this case, a date/time stamp is appended to the filename</span>
 <span class="sd">        when the rollover happens.  However, you want the file to be named for the</span>
@@ -1061,7 +1061,7 @@
                 <span class="n">newRolloverAt</span> <span class="o">+=</span> <span class="n">addend</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rolloverAt</span> <span class="o">=</span> <span class="n">newRolloverAt</span>
 
-<span class="k">class</span> <span class="nc">WatchedFileHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WatchedFileHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A handler for logging to a file, which watches the file</span>
 <span class="sd">    to see if it has changed while in use. This can happen because of</span>
@@ -1081,7 +1081,7 @@
 <span class="sd">    This handler is based on a suggestion and patch by Chad J.</span>
 <span class="sd">    Schroeder.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">:</span>
             <span class="n">encoding</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">text_encoding</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span>
@@ -1091,12 +1091,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dev</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ino</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_statstream</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_statstream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_statstream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">:</span>
             <span class="n">sres</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fstat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dev</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ino</span> <span class="o">=</span> <span class="n">sres</span><span class="p">[</span><span class="n">ST_DEV</span><span class="p">],</span> <span class="n">sres</span><span class="p">[</span><span class="n">ST_INO</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">reopenIfNeeded</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reopenIfNeeded</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reopen log file if needed.</span>
 
@@ -1124,7 +1124,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_statstream</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Emit a record.</span>
 
@@ -1135,7 +1135,7 @@
         <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">SocketHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SocketHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A handler class which writes logging records, in pickle format, to</span>
 <span class="sd">    a streaming socket. The socket is kept open across logging calls.</span>
@@ -1148,7 +1148,7 @@
 <span class="sd">    makeLogRecord function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes the handler with a specific host address and port.</span>
 
@@ -1173,7 +1173,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">retryMax</span> <span class="o">=</span> <span class="mf">30.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">retryFactor</span> <span class="o">=</span> <span class="mf">2.0</span>
 
-    <span class="k">def</span> <span class="nf">makeSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">makeSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A factory method which allows subclasses to define the precise</span>
 <span class="sd">        type of socket they want.</span>
@@ -1190,7 +1190,7 @@
                 <span class="k">raise</span>
         <span class="k">return</span> <span class="n">result</span>
 
-    <span class="k">def</span> <span class="nf">createSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">createSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Try to create a socket, using an exponential backoff with</span>
 <span class="sd">        a max retry time. Thanks to Robert Olson for the original patch</span>
@@ -1218,7 +1218,7 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">retryPeriod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">retryMax</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">retryTime</span> <span class="o">=</span> <span class="n">now</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">retryPeriod</span>
 
-    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send a pickled string to the socket.</span>
 
@@ -1239,7 +1239,7 @@
 
 <div class="viewcode-block" id="SocketHandler.makePickle">
 <a class="viewcode-back" href="../../CveXplore/core/SocketHandler.makePickle.html#CveXplore.core.logging.handlers.cve_explore_rfh.SocketHandler.makePickle">[docs]</a>
-    <span class="k">def</span> <span class="nf">makePickle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">makePickle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Pickles the record in binary format with a length prefix, and</span>
 <span class="sd">        returns it ready for transmission across the socket.</span>
@@ -1262,7 +1262,7 @@
         <span class="k">return</span> <span class="n">slen</span> <span class="o">+</span> <span class="n">s</span></div>
 
 
-    <span class="k">def</span> <span class="nf">handleError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">handleError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle an error during logging.</span>
 
@@ -1276,7 +1276,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="o">.</span><span class="n">handleError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Emit a record.</span>
 
@@ -1291,7 +1291,7 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">handleError</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Closes the socket.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1305,7 +1305,7 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
 
-<span class="k">class</span> <span class="nc">DatagramHandler</span><span class="p">(</span><span class="n">SocketHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DatagramHandler</span><span class="p">(</span><span class="n">SocketHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A handler class which writes logging records, in pickle format, to</span>
 <span class="sd">    a datagram socket.  The pickle which is sent is that of the LogRecord&#39;s</span>
@@ -1316,14 +1316,14 @@
 <span class="sd">    makeLogRecord function.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes the handler with a specific host address and port.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">SocketHandler</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">closeOnError</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">makeSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">makeSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The factory method of SocketHandler is here overridden to create</span>
 <span class="sd">        a UDP socket (SOCK_DGRAM).</span>
@@ -1335,7 +1335,7 @@
         <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">family</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">s</span>
 
-    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send a pickled string to a socket.</span>
 
@@ -1349,7 +1349,7 @@
 
 <div class="viewcode-block" id="SysLogHandler">
 <a class="viewcode-back" href="../../CveXplore/core/SysLogHandler.html#CveXplore.core.logging.handlers.cve_explore_rfh.SysLogHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">SysLogHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SysLogHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A handler class which sends formatted logging records to a syslog</span>
 <span class="sd">    server. Based on Sam Rushing&#39;s syslog module:</span>
@@ -1461,7 +1461,7 @@
 
 <div class="viewcode-block" id="SysLogHandler.__init__">
 <a class="viewcode-back" href="../../CveXplore/core/SysLogHandler.__init__.html#CveXplore.core.logging.handlers.cve_explore_rfh.SysLogHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">SYSLOG_UDP_PORT</span><span class="p">),</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">SYSLOG_UDP_PORT</span><span class="p">),</span>
                  <span class="n">facility</span><span class="o">=</span><span class="n">LOG_USER</span><span class="p">,</span> <span class="n">socktype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a handler.</span>
@@ -1516,7 +1516,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">socktype</span> <span class="o">=</span> <span class="n">socktype</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_connect_unixsocket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_connect_unixsocket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
         <span class="n">use_socktype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socktype</span>
         <span class="k">if</span> <span class="n">use_socktype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">use_socktype</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span>
@@ -1542,7 +1542,7 @@
 
 <div class="viewcode-block" id="SysLogHandler.encodePriority">
 <a class="viewcode-back" href="../../CveXplore/core/SysLogHandler.encodePriority.html#CveXplore.core.logging.handlers.cve_explore_rfh.SysLogHandler.encodePriority">[docs]</a>
-    <span class="k">def</span> <span class="nf">encodePriority</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">facility</span><span class="p">,</span> <span class="n">priority</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">encodePriority</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">facility</span><span class="p">,</span> <span class="n">priority</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Encode the facility and priority. You can pass in strings or</span>
 <span class="sd">        integers - if strings are passed, the facility_names and</span>
@@ -1558,7 +1558,7 @@
 
 <div class="viewcode-block" id="SysLogHandler.close">
 <a class="viewcode-back" href="../../CveXplore/core/SysLogHandler.close.html#CveXplore.core.logging.handlers.cve_explore_rfh.SysLogHandler.close">[docs]</a>
-    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Closes the socket.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1572,7 +1572,7 @@
 
 <div class="viewcode-block" id="SysLogHandler.mapPriority">
 <a class="viewcode-back" href="../../CveXplore/core/SysLogHandler.mapPriority.html#CveXplore.core.logging.handlers.cve_explore_rfh.SysLogHandler.mapPriority">[docs]</a>
-    <span class="k">def</span> <span class="nf">mapPriority</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">levelName</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mapPriority</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">levelName</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Map a logging level name to a key in the priority_names map.</span>
 <span class="sd">        This is useful in two scenarios: when custom levels are being</span>
@@ -1588,7 +1588,7 @@
 
 <div class="viewcode-block" id="SysLogHandler.emit">
 <a class="viewcode-back" href="../../CveXplore/core/SysLogHandler.emit.html#CveXplore.core.logging.handlers.cve_explore_rfh.SysLogHandler.emit">[docs]</a>
-    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Emit a record.</span>
 
@@ -1626,11 +1626,11 @@
 </div>
 
 
-<span class="k">class</span> <span class="nc">SMTPHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SMTPHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A handler class which sends an SMTP email for each logging event.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mailhost</span><span class="p">,</span> <span class="n">fromaddr</span><span class="p">,</span> <span class="n">toaddrs</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mailhost</span><span class="p">,</span> <span class="n">fromaddr</span><span class="p">,</span> <span class="n">toaddrs</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span>
                  <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">secure</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">5.0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the handler.</span>
@@ -1665,7 +1665,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">secure</span> <span class="o">=</span> <span class="n">secure</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
 
-    <span class="k">def</span> <span class="nf">getSubject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getSubject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine the subject for the email.</span>
 
@@ -1674,16 +1674,16 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span>
 
-    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Emit a record.</span>
 
 <span class="sd">        Format the record and send it to the specified addressees.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">smtplib</span>
-            <span class="kn">from</span> <span class="nn">email.message</span> <span class="kn">import</span> <span class="n">EmailMessage</span>
-            <span class="kn">import</span> <span class="nn">email.utils</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">smtplib</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">email.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmailMessage</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">email.utils</span>
 
             <span class="n">port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mailport</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">port</span><span class="p">:</span>
@@ -1706,7 +1706,7 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">handleError</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">NTEventLogHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NTEventLogHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A handler class which sends events to the NT Event Log. Adds a</span>
 <span class="sd">    registry entry for the specified application name. If no dllname is</span>
@@ -1716,10 +1716,10 @@
 <span class="sd">    If you want slimmer logs, you have to pass in the name of your own DLL</span>
 <span class="sd">    which contains the message definitions you want to use in the event log.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">appname</span><span class="p">,</span> <span class="n">dllname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">logtype</span><span class="o">=</span><span class="s2">&quot;Application&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">appname</span><span class="p">,</span> <span class="n">dllname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">logtype</span><span class="o">=</span><span class="s2">&quot;Application&quot;</span><span class="p">):</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">win32evtlogutil</span><span class="o">,</span> <span class="nn">win32evtlog</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">win32evtlogutil</span><span class="o">,</span><span class="w"> </span><span class="nn">win32evtlog</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">appname</span> <span class="o">=</span> <span class="n">appname</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_welu</span> <span class="o">=</span> <span class="n">win32evtlogutil</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">dllname</span><span class="p">:</span>
@@ -1751,7 +1751,7 @@
                         <span class="s2">&quot;logging) appear not to be available.&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_welu</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">getMessageID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getMessageID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the message ID for the event record. If you are using your</span>
 <span class="sd">        own messages, you could do this by having the msg passed to the</span>
@@ -1761,7 +1761,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mi">1</span>
 
-    <span class="k">def</span> <span class="nf">getEventCategory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getEventCategory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the event category for the record.</span>
 
@@ -1770,7 +1770,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">getEventType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getEventType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the event type for the record.</span>
 
@@ -1783,7 +1783,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">typemap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">levelno</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">deftype</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Emit a record.</span>
 
@@ -1800,7 +1800,7 @@
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">handleError</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Clean up this handler.</span>
 
@@ -1813,12 +1813,12 @@
         <span class="c1">#self._welu.RemoveSourceFromRegistry(self.appname, self.logtype)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">HTTPHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">HTTPHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class which sends records to a web server, using either GET or</span>
 <span class="sd">    POST semantics.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">secure</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">secure</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the instance with the host, the request URL, and the method</span>
@@ -1838,7 +1838,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span> <span class="o">=</span> <span class="n">credentials</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
 
-    <span class="k">def</span> <span class="nf">mapLogRecord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mapLogRecord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Default implementation of mapping the log record into a dict</span>
 <span class="sd">        that is sent as the CGI data. Overwrite in your class.</span>
@@ -1846,28 +1846,28 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">record</span><span class="o">.</span><span class="vm">__dict__</span>
 
-    <span class="k">def</span> <span class="nf">getConnection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">secure</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getConnection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">secure</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        get a HTTP[S]Connection.</span>
 
 <span class="sd">        Override when a custom connection is required, for example if</span>
 <span class="sd">        there is a proxy.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">http.client</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">http.client</span>
         <span class="k">if</span> <span class="n">secure</span><span class="p">:</span>
             <span class="n">connection</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">connection</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">HTTPConnection</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">connection</span>
 
-    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Emit a record.</span>
 
 <span class="sd">        Send the record to the web server as a percent-encoded dictionary</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">urllib.parse</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">urllib.parse</span>
             <span class="n">host</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span>
             <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getConnection</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">secure</span><span class="p">)</span>
             <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span>
@@ -1892,7 +1892,7 @@
                             <span class="s2">&quot;application/x-www-form-urlencoded&quot;</span><span class="p">)</span>
                 <span class="n">h</span><span class="o">.</span><span class="n">putheader</span><span class="p">(</span><span class="s2">&quot;Content-length&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">:</span>
-                <span class="kn">import</span> <span class="nn">base64</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
                 <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
                 <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Basic &#39;</span> <span class="o">+</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
                 <span class="n">h</span><span class="o">.</span><span class="n">putheader</span><span class="p">(</span><span class="s1">&#39;Authorization&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
@@ -1903,13 +1903,13 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">handleError</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">BufferingHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BufferingHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">  A handler class which buffers logging records in memory. Whenever each</span>
 <span class="sd">  record is added to the buffer, a check is made to see if the buffer should</span>
 <span class="sd">  be flushed. If it should, then flush() is expected to do what&#39;s needed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capacity</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capacity</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the handler with the buffer size.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1917,7 +1917,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="n">capacity</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">shouldFlush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shouldFlush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Should the handler flush its buffer?</span>
 
@@ -1926,7 +1926,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Emit a record.</span>
 
@@ -1937,7 +1937,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shouldFlush</span><span class="p">(</span><span class="n">record</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Override to implement custom flushing behaviour.</span>
 
@@ -1949,7 +1949,7 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Close the handler.</span>
 
@@ -1960,13 +1960,13 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">MemoryHandler</span><span class="p">(</span><span class="n">BufferingHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MemoryHandler</span><span class="p">(</span><span class="n">BufferingHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A handler class which buffers logging records in memory, periodically</span>
 <span class="sd">    flushing them to a target handler. Flushing occurs whenever the buffer</span>
 <span class="sd">    is full, or when an event of a certain severity or greater is seen.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">flushLevel</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">flushLevel</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">flushOnClose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the handler with the buffer size, the level at which</span>
@@ -1986,14 +1986,14 @@
         <span class="c1"># See Issue #26559 for why this has been added</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">flushOnClose</span> <span class="o">=</span> <span class="n">flushOnClose</span>
 
-    <span class="k">def</span> <span class="nf">shouldFlush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shouldFlush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check for buffer full or a record at the flushLevel or higher.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">)</span> <span class="ow">or</span> \
                 <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">levelno</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flushLevel</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">setTarget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setTarget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the target handler for this handler.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2003,7 +2003,7 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        For a MemoryHandler, flushing means just sending the buffered</span>
 <span class="sd">        records to the target, if there is one. Override if you want</span>
@@ -2020,7 +2020,7 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Flush, if appropriately configured, set the target to None and lose the</span>
 <span class="sd">        buffer.</span>
@@ -2037,7 +2037,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
 
 
-<span class="k">class</span> <span class="nc">QueueHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">QueueHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This handler sends events to a queue. Typically, it would be used together</span>
 <span class="sd">    with a multiprocessing Queue to centralise logging to file in one process</span>
@@ -2048,14 +2048,14 @@
 <span class="sd">    user code for use with earlier Python versions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialise an instance, using the passed queue.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">queue</span>
 
-    <span class="k">def</span> <span class="nf">enqueue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enqueue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Enqueue a record.</span>
 
@@ -2065,7 +2065,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put_nowait</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Prepares a record for queuing. The object returned by this method is</span>
 <span class="sd">        enqueued.</span>
@@ -2095,7 +2095,7 @@
         <span class="n">record</span><span class="o">.</span><span class="n">stack_info</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">record</span>
 
-    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Emit a record.</span>
 
@@ -2107,7 +2107,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">handleError</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">QueueListener</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">QueueListener</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class implements an internal threaded listener which watches for</span>
 <span class="sd">    LogRecords being added to a queue, removes them and passes them to a</span>
@@ -2115,7 +2115,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_sentinel</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="o">*</span><span class="n">handlers</span><span class="p">,</span> <span class="n">respect_handler_level</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="o">*</span><span class="n">handlers</span><span class="p">,</span> <span class="n">respect_handler_level</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialise an instance with the specified queue and</span>
 <span class="sd">        handlers.</span>
@@ -2125,7 +2125,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">respect_handler_level</span> <span class="o">=</span> <span class="n">respect_handler_level</span>
 
-    <span class="k">def</span> <span class="nf">dequeue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dequeue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Dequeue a record and return it, optionally blocking.</span>
 
@@ -2134,7 +2134,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Start the listener.</span>
 
@@ -2145,7 +2145,7 @@
         <span class="n">t</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Prepare a record for handling.</span>
 
@@ -2155,7 +2155,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">record</span>
 
-    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle a record.</span>
 
@@ -2171,7 +2171,7 @@
             <span class="k">if</span> <span class="n">process</span><span class="p">:</span>
                 <span class="n">handler</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Monitor the queue for records, and ask the handler</span>
 <span class="sd">        to deal with them.</span>
@@ -2194,7 +2194,7 @@
             <span class="k">except</span> <span class="n">queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
                 <span class="k">break</span>
 
-    <span class="k">def</span> <span class="nf">enqueue_sentinel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enqueue_sentinel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is used to enqueue the sentinel record.</span>
 
@@ -2204,7 +2204,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put_nowait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sentinel</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Stop the listener.</span>
 
@@ -2222,7 +2222,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

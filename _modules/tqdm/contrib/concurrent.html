@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -598,19 +598,19 @@
 <span></span><code><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Thin wrappers around `concurrent.futures`.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
-<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">length_hint</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">cpu_count</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">length_hint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">cpu_count</span>
 
-<span class="kn">from</span> <span class="nn">..auto</span> <span class="kn">import</span> <span class="n">tqdm</span> <span class="k">as</span> <span class="n">tqdm_auto</span>
-<span class="kn">from</span> <span class="nn">..std</span> <span class="kn">import</span> <span class="n">TqdmWarning</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..auto</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span> <span class="k">as</span> <span class="n">tqdm_auto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..std</span><span class="w"> </span><span class="kn">import</span> <span class="n">TqdmWarning</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;github.com/&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;casperdcl&quot;</span><span class="p">]}</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;thread_map&#39;</span><span class="p">,</span> <span class="s1">&#39;process_map&#39;</span><span class="p">]</span>
 
 
 <span class="nd">@contextmanager</span>
-<span class="k">def</span> <span class="nf">ensure_lock</span><span class="p">(</span><span class="n">tqdm_class</span><span class="p">,</span> <span class="n">lock_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_lock</span><span class="p">(</span><span class="n">tqdm_class</span><span class="p">,</span> <span class="n">lock_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;get (create if necessary) and then restore `tqdm_class`&#39;s lock&quot;&quot;&quot;</span>
     <span class="n">old_lock</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tqdm_class</span><span class="p">,</span> <span class="s1">&#39;_lock&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># don&#39;t create a new lock</span>
     <span class="n">lock</span> <span class="o">=</span> <span class="n">old_lock</span> <span class="ow">or</span> <span class="n">tqdm_class</span><span class="o">.</span><span class="n">get_lock</span><span class="p">()</span>  <span class="c1"># maybe create a new lock</span>
@@ -623,7 +623,7 @@
         <span class="n">tqdm_class</span><span class="o">.</span><span class="n">set_lock</span><span class="p">(</span><span class="n">old_lock</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_executor_map</span><span class="p">(</span><span class="n">PoolExecutor</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">iterables</span><span class="p">,</span> <span class="o">**</span><span class="n">tqdm_kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_executor_map</span><span class="p">(</span><span class="n">PoolExecutor</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">iterables</span><span class="p">,</span> <span class="o">**</span><span class="n">tqdm_kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implementation of `thread_map` and `process_map`.</span>
 
@@ -650,7 +650,7 @@
 
 <div class="viewcode-block" id="thread_map">
 <a class="viewcode-back" href="../../../CveXplore/core/thread_map.html#CveXplore.core.database_maintenance.download_handler.thread_map">[docs]</a>
-<span class="k">def</span> <span class="nf">thread_map</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">iterables</span><span class="p">,</span> <span class="o">**</span><span class="n">tqdm_kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">thread_map</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">iterables</span><span class="p">,</span> <span class="o">**</span><span class="n">tqdm_kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Equivalent of `list(map(fn, *iterables))`</span>
 <span class="sd">    driven by `concurrent.futures.ThreadPoolExecutor`.</span>
@@ -664,12 +664,12 @@
 <span class="sd">        `concurrent.futures.ThreadPoolExecutor.__init__`.</span>
 <span class="sd">        [default: max(32, cpu_count() + 4)].</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
     <span class="k">return</span> <span class="n">_executor_map</span><span class="p">(</span><span class="n">ThreadPoolExecutor</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">iterables</span><span class="p">,</span> <span class="o">**</span><span class="n">tqdm_kwargs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">process_map</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">iterables</span><span class="p">,</span> <span class="o">**</span><span class="n">tqdm_kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">process_map</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">iterables</span><span class="p">,</span> <span class="o">**</span><span class="n">tqdm_kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Equivalent of `list(map(fn, *iterables))`</span>
 <span class="sd">    driven by `concurrent.futures.ProcessPoolExecutor`.</span>
@@ -688,13 +688,13 @@
 <span class="sd">    lock_name  : str, optional</span>
 <span class="sd">        Member of `tqdm_class.get_lock()` to use [default: mp_lock].</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ProcessPoolExecutor</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProcessPoolExecutor</span>
     <span class="k">if</span> <span class="n">iterables</span> <span class="ow">and</span> <span class="s2">&quot;chunksize&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tqdm_kwargs</span><span class="p">:</span>
         <span class="c1"># default `chunksize=1` has poor performance for large iterables</span>
         <span class="c1"># (most time spent dispatching items to workers).</span>
         <span class="n">longest_iterable_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">length_hint</span><span class="p">,</span> <span class="n">iterables</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">longest_iterable_len</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
             <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Iterable length </span><span class="si">%d</span><span class="s2"> &gt; 1000 but `chunksize` is not set.&quot;</span>
                  <span class="s2">&quot; This may seriously degrade multiprocess performance.&quot;</span>
                  <span class="s2">&quot; Set `chunksize=1` or more.&quot;</span> <span class="o">%</span> <span class="n">longest_iterable_len</span><span class="p">,</span>
@@ -710,7 +710,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

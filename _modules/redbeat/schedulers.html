@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -601,23 +601,23 @@
 <span class="c1"># Copyright 2015 Marc Sibson</span>
 
 
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">ssl</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">MINYEAR</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ssl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">MINYEAR</span><span class="p">,</span> <span class="n">datetime</span>
 
-<span class="kn">import</span> <span class="nn">redis.exceptions</span>
-<span class="kn">from</span> <span class="nn">celery.app</span> <span class="kn">import</span> <span class="n">app_or_default</span>
-<span class="kn">from</span> <span class="nn">celery.beat</span> <span class="kn">import</span> <span class="n">DEFAULT_MAX_INTERVAL</span><span class="p">,</span> <span class="n">ScheduleEntry</span><span class="p">,</span> <span class="n">Scheduler</span>
-<span class="kn">from</span> <span class="nn">celery.signals</span> <span class="kn">import</span> <span class="n">beat_init</span>
-<span class="kn">from</span> <span class="nn">celery.utils.log</span> <span class="kn">import</span> <span class="n">get_logger</span>
-<span class="kn">from</span> <span class="nn">celery.utils.time</span> <span class="kn">import</span> <span class="n">humanize_seconds</span>
-<span class="kn">from</span> <span class="nn">kombu.utils.objects</span> <span class="kn">import</span> <span class="n">cached_property</span>
-<span class="kn">from</span> <span class="nn">kombu.utils.url</span> <span class="kn">import</span> <span class="n">maybe_sanitize_url</span>
-<span class="kn">from</span> <span class="nn">redis.client</span> <span class="kn">import</span> <span class="n">StrictRedis</span>
-<span class="kn">from</span> <span class="nn">tenacity</span> <span class="kn">import</span> <span class="n">retry</span><span class="p">,</span> <span class="n">retry_if_exception_type</span><span class="p">,</span> <span class="n">stop_after_delay</span><span class="p">,</span> <span class="n">wait_exponential</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">redis.exceptions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery.app</span><span class="w"> </span><span class="kn">import</span> <span class="n">app_or_default</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery.beat</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_MAX_INTERVAL</span><span class="p">,</span> <span class="n">ScheduleEntry</span><span class="p">,</span> <span class="n">Scheduler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery.signals</span><span class="w"> </span><span class="kn">import</span> <span class="n">beat_init</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery.utils.log</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery.utils.time</span><span class="w"> </span><span class="kn">import</span> <span class="n">humanize_seconds</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">kombu.utils.objects</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">kombu.utils.url</span><span class="w"> </span><span class="kn">import</span> <span class="n">maybe_sanitize_url</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrictRedis</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tenacity</span><span class="w"> </span><span class="kn">import</span> <span class="n">retry</span><span class="p">,</span> <span class="n">retry_if_exception_type</span><span class="p">,</span> <span class="n">stop_after_delay</span><span class="p">,</span> <span class="n">wait_exponential</span>
 
-<span class="kn">from</span> <span class="nn">.decoder</span> <span class="kn">import</span> <span class="n">RedBeatJSONDecoder</span><span class="p">,</span> <span class="n">RedBeatJSONEncoder</span><span class="p">,</span> <span class="n">to_timestamp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.decoder</span><span class="w"> </span><span class="kn">import</span> <span class="n">RedBeatJSONDecoder</span><span class="p">,</span> <span class="n">RedBeatJSONEncoder</span><span class="p">,</span> <span class="n">to_timestamp</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="s1">&#39;celery.beat&#39;</span><span class="p">)</span>
 
@@ -648,14 +648,14 @@
 <span class="s2">&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">RetryingConnection</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RetryingConnection</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A proxy for the Redis connection that delegates all the calls to</span>
 <span class="sd">    underlying Redis connection while retrying on connection or time-out error.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">RETRY_MAX_WAIT</span> <span class="o">=</span> <span class="mi">30</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_period</span><span class="p">,</span> <span class="n">wrapped_connection</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_period</span><span class="p">,</span> <span class="n">wrapped_connection</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_connection</span> <span class="o">=</span> <span class="n">wrapped_connection</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">retry_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">retry</span><span class="o">=</span><span class="p">(</span>
@@ -669,7 +669,7 @@
         <span class="k">if</span> <span class="n">retry_period</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">retry_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">stop</span><span class="o">=</span><span class="n">stop_after_delay</span><span class="p">(</span><span class="n">retry_period</span><span class="p">)))</span>
 
-    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wrapped_connection</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
 
         <span class="c1"># we don&#39;t want to deal attributes or properties</span>
@@ -677,13 +677,13 @@
             <span class="k">return</span> <span class="n">method</span>
 
         <span class="nd">@retry</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">retry_kwargs</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">retrier</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">retrier</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">retrier</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_log_retry_attempt</span><span class="p">(</span><span class="n">retry_state</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_log_retry_attempt</span><span class="p">(</span><span class="n">retry_state</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Log when next reconnection attempt is about to be made.&quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
             <span class="s1">&#39;beat: Retrying Redis connection in </span><span class="si">%s</span><span class="s1"> seconds...&#39;</span><span class="p">,</span> <span class="n">retry_state</span><span class="o">.</span><span class="n">next_action</span><span class="o">.</span><span class="n">sleep</span>
@@ -692,7 +692,7 @@
 
 <div class="viewcode-block" id="ensure_conf">
 <a class="viewcode-back" href="../../CveXplore/core/ensure_conf.html#CveXplore.core.celery_task_handler.task_handler.ensure_conf">[docs]</a>
-<span class="k">def</span> <span class="nf">ensure_conf</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_conf</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Ensure for the given app the the redbeat_conf</span>
 <span class="sd">    attribute is set to an instance of the RedBeatConfig</span>
@@ -710,18 +710,18 @@
 
 
 
-<span class="k">def</span> <span class="nf">get_redis</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_redis</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">app</span> <span class="o">=</span> <span class="n">app_or_default</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
     <span class="n">conf</span> <span class="o">=</span> <span class="n">ensure_conf</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="s1">&#39;redbeat_redis&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">app</span><span class="o">.</span><span class="n">redbeat_redis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">redis_options</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">redbeat_redis_options</span>
         <span class="n">retry_period</span> <span class="o">=</span> <span class="n">redis_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;retry_period&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">redis_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cluster&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-            <span class="kn">from</span> <span class="nn">redis.cluster</span> <span class="kn">import</span> <span class="n">RedisCluster</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">redis.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">RedisCluster</span>
 
             <span class="n">connection</span> <span class="o">=</span> <span class="n">RedisCluster</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">redis_url</span><span class="p">,</span> <span class="o">**</span><span class="n">redis_options</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">conf</span><span class="o">.</span><span class="n">redis_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;redis-sentinel&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;sentinels&#39;</span> <span class="ow">in</span> <span class="n">redis_options</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">redis.sentinel</span> <span class="kn">import</span> <span class="n">Sentinel</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">redis.sentinel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sentinel</span>
 
             <span class="n">connection_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">redis_use_ssl</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -745,7 +745,7 @@
                 <span class="n">ssl_options</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">redis_use_ssl</span><span class="p">)</span>
             <span class="n">connection</span> <span class="o">=</span> <span class="n">StrictRedis</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">redis_url</span><span class="p">,</span> <span class="n">decode_responses</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">ssl_options</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">conf</span><span class="o">.</span><span class="n">redis_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;redis-cluster&#39;</span><span class="p">):</span>
-            <span class="kn">from</span> <span class="nn">rediscluster</span> <span class="kn">import</span> <span class="n">RedisCluster</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">rediscluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">RedisCluster</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">redis_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startup_nodes&#39;</span><span class="p">):</span>
                 <span class="n">redis_options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;startup_nodes&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="s2">&quot;30001&quot;</span><span class="p">}]}</span>
@@ -767,8 +767,8 @@
 <span class="s2">&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">RedBeatConfig</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RedBeatConfig</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app_or_default</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">key_prefix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">either_or</span><span class="p">(</span><span class="s1">&#39;redbeat_key_prefix&#39;</span><span class="p">,</span> <span class="s1">&#39;redbeat:&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">schedule_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_prefix</span> <span class="o">+</span> <span class="s1">&#39;:schedule&#39;</span>
@@ -782,14 +782,14 @@
         <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_schedule</span>
 
     <span class="nd">@schedule</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">beat_schedule</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="k">def</span> <span class="nf">either_or</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">either_or</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                 <span class="s1">&#39;Celery v4 installed, but detected Celery v3 &#39;</span>
@@ -801,12 +801,12 @@
 
 <div class="viewcode-block" id="RedBeatSchedulerEntry">
 <a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry">[docs]</a>
-<span class="k">class</span> <span class="nc">RedBeatSchedulerEntry</span><span class="p">(</span><span class="n">ScheduleEntry</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RedBeatSchedulerEntry</span><span class="p">(</span><span class="n">ScheduleEntry</span><span class="p">):</span>
     <span class="n">_meta</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="RedBeatSchedulerEntry.__init__">
 <a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.__init__.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">task</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -833,7 +833,7 @@
 <div class="viewcode-block" id="RedBeatSchedulerEntry.load_definition">
 <a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.load_definition.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.load_definition">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">load_definition</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_definition</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">definition</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">definition</span> <span class="o">=</span> <span class="n">get_redis</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">hget</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;definition&#39;</span><span class="p">)</span>
 
@@ -848,21 +848,21 @@
 <div class="viewcode-block" id="RedBeatSchedulerEntry.decode_definition">
 <a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.decode_definition.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.decode_definition">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">decode_definition</span><span class="p">(</span><span class="n">definition</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decode_definition</span><span class="p">(</span><span class="n">definition</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">RedBeatJSONDecoder</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RedBeatSchedulerEntry.load_meta">
 <a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.load_meta.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.load_meta">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">load_meta</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_meta</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">RedBeatSchedulerEntry</span><span class="o">.</span><span class="n">decode_meta</span><span class="p">(</span><span class="n">get_redis</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">hget</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="RedBeatSchedulerEntry.decode_meta">
 <a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.decode_meta.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.decode_meta">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">decode_meta</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decode_meta</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">meta</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;last_run_at&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
 
@@ -872,7 +872,7 @@
 <div class="viewcode-block" id="RedBeatSchedulerEntry.from_key">
 <a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.from_key.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.from_key">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_key</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_key</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">ensure_conf</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">get_redis</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">pipeline</span><span class="p">()</span> <span class="k">as</span> <span class="n">pipe</span><span class="p">:</span>
             <span class="n">pipe</span><span class="o">.</span><span class="n">hget</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;definition&#39;</span><span class="p">)</span>
@@ -894,7 +894,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">due_at</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">due_at</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># never run =&gt; due now</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_run_at</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_now</span><span class="p">()</span>
@@ -911,11 +911,11 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_run_at</span> <span class="o">+</span> <span class="n">delta</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">key_prefix</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return UTC based UNIX timestamp&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">due_at</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Scores &lt; zero are ignored on each tick.</span>
@@ -923,12 +923,12 @@
         <span class="k">return</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">due_at</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rank</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rank</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">zrank</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
 
 <div class="viewcode-block" id="RedBeatSchedulerEntry.save">
 <a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.save.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.save">[docs]</a>
-    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">definition</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="s1">&#39;task&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="p">,</span>
@@ -952,14 +952,14 @@
 
 <div class="viewcode-block" id="RedBeatSchedulerEntry.delete">
 <a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.delete.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.delete">[docs]</a>
-    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">pipeline</span><span class="p">()</span> <span class="k">as</span> <span class="n">pipe</span><span class="p">:</span>
             <span class="n">pipe</span><span class="o">.</span><span class="n">zrem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
             <span class="n">pipe</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
             <span class="n">pipe</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_next_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">only_update_last_run_at</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_next_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">only_update_last_run_at</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="n">entry</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_next_instance</span><span class="p">(</span><span class="n">last_run_at</span><span class="o">=</span><span class="n">last_run_at</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">only_update_last_run_at</span><span class="p">:</span>
@@ -982,7 +982,7 @@
 
 <div class="viewcode-block" id="RedBeatSchedulerEntry.reschedule">
 <a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.reschedule.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.reschedule">[docs]</a>
-    <span class="k">def</span> <span class="nf">reschedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reschedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_run_at</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_run_at</span> <span class="o">=</span> <span class="n">last_run_at</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_now</span><span class="p">()</span>
         <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;last_run_at&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_run_at</span><span class="p">,</span>
@@ -995,7 +995,7 @@
 
 <div class="viewcode-block" id="RedBeatSchedulerEntry.is_due">
 <a class="viewcode-back" href="../../CveXplore/core/RedBeatSchedulerEntry.is_due.html#CveXplore.core.celery_task_handler.task_handler.RedBeatSchedulerEntry.is_due">[docs]</a>
-    <span class="k">def</span> <span class="nf">is_due</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_due</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="mf">5.0</span>  <span class="c1"># 5 second delay for re-enable.</span>
 
@@ -1006,7 +1006,7 @@
 
 
 
-<span class="k">class</span> <span class="nc">RedBeatScheduler</span><span class="p">(</span><span class="n">Scheduler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RedBeatScheduler</span><span class="p">(</span><span class="n">Scheduler</span><span class="p">):</span>
     <span class="c1"># how often should we sync in schedule information</span>
     <span class="c1"># from the backend redis database</span>
     <span class="n">Entry</span> <span class="o">=</span> <span class="n">RedBeatSchedulerEntry</span>
@@ -1016,7 +1016,7 @@
     <span class="c1">#: The default lock timeout in seconds.</span>
     <span class="n">lock_timeout</span> <span class="o">=</span> <span class="n">DEFAULT_MAX_INTERVAL</span> <span class="o">*</span> <span class="mi">5</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">lock_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lock_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">lock_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lock_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">ensure_conf</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>  <span class="c1"># set app.redbeat_conf</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RedBeatScheduler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -1028,7 +1028,7 @@
             <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock_timeout</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">setup_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setup_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># cleanup old static schedule entries</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">get_redis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
         <span class="n">previous</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">smembers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">statics_key</span><span class="p">)}</span>
@@ -1050,7 +1050,7 @@
             <span class="c1"># so we notice when any are removed at next startup</span>
             <span class="n">client</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">statics_key</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">schedule</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">update_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">dict_</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maybe_entry</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
@@ -1061,12 +1061,12 @@
             <span class="n">entry</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>  <span class="c1"># store into redis</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;beat: Stored entry: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">reserve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reserve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
         <span class="n">new_entry</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_entry</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;beat: Selecting tasks&#39;</span><span class="p">)</span>
 
         <span class="n">max_due_at</span> <span class="o">=</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
@@ -1099,7 +1099,7 @@
 
         <span class="k">return</span> <span class="n">d</span>
 
-    <span class="k">def</span> <span class="nf">maybe_due</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">maybe_due</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">is_due</span><span class="p">,</span> <span class="n">next_time_to_run</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_due</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">is_due</span><span class="p">:</span>
@@ -1112,7 +1112,7 @@
                 <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Scheduler: </span><span class="si">%s</span><span class="s1"> sent. id-&gt;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">task</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">next_time_to_run</span>
 
-    <span class="k">def</span> <span class="nf">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="nb">min</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="nb">min</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock_key</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;beat: Extending lock...&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lock_timeout</span><span class="p">))</span>
@@ -1128,7 +1128,7 @@
 
         <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">remaining_times</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">max_interval</span><span class="p">])</span>
 
-    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;beat: Releasing lock&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">owned</span><span class="p">():</span>
@@ -1137,7 +1137,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">info</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;       . redis -&gt; </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">maybe_sanitize_url</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">redbeat_conf</span><span class="o">.</span><span class="n">redis_url</span><span class="p">))]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock_key</span><span class="p">:</span>
             <span class="n">info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -1148,13 +1148,13 @@
         <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
-    <span class="k">def</span> <span class="nf">_maybe_due_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_maybe_due_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;handle rename of publisher to producer&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;producer&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">producer</span><span class="p">}</span>
 
 
 <span class="nd">@beat_init</span><span class="o">.</span><span class="n">connect</span>
-<span class="k">def</span> <span class="nf">acquire_distributed_beat_lock</span><span class="p">(</span><span class="n">sender</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">acquire_distributed_beat_lock</span><span class="p">(</span><span class="n">sender</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Attempt to acquire lock on startup</span>
 
@@ -1186,7 +1186,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,14 +595,14 @@
   </a>
 
 <h1>Source code for CveXplore.api.helpers.cve_search_api</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">pymongo</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pymongo</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.core.api_base_class</span> <span class="kn">import</span> <span class="n">ApiBaseClass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.api_base_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">ApiBaseClass</span>
 
 
 <div class="viewcode-block" id="CveSearchApi">
 <a class="viewcode-back" href="../../../../CveXplore/api/CveSearchApi.html#CveXplore.api.helpers.cve_search_api.CveSearchApi">[docs]</a>
-<span class="k">class</span> <span class="nc">CveSearchApi</span><span class="p">(</span><span class="n">ApiBaseClass</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CveSearchApi</span><span class="p">(</span><span class="n">ApiBaseClass</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The CveSearchApi handles the different arguments in order to perform a query to a specific Cve Search api endpoint.</span>
 <span class="sd">    It mimics the pymongo cursor&#39;s behaviour to provide an ambiguous way to talk to either an API or a mongodb.</span>
@@ -610,7 +610,7 @@
 
 <div class="viewcode-block" id="CveSearchApi.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/api/CveSearchApi.__init__.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">db_collection</span><span class="p">,</span>
         <span class="nb">filter</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -627,7 +627,7 @@
             <span class="n">proxies</span><span class="o">=</span><span class="n">db_collection</span><span class="o">.</span><span class="n">proxies</span><span class="p">,</span>
             <span class="n">user_agent</span><span class="o">=</span><span class="n">db_collection</span><span class="o">.</span><span class="n">user_agent</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="kn">from</span> <span class="nn">CveXplore.common.db_obj_mapping</span> <span class="kn">import</span> <span class="n">database_objects_mapping</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.common.db_obj_mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">database_objects_mapping</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">database_objects_mapping</span> <span class="o">=</span> <span class="n">database_objects_mapping</span>
 
@@ -652,14 +652,14 @@
 
 <div class="viewcode-block" id="CveSearchApi.__repr__">
 <a class="viewcode-back" href="../../../../CveXplore/api/CveSearchApi.__repr__.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return a string representation of the obj GenericApi&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt;CveSearchApi:(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_collection</span><span class="o">.</span><span class="n">address</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_collection</span><span class="o">.</span><span class="n">address</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">)&gt;&gt;&quot;</span></div>
 
 
 <div class="viewcode-block" id="CveSearchApi.query">
 <a class="viewcode-back" href="../../../../CveXplore/api/CveSearchApi.query.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.query">[docs]</a>
-    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Endpoint for free query to cve search data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -679,7 +679,7 @@
 
 <div class="viewcode-block" id="CveSearchApi.limit">
 <a class="viewcode-back" href="../../../../CveXplore/api/CveSearchApi.limit.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.limit">[docs]</a>
-    <span class="k">def</span> <span class="nf">limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to limit the amount of returned data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -696,7 +696,7 @@
 
 <div class="viewcode-block" id="CveSearchApi.skip">
 <a class="viewcode-back" href="../../../../CveXplore/api/CveSearchApi.skip.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.skip">[docs]</a>
-    <span class="k">def</span> <span class="nf">skip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">skip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to skip the given amount of records before returning the data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -713,7 +713,7 @@
 
 <div class="viewcode-block" id="CveSearchApi.sort">
 <a class="viewcode-back" href="../../../../CveXplore/api/CveSearchApi.sort.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.sort">[docs]</a>
-    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to sort the returned data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -733,7 +733,7 @@
 
 <div class="viewcode-block" id="CveSearchApi.__iter__">
 <a class="viewcode-back" href="../../../../CveXplore/api/CveSearchApi.__iter__.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.__iter__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Make this class an iterator&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
@@ -741,7 +741,7 @@
 
 <div class="viewcode-block" id="CveSearchApi.next">
 <a class="viewcode-back" href="../../../../CveXplore/api/CveSearchApi.next.html#CveXplore.api.helpers.cve_search_api.CveSearchApi.next">[docs]</a>
-    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate to the results and return database objects&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__empty</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">StopIteration</span>
@@ -768,7 +768,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

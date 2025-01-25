@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -591,7 +591,7 @@
 
 <dl class="py property objdesc">
 <dt class="sig sig-object highlight sig-wrap py">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.cvesearch_mongo_database.</span><span class="pre">Cursor</span></span><span class="sig-paren">[</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="Cursor.html" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor._DocumentType (Python type parameter)"><span class="n"><span class="pre">_DocumentType</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="desctype"><span class="pre">Mapping[str,</span> <span class="pre">Any]]</span></span></span></em></span><span class="sig-paren">]</span><span class="sig-prename descclassname"><span class="pre">.</span></span><span class="sig-name descname"><span class="pre">alive</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.cvesearch_mongo_database.</span><span class="pre">Cursor</span></span><span class="sig-paren">[</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="Cursor.html" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor._DocumentType (Python type parameter)"><span class="n"><span class="pre">_DocumentType</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="desctype"><span class="pre">Mapping[str,</span> <span class="pre">Any]]</span></span></span></em></span><span class="sig-paren">]</span><span class="sig-prename descclassname"><span class="pre">.</span></span><span class="sig-name descname"><span class="pre">alive</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span></dt>
 <dd><p>Does this cursor have the potential to return more data?</p>
 <p>This is mostly useful with <a class="reference external" href="https://www.mongodb.com/docs/manual/core/tailable-cursors/">tailable cursors</a>
 since they will stop iterating even though they <em>may</em> return more
@@ -604,7 +604,7 @@ results in the future.</p>
 <div class="note admonition">
 <p class="admonition-title">Note</p>
 <p>Even if <a class="reference internal" href="#" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor.alive (Python property) — Does this cursor have the potential to return more data?"><code class="xref py py-attr docutils literal notranslate"><span class="pre">alive</span></code></a> is True, <a class="reference internal" href="Cursor.next.html" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor.next (Python method) — Advance the cursor."><code class="xref py py-meth docutils literal notranslate"><span class="pre">next()</span></code></a> can raise
-<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#StopIteration" title="(in Python v3.12)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StopIteration</span></code></a>. <a class="reference internal" href="#" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor.alive (Python property) — Does this cursor have the potential to return more data?"><code class="xref py py-attr docutils literal notranslate"><span class="pre">alive</span></code></a> can also be True while iterating
+<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#StopIteration" title="(in Python v3.13)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StopIteration</span></code></a>. <a class="reference internal" href="#" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor.alive (Python property) — Does this cursor have the potential to return more data?"><code class="xref py py-attr docutils literal notranslate"><span class="pre">alive</span></code></a> can also be True while iterating
 a cursor from a failed server. In this case <a class="reference internal" href="#" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor.alive (Python property) — Does this cursor have the potential to return more data?"><code class="xref py py-attr docutils literal notranslate"><span class="pre">alive</span></code></a> will
 return False after <a class="reference internal" href="Cursor.next.html" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor.next (Python method) — Advance the cursor."><code class="xref py py-meth docutils literal notranslate"><span class="pre">next()</span></code></a> fails to retrieve the next batch
 of results from the server.</p>
@@ -618,7 +618,7 @@ of results from the server.</p>
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

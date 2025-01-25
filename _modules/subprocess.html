@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -637,21 +637,21 @@
 <span class="sd">    then returns a (exitcode, output) tuple</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">builtins</span>
-<span class="kn">import</span> <span class="nn">errno</span>
-<span class="kn">import</span> <span class="nn">io</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">signal</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">contextlib</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">monotonic</span> <span class="k">as</span> <span class="n">_time</span>
-<span class="kn">import</span> <span class="nn">types</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">builtins</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">errno</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">signal</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">monotonic</span> <span class="k">as</span> <span class="n">_time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">types</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">fcntl</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">fcntl</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">fcntl</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -663,16 +663,16 @@
            <span class="c1"># considered an internal implementation detail.  issue10838.</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">msvcrt</span>
-    <span class="kn">import</span> <span class="nn">_winapi</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">msvcrt</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">_winapi</span>
     <span class="n">_mswindows</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
     <span class="n">_mswindows</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="kn">import</span> <span class="nn">_posixsubprocess</span>
-    <span class="kn">import</span> <span class="nn">select</span>
-    <span class="kn">import</span> <span class="nn">selectors</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">_posixsubprocess</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">select</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">selectors</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">_winapi</span> <span class="kn">import</span> <span class="p">(</span><span class="n">CREATE_NEW_CONSOLE</span><span class="p">,</span> <span class="n">CREATE_NEW_PROCESS_GROUP</span><span class="p">,</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">_winapi</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">CREATE_NEW_CONSOLE</span><span class="p">,</span> <span class="n">CREATE_NEW_PROCESS_GROUP</span><span class="p">,</span>
                          <span class="n">STD_INPUT_HANDLE</span><span class="p">,</span> <span class="n">STD_OUTPUT_HANDLE</span><span class="p">,</span>
                          <span class="n">STD_ERROR_HANDLE</span><span class="p">,</span> <span class="n">SW_HIDE</span><span class="p">,</span>
                          <span class="n">STARTF_USESTDHANDLES</span><span class="p">,</span> <span class="n">STARTF_USESHOWWINDOW</span><span class="p">,</span>
@@ -695,23 +695,23 @@
 
 
 <span class="c1"># Exception classes used by this module.</span>
-<span class="k">class</span> <span class="nc">SubprocessError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SubprocessError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span>
 
 
-<span class="k">class</span> <span class="nc">CalledProcessError</span><span class="p">(</span><span class="n">SubprocessError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CalledProcessError</span><span class="p">(</span><span class="n">SubprocessError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when run() is called with check=True and the process</span>
 <span class="sd">    returns a non-zero exit status.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">      cmd, returncode, stdout, stderr, output</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">returncode</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">returncode</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span> <span class="o">=</span> <span class="n">returncode</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">output</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">stderr</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="s2">&quot;Command &#39;</span><span class="si">%s</span><span class="s2">&#39; died with </span><span class="si">%r</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span>
@@ -724,48 +724,48 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">stdout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stdout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for output attribute, to match stderr&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span>
 
     <span class="nd">@stdout</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">stdout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stdout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="c1"># There&#39;s no obvious reason to set this, but allow it anyway so</span>
         <span class="c1"># .stdout is a transparent alias for .output</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">value</span>
 
 
-<span class="k">class</span> <span class="nc">TimeoutExpired</span><span class="p">(</span><span class="n">SubprocessError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TimeoutExpired</span><span class="p">(</span><span class="n">SubprocessError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This exception is raised when the timeout expires while waiting for a</span>
 <span class="sd">    child process.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        cmd, output, stdout, stderr, timeout</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">output</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">stderr</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Command &#39;</span><span class="si">%s</span><span class="s2">&#39; timed out after </span><span class="si">%s</span><span class="s2"> seconds&quot;</span> <span class="o">%</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">))</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">stdout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stdout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span>
 
     <span class="nd">@stdout</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">stdout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stdout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="c1"># There&#39;s no obvious reason to set this, but allow it anyway so</span>
         <span class="c1"># .stdout is a transparent alias for .output</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">value</span>
 
 
 <span class="k">if</span> <span class="n">_mswindows</span><span class="p">:</span>
-    <span class="k">class</span> <span class="nc">STARTUPINFO</span><span class="p">:</span>
-        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dwFlags</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hStdInput</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hStdOutput</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">STARTUPINFO</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dwFlags</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hStdInput</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hStdOutput</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">hStdError</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wShowWindow</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lpAttributeList</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dwFlags</span> <span class="o">=</span> <span class="n">dwFlags</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hStdInput</span> <span class="o">=</span> <span class="n">hStdInput</span>
@@ -774,7 +774,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">wShowWindow</span> <span class="o">=</span> <span class="n">wShowWindow</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lpAttributeList</span> <span class="o">=</span> <span class="n">lpAttributeList</span> <span class="ow">or</span> <span class="p">{</span><span class="s2">&quot;handle_list&quot;</span><span class="p">:</span> <span class="p">[]}</span>
 
-        <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="n">attr_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lpAttributeList</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="k">if</span> <span class="s1">&#39;handle_list&#39;</span> <span class="ow">in</span> <span class="n">attr_list</span><span class="p">:</span>
                 <span class="n">attr_list</span><span class="p">[</span><span class="s1">&#39;handle_list&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">attr_list</span><span class="p">[</span><span class="s1">&#39;handle_list&#39;</span><span class="p">])</span>
@@ -787,21 +787,21 @@
                                <span class="n">lpAttributeList</span><span class="o">=</span><span class="n">attr_list</span><span class="p">)</span>
 
 
-    <span class="k">class</span> <span class="nc">Handle</span><span class="p">(</span><span class="nb">int</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Handle</span><span class="p">(</span><span class="nb">int</span><span class="p">):</span>
         <span class="n">closed</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="k">def</span> <span class="nf">Close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CloseHandle</span><span class="o">=</span><span class="n">_winapi</span><span class="o">.</span><span class="n">CloseHandle</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">Close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CloseHandle</span><span class="o">=</span><span class="n">_winapi</span><span class="o">.</span><span class="n">CloseHandle</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">closed</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">CloseHandle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">Detach</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">Detach</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">closed</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;already closed&quot;</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
         <span class="fm">__del__</span> <span class="o">=</span> <span class="n">Close</span>
@@ -831,7 +831,7 @@
     <span class="c1"># creating-processes</span>
     <span class="n">_active</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_cleanup</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_cleanup</span><span class="p">():</span>
         <span class="k">pass</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="c1"># This lists holds Popen instances for which the underlying process had not</span>
@@ -840,7 +840,7 @@
     <span class="c1"># created, to avoid zombie processes.</span>
     <span class="n">_active</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">_cleanup</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_cleanup</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">_active</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">_active</span><span class="p">[:]:</span>
@@ -862,7 +862,7 @@
 <span class="c1"># but it&#39;s here so that it can be imported when Python is compiled without</span>
 <span class="c1"># threads.</span>
 
-<span class="k">def</span> <span class="nf">_optim_args_from_interpreter_flags</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_optim_args_from_interpreter_flags</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of command-line arguments reproducing the current</span>
 <span class="sd">    optimization settings in sys.flags.&quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
@@ -872,7 +872,7 @@
     <span class="k">return</span> <span class="n">args</span>
 
 
-<span class="k">def</span> <span class="nf">_args_from_interpreter_flags</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_args_from_interpreter_flags</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of command-line arguments reproducing the current</span>
 <span class="sd">    settings in sys.flags, sys.warnoptions and sys._xoptions.&quot;&quot;&quot;</span>
     <span class="n">flag_opt_map</span> <span class="o">=</span> <span class="p">{</span>
@@ -931,7 +931,7 @@
     <span class="k">return</span> <span class="n">args</span>
 
 
-<span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="o">*</span><span class="n">popenargs</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span><span class="o">*</span><span class="n">popenargs</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run command with arguments.  Wait for command to complete or</span>
 <span class="sd">    timeout, then return the returncode attribute.</span>
 
@@ -948,7 +948,7 @@
             <span class="k">raise</span>
 
 
-<span class="k">def</span> <span class="nf">check_call</span><span class="p">(</span><span class="o">*</span><span class="n">popenargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_call</span><span class="p">(</span><span class="o">*</span><span class="n">popenargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run command with arguments.  Wait for command to complete.  If</span>
 <span class="sd">    the exit code was zero then return, otherwise raise</span>
 <span class="sd">    CalledProcessError.  The CalledProcessError object will have the</span>
@@ -967,7 +967,7 @@
     <span class="k">return</span> <span class="mi">0</span>
 
 
-<span class="k">def</span> <span class="nf">check_output</span><span class="p">(</span><span class="o">*</span><span class="n">popenargs</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_output</span><span class="p">(</span><span class="o">*</span><span class="n">popenargs</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Run command with arguments and return its output.</span>
 
 <span class="sd">    If the exit code was non-zero it raises a CalledProcessError.  The</span>
@@ -1021,7 +1021,7 @@
 
 <div class="viewcode-block" id="CompletedProcess">
 <a class="viewcode-back" href="../CveXplore/core/CompletedProcess.html#CveXplore.core.database_migration.database_migrator.CompletedProcess">[docs]</a>
-<span class="k">class</span> <span class="nc">CompletedProcess</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CompletedProcess</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A process that has finished running.</span>
 
 <span class="sd">    This is returned by run().</span>
@@ -1034,7 +1034,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="CompletedProcess.__init__">
 <a class="viewcode-back" href="../CveXplore/core/CompletedProcess.__init__.html#CveXplore.core.database_migration.database_migrator.CompletedProcess.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">returncode</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">returncode</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span> <span class="o">=</span> <span class="n">returncode</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">stdout</span>
@@ -1043,7 +1043,7 @@
 
 <div class="viewcode-block" id="CompletedProcess.__repr__">
 <a class="viewcode-back" href="../CveXplore/core/CompletedProcess.__repr__.html#CveXplore.core.database_migration.database_migrator.CompletedProcess.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;args=</span><span class="si">{!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">),</span>
                 <span class="s1">&#39;returncode=</span><span class="si">{!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">returncode</span><span class="p">)]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1058,7 +1058,7 @@
 
 <div class="viewcode-block" id="CompletedProcess.check_returncode">
 <a class="viewcode-back" href="../CveXplore/core/CompletedProcess.check_returncode.html#CveXplore.core.database_migration.database_migrator.CompletedProcess.check_returncode">[docs]</a>
-    <span class="k">def</span> <span class="nf">check_returncode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_returncode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Raise CalledProcessError if the exit code is non-zero.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">CalledProcessError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
@@ -1069,7 +1069,7 @@
 
 <div class="viewcode-block" id="run">
 <a class="viewcode-back" href="../CveXplore/core/run.html#CveXplore.core.database_migration.database_migrator.run">[docs]</a>
-<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="o">*</span><span class="n">popenargs</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="o">*</span><span class="n">popenargs</span><span class="p">,</span>
         <span class="nb">input</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run command with arguments and return a CompletedProcess instance.</span>
 
@@ -1140,7 +1140,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">list2cmdline</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list2cmdline</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Translate a sequence of arguments into a command line</span>
 <span class="sd">    string, using the same rules as the MS C runtime:</span>
@@ -1213,7 +1213,7 @@
 <span class="c1"># Various tools for executing commands and looking at their output and status.</span>
 <span class="c1">#</span>
 
-<span class="k">def</span> <span class="nf">getstatusoutput</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">getstatusoutput</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return (exitcode, output) of executing cmd in a shell.</span>
 
 <span class="sd">    Execute the string &#39;cmd&#39; in a shell with &#39;check_output&#39; and</span>
@@ -1244,7 +1244,7 @@
         <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">exitcode</span><span class="p">,</span> <span class="n">data</span>
 
-<span class="k">def</span> <span class="nf">getoutput</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">getoutput</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return output (stdout or stderr) of executing cmd in a shell.</span>
 
 <span class="sd">    Like getstatusoutput(), except the exit status is ignored and the return</span>
@@ -1257,7 +1257,7 @@
     <span class="k">return</span> <span class="n">getstatusoutput</span><span class="p">(</span><span class="n">cmd</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_use_posix_spawn</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_use_posix_spawn</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if posix_spawn() can be used for subprocess.</span>
 
 <span class="sd">    subprocess requires a posix_spawn() implementation that properly reports</span>
@@ -1311,7 +1311,7 @@
 <span class="n">_USE_VFORK</span> <span class="o">=</span> <span class="kc">True</span>
 
 
-<span class="k">class</span> <span class="nc">Popen</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Popen</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Execute a child program in a new process.</span>
 
 <span class="sd">    For a complete description of the arguments see the Python documentation.</span>
@@ -1367,7 +1367,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_child_created</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Set here since __del__ checks it</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">bufsize</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">executable</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">bufsize</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">executable</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">stdin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">preexec_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">close_fds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1493,7 +1493,7 @@
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="kn">import</span> <span class="nn">grp</span>
+                    <span class="kn">import</span><span class="w"> </span><span class="nn">grp</span>
                 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The group parameter cannot be a string &quot;</span>
                                      <span class="s2">&quot;on systems without the grp module&quot;</span><span class="p">)</span>
@@ -1521,7 +1521,7 @@
             <span class="k">for</span> <span class="n">extra_group</span> <span class="ow">in</span> <span class="n">extra_groups</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">extra_group</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                     <span class="k">try</span><span class="p">:</span>
-                        <span class="kn">import</span> <span class="nn">grp</span>
+                        <span class="kn">import</span><span class="w"> </span><span class="nn">grp</span>
                     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Items in extra_groups cannot be &quot;</span>
                                          <span class="s2">&quot;strings on systems without the &quot;</span>
@@ -1549,7 +1549,7 @@
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="kn">import</span> <span class="nn">pwd</span>
+                    <span class="kn">import</span><span class="w"> </span><span class="nn">pwd</span>
                 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The user parameter cannot be a string &quot;</span>
                                      <span class="s2">&quot;on systems without the pwd module&quot;</span><span class="p">)</span>
@@ -1618,7 +1618,7 @@
 
             <span class="k">raise</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">obj_repr</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;returncode: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2"> args: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="si">!r}</span><span class="s2">&gt;&quot;</span>
@@ -1630,23 +1630,23 @@
     <span class="n">__class_getitem__</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">GenericAlias</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">universal_newlines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">universal_newlines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># universal_newlines as retained as an alias of text_mode for API</span>
         <span class="c1"># compatibility. bpo-31756</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_mode</span>
 
     <span class="nd">@universal_newlines</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">universal_newlines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">universal_newlines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">text_mode</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">universal_newlines</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_translate_newlines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_translate_newlines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stderr</span><span class="p">:</span>
@@ -1674,7 +1674,7 @@
             <span class="c1"># Wait for the process to terminate, to avoid zombies.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_maxsize</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">,</span> <span class="n">_warn</span><span class="o">=</span><span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_maxsize</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">,</span> <span class="n">_warn</span><span class="o">=</span><span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_child_created</span><span class="p">:</span>
             <span class="c1"># We didn&#39;t get to successfully create a child process.</span>
             <span class="k">return</span>
@@ -1689,12 +1689,12 @@
             <span class="c1"># Child is still running, keep us alive until we can wait on it.</span>
             <span class="n">_active</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_get_devnull</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_devnull</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_devnull&#39;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_devnull</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">O_RDWR</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devnull</span>
 
-    <span class="k">def</span> <span class="nf">_stdin_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_stdin_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">input</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
@@ -1719,7 +1719,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span>
 
-    <span class="k">def</span> <span class="nf">communicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">communicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Interact with process: Send data to stdin and close it.</span>
 <span class="sd">        Read data from stdout and stderr, until end-of-file is</span>
 <span class="sd">        reached.  Wait for process to terminate.</span>
@@ -1787,13 +1787,13 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">poll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">poll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if child process has terminated. Set and return returncode</span>
 <span class="sd">        attribute.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_internal_poll</span><span class="p">()</span>
 
 
-    <span class="k">def</span> <span class="nf">_remaining_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endtime</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_remaining_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endtime</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convenience for _communicate when computing timeouts.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">endtime</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -1801,7 +1801,7 @@
             <span class="k">return</span> <span class="n">endtime</span> <span class="o">-</span> <span class="n">_time</span><span class="p">()</span>
 
 
-    <span class="k">def</span> <span class="nf">_check_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endtime</span><span class="p">,</span> <span class="n">orig_timeout</span><span class="p">,</span> <span class="n">stdout_seq</span><span class="p">,</span> <span class="n">stderr_seq</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endtime</span><span class="p">,</span> <span class="n">orig_timeout</span><span class="p">,</span> <span class="n">stdout_seq</span><span class="p">,</span> <span class="n">stderr_seq</span><span class="p">,</span>
                        <span class="n">skip_check_and_raise</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convenience for checking if a timeout has expired.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">endtime</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1813,7 +1813,7 @@
                     <span class="n">stderr</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">stderr_seq</span><span class="p">)</span> <span class="k">if</span> <span class="n">stderr_seq</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Wait for child process to terminate; returns self.returncode.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">endtime</span> <span class="o">=</span> <span class="n">_time</span><span class="p">()</span> <span class="o">+</span> <span class="n">timeout</span>
@@ -1836,7 +1836,7 @@
                 <span class="k">pass</span>
             <span class="k">raise</span>  <span class="c1"># resume the KeyboardInterrupt</span>
 
-    <span class="k">def</span> <span class="nf">_close_pipe_fds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_close_pipe_fds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                         <span class="n">p2cread</span><span class="p">,</span> <span class="n">p2cwrite</span><span class="p">,</span>
                         <span class="n">c2pread</span><span class="p">,</span> <span class="n">c2pwrite</span><span class="p">,</span>
                         <span class="n">errread</span><span class="p">,</span> <span class="n">errwrite</span><span class="p">):</span>
@@ -1869,7 +1869,7 @@
         <span class="c1">#</span>
         <span class="c1"># Windows methods</span>
         <span class="c1">#</span>
-        <span class="k">def</span> <span class="nf">_get_handles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_get_handles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Construct and return tuple with IO objects:</span>
 <span class="sd">            p2cread, p2cwrite, c2pread, c2pwrite, errread, errwrite</span>
 <span class="sd">            &quot;&quot;&quot;</span>
@@ -1941,7 +1941,7 @@
                     <span class="n">errread</span><span class="p">,</span> <span class="n">errwrite</span><span class="p">)</span>
 
 
-        <span class="k">def</span> <span class="nf">_make_inheritable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handle</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_make_inheritable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handle</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Return a duplicate of handle, which is inheritable&quot;&quot;&quot;</span>
             <span class="n">h</span> <span class="o">=</span> <span class="n">_winapi</span><span class="o">.</span><span class="n">DuplicateHandle</span><span class="p">(</span>
                 <span class="n">_winapi</span><span class="o">.</span><span class="n">GetCurrentProcess</span><span class="p">(),</span> <span class="n">handle</span><span class="p">,</span>
@@ -1950,7 +1950,7 @@
             <span class="k">return</span> <span class="n">Handle</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
 
 
-        <span class="k">def</span> <span class="nf">_filter_handle_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handle_list</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_filter_handle_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handle_list</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Filter out console handles that can&#39;t be used</span>
 <span class="sd">            in lpAttributeList[&quot;handle_list&quot;] and make sure the list</span>
 <span class="sd">            isn&#39;t empty. This also removes duplicate handles.&quot;&quot;&quot;</span>
@@ -1963,7 +1963,7 @@
                             <span class="n">_winapi</span><span class="o">.</span><span class="n">FILE_TYPE_CHAR</span><span class="p">})</span>
 
 
-        <span class="k">def</span> <span class="nf">_execute_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">executable</span><span class="p">,</span> <span class="n">preexec_fn</span><span class="p">,</span> <span class="n">close_fds</span><span class="p">,</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_execute_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">executable</span><span class="p">,</span> <span class="n">preexec_fn</span><span class="p">,</span> <span class="n">close_fds</span><span class="p">,</span>
                            <span class="n">pass_fds</span><span class="p">,</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span>
                            <span class="n">startupinfo</span><span class="p">,</span> <span class="n">creationflags</span><span class="p">,</span> <span class="n">shell</span><span class="p">,</span>
                            <span class="n">p2cread</span><span class="p">,</span> <span class="n">p2cwrite</span><span class="p">,</span>
@@ -2090,7 +2090,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span>
             <span class="n">_winapi</span><span class="o">.</span><span class="n">CloseHandle</span><span class="p">(</span><span class="n">ht</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">_internal_poll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_deadstate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_internal_poll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_deadstate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">_WaitForSingleObject</span><span class="o">=</span><span class="n">_winapi</span><span class="o">.</span><span class="n">WaitForSingleObject</span><span class="p">,</span>
                 <span class="n">_WAIT_OBJECT_0</span><span class="o">=</span><span class="n">_winapi</span><span class="o">.</span><span class="n">WAIT_OBJECT_0</span><span class="p">,</span>
                 <span class="n">_GetExitCodeProcess</span><span class="o">=</span><span class="n">_winapi</span><span class="o">.</span><span class="n">GetExitCodeProcess</span><span class="p">):</span>
@@ -2107,7 +2107,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span>
 
 
-        <span class="k">def</span> <span class="nf">_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Internal implementation of wait() on Windows.&quot;&quot;&quot;</span>
             <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">timeout_millis</span> <span class="o">=</span> <span class="n">_winapi</span><span class="o">.</span><span class="n">INFINITE</span>
@@ -2123,12 +2123,12 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span>
 
 
-        <span class="k">def</span> <span class="nf">_readerthread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">buffer</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_readerthread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">buffer</span><span class="p">):</span>
             <span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
             <span class="n">fh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 
-        <span class="k">def</span> <span class="nf">_communicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">endtime</span><span class="p">,</span> <span class="n">orig_timeout</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_communicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">endtime</span><span class="p">,</span> <span class="n">orig_timeout</span><span class="p">):</span>
             <span class="c1"># Start reader threads feeding into a list hanging off of this</span>
             <span class="c1"># object, unless they&#39;ve already been started.</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_stdout_buff&quot;</span><span class="p">):</span>
@@ -2178,7 +2178,7 @@
 
             <span class="k">return</span> <span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">send_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">send_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Send a signal to the process.&quot;&quot;&quot;</span>
             <span class="c1"># Don&#39;t signal a process that we know has already died.</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2192,7 +2192,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported signal: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sig</span><span class="p">))</span>
 
-        <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Terminates the process.&quot;&quot;&quot;</span>
             <span class="c1"># Don&#39;t terminate a process that we know has already died.</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2213,7 +2213,7 @@
         <span class="c1">#</span>
         <span class="c1"># POSIX methods</span>
         <span class="c1">#</span>
-        <span class="k">def</span> <span class="nf">_get_handles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_get_handles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Construct and return tuple with IO objects:</span>
 <span class="sd">            p2cread, p2cwrite, c2pread, c2pwrite, errread, errwrite</span>
 <span class="sd">            &quot;&quot;&quot;</span>
@@ -2273,7 +2273,7 @@
                     <span class="n">errread</span><span class="p">,</span> <span class="n">errwrite</span><span class="p">)</span>
 
 
-        <span class="k">def</span> <span class="nf">_posix_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">executable</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">restore_signals</span><span class="p">,</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_posix_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">executable</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">restore_signals</span><span class="p">,</span>
                          <span class="n">p2cread</span><span class="p">,</span> <span class="n">p2cwrite</span><span class="p">,</span>
                          <span class="n">c2pread</span><span class="p">,</span> <span class="n">c2pwrite</span><span class="p">,</span>
                          <span class="n">errread</span><span class="p">,</span> <span class="n">errwrite</span><span class="p">):</span>
@@ -2312,7 +2312,7 @@
                                  <span class="n">c2pread</span><span class="p">,</span> <span class="n">c2pwrite</span><span class="p">,</span>
                                  <span class="n">errread</span><span class="p">,</span> <span class="n">errwrite</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">_execute_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">executable</span><span class="p">,</span> <span class="n">preexec_fn</span><span class="p">,</span> <span class="n">close_fds</span><span class="p">,</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_execute_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">executable</span><span class="p">,</span> <span class="n">preexec_fn</span><span class="p">,</span> <span class="n">close_fds</span><span class="p">,</span>
                            <span class="n">pass_fds</span><span class="p">,</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span>
                            <span class="n">startupinfo</span><span class="p">,</span> <span class="n">creationflags</span><span class="p">,</span> <span class="n">shell</span><span class="p">,</span>
                            <span class="n">p2cread</span><span class="p">,</span> <span class="n">p2cwrite</span><span class="p">,</span>
@@ -2476,7 +2476,7 @@
                 <span class="k">raise</span> <span class="n">child_exception_type</span><span class="p">(</span><span class="n">err_msg</span><span class="p">)</span>
 
 
-        <span class="k">def</span> <span class="nf">_handle_exitstatus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_handle_exitstatus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span>
                                <span class="n">waitstatus_to_exitcode</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">waitstatus_to_exitcode</span><span class="p">,</span>
                                <span class="n">_WIFSTOPPED</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">WIFSTOPPED</span><span class="p">,</span>
                                <span class="n">_WSTOPSIG</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">WSTOPSIG</span><span class="p">):</span>
@@ -2488,7 +2488,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span> <span class="o">=</span> <span class="n">waitstatus_to_exitcode</span><span class="p">(</span><span class="n">sts</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">_internal_poll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_deadstate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_waitpid</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">waitpid</span><span class="p">,</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_internal_poll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_deadstate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_waitpid</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">waitpid</span><span class="p">,</span>
                 <span class="n">_WNOHANG</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">WNOHANG</span><span class="p">,</span> <span class="n">_ECHILD</span><span class="o">=</span><span class="n">errno</span><span class="o">.</span><span class="n">ECHILD</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Check if child process has terminated.  Returns returncode</span>
 <span class="sd">            attribute.</span>
@@ -2523,7 +2523,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span>
 
 
-        <span class="k">def</span> <span class="nf">_try_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wait_flags</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_try_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wait_flags</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;All callers to this function MUST hold self._waitpid_lock.&quot;&quot;&quot;</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="n">sts</span><span class="p">)</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">waitpid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> <span class="n">wait_flags</span><span class="p">)</span>
@@ -2536,7 +2536,7 @@
             <span class="k">return</span> <span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="n">sts</span><span class="p">)</span>
 
 
-        <span class="k">def</span> <span class="nf">_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Internal implementation of wait() on POSIX.&quot;&quot;&quot;</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span>
@@ -2577,7 +2577,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">returncode</span>
 
 
-        <span class="k">def</span> <span class="nf">_communicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">endtime</span><span class="p">,</span> <span class="n">orig_timeout</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_communicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">endtime</span><span class="p">,</span> <span class="n">orig_timeout</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdin</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_communication_started</span><span class="p">:</span>
                 <span class="c1"># Flush stdio buffer.  This might block, if the user has</span>
                 <span class="c1"># been writing to .stdin in an uncontrolled fashion.</span>
@@ -2679,7 +2679,7 @@
             <span class="k">return</span> <span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">)</span>
 
 
-        <span class="k">def</span> <span class="nf">_save_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_save_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
             <span class="c1"># This method is called from the _communicate_with_*() methods</span>
             <span class="c1"># so that if we time out while communicating, we can continue</span>
             <span class="c1"># sending input if we retry.</span>
@@ -2691,7 +2691,7 @@
                                                      <span class="bp">self</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
 
 
-        <span class="k">def</span> <span class="nf">send_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">send_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Send a signal to the process.&quot;&quot;&quot;</span>
             <span class="c1"># bpo-38630: Polling reduces the risk of sending a signal to the</span>
             <span class="c1"># wrong process if the process completed, the Popen.returncode</span>
@@ -2723,12 +2723,12 @@
                 <span class="c1"># Supress the race condition error; bpo-40550.</span>
                 <span class="k">pass</span>
 
-        <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Terminate the process with SIGTERM</span>
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGTERM</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Kill the process with SIGKILL</span>
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGKILL</span><span class="p">)</span>
@@ -2739,7 +2739,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

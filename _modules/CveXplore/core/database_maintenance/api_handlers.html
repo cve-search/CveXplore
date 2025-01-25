@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,17 +595,17 @@
   </a>
 
 <h1>Source code for CveXplore.core.database_maintenance.api_handlers</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.common.cpe_converters</span> <span class="kn">import</span> <span class="n">split_cpe_name</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_actions.db_action</span> <span class="kn">import</span> <span class="n">DatabaseAction</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_maintenance.download_handler</span> <span class="kn">import</span> <span class="n">DownloadHandler</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.nvd_nist.nvd_nist_api</span> <span class="kn">import</span> <span class="n">NvdNistApi</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.common.cpe_converters</span><span class="w"> </span><span class="kn">import</span> <span class="n">split_cpe_name</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_actions.db_action</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_maintenance.download_handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">DownloadHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.nvd_nist.nvd_nist_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">NvdNistApi</span>
 
 
 <div class="viewcode-block" id="NVDApiHandler">
 <a class="viewcode-back" href="../../../../CveXplore/core/NVDApiHandler.html#CveXplore.core.database_maintenance.api_handlers.NVDApiHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">NVDApiHandler</span><span class="p">(</span><span class="n">DownloadHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NVDApiHandler</span><span class="p">(</span><span class="n">DownloadHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class handles all JSON related download processing and functions as a base class for specific JSON sources</span>
 <span class="sd">    processing and downloading</span>
@@ -613,7 +613,7 @@
 
 <div class="viewcode-block" id="NVDApiHandler.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/NVDApiHandler.__init__.html#CveXplore.core.database_maintenance.api_handlers.NVDApiHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feed_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">logger_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feed_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">logger_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">feed_type</span><span class="o">=</span><span class="n">feed_type</span><span class="p">,</span> <span class="n">logger_name</span><span class="o">=</span><span class="n">logger_name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">True</span>
@@ -623,7 +623,7 @@
 
 <div class="viewcode-block" id="NVDApiHandler.process_item">
 <a class="viewcode-back" href="../../../../CveXplore/core/NVDApiHandler.process_item.html#CveXplore.core.database_maintenance.api_handlers.NVDApiHandler.process_item">[docs]</a>
-    <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_the_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -643,13 +643,13 @@
 <div class="viewcode-block" id="NVDApiHandler.split_cpe_name">
 <a class="viewcode-back" href="../../../../CveXplore/core/NVDApiHandler.split_cpe_name.html#CveXplore.core.database_maintenance.api_handlers.NVDApiHandler.split_cpe_name">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">split_cpe_name</span><span class="p">(</span><span class="n">cpename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">split_cpe_name</span><span class="p">(</span><span class="n">cpename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="n">split_cpe_name</span><span class="p">(</span><span class="n">cpename</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="NVDApiHandler.stem">
 <a class="viewcode-back" href="../../../../CveXplore/core/NVDApiHandler.stem.html#CveXplore.core.database_maintenance.api_handlers.NVDApiHandler.stem">[docs]</a>
-    <span class="k">def</span> <span class="nf">stem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpe_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpe_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">cpe_stem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_cpe_name</span><span class="p">(</span><span class="n">cpe_uri</span><span class="p">)</span>
         <span class="k">return</span> <span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cpe_stem</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span></div>
 
@@ -657,7 +657,7 @@
 <div class="viewcode-block" id="NVDApiHandler.padded_version">
 <a class="viewcode-back" href="../../../../CveXplore/core/NVDApiHandler.padded_version.html#CveXplore.core.database_maintenance.api_handlers.NVDApiHandler.padded_version">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">padded_version</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">padded_version</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span> <span class="ow">or</span> <span class="n">version</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">version</span>
         <span class="k">else</span><span class="p">:</span>
@@ -747,28 +747,28 @@
 <div class="viewcode-block" id="NVDApiHandler.process_the_item">
 <a class="viewcode-back" href="../../../../CveXplore/core/NVDApiHandler.process_the_item.html#CveXplore.core.database_maintenance.api_handlers.NVDApiHandler.process_the_item">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">process_the_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_the_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <div class="viewcode-block" id="NVDApiHandler.file_to_queue">
 <a class="viewcode-back" href="../../../../CveXplore/core/NVDApiHandler.file_to_queue.html#CveXplore.core.database_maintenance.api_handlers.NVDApiHandler.file_to_queue">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <div class="viewcode-block" id="NVDApiHandler.update">
 <a class="viewcode-back" href="../../../../CveXplore/core/NVDApiHandler.update.html#CveXplore.core.database_maintenance.api_handlers.NVDApiHandler.update">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <div class="viewcode-block" id="NVDApiHandler.populate">
 <a class="viewcode-back" href="../../../../CveXplore/core/NVDApiHandler.populate.html#CveXplore.core.database_maintenance.api_handlers.NVDApiHandler.populate">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 </div>
 
@@ -779,7 +779,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

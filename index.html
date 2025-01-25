@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="_static/custom.css?v=df571175" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -757,7 +757,7 @@ $<span class="w"> </span>cvexplore<span class="w"> </span>database<span class="w
 </div>
 <p>Check the <a class="reference external" href="https://cve-search.github.io/CveXplore/cli/cli.html">CLI Documentation</a> for more information.</p>
 <p>Or via the the CveXplore object:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">populate</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
@@ -777,21 +777,21 @@ than 120 days you would need to re-populate the entire database.) Example:</p>
 <p>CveXplore can be instantiated with different parameters, depending to which data source you’re going to connect to.
 If no parameters are given it is assumed that you’re going to connect to a mongodb database running on localhost with
 default port and security settings (Cve Search default parameters).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span><span class="o">.</span><span class="n">version</span>
 <span class="go">&#39;0.1.2&#39;</span>
 </code></pre></div>
 </div>
 <p>To let CveXplore connect to an mongodb with specific parameters:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">(</span><span class="n">datasource_type</span><span class="o">=</span><span class="s2">&quot;mongodb&quot;</span><span class="p">,</span> <span class="n">datasource_connection_details</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;mongodb://127.0.0.1:27017&quot;</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span><span class="o">.</span><span class="n">version</span>
 <span class="go">&#39;0.1.2&#39;</span>
 </code></pre></div>
 </div>
 <p>And to let CveXplore talk to an Cve Search API (only query POST endpoint needed):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">CveXplore</span> <span class="kn">import</span> <span class="n">CveXplore</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXplore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span> <span class="o">=</span> <span class="n">CveXplore</span><span class="p">(</span><span class="n">datasource_type</span><span class="o">=</span><span class="s2">&quot;api&quot;</span><span class="p">,</span> <span class="n">datasource_connection_details</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;mylocal.cve-search.int&quot;</span><span class="p">,</span> <span class="mi">443</span><span class="p">),</span> <span class="s2">&quot;api_path&quot;</span><span class="p">:</span> <span class="s2">&quot;api&quot;</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvx</span><span class="o">.</span><span class="n">version</span>
 <span class="go">&#39;0.1.2&#39;</span>
@@ -837,7 +837,7 @@ Commands:
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

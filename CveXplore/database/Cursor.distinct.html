@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -591,26 +591,26 @@
 
 <dl class="py method objdesc">
 <dt class="sig sig-object highlight sig-wrap py">
-<span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.cvesearch_mongo_database.</span><span class="pre">Cursor</span></span><span class="sig-paren">[</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="Cursor.html" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor._DocumentType (Python type parameter)"><span class="n"><span class="pre">_DocumentType</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="desctype"><span class="pre">Mapping[str,</span> <span class="pre">Any]]</span></span></span></em></span><span class="sig-paren">]</span><span class="sig-prename descclassname"><span class="pre">.</span></span><span class="sig-name descname"><span class="pre">distinct</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-key" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor.distinct.key (Python parameter) — name of key for which we want to get the distinct values"><span class="n"><span class="pre">key</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></span></span></span><a class="reference internal" href="../../_modules/pymongo/cursor.html#Cursor.distinct"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">CveXplore.database.helpers.cvesearch_mongo_database.</span><span class="pre">Cursor</span></span><span class="sig-paren">[</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="Cursor.html" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor._DocumentType (Python type parameter)"><span class="n"><span class="pre">_DocumentType</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="desctype"><span class="pre">Mapping[str,</span> <span class="pre">Any]]</span></span></span></em></span><span class="sig-paren">]</span><span class="sig-prename descclassname"><span class="pre">.</span></span><span class="sig-name descname"><span class="pre">distinct</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#p-key" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor.distinct.key (Python parameter) — name of key for which we want to get the distinct values"><span class="n"><span class="pre">key</span></span></a><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></span></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><span class="pre">list</span></a></span></span></span><a class="reference internal" href="../../_modules/pymongo/synchronous/cursor.html#Cursor.distinct"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get a list of distinct values for <code class="xref py py-obj docutils literal notranslate"><span class="pre">key</span></code> among all documents
 in the result set of this query.</p>
-<p>Raises <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeError</span></code></a> if <code class="xref py py-obj docutils literal notranslate"><span class="pre">key</span></code> is not an instance of
-<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>.</p>
+<p>Raises <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeError</span></code></a> if <code class="xref py py-obj docutils literal notranslate"><span class="pre">key</span></code> is not an instance of
+<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>.</p>
 <p>The <a class="reference internal" href="#" title="CveXplore.database.helpers.cvesearch_mongo_database.Cursor.distinct (Python method) — Get a list of distinct values for key among all documents in the result set of this query."><code class="xref py py-meth docutils literal notranslate"><span class="pre">distinct()</span></code></a> method obeys the
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">read_preference</span></code> of the
-<a class="reference internal" href="../common/Collection.html" title="pymongo.collection.Collection (Python class)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code></a> instance on which
-<a class="reference internal" href="../common/Collection.find.html" title="pymongo.collection.Collection.find (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find()</span></code></a> was called.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code> instance on which
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">find()</span></code> was called.</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
-<dt id="p-key"><span class="n sig-name">key</span><span class="p">:</span><span class="w"> </span><span class="n"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></span></span><a class="headerlink" href="#p-key" title="Permalink to this definition">¶</a></dt><dd><p>name of key for which we want to get the distinct values</p>
+<dt id="p-key"><span class="n sig-name">key</span><span class="p">:</span><span class="w"> </span><span class="n"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a></span></span><a class="headerlink" href="#p-key" title="Permalink to this definition">¶</a></dt><dd><p>name of key for which we want to get the distinct values</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <div class="seealso admonition">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="../common/Collection.distinct.html" title="pymongo.collection.Collection.distinct (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pymongo.collection.Collection.distinct()</span></code></a></p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">pymongo.collection.Collection.distinct()</span></code></p>
 </div>
 </dd></dl>
 
@@ -621,7 +621,7 @@ in the result set of this query.</p>
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

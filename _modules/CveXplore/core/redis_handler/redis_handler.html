@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,18 +595,18 @@
   </a>
 
 <h1>Source code for CveXplore.core.redis_handler.redis_handler</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">uuid</span>
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
 
-<span class="kn">from</span> <span class="nn">redis</span> <span class="kn">import</span> <span class="n">Redis</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis</span><span class="w"> </span><span class="kn">import</span> <span class="n">Redis</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.common.config</span> <span class="kn">import</span> <span class="n">Configuration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.common.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Configuration</span>
 
 
 <div class="viewcode-block" id="RedisHandler">
 <a class="viewcode-back" href="../../../../package/code_base.html#CveXplore.core.redis_handler.redis_handler.RedisHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">RedisHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RedisHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Redis Handler for CveXplore which handlers several Redis related operations.</span>
 
@@ -616,7 +616,7 @@
 
 <div class="viewcode-block" id="RedisHandler.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/RedisHandler.__init__.html#CveXplore.core.redis_handler.redis_handler.RedisHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">redis_client</span><span class="p">:</span> <span class="n">Redis</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">redis_client</span><span class="p">:</span> <span class="n">Redis</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new RedisHandler instance</span>
 
@@ -629,7 +629,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">redis_client</span> <span class="o">=</span> <span class="n">redis_client</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_request_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lock_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_request_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lock_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to request a lock. A lock is set into Redis and takes the `lock_key` as an argument for it&#39;s key.</span>
 <span class="sd">        Lock is set to the `CELERY_RESULT_EXPIRES` configuration variable.</span>
@@ -661,7 +661,7 @@
 <div class="viewcode-block" id="RedisHandler.acquire_lock">
 <a class="viewcode-back" href="../../../../CveXplore/core/RedisHandler.acquire_lock.html#CveXplore.core.redis_handler.redis_handler.RedisHandler.acquire_lock">[docs]</a>
     <span class="nd">@contextmanager</span>
-    <span class="k">def</span> <span class="nf">acquire_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lock_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">acquire_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lock_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Context manager to acquire a lock; lock is deleted when context manager exits.</span>
 
@@ -689,7 +689,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

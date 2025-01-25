@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -601,19 +601,19 @@
 
 <span class="sd">This module contains the set of Requests&#39; exceptions.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">urllib3.exceptions</span> <span class="kn">import</span> <span class="n">HTTPError</span> <span class="k">as</span> <span class="n">BaseHTTPError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib3.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPError</span> <span class="k">as</span> <span class="n">BaseHTTPError</span>
 
-<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">CompatJSONDecodeError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.compat</span><span class="w"> </span><span class="kn">import</span> <span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">CompatJSONDecodeError</span>
 
 
 <div class="viewcode-block" id="RequestException">
 <a class="viewcode-back" href="../../CveXplore/core/RequestException.html#CveXplore.core.nvd_nist.nvd_nist_api.RequestException">[docs]</a>
-<span class="k">class</span> <span class="nc">RequestException</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RequestException</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;There was an ambiguous exception that occurred while handling your</span>
 <span class="sd">    request.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize RequestException with `request` and `response` objects.&quot;&quot;&quot;</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">response</span>
@@ -624,14 +624,14 @@
 
 
 
-<span class="k">class</span> <span class="nc">InvalidJSONError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InvalidJSONError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A JSON error occurred.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">JSONDecodeError</span><span class="p">(</span><span class="n">InvalidJSONError</span><span class="p">,</span> <span class="n">CompatJSONDecodeError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">JSONDecodeError</span><span class="p">(</span><span class="n">InvalidJSONError</span><span class="p">,</span> <span class="n">CompatJSONDecodeError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Couldn&#39;t decode the text into json&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct the JSONDecodeError instance first with all</span>
 <span class="sd">        args. Then use it&#39;s args to construct the IOError so that</span>
@@ -644,24 +644,24 @@
 
 <div class="viewcode-block" id="HTTPError">
 <a class="viewcode-back" href="../../CveXplore/core/HTTPError.html#CveXplore.core.nvd_nist.nvd_nist_api.HTTPError">[docs]</a>
-<span class="k">class</span> <span class="nc">HTTPError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">HTTPError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An HTTP error occurred.&quot;&quot;&quot;</span></div>
 
 
 
-<span class="k">class</span> <span class="nc">ConnectionError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConnectionError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A Connection error occurred.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">ProxyError</span><span class="p">(</span><span class="ne">ConnectionError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProxyError</span><span class="p">(</span><span class="ne">ConnectionError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A proxy error occurred.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">SSLError</span><span class="p">(</span><span class="ne">ConnectionError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SSLError</span><span class="p">(</span><span class="ne">ConnectionError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An SSL error occurred.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">Timeout</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Timeout</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The request timed out.</span>
 
 <span class="sd">    Catching this error will catch both</span>
@@ -670,77 +670,77 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">ConnectTimeout</span><span class="p">(</span><span class="ne">ConnectionError</span><span class="p">,</span> <span class="n">Timeout</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConnectTimeout</span><span class="p">(</span><span class="ne">ConnectionError</span><span class="p">,</span> <span class="n">Timeout</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The request timed out while trying to connect to the remote server.</span>
 
 <span class="sd">    Requests that produced this error are safe to retry.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">ReadTimeout</span><span class="p">(</span><span class="n">Timeout</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ReadTimeout</span><span class="p">(</span><span class="n">Timeout</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The server did not send any data in the allotted amount of time.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">URLRequired</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">URLRequired</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A valid URL is required to make a request.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">TooManyRedirects</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TooManyRedirects</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Too many redirects.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">MissingSchema</span><span class="p">(</span><span class="n">RequestException</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MissingSchema</span><span class="p">(</span><span class="n">RequestException</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The URL scheme (e.g. http or https) is missing.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">InvalidSchema</span><span class="p">(</span><span class="n">RequestException</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InvalidSchema</span><span class="p">(</span><span class="n">RequestException</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The URL scheme provided is either invalid or unsupported.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">InvalidURL</span><span class="p">(</span><span class="n">RequestException</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InvalidURL</span><span class="p">(</span><span class="n">RequestException</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The URL provided was somehow invalid.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">InvalidHeader</span><span class="p">(</span><span class="n">RequestException</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InvalidHeader</span><span class="p">(</span><span class="n">RequestException</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The header value provided was somehow invalid.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">InvalidProxyURL</span><span class="p">(</span><span class="n">InvalidURL</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InvalidProxyURL</span><span class="p">(</span><span class="n">InvalidURL</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The proxy URL provided is invalid.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">ChunkedEncodingError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ChunkedEncodingError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The server declared chunked encoding but sent an invalid chunk.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">ContentDecodingError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">,</span> <span class="n">BaseHTTPError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ContentDecodingError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">,</span> <span class="n">BaseHTTPError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Failed to decode response content.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">StreamConsumedError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">StreamConsumedError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The content for this response was already consumed.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">RetryError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RetryError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom retries logic failed&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">UnrewindableBodyError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">UnrewindableBodyError</span><span class="p">(</span><span class="n">RequestException</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Requests encountered an error when trying to rewind a body.&quot;&quot;&quot;</span>
 
 
 <span class="c1"># Warnings</span>
 
 
-<span class="k">class</span> <span class="nc">RequestsWarning</span><span class="p">(</span><span class="ne">Warning</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RequestsWarning</span><span class="p">(</span><span class="ne">Warning</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base warning for Requests.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">FileModeWarning</span><span class="p">(</span><span class="n">RequestsWarning</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FileModeWarning</span><span class="p">(</span><span class="n">RequestsWarning</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A file was opened in text mode, but Requests determined its binary length.&quot;&quot;&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">RequestsDependencyWarning</span><span class="p">(</span><span class="n">RequestsWarning</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RequestsDependencyWarning</span><span class="p">(</span><span class="n">RequestsWarning</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An imported dependency doesn&#39;t match the expected version range.&quot;&quot;&quot;</span>
 </code></pre></div>
 
@@ -749,7 +749,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

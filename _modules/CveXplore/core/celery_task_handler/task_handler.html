@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,29 +595,29 @@
   </a>
 
 <h1>Source code for CveXplore.core.celery_task_handler.task_handler</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">ast</span>
-<span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">zip_longest</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span>
-<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">zip_longest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlparse</span>
 
-<span class="kn">import</span> <span class="nn">pytz</span>
-<span class="kn">from</span> <span class="nn">celery.schedules</span> <span class="kn">import</span> <span class="n">schedule</span><span class="p">,</span> <span class="n">crontab</span>
-<span class="kn">from</span> <span class="nn">redbeat</span> <span class="kn">import</span> <span class="n">RedBeatSchedulerEntry</span>
-<span class="kn">from</span> <span class="nn">redbeat.decoder</span> <span class="kn">import</span> <span class="n">RedBeatJSONEncoder</span>
-<span class="kn">from</span> <span class="nn">redbeat.schedulers</span> <span class="kn">import</span> <span class="n">ensure_conf</span>
-<span class="kn">from</span> <span class="nn">redis</span> <span class="kn">import</span> <span class="n">Redis</span>
-<span class="kn">from</span> <span class="nn">redis.exceptions</span> <span class="kn">import</span> <span class="ne">ConnectionError</span> <span class="k">as</span> <span class="n">RedisConnectionError</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytz</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">celery.schedules</span><span class="w"> </span><span class="kn">import</span> <span class="n">schedule</span><span class="p">,</span> <span class="n">crontab</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redbeat</span><span class="w"> </span><span class="kn">import</span> <span class="n">RedBeatSchedulerEntry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redbeat.decoder</span><span class="w"> </span><span class="kn">import</span> <span class="n">RedBeatJSONEncoder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redbeat.schedulers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ensure_conf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis</span><span class="w"> </span><span class="kn">import</span> <span class="n">Redis</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="ne">ConnectionError</span> <span class="k">as</span> <span class="n">RedisConnectionError</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.celery_app.cvexplore_daemon</span> <span class="kn">import</span> <span class="n">app</span>
-<span class="kn">from</span> <span class="nn">CveXplore.common.config</span> <span class="kn">import</span> <span class="n">Configuration</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.general.utils</span> <span class="kn">import</span> <span class="n">timestampTOdatetime</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.logging.logger_class</span> <span class="kn">import</span> <span class="n">AppLogger</span>
-<span class="kn">from</span> <span class="nn">CveXplore.errors.tasks</span> <span class="kn">import</span> <span class="n">TaskNotFoundError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.celery_app.cvexplore_daemon</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.common.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Configuration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.general.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">timestampTOdatetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.logging.logger_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.errors.tasks</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaskNotFoundError</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">setLoggerClass</span><span class="p">(</span><span class="n">AppLogger</span><span class="p">)</span>
 
@@ -633,7 +633,7 @@
 
 <div class="viewcode-block" id="CveXploreEntry">
 <a class="viewcode-back" href="../../../../package/code_base.html#CveXplore.core.celery_task_handler.task_handler.CveXploreEntry">[docs]</a>
-<span class="k">class</span> <span class="nc">CveXploreEntry</span><span class="p">(</span><span class="n">RedBeatSchedulerEntry</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CveXploreEntry</span><span class="p">(</span><span class="n">RedBeatSchedulerEntry</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    CveXploreEntry class is used to create new tasks in the backend; it inherits from RedBeatSchedulerEntry and</span>
 <span class="sd">    overwrites the save method. By default, the RedBeatSchedulerEntry uses the same redis parameters as the celery</span>
@@ -646,7 +646,7 @@
 
 <div class="viewcode-block" id="CveXploreEntry.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/CveXploreEntry.__init__.html#CveXplore.core.celery_task_handler.task_handler.CveXploreEntry.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">task</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -690,7 +690,7 @@
 
 <div class="viewcode-block" id="CveXploreEntry.save">
 <a class="viewcode-back" href="../../../../CveXplore/core/CveXploreEntry.save.html#CveXplore.core.celery_task_handler.task_handler.CveXploreEntry.save">[docs]</a>
-    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save the task to the backend of CveXplore.</span>
 
@@ -725,7 +725,7 @@
 
 <div class="viewcode-block" id="Task">
 <a class="viewcode-back" href="../../../../package/code_base.html#CveXplore.core.celery_task_handler.task_handler.Task">[docs]</a>
-<span class="k">class</span> <span class="nc">Task</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Task</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Task class is used to handle all task related operations related to the CveXplore backend.</span>
 
@@ -735,7 +735,7 @@
 
 <div class="viewcode-block" id="Task.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/Task.__init__.html#CveXplore.core.celery_task_handler.task_handler.Task.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">task</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -820,7 +820,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Property to check if the task is enabled or not.</span>
 
@@ -833,7 +833,7 @@
 
 <div class="viewcode-block" id="Task.batcher">
 <a class="viewcode-back" href="../../../../CveXplore/core/Task.batcher.html#CveXplore.core.celery_task_handler.task_handler.Task.batcher">[docs]</a>
-    <span class="k">def</span> <span class="nf">batcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">batcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper function to request chunks of keys from the Redis backend.</span>
 
@@ -850,7 +850,7 @@
 
 <div class="viewcode-block" id="Task.decode_redis_output">
 <a class="viewcode-back" href="../../../../CveXplore/core/Task.decode_redis_output.html#CveXplore.core.celery_task_handler.task_handler.Task.decode_redis_output">[docs]</a>
-    <span class="k">def</span> <span class="nf">decode_redis_output</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decode_redis_output</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span> <span class="o">|</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -888,7 +888,7 @@
 
 <div class="viewcode-block" id="Task.get_all_task_results">
 <a class="viewcode-back" href="../../../../CveXplore/core/Task.get_all_task_results.html#CveXplore.core.celery_task_handler.task_handler.Task.get_all_task_results">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_all_task_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">list</span> <span class="o">|</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_all_task_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">list</span> <span class="o">|</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Iterator over all task results in the Redis backend.</span>
 
@@ -912,7 +912,7 @@
 
 <div class="viewcode-block" id="Task.get_sorted_task_results">
 <a class="viewcode-back" href="../../../../CveXplore/core/Task.get_sorted_task_results.html#CveXplore.core.celery_task_handler.task_handler.Task.get_sorted_task_results">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_sorted_task_results</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_sorted_task_results</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">list</span> <span class="o">|</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -945,7 +945,7 @@
 
 <div class="viewcode-block" id="Task.purge_task_results">
 <a class="viewcode-back" href="../../../../CveXplore/core/Task.purge_task_results.html#CveXplore.core.celery_task_handler.task_handler.Task.purge_task_results">[docs]</a>
-    <span class="k">def</span> <span class="nf">purge_task_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">purge_task_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Purge task results in the Redis backend.</span>
 
@@ -996,7 +996,7 @@
 
 <div class="viewcode-block" id="Task.upsert_task">
 <a class="viewcode-back" href="../../../../CveXplore/core/Task.upsert_task.html#CveXplore.core.celery_task_handler.task_handler.Task.upsert_task">[docs]</a>
-    <span class="k">def</span> <span class="nf">upsert_task</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">upsert_task</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to create or update a scheduled interval task</span>
 
@@ -1027,7 +1027,7 @@
 
 <div class="viewcode-block" id="Task.delete_task">
 <a class="viewcode-back" href="../../../../CveXplore/core/Task.delete_task.html#CveXplore.core.celery_task_handler.task_handler.Task.delete_task">[docs]</a>
-    <span class="k">def</span> <span class="nf">delete_task</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete_task</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to delete a task from the database</span>
 
@@ -1051,7 +1051,7 @@
 
 <div class="viewcode-block" id="Task.enable">
 <a class="viewcode-back" href="../../../../CveXplore/core/Task.enable.html#CveXplore.core.celery_task_handler.task_handler.Task.enable">[docs]</a>
-    <span class="k">def</span> <span class="nf">enable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to enable the task</span>
 
@@ -1063,7 +1063,7 @@
 
 <div class="viewcode-block" id="Task.disable">
 <a class="viewcode-back" href="../../../../CveXplore/core/Task.disable.html#CveXplore.core.celery_task_handler.task_handler.Task.disable">[docs]</a>
-    <span class="k">def</span> <span class="nf">disable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to disable the task.</span>
 
@@ -1073,7 +1073,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toggle_task</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_toggle_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_toggle_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        method to enable (1) or disable (0) a task</span>
 
@@ -1108,7 +1108,7 @@
 
 <div class="viewcode-block" id="Task.to_dict">
 <a class="viewcode-back" href="../../../../CveXplore/core/Task.to_dict.html#CveXplore.core.celery_task_handler.task_handler.Task.to_dict">[docs]</a>
-    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to convert the `Task` result to a dictionary.</span>
 
@@ -1141,7 +1141,7 @@
 
 <div class="viewcode-block" id="Task.to_data">
 <a class="viewcode-back" href="../../../../CveXplore/core/Task.to_data.html#CveXplore.core.celery_task_handler.task_handler.Task.to_data">[docs]</a>
-    <span class="k">def</span> <span class="nf">to_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to convert the `Task` result to a dictionary.</span>
 
@@ -1218,7 +1218,7 @@
 
 <div class="viewcode-block" id="Task.__repr__">
 <a class="viewcode-back" href="../../../../CveXplore/core/Task.__repr__.html#CveXplore.core.celery_task_handler.task_handler.Task.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        String representation of the object.</span>
 
@@ -1232,7 +1232,7 @@
 
 <div class="viewcode-block" id="TaskData">
 <a class="viewcode-back" href="../../../../package/code_base.html#CveXplore.core.celery_task_handler.task_handler.TaskData">[docs]</a>
-<span class="k">class</span> <span class="nc">TaskData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TaskData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class to hold task data.</span>
 
@@ -1242,7 +1242,7 @@
 
 <div class="viewcode-block" id="TaskData.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/TaskData.__init__.html#CveXplore.core.celery_task_handler.task_handler.TaskData.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to initialize the `TaskData` object.</span>
 
@@ -1284,7 +1284,7 @@
 
 <div class="viewcode-block" id="TaskData.to_dict">
 <a class="viewcode-back" href="../../../../CveXplore/core/TaskData.to_dict.html#CveXplore.core.celery_task_handler.task_handler.TaskData.to_dict">[docs]</a>
-    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to convert the `TaskData` result to a dictionary.</span>
 
@@ -1305,7 +1305,7 @@
 
 <div class="viewcode-block" id="TaskData.__repr__">
 <a class="viewcode-back" href="../../../../CveXplore/core/TaskData.__repr__.html#CveXplore.core.celery_task_handler.task_handler.TaskData.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        String representation of the object.</span>
 
@@ -1319,7 +1319,7 @@
 
 <div class="viewcode-block" id="TaskHandler">
 <a class="viewcode-back" href="../../../../package/code_base.html#CveXplore.core.celery_task_handler.task_handler.TaskHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">TaskHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TaskHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class that is the main handler towards the backend; this class is used by the package and CLI for</span>
 <span class="sd">    all CRUD operations on the backend of CveXplore.</span>
@@ -1330,7 +1330,7 @@
 
 <div class="viewcode-block" id="TaskHandler.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/TaskHandler.__init__.html#CveXplore.core.celery_task_handler.task_handler.TaskHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to initialize the `TaskHandler` object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1350,7 +1350,7 @@
 <div class="viewcode-block" id="TaskHandler.show_available_tasks">
 <a class="viewcode-back" href="../../../../CveXplore/core/TaskHandler.show_available_tasks.html#CveXplore.core.celery_task_handler.task_handler.TaskHandler.show_available_tasks">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">show_available_tasks</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">show_available_tasks</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Show available tasks. Sorted by key.</span>
 
@@ -1370,7 +1370,7 @@
 
 <div class="viewcode-block" id="TaskHandler.create_task_by_number">
 <a class="viewcode-back" href="../../../../CveXplore/core/TaskHandler.create_task_by_number.html#CveXplore.core.celery_task_handler.task_handler.TaskHandler.create_task_by_number">[docs]</a>
-    <span class="k">def</span> <span class="nf">create_task_by_number</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_task_by_number</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">task_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">task_slug</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1427,7 +1427,7 @@
 
 <div class="viewcode-block" id="TaskHandler.show_scheduled_tasks">
 <a class="viewcode-back" href="../../../../CveXplore/core/TaskHandler.show_scheduled_tasks.html#CveXplore.core.celery_task_handler.task_handler.TaskHandler.show_scheduled_tasks">[docs]</a>
-    <span class="k">def</span> <span class="nf">show_scheduled_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Task</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">show_scheduled_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Task</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Show all scheduled tasks. Sorted by `Task.name`. A scheduled task is a task that is inserted into the redis</span>
 <span class="sd">        beat queue and is executed according to the `task_interval` or `task_crontab` variables.</span>
@@ -1482,7 +1482,7 @@
 
 <div class="viewcode-block" id="TaskHandler.delete_scheduled_task">
 <a class="viewcode-back" href="../../../../CveXplore/core/TaskHandler.delete_scheduled_task.html#CveXplore.core.celery_task_handler.task_handler.TaskHandler.delete_scheduled_task">[docs]</a>
-    <span class="k">def</span> <span class="nf">delete_scheduled_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete_scheduled_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Delete a scheduled task by number. The number should correspond to the indexnumber + 1 in the result of a</span>
 <span class="sd">        call to `TaskHandler.show_scheduled_tasks()` or should correspond to the number in the ID column of the</span>
@@ -1513,7 +1513,7 @@
 
 <div class="viewcode-block" id="TaskHandler.toggle_scheduled_task">
 <a class="viewcode-back" href="../../../../CveXplore/core/TaskHandler.toggle_scheduled_task.html#CveXplore.core.celery_task_handler.task_handler.TaskHandler.toggle_scheduled_task">[docs]</a>
-    <span class="k">def</span> <span class="nf">toggle_scheduled_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggle_scheduled_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Toggle a scheduled task by number between an enabled and disabled state.</span>
 
@@ -1545,7 +1545,7 @@
 
 <div class="viewcode-block" id="TaskHandler.purge_scheduled_task">
 <a class="viewcode-back" href="../../../../CveXplore/core/TaskHandler.purge_scheduled_task.html#CveXplore.core.celery_task_handler.task_handler.TaskHandler.purge_scheduled_task">[docs]</a>
-    <span class="k">def</span> <span class="nf">purge_scheduled_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">purge_scheduled_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Purge the results from a given task. The number should correspond to the indexnumber + 1 in the result of a</span>
 <span class="sd">        call to `TaskHandler.show_scheduled_tasks()` or should correspond to the number in the ID column of the</span>
@@ -1576,7 +1576,7 @@
 
 <div class="viewcode-block" id="TaskHandler.get_scheduled_tasks_results">
 <a class="viewcode-back" href="../../../../CveXplore/core/TaskHandler.get_scheduled_tasks_results.html#CveXplore.core.celery_task_handler.task_handler.TaskHandler.get_scheduled_tasks_results">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_scheduled_tasks_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_scheduled_tasks_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to retrieve the results of a scheduled task by number. The number should correspond to the</span>
 <span class="sd">        indexnumber + 1 in the result of a call to `TaskHandler.show_scheduled_tasks()` or should correspond to the</span>
@@ -1609,7 +1609,7 @@
 
 <div class="viewcode-block" id="TaskHandler.get_scheduled_task_by_name">
 <a class="viewcode-back" href="../../../../CveXplore/core/TaskHandler.get_scheduled_task_by_name.html#CveXplore.core.celery_task_handler.task_handler.TaskHandler.get_scheduled_task_by_name">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_scheduled_task_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Task</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_scheduled_task_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Task</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to retrieve the task parameters</span>
 
@@ -1635,7 +1635,7 @@
             <span class="k">raise</span> <span class="n">TaskNotFoundError</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_schedule_task</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_schedule_task</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">task_slug</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">task_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1687,7 +1687,7 @@
 
 <div class="viewcode-block" id="TaskHandler.__repr__">
 <a class="viewcode-back" href="../../../../CveXplore/core/TaskHandler.__repr__.html#CveXplore.core.celery_task_handler.task_handler.TaskHandler.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        String representation of the object.</span>
 
@@ -1704,7 +1704,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,20 +595,20 @@
   </a>
 
 <h1>Source code for CveXplore.database.helpers.specific_db</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">DESCENDING</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo</span><span class="w"> </span><span class="kn">import</span> <span class="n">DESCENDING</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.database.helpers.generic_db</span> <span class="kn">import</span> <span class="n">GenericDatabaseFactory</span>
-<span class="kn">from</span> <span class="nn">CveXplore.errors.validation</span> <span class="kn">import</span> <span class="n">CveNumberValidationError</span>
-<span class="kn">from</span> <span class="nn">CveXplore.objects.cvexplore_object</span> <span class="kn">import</span> <span class="n">CveXploreObject</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.database.helpers.generic_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericDatabaseFactory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.errors.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveNumberValidationError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.objects.cvexplore_object</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveXploreObject</span>
 
 
 <div class="viewcode-block" id="CvesDatabaseFunctions">
 <a class="viewcode-back" href="../../../../CveXplore/database/CvesDatabaseFunctions.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions">[docs]</a>
-<span class="k">class</span> <span class="nc">CvesDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CvesDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The CvesDatabaseFunctions is a specific class that provides the cves attribute of a CveXplore instance additional</span>
 <span class="sd">    functions that only apply to the &#39;cves&#39; collection</span>
@@ -616,13 +616,13 @@
 
 <div class="viewcode-block" id="CvesDatabaseFunctions.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/database/CvesDatabaseFunctions.__init__.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CvesDatabaseFunctions.get_cves_for_vendor">
 <a class="viewcode-back" href="../../../../CveXplore/database/CvesDatabaseFunctions.get_cves_for_vendor.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_cves_for_vendor">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_cves_for_vendor</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_cves_for_vendor</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">vendor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">CveXploreObject</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -641,7 +641,7 @@
             <span class="k">return</span> <span class="kc">None</span></div>
 
 
-    <span class="k">def</span> <span class="nf">__parse_cve_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__parse_cve_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="c1"># first try to match full cve number format</span>
         <span class="n">reg_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[cC][vV][eE]-\d</span><span class="si">{4}</span><span class="s2">-\d{4,10}&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">reg_match</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">doc_id</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -659,7 +659,7 @@
 
 <div class="viewcode-block" id="CvesDatabaseFunctions.get_by_id">
 <a class="viewcode-back" href="../../../../CveXplore/database/CvesDatabaseFunctions.get_by_id.html#CveXplore.database.helpers.specific_db.CvesDatabaseFunctions.get_by_id">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to retrieve a single CVE from the database by its CVE ID number.</span>
 <span class="sd">        The number format should be either CVE-2000-0001, cve-2000-0001 or 2000-0001.</span>
@@ -675,7 +675,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasource_collection_connection</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">doc_id</span><span class="p">})</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_field_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_field_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to fetch all field names from a specific collection</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -702,7 +702,7 @@
 
 <div class="viewcode-block" id="CpeDatabaseFunctions">
 <a class="viewcode-back" href="../../../../CveXplore/database/CpeDatabaseFunctions.html#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions">[docs]</a>
-<span class="k">class</span> <span class="nc">CpeDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CpeDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The CpeDatabaseFunctions is a specific class that provides the cpe attribute of a CveXplore instance additional</span>
 <span class="sd">    functions that only apply to the &#39;cpe&#39; collection</span>
@@ -710,13 +710,13 @@
 
 <div class="viewcode-block" id="CpeDatabaseFunctions.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/database/CpeDatabaseFunctions.__init__.html#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CpeDatabaseFunctions.search_active_cpes">
 <a class="viewcode-back" href="../../../../CveXplore/database/CpeDatabaseFunctions.search_active_cpes.html#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.search_active_cpes">[docs]</a>
-    <span class="k">def</span> <span class="nf">search_active_cpes</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_active_cpes</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sorting</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">CveXploreObject</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -741,7 +741,7 @@
 
 <div class="viewcode-block" id="CpeDatabaseFunctions.find_active_cpes">
 <a class="viewcode-back" href="../../../../CveXplore/database/CpeDatabaseFunctions.find_active_cpes.html#CveXplore.database.helpers.specific_db.CpeDatabaseFunctions.find_active_cpes">[docs]</a>
-    <span class="k">def</span> <span class="nf">find_active_cpes</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_active_cpes</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sorting</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">CveXploreObject</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -766,7 +766,7 @@
 
 <div class="viewcode-block" id="CapecDatabaseFunctions">
 <a class="viewcode-back" href="../../../../CveXplore/database/CapecDatabaseFunctions.html#CveXplore.database.helpers.specific_db.CapecDatabaseFunctions">[docs]</a>
-<span class="k">class</span> <span class="nc">CapecDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CapecDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The CapecDatabaseFunctions is a specific class that provides the capec attribute of a CveXplore instance additional</span>
 <span class="sd">    functions that only apply to the &#39;capec&#39; collection</span>
@@ -774,7 +774,7 @@
 
 <div class="viewcode-block" id="CapecDatabaseFunctions.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/database/CapecDatabaseFunctions.__init__.html#CveXplore.database.helpers.specific_db.CapecDatabaseFunctions.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span></div>
 </div>
 
@@ -782,7 +782,7 @@
 
 <div class="viewcode-block" id="CWEDatabaseFunctions">
 <a class="viewcode-back" href="../../../../CveXplore/database/CWEDatabaseFunctions.html#CveXplore.database.helpers.specific_db.CWEDatabaseFunctions">[docs]</a>
-<span class="k">class</span> <span class="nc">CWEDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CWEDatabaseFunctions</span><span class="p">(</span><span class="n">GenericDatabaseFactory</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The CWEDatabaseFunctions is a specific class that provides the cwe attribute of a CveXplore instance additional</span>
 <span class="sd">    functions that only apply to the &#39;cwe&#39; collection</span>
@@ -790,7 +790,7 @@
 
 <div class="viewcode-block" id="CWEDatabaseFunctions.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/database/CWEDatabaseFunctions.__init__.html#CveXplore.database.helpers.specific_db.CWEDatabaseFunctions.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span></div>
 </div>
 
@@ -801,7 +801,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

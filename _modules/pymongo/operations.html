@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -609,11 +609,14 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Operation class definitions.&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="sd">&quot;&quot;&quot;Operation class definitions.</span>
 
-<span class="kn">import</span> <span class="nn">enum</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="sd">.. seealso:: This module is compatible with both the synchronous and asynchronous PyMongo APIs.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">TYPE_CHECKING</span><span class="p">,</span>
     <span class="n">Any</span><span class="p">,</span>
     <span class="n">Generic</span><span class="p">,</span>
@@ -624,16 +627,18 @@
     <span class="n">Union</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">bson.raw_bson</span> <span class="kn">import</span> <span class="n">RawBSONDocument</span>
-<span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">helpers</span>
-<span class="kn">from</span> <span class="nn">pymongo.collation</span> <span class="kn">import</span> <span class="n">validate_collation_or_none</span>
-<span class="kn">from</span> <span class="nn">pymongo.common</span> <span class="kn">import</span> <span class="n">validate_is_mapping</span><span class="p">,</span> <span class="n">validate_list</span>
-<span class="kn">from</span> <span class="nn">pymongo.helpers</span> <span class="kn">import</span> <span class="n">_gen_index_name</span><span class="p">,</span> <span class="n">_index_document</span><span class="p">,</span> <span class="n">_index_list</span>
-<span class="kn">from</span> <span class="nn">pymongo.typings</span> <span class="kn">import</span> <span class="n">_CollationIn</span><span class="p">,</span> <span class="n">_DocumentType</span><span class="p">,</span> <span class="n">_Pipeline</span>
-<span class="kn">from</span> <span class="nn">pymongo.write_concern</span> <span class="kn">import</span> <span class="n">validate_boolean</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bson.raw_bson</span><span class="w"> </span><span class="kn">import</span> <span class="n">RawBSONDocument</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo</span><span class="w"> </span><span class="kn">import</span> <span class="n">helpers_shared</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.collation</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_collation_or_none</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_is_mapping</span><span class="p">,</span> <span class="n">validate_list</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">InvalidOperation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.helpers_shared</span><span class="w"> </span><span class="kn">import</span> <span class="n">_gen_index_name</span><span class="p">,</span> <span class="n">_index_document</span><span class="p">,</span> <span class="n">_index_list</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.typings</span><span class="w"> </span><span class="kn">import</span> <span class="n">_CollationIn</span><span class="p">,</span> <span class="n">_DocumentType</span><span class="p">,</span> <span class="n">_Pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.write_concern</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_boolean</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pymongo.bulk</span> <span class="kn">import</span> <span class="n">_Bulk</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.typings</span><span class="w"> </span><span class="kn">import</span> <span class="n">_AgnosticBulk</span><span class="p">,</span> <span class="n">_AgnosticClientBulk</span>
+
 
 <span class="c1"># Hint supports index name, &quot;myIndex&quot;, a list of either strings or index pairs: [(&#39;x&#39;, 1), (&#39;y&#39;, -1), &#39;z&#39;&#39;], or a dictionary</span>
 <span class="n">_IndexList</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
@@ -642,9 +647,10 @@
 <span class="n">_IndexKeyHint</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">_IndexList</span><span class="p">]</span>
 
 
-<span class="k">class</span> <span class="nc">_Op</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_Op</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">ABORT</span> <span class="o">=</span> <span class="s2">&quot;abortTransaction&quot;</span>
     <span class="n">AGGREGATE</span> <span class="o">=</span> <span class="s2">&quot;aggregate&quot;</span>
+    <span class="n">BULK_WRITE</span> <span class="o">=</span> <span class="s2">&quot;bulkWrite&quot;</span>
     <span class="n">COMMIT</span> <span class="o">=</span> <span class="s2">&quot;commitTransaction&quot;</span>
     <span class="n">COUNT</span> <span class="o">=</span> <span class="s2">&quot;count&quot;</span>
     <span class="n">CREATE</span> <span class="o">=</span> <span class="s2">&quot;create&quot;</span>
@@ -675,64 +681,146 @@
 
 <div class="viewcode-block" id="InsertOne">
 <a class="viewcode-back" href="../../CveXplore/core/InsertOne.html#CveXplore.core.database_actions.db_action.InsertOne">[docs]</a>
-<span class="k">class</span> <span class="nc">InsertOne</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">_DocumentType</span><span class="p">]):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InsertOne</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">_DocumentType</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents an insert_one operation.&quot;&quot;&quot;</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_doc&quot;</span><span class="p">,)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;_doc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_namespace&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
 <div class="viewcode-block" id="InsertOne.__init__">
 <a class="viewcode-back" href="../../CveXplore/core/InsertOne.__init__.html#CveXplore.core.database_actions.db_action.InsertOne.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">:</span> <span class="n">_DocumentType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">:</span> <span class="n">_DocumentType</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an InsertOne instance.</span>
 
-<span class="sd">        For use with :meth:`~pymongo.collection.Collection.bulk_write`.</span>
+<span class="sd">        For use with :meth:`~pymongo.asynchronous.collection.AsyncCollection.bulk_write`, :meth:`~pymongo.collection.Collection.bulk_write`,</span>
+<span class="sd">        :meth:`~pymongo.asynchronous.mongo_client.AsyncMongoClient.bulk_write` and :meth:`~pymongo.mongo_client.MongoClient.bulk_write`.</span>
 
 <span class="sd">        :param document: The document to insert. If the document is missing an</span>
 <span class="sd">            _id field one will be added.</span>
+<span class="sd">        :param namespace: (optional) The namespace in which to insert a document.</span>
+
+<span class="sd">        .. versionchanged:: 4.9</span>
+<span class="sd">           Added the `namespace` option to support `MongoClient.bulk_write`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span> <span class="o">=</span> <span class="n">document</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span> <span class="o">=</span> <span class="n">document</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_add_to_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_Bulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _Bulk instance `bulkobj`.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_AgnosticBulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _AsyncBulk/_Bulk instance `bulkobj`.&quot;&quot;&quot;</span>
         <span class="n">bulkobj</span><span class="o">.</span><span class="n">add_insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_client_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_AgnosticClientBulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _AsyncClientBulk/_ClientBulk instance `bulkobj`.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidOperation</span><span class="p">(</span>
+                <span class="s2">&quot;MongoClient.bulk_write requires a namespace to be provided for each write operation&quot;</span>
+            <span class="p">)</span>
+        <span class="n">bulkobj</span><span class="o">.</span><span class="n">add_insert</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span>  <span class="c1"># type: ignore[arg-type]</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="InsertOne.__repr__">
 <a class="viewcode-back" href="../../CveXplore/core/InsertOne.__repr__.html#CveXplore.core.database_actions.db_action.InsertOne.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;InsertOne(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="si">!r}</span><span class="s2">)&quot;</span></div>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="si">!r}</span><span class="s2">)&quot;</span></div>
 
 
 <div class="viewcode-block" id="InsertOne.__eq__">
 <a class="viewcode-back" href="../../CveXplore/core/InsertOne.__eq__.html#CveXplore.core.database_actions.db_action.InsertOne.__eq__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">_doc</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span>
+            <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">_doc</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span></div>
 
 
 <div class="viewcode-block" id="InsertOne.__ne__">
 <a class="viewcode-back" href="../../CveXplore/core/InsertOne.__ne__.html#CveXplore.core.database_actions.db_action.InsertOne.__ne__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span></div>
 </div>
 
 
 
-<span class="k">class</span> <span class="nc">DeleteOne</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a delete_one operation.&quot;&quot;&quot;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_DeleteOp</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Private base class for delete operations.&quot;&quot;&quot;</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_filter&quot;</span><span class="p">,</span> <span class="s2">&quot;_collation&quot;</span><span class="p">,</span> <span class="s2">&quot;_hint&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;_filter&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_collation&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_hint&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_namespace&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">collation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_CollationIn</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_IndexKeyHint</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">validate_is_mapping</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span> <span class="o">=</span> <span class="n">hint</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span> <span class="o">=</span> <span class="nb">filter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_collation</span> <span class="o">=</span> <span class="n">collation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">==</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DeleteOne</span><span class="p">(</span><span class="n">_DeleteOp</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a delete_one operation.&quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+        <span class="n">collation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_CollationIn</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_IndexKeyHint</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a DeleteOne instance.</span>
 
-<span class="sd">        For use with :meth:`~pymongo.collection.Collection.bulk_write`.</span>
+<span class="sd">        For use with :meth:`~pymongo.asynchronous.collection.AsyncCollection.bulk_write`, :meth:`~pymongo.collection.Collection.bulk_write`,</span>
+<span class="sd">        :meth:`~pymongo.asynchronous.mongo_client.AsyncMongoClient.bulk_write` and :meth:`~pymongo.mongo_client.MongoClient.bulk_write`.</span>
 
 <span class="sd">        :param filter: A query that matches the document to delete.</span>
 <span class="sd">        :param collation: An instance of</span>
@@ -740,26 +828,22 @@
 <span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
-<span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
+<span class="sd">            :meth:`~pymongo.asynchronous.collection.AsyncCollection.create_index` or :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
 <span class="sd">            ``[(&#39;field&#39;, ASCENDING)]``). This option is only supported on</span>
 <span class="sd">            MongoDB 4.4 and above.</span>
+<span class="sd">        :param namespace: (optional) The namespace in which to delete a document.</span>
 
+<span class="sd">        .. versionchanged:: 4.9</span>
+<span class="sd">           Added the `namespace` option to support `MongoClient.bulk_write`.</span>
 <span class="sd">        .. versionchanged:: 3.11</span>
 <span class="sd">           Added the ``hint`` option.</span>
 <span class="sd">        .. versionchanged:: 3.5</span>
 <span class="sd">           Added the `collation` option.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">validate_is_mapping</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span> <span class="o">=</span> <span class="n">hint</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span> <span class="o">=</span> <span class="nb">filter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_collation</span> <span class="o">=</span> <span class="n">collation</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">collation</span><span class="p">,</span> <span class="n">hint</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_add_to_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_Bulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _Bulk instance `bulkobj`.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_AgnosticBulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _AsyncBulk/_Bulk instance `bulkobj`.&quot;&quot;&quot;</span>
         <span class="n">bulkobj</span><span class="o">.</span><span class="n">add_delete</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
             <span class="mi">1</span><span class="p">,</span>
@@ -767,36 +851,37 @@
             <span class="n">hint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;DeleteOne(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="si">!r}</span><span class="s2">)&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_hint</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_client_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_AgnosticClientBulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _AsyncClientBulk/_ClientBulk instance `bulkobj`.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidOperation</span><span class="p">(</span>
+                <span class="s2">&quot;MongoClient.bulk_write requires a namespace to be provided for each write operation&quot;</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="n">bulkobj</span><span class="o">.</span><span class="n">add_delete</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
+            <span class="n">multi</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">collation</span><span class="o">=</span><span class="n">validate_collation_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="p">),</span>
+            <span class="n">hint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+        <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
-
-<span class="k">class</span> <span class="nc">DeleteMany</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DeleteMany</span><span class="p">(</span><span class="n">_DeleteOp</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a delete_many operation.&quot;&quot;&quot;</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_filter&quot;</span><span class="p">,</span> <span class="s2">&quot;_collation&quot;</span><span class="p">,</span> <span class="s2">&quot;_hint&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">collation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_CollationIn</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_IndexKeyHint</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a DeleteMany instance.</span>
 
-<span class="sd">        For use with :meth:`~pymongo.collection.Collection.bulk_write`.</span>
+<span class="sd">        For use with :meth:`~pymongo.asynchronous.collection.AsyncCollection.bulk_write`, :meth:`~pymongo.collection.Collection.bulk_write`,</span>
+<span class="sd">        :meth:`~pymongo.asynchronous.mongo_client.AsyncMongoClient.bulk_write` and :meth:`~pymongo.mongo_client.MongoClient.bulk_write`.</span>
 
 <span class="sd">        :param filter: A query that matches the documents to delete.</span>
 <span class="sd">        :param collation: An instance of</span>
@@ -804,26 +889,22 @@
 <span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
-<span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
+<span class="sd">            :meth:`~pymongo.asynchronous.collection.AsyncCollection.create_index` or :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
 <span class="sd">            ``[(&#39;field&#39;, ASCENDING)]``). This option is only supported on</span>
 <span class="sd">            MongoDB 4.4 and above.</span>
+<span class="sd">        :param namespace: (optional) The namespace in which to delete documents.</span>
 
+<span class="sd">        .. versionchanged:: 4.9</span>
+<span class="sd">           Added the `namespace` option to support `MongoClient.bulk_write`.</span>
 <span class="sd">        .. versionchanged:: 3.11</span>
 <span class="sd">           Added the ``hint`` option.</span>
 <span class="sd">        .. versionchanged:: 3.5</span>
 <span class="sd">           Added the `collation` option.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">validate_is_mapping</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span> <span class="o">=</span> <span class="n">hint</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span> <span class="o">=</span> <span class="nb">filter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_collation</span> <span class="o">=</span> <span class="n">collation</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">collation</span><span class="p">,</span> <span class="n">hint</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_add_to_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_Bulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _Bulk instance `bulkobj`.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_AgnosticBulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _AsyncBulk/_Bulk instance `bulkobj`.&quot;&quot;&quot;</span>
         <span class="n">bulkobj</span><span class="o">.</span><span class="n">add_delete</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
             <span class="mi">0</span><span class="p">,</span>
@@ -831,38 +912,46 @@
             <span class="n">hint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;DeleteMany(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="si">!r}</span><span class="s2">)&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_hint</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_client_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_AgnosticClientBulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _AsyncClientBulk/_ClientBulk instance `bulkobj`.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidOperation</span><span class="p">(</span>
+                <span class="s2">&quot;MongoClient.bulk_write requires a namespace to be provided for each write operation&quot;</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="n">bulkobj</span><span class="o">.</span><span class="n">add_delete</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
+            <span class="n">multi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">collation</span><span class="o">=</span><span class="n">validate_collation_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="p">),</span>
+            <span class="n">hint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+        <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
-
-<span class="k">class</span> <span class="nc">ReplaceOne</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">_DocumentType</span><span class="p">]):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ReplaceOne</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">_DocumentType</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a replace_one operation.&quot;&quot;&quot;</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_filter&quot;</span><span class="p">,</span> <span class="s2">&quot;_doc&quot;</span><span class="p">,</span> <span class="s2">&quot;_upsert&quot;</span><span class="p">,</span> <span class="s2">&quot;_collation&quot;</span><span class="p">,</span> <span class="s2">&quot;_hint&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;_filter&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_doc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_upsert&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_collation&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_hint&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_namespace&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">replacement</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">_DocumentType</span><span class="p">,</span> <span class="n">RawBSONDocument</span><span class="p">],</span>
         <span class="n">upsert</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">collation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_CollationIn</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_IndexKeyHint</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a ReplaceOne instance.</span>
 
-<span class="sd">        For use with :meth:`~pymongo.collection.Collection.bulk_write`.</span>
+<span class="sd">        For use with :meth:`~pymongo.asynchronous.collection.AsyncCollection.bulk_write`, :meth:`~pymongo.collection.Collection.bulk_write`,</span>
+<span class="sd">        :meth:`~pymongo.asynchronous.mongo_client.AsyncMongoClient.bulk_write` and :meth:`~pymongo.mongo_client.MongoClient.bulk_write`.</span>
 
 <span class="sd">        :param filter: A query that matches the document to replace.</span>
 <span class="sd">        :param replacement: The new document.</span>
@@ -873,10 +962,13 @@
 <span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
-<span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
+<span class="sd">            :meth:`~pymongo.asynchronous.collection.AsyncCollection.create_index` or :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
 <span class="sd">            ``[(&#39;field&#39;, ASCENDING)]``). This option is only supported on</span>
 <span class="sd">            MongoDB 4.2 and above.</span>
+<span class="sd">        :param namespace: (optional) The namespace in which to replace a document.</span>
 
+<span class="sd">        .. versionchanged:: 4.9</span>
+<span class="sd">           Added the `namespace` option to support `MongoClient.bulk_write`.</span>
 <span class="sd">        .. versionchanged:: 3.11</span>
 <span class="sd">           Added the ``hint`` option.</span>
 <span class="sd">        .. versionchanged:: 3.5</span>
@@ -887,16 +979,18 @@
         <span class="k">if</span> <span class="n">upsert</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">validate_boolean</span><span class="p">(</span><span class="s2">&quot;upsert&quot;</span><span class="p">,</span> <span class="n">upsert</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span> <span class="o">=</span> <span class="n">hint</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span> <span class="o">=</span> <span class="nb">filter</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span> <span class="o">=</span> <span class="n">replacement</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_upsert</span> <span class="o">=</span> <span class="n">upsert</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_collation</span> <span class="o">=</span> <span class="n">collation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span>
 
-    <span class="k">def</span> <span class="nf">_add_to_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_Bulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _Bulk instance `bulkobj`.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_AgnosticBulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _AsyncBulk/_Bulk instance `bulkobj`.&quot;&quot;&quot;</span>
         <span class="n">bulkobj</span><span class="o">.</span><span class="n">add_replace</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span>
@@ -905,7 +999,22 @@
             <span class="n">hint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_client_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_AgnosticClientBulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _AsyncClientBulk/_ClientBulk instance `bulkobj`.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidOperation</span><span class="p">(</span>
+                <span class="s2">&quot;MongoClient.bulk_write requires a namespace to be provided for each write operation&quot;</span>
+            <span class="p">)</span>
+        <span class="n">bulkobj</span><span class="o">.</span><span class="n">add_replace</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_upsert</span><span class="p">,</span>
+            <span class="n">collation</span><span class="o">=</span><span class="n">validate_collation_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="p">),</span>
+            <span class="n">hint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">(</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
@@ -913,19 +1022,31 @@
                 <span class="n">other</span><span class="o">.</span><span class="n">_upsert</span><span class="p">,</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
             <span class="p">)</span> <span class="o">==</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_upsert</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span>
 
-    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_upsert</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
@@ -936,19 +1057,28 @@
         <span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">_UpdateOp</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_UpdateOp</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Private base class for update operations.&quot;&quot;&quot;</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_filter&quot;</span><span class="p">,</span> <span class="s2">&quot;_doc&quot;</span><span class="p">,</span> <span class="s2">&quot;_upsert&quot;</span><span class="p">,</span> <span class="s2">&quot;_collation&quot;</span><span class="p">,</span> <span class="s2">&quot;_array_filters&quot;</span><span class="p">,</span> <span class="s2">&quot;_hint&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;_filter&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_doc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_upsert&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_collation&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_array_filters&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_hint&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_namespace&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">doc</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">_Pipeline</span><span class="p">],</span>
-        <span class="n">upsert</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">upsert</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span>
         <span class="n">collation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_CollationIn</span><span class="p">],</span>
         <span class="n">array_filters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]],</span>
         <span class="n">hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_IndexKeyHint</span><span class="p">],</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">validate_is_mapping</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span>
@@ -957,7 +1087,7 @@
         <span class="k">if</span> <span class="n">array_filters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">validate_list</span><span class="p">(</span><span class="s2">&quot;array_filters&quot;</span><span class="p">,</span> <span class="n">array_filters</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span> <span class="o">=</span> <span class="n">hint</span>
 
@@ -966,8 +1096,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_upsert</span> <span class="o">=</span> <span class="n">upsert</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_collation</span> <span class="o">=</span> <span class="n">collation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_array_filters</span> <span class="o">=</span> <span class="n">array_filters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span>
 
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
             <span class="k">return</span> <span class="p">(</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
@@ -976,6 +1107,7 @@
                 <span class="n">other</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">_array_filters</span><span class="p">,</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
             <span class="p">)</span> <span class="o">==</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span>
@@ -983,10 +1115,25 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_array_filters</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_upsert</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_array_filters</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
@@ -1000,25 +1147,27 @@
 
 <div class="viewcode-block" id="UpdateOne">
 <a class="viewcode-back" href="../../CveXplore/core/UpdateOne.html#CveXplore.core.database_actions.db_action.UpdateOne">[docs]</a>
-<span class="k">class</span> <span class="nc">UpdateOne</span><span class="p">(</span><span class="n">_UpdateOp</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">UpdateOne</span><span class="p">(</span><span class="n">_UpdateOp</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents an update_one operation.&quot;&quot;&quot;</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
 <div class="viewcode-block" id="UpdateOne.__init__">
 <a class="viewcode-back" href="../../CveXplore/core/UpdateOne.__init__.html#CveXplore.core.database_actions.db_action.UpdateOne.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">update</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">_Pipeline</span><span class="p">],</span>
-        <span class="n">upsert</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">upsert</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">collation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_CollationIn</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">array_filters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_IndexKeyHint</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Represents an update_one operation.</span>
 
-<span class="sd">        For use with :meth:`~pymongo.collection.Collection.bulk_write`.</span>
+<span class="sd">        For use with :meth:`~pymongo.asynchronous.collection.AsyncCollection.bulk_write`, :meth:`~pymongo.collection.Collection.bulk_write`,</span>
+<span class="sd">        :meth:`~pymongo.asynchronous.mongo_client.AsyncMongoClient.bulk_write` and :meth:`~pymongo.mongo_client.MongoClient.bulk_write`.</span>
 
 <span class="sd">        :param filter: A query that matches the document to update.</span>
 <span class="sd">        :param update: The modifications to apply.</span>
@@ -1031,10 +1180,13 @@
 <span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
-<span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
+<span class="sd">            :meth:`~pymongo.asynchronous.collection.AsyncCollection.create_index` or :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
 <span class="sd">            ``[(&#39;field&#39;, ASCENDING)]``). This option is only supported on</span>
 <span class="sd">            MongoDB 4.2 and above.</span>
+<span class="sd">        :param namespace: (optional) The namespace in which to update a document.</span>
 
+<span class="sd">        .. versionchanged:: 4.9</span>
+<span class="sd">           Added the `namespace` option to support `MongoClient.bulk_write`.</span>
 <span class="sd">        .. versionchanged:: 3.11</span>
 <span class="sd">           Added the `hint` option.</span>
 <span class="sd">        .. versionchanged:: 3.9</span>
@@ -1044,12 +1196,29 @@
 <span class="sd">        .. versionchanged:: 3.5</span>
 <span class="sd">           Added the `collation` option.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">upsert</span><span class="p">,</span> <span class="n">collation</span><span class="p">,</span> <span class="n">array_filters</span><span class="p">,</span> <span class="n">hint</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">upsert</span><span class="p">,</span> <span class="n">collation</span><span class="p">,</span> <span class="n">array_filters</span><span class="p">,</span> <span class="n">hint</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_add_to_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_Bulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _Bulk instance `bulkobj`.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_AgnosticBulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _AsyncBulk/_Bulk instance `bulkobj`.&quot;&quot;&quot;</span>
         <span class="n">bulkobj</span><span class="o">.</span><span class="n">add_update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span>
+            <span class="kc">False</span><span class="p">,</span>
+            <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upsert</span><span class="p">),</span>
+            <span class="n">collation</span><span class="o">=</span><span class="n">validate_collation_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="p">),</span>
+            <span class="n">array_filters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_array_filters</span><span class="p">,</span>
+            <span class="n">hint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_client_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_AgnosticClientBulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _AsyncClientBulk/_ClientBulk instance `bulkobj`.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidOperation</span><span class="p">(</span>
+                <span class="s2">&quot;MongoClient.bulk_write requires a namespace to be provided for each write operation&quot;</span>
+            <span class="p">)</span>
+        <span class="n">bulkobj</span><span class="o">.</span><span class="n">add_update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span>
             <span class="kc">False</span><span class="p">,</span>
@@ -1061,23 +1230,25 @@
 
 
 
-<span class="k">class</span> <span class="nc">UpdateMany</span><span class="p">(</span><span class="n">_UpdateOp</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">UpdateMany</span><span class="p">(</span><span class="n">_UpdateOp</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents an update_many operation.&quot;&quot;&quot;</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="nb">filter</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">update</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">_Pipeline</span><span class="p">],</span>
-        <span class="n">upsert</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">upsert</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">collation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_CollationIn</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">array_filters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_IndexKeyHint</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">namespace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an UpdateMany instance.</span>
 
-<span class="sd">        For use with :meth:`~pymongo.collection.Collection.bulk_write`.</span>
+<span class="sd">        For use with :meth:`~pymongo.asynchronous.collection.AsyncCollection.bulk_write`, :meth:`~pymongo.collection.Collection.bulk_write`,</span>
+<span class="sd">        :meth:`~pymongo.asynchronous.mongo_client.AsyncMongoClient.bulk_write` and :meth:`~pymongo.mongo_client.MongoClient.bulk_write`.</span>
 
 <span class="sd">        :param filter: A query that matches the documents to update.</span>
 <span class="sd">        :param update: The modifications to apply.</span>
@@ -1090,10 +1261,13 @@
 <span class="sd">        :param hint: An index to use to support the query</span>
 <span class="sd">            predicate specified either by its string name, or in the same</span>
 <span class="sd">            format as passed to</span>
-<span class="sd">            :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
+<span class="sd">            :meth:`~pymongo.asynchronous.collection.AsyncCollection.create_index` or :meth:`~pymongo.collection.Collection.create_index` (e.g.</span>
 <span class="sd">            ``[(&#39;field&#39;, ASCENDING)]``). This option is only supported on</span>
 <span class="sd">            MongoDB 4.2 and above.</span>
+<span class="sd">        :param namespace: (optional) The namespace in which to update documents.</span>
 
+<span class="sd">        .. versionchanged:: 4.9</span>
+<span class="sd">           Added the `namespace` option to support `MongoClient.bulk_write`.</span>
 <span class="sd">        .. versionchanged:: 3.11</span>
 <span class="sd">           Added the `hint` option.</span>
 <span class="sd">        .. versionchanged:: 3.9</span>
@@ -1103,11 +1277,28 @@
 <span class="sd">        .. versionchanged:: 3.5</span>
 <span class="sd">           Added the `collation` option.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">upsert</span><span class="p">,</span> <span class="n">collation</span><span class="p">,</span> <span class="n">array_filters</span><span class="p">,</span> <span class="n">hint</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">upsert</span><span class="p">,</span> <span class="n">collation</span><span class="p">,</span> <span class="n">array_filters</span><span class="p">,</span> <span class="n">hint</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_add_to_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_Bulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _Bulk instance `bulkobj`.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_AgnosticBulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _AsyncBulk/_Bulk instance `bulkobj`.&quot;&quot;&quot;</span>
         <span class="n">bulkobj</span><span class="o">.</span><span class="n">add_update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span>
+            <span class="kc">True</span><span class="p">,</span>
+            <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upsert</span><span class="p">),</span>
+            <span class="n">collation</span><span class="o">=</span><span class="n">validate_collation_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_collation</span><span class="p">),</span>
+            <span class="n">array_filters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_array_filters</span><span class="p">,</span>
+            <span class="n">hint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_client_bulk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulkobj</span><span class="p">:</span> <span class="n">_AgnosticClientBulk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add this operation to the _AsyncClientBulk/_ClientBulk instance `bulkobj`.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidOperation</span><span class="p">(</span>
+                <span class="s2">&quot;MongoClient.bulk_write requires a namespace to be provided for each write operation&quot;</span>
+            <span class="p">)</span>
+        <span class="n">bulkobj</span><span class="o">.</span><span class="n">add_update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">,</span>
             <span class="kc">True</span><span class="p">,</span>
@@ -1118,15 +1309,15 @@
         <span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">IndexModel</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">IndexModel</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents an index to create.&quot;&quot;&quot;</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;__document&quot;</span><span class="p">,)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="n">_IndexKeyHint</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="n">_IndexKeyHint</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an Index instance.</span>
 
-<span class="sd">        For use with :meth:`~pymongo.collection.Collection.create_indexes`.</span>
+<span class="sd">        For use with :meth:`~pymongo.asynchronous.collection.AsyncCollection.create_indexes` and :meth:`~pymongo.collection.Collection.create_indexes`.</span>
 
 <span class="sd">        Takes either a single key or a list containing (key, direction) pairs</span>
 <span class="sd">        or keys.  If no direction is given, :data:`~pymongo.ASCENDING` will</span>
@@ -1194,19 +1385,19 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__document</span><span class="p">[</span><span class="s2">&quot;collation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">collation</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">document</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">document</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;An index document suitable for passing to the createIndexes</span>
 <span class="sd">        command.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__document</span>
 
 
-<span class="k">class</span> <span class="nc">SearchIndexModel</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearchIndexModel</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a search index to create.&quot;&quot;&quot;</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;__document&quot;</span><span class="p">,)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">definition</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1215,7 +1406,7 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Search Index instance.</span>
 
-<span class="sd">        For use with :meth:`~pymongo.collection.Collection.create_search_index` and :meth:`~pymongo.collection.Collection.create_search_indexes`.</span>
+<span class="sd">        For use with :meth:`~pymongo.collection.AsyncCollection.create_search_index` and :meth:`~pymongo.collection.AsyncCollection.create_search_indexes`.</span>
 
 <span class="sd">        :param definition: The definition for this index.</span>
 <span class="sd">        :param name: The name for this index, if present.</span>
@@ -1236,7 +1427,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__document</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">document</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">document</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The document for this index.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__document</span>
 </code></pre></div>
@@ -1246,7 +1437,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

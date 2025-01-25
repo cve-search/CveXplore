@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,19 +595,19 @@
   </a>
 
 <h1>Source code for CveXplore.database.connection.mongodb.mongo_db</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">atexit</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">atexit</span>
 
-<span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
-<span class="kn">from</span> <span class="nn">pymongo.errors</span> <span class="kn">import</span> <span class="n">ServerSelectionTimeoutError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo</span><span class="w"> </span><span class="kn">import</span> <span class="n">MongoClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ServerSelectionTimeoutError</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.database.connection.base.db_connection_base</span> <span class="kn">import</span> <span class="n">DatabaseConnectionBase</span>
-<span class="kn">from</span> <span class="nn">CveXplore.database.helpers.cvesearch_mongo_database</span> <span class="kn">import</span> <span class="n">CveSearchCollection</span>
-<span class="kn">from</span> <span class="nn">CveXplore.errors</span> <span class="kn">import</span> <span class="n">DatabaseConnectionException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.database.connection.base.db_connection_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseConnectionBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.database.helpers.cvesearch_mongo_database</span><span class="w"> </span><span class="kn">import</span> <span class="n">CveSearchCollection</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseConnectionException</span>
 
 
 <div class="viewcode-block" id="MongoDBConnection">
 <a class="viewcode-back" href="../../../../../package/code_base.html#CveXplore.database.connection.mongodb.mongo_db.MongoDBConnection">[docs]</a>
-<span class="k">class</span> <span class="nc">MongoDBConnection</span><span class="p">(</span><span class="n">DatabaseConnectionBase</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MongoDBConnection</span><span class="p">(</span><span class="n">DatabaseConnectionBase</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The MongoDBConnection class serves as a shell that functions as uniform way to connect to the mongodb backend.</span>
 <span class="sd">    By default, it will try to establish a connection towards a mongodb running on localhost (default port 27017) and</span>
@@ -619,7 +619,7 @@
 
 <div class="viewcode-block" id="MongoDBConnection.__init__">
 <a class="viewcode-back" href="../../../../../CveXplore/database/MongoDBConnection.__init__.html#CveXplore.database.connection.mongodb.mongo_db.MongoDBConnection.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mongodb://127.0.0.1:27017&quot;</span><span class="p">,</span>
         <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -657,12 +657,12 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">dbclient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dbclient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dbclient</span>
 
 <div class="viewcode-block" id="MongoDBConnection.set_handlers_for_collections">
 <a class="viewcode-back" href="../../../../../CveXplore/database/MongoDBConnection.set_handlers_for_collections.html#CveXplore.database.connection.mongodb.mongo_db.MongoDBConnection.set_handlers_for_collections">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_handlers_for_collections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_handlers_for_collections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbclient</span><span class="o">.</span><span class="n">list_collection_names</span><span class="p">():</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">each</span><span class="p">):</span>
                 <span class="nb">setattr</span><span class="p">(</span>
@@ -674,7 +674,7 @@
 
 <div class="viewcode-block" id="MongoDBConnection.disconnect">
 <a class="viewcode-back" href="../../../../../CveXplore/database/MongoDBConnection.disconnect.html#CveXplore.database.connection.mongodb.mongo_db.MongoDBConnection.disconnect">[docs]</a>
-    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Disconnect from mongodb</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -684,7 +684,7 @@
 
 <div class="viewcode-block" id="MongoDBConnection.__del__">
 <a class="viewcode-back" href="../../../../../CveXplore/database/MongoDBConnection.__del__.html#CveXplore.database.connection.mongodb.mongo_db.MongoDBConnection.__del__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Called when the class is garbage collected.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span></div>
 </div>
@@ -696,7 +696,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

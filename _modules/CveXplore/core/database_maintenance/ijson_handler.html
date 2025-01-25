@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,28 +595,28 @@
   </a>
 
 <h1>Source code for CveXplore.core.database_maintenance.ijson_handler</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">logging</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="kn">import</span> <span class="nn">ijson</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ijson</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_maintenance.update_base_class</span> <span class="kn">import</span> <span class="n">UpdateBaseClass</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.logging.logger_class</span> <span class="kn">import</span> <span class="n">AppLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_maintenance.update_base_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">UpdateBaseClass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.logging.logger_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppLogger</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">setLoggerClass</span><span class="p">(</span><span class="n">AppLogger</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="IJSONHandler">
 <a class="viewcode-back" href="../../../../CveXplore/core/IJSONHandler.html#CveXplore.core.database_maintenance.ijson_handler.IJSONHandler">[docs]</a>
-<span class="k">class</span> <span class="nc">IJSONHandler</span><span class="p">(</span><span class="n">UpdateBaseClass</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">IJSONHandler</span><span class="p">(</span><span class="n">UpdateBaseClass</span><span class="p">):</span>
 <div class="viewcode-block" id="IJSONHandler.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/IJSONHandler.__init__.html#CveXplore.core.database_maintenance.ijson_handler.IJSONHandler.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="IJSONHandler.fetch">
 <a class="viewcode-back" href="../../../../CveXplore/core/IJSONHandler.fetch.html#CveXplore.core.database_maintenance.ijson_handler.IJSONHandler.fetch">[docs]</a>
-    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">input_file</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">ijson</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
@@ -635,7 +635,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

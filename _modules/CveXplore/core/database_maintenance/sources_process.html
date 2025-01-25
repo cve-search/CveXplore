@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,30 +595,30 @@
   </a>
 
 <h1>Source code for CveXplore.core.database_maintenance.sources_process</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">glob</span>
-<span class="kn">import</span> <span class="nn">hashlib</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span>
-<span class="kn">from</span> <span class="nn">xml.sax</span> <span class="kn">import</span> <span class="n">make_parser</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">xml.sax</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_parser</span>
 
-<span class="kn">from</span> <span class="nn">dateutil.parser</span> <span class="kn">import</span> <span class="n">parse</span> <span class="k">as</span> <span class="n">parse_datetime</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dateutil.parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span> <span class="k">as</span> <span class="n">parse_datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_actions.db_action</span> <span class="kn">import</span> <span class="n">DatabaseAction</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_maintenance.api_handlers</span> <span class="kn">import</span> <span class="n">NVDApiHandler</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_maintenance.content_handlers</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_actions.db_action</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_maintenance.api_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">NVDApiHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_maintenance.content_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CapecHandler</span><span class="p">,</span>
     <span class="n">CWEHandler</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">CveXplore.core.database_maintenance.file_handlers</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.database_maintenance.file_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">XMLFileHandler</span><span class="p">,</span>
     <span class="n">JSONFileHandler</span><span class="p">,</span>
     <span class="n">CSVFileHandler</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">CveXplore.errors.apis</span> <span class="kn">import</span> <span class="n">ApiDataRetrievalFailed</span><span class="p">,</span> <span class="n">ApiMaxRetryError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.errors.apis</span><span class="w"> </span><span class="kn">import</span> <span class="n">ApiDataRetrievalFailed</span><span class="p">,</span> <span class="n">ApiMaxRetryError</span>
 
 <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 <span class="n">year</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1</span>
@@ -629,14 +629,14 @@
 
 <div class="viewcode-block" id="CPEDownloads">
 <a class="viewcode-back" href="../../../../CveXplore/core/CPEDownloads.html#CveXplore.core.database_maintenance.sources_process.CPEDownloads">[docs]</a>
-<span class="k">class</span> <span class="nc">CPEDownloads</span><span class="p">(</span><span class="n">NVDApiHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CPEDownloads</span><span class="p">(</span><span class="n">NVDApiHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class processing CPE source files</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CPEDownloads.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/CPEDownloads.__init__.html#CveXplore.core.database_maintenance.sources_process.CPEDownloads.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span> <span class="o">=</span> <span class="s2">&quot;CPE&quot;</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">feed_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">,</span> <span class="n">logger_name</span><span class="o">=</span><span class="vm">__name__</span><span class="p">)</span></div>
@@ -644,13 +644,13 @@
 
 <div class="viewcode-block" id="CPEDownloads.file_to_queue">
 <a class="viewcode-back" href="../../../../CveXplore/core/CPEDownloads.file_to_queue.html#CveXplore.core.database_maintenance.sources_process.CPEDownloads.file_to_queue">[docs]</a>
-    <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="CPEDownloads.parse_cpe_version">
 <a class="viewcode-back" href="../../../../CveXplore/core/CPEDownloads.parse_cpe_version.html#CveXplore.core.database_maintenance.sources_process.CPEDownloads.parse_cpe_version">[docs]</a>
-    <span class="k">def</span> <span class="nf">parse_cpe_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_cpe_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">cpe_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_cpe_name</span><span class="p">(</span><span class="n">cpename</span><span class="p">)</span>
         <span class="n">version_stem</span> <span class="o">=</span> <span class="n">cpe_list</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
 
@@ -662,7 +662,7 @@
 
 <div class="viewcode-block" id="CPEDownloads.process_the_item">
 <a class="viewcode-back" href="../../../../CveXplore/core/CPEDownloads.process_the_item.html#CveXplore.core.database_maintenance.sources_process.CPEDownloads.process_the_item">[docs]</a>
-    <span class="k">def</span> <span class="nf">process_the_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_the_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
@@ -712,7 +712,7 @@
 
 <div class="viewcode-block" id="CPEDownloads.process_downloads">
 <a class="viewcode-back" href="../../../../CveXplore/core/CPEDownloads.process_downloads.html#CveXplore.core.database_maintenance.sources_process.CPEDownloads.process_downloads">[docs]</a>
-    <span class="k">def</span> <span class="nf">process_downloads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sites</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_downloads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sites</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to download and process files</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -858,7 +858,7 @@
 
 <div class="viewcode-block" id="CPEDownloads.update">
 <a class="viewcode-back" href="../../../../CveXplore/core/CPEDownloads.update.html#CveXplore.core.database_maintenance.sources_process.CPEDownloads.update">[docs]</a>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CPE database update started&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">process_downloads</span><span class="p">(</span><span class="n">manual_days</span><span class="o">=</span><span class="n">manual_days</span><span class="p">)</span>
@@ -875,7 +875,7 @@
 
 <div class="viewcode-block" id="CPEDownloads.populate">
 <a class="viewcode-back" href="../../../../CveXplore/core/CPEDownloads.populate.html#CveXplore.core.database_maintenance.sources_process.CPEDownloads.populate">[docs]</a>
-    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CPE Database population started&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
@@ -899,14 +899,14 @@
 
 <div class="viewcode-block" id="CVEDownloads">
 <a class="viewcode-back" href="../../../../CveXplore/core/CVEDownloads.html#CveXplore.core.database_maintenance.sources_process.CVEDownloads">[docs]</a>
-<span class="k">class</span> <span class="nc">CVEDownloads</span><span class="p">(</span><span class="n">NVDApiHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CVEDownloads</span><span class="p">(</span><span class="n">NVDApiHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class processing CVE source files</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CVEDownloads.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/CVEDownloads.__init__.html#CveXplore.core.database_maintenance.sources_process.CVEDownloads.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span> <span class="o">=</span> <span class="s2">&quot;CVES&quot;</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">feed_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">,</span> <span class="n">logger_name</span><span class="o">=</span><span class="vm">__name__</span><span class="p">)</span></div>
@@ -914,7 +914,7 @@
 
 <div class="viewcode-block" id="CVEDownloads.get_cpe_info">
 <a class="viewcode-back" href="../../../../CveXplore/core/CVEDownloads.get_cpe_info.html#CveXplore.core.database_maintenance.sources_process.CVEDownloads.get_cpe_info">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_cpe_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpeuri</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_cpe_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpeuri</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">query</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="s2">&quot;versionStartExcluding&quot;</span> <span class="ow">in</span> <span class="n">cpeuri</span><span class="p">:</span>
@@ -997,7 +997,7 @@
 <div class="viewcode-block" id="CVEDownloads.add_if_missing">
 <a class="viewcode-back" href="../../../../CveXplore/core/CVEDownloads.add_if_missing.html#CveXplore.core.database_maintenance.sources_process.CVEDownloads.add_if_missing">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">add_if_missing</span><span class="p">(</span><span class="n">cve</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_if_missing</span><span class="p">(</span><span class="n">cve</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cve</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
             <span class="n">cve</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cve</span></div>
@@ -1005,7 +1005,7 @@
 
 <div class="viewcode-block" id="CVEDownloads.get_vendor_product">
 <a class="viewcode-back" href="../../../../CveXplore/core/CVEDownloads.get_vendor_product.html#CveXplore.core.database_maintenance.sources_process.CVEDownloads.get_vendor_product">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_vendor_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpeUri</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_vendor_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpeUri</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">split_cpe_uri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_cpe_name</span><span class="p">(</span><span class="n">cpeUri</span><span class="p">)</span>
         <span class="n">vendor</span> <span class="o">=</span> <span class="n">split_cpe_uri</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
         <span class="n">product</span> <span class="o">=</span> <span class="n">split_cpe_uri</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
@@ -1014,13 +1014,13 @@
 
 <div class="viewcode-block" id="CVEDownloads.file_to_queue">
 <a class="viewcode-back" href="../../../../CveXplore/core/CVEDownloads.file_to_queue.html#CveXplore.core.database_maintenance.sources_process.CVEDownloads.file_to_queue">[docs]</a>
-    <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="CVEDownloads.process_the_item">
 <a class="viewcode-back" href="../../../../CveXplore/core/CVEDownloads.process_the_item.html#CveXplore.core.database_maintenance.sources_process.CVEDownloads.process_the_item">[docs]</a>
-    <span class="k">def</span> <span class="nf">process_the_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_the_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
@@ -1043,6 +1043,61 @@
         <span class="k">if</span> <span class="s2">&quot;metrics&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">]:</span>
             <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;access&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="s2">&quot;cvssMetricV40&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">]:</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact4&quot;</span><span class="p">][</span><span class="s2">&quot;vulnerable_system_confidentiality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;metrics&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;cvssMetricV40&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;vulnerableSystemConfidentiality&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact4&quot;</span><span class="p">][</span><span class="s2">&quot;vulnerable_system_integrity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssMetricV40&quot;</span>
+                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;vulnerableSystemIntegrity&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact4&quot;</span><span class="p">][</span><span class="s2">&quot;vulnerable_system_availability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;metrics&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;cvssMetricV40&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;vulnerableSystemAvailability&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact4&quot;</span><span class="p">][</span><span class="s2">&quot;subsequent_system_confidentiality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;metrics&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;cvssMetricV40&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;subsequentSystemConfidentiality&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact4&quot;</span><span class="p">][</span><span class="s2">&quot;subsequent_system_integrity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssMetricV40&quot;</span>
+                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;subsequentSystemIntegrity&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact4&quot;</span><span class="p">][</span><span class="s2">&quot;subsequent_system_availability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;metrics&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;cvssMetricV40&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;subsequentSystemAvailability&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability4&quot;</span><span class="p">][</span><span class="s2">&quot;attackvector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssMetricV40&quot;</span>
+                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;attackVector&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability4&quot;</span><span class="p">][</span><span class="s2">&quot;attackcomplexity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssMetricV40&quot;</span>
+                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;attackComplexity&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability4&quot;</span><span class="p">][</span><span class="s2">&quot;attackrequirements&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssMetricV40&quot;</span>
+                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;attackRequirements&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability4&quot;</span><span class="p">][</span><span class="s2">&quot;privilegesrequired&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssMetricV40&quot;</span>
+                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;privilegesRequired&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability4&quot;</span><span class="p">][</span><span class="s2">&quot;userinteraction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssMetricV40&quot;</span>
+                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;userInteraction&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability4&quot;</span><span class="p">][</span><span class="s2">&quot;exploitmaturity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssMetricV40&quot;</span>
+                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;exploitMaturity&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV40&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;baseScore&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4Vector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV40&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span>
+                    <span class="s2">&quot;cvssData&quot;</span>
+                <span class="p">][</span><span class="s2">&quot;vectorString&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parse_datetime</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;lastModified&quot;</span><span class="p">],</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV40&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4Source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV40&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span>
+                    <span class="s2">&quot;source&quot;</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
             <span class="k">if</span> <span class="s2">&quot;cvssMetricV31&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">]:</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1298,7 +1353,7 @@
 
 <div class="viewcode-block" id="CVEDownloads.process_downloads">
 <a class="viewcode-back" href="../../../../CveXplore/core/CVEDownloads.process_downloads.html#CveXplore.core.database_maintenance.sources_process.CVEDownloads.process_downloads">[docs]</a>
-    <span class="k">def</span> <span class="nf">process_downloads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sites</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_downloads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sites</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to download and process files</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1444,7 +1499,7 @@
 
 <div class="viewcode-block" id="CVEDownloads.update">
 <a class="viewcode-back" href="../../../../CveXplore/core/CVEDownloads.update.html#CveXplore.core.database_maintenance.sources_process.CVEDownloads.update">[docs]</a>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manual_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CVE database update started&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">process_downloads</span><span class="p">(</span><span class="n">manual_days</span><span class="o">=</span><span class="n">manual_days</span><span class="p">)</span>
@@ -1461,7 +1516,7 @@
 
 <div class="viewcode-block" id="CVEDownloads.populate">
 <a class="viewcode-back" href="../../../../CveXplore/core/CVEDownloads.populate.html#CveXplore.core.database_maintenance.sources_process.CVEDownloads.populate">[docs]</a>
-    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CVE database population started&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
@@ -1489,14 +1544,14 @@
 
 <div class="viewcode-block" id="VIADownloads">
 <a class="viewcode-back" href="../../../../CveXplore/core/VIADownloads.html#CveXplore.core.database_maintenance.sources_process.VIADownloads">[docs]</a>
-<span class="k">class</span> <span class="nc">VIADownloads</span><span class="p">(</span><span class="n">JSONFileHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">VIADownloads</span><span class="p">(</span><span class="n">JSONFileHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class processing VIA4 source files</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="VIADownloads.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/VIADownloads.__init__.html#CveXplore.core.database_maintenance.sources_process.VIADownloads.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span> <span class="o">=</span> <span class="s2">&quot;VIA4&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;cves&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -1508,7 +1563,7 @@
 
 <div class="viewcode-block" id="VIADownloads.file_to_queue">
 <a class="viewcode-back" href="../../../../CveXplore/core/VIADownloads.file_to_queue.html#CveXplore.core.database_maintenance.sources_process.VIADownloads.file_to_queue">[docs]</a>
-    <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_tuple</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_tuple</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
         <span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">file_tuple</span>
 
         <span class="k">for</span> <span class="n">cve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ijson_handler</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">):</span>
@@ -1538,7 +1593,7 @@
 
 <div class="viewcode-block" id="VIADownloads.process_item">
 <a class="viewcode-back" href="../../../../CveXplore/core/VIADownloads.process_item.html#CveXplore.core.database_maintenance.sources_process.VIADownloads.process_item">[docs]</a>
-    <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
                 <span class="n">DatabaseAction</span><span class="p">(</span>
@@ -1557,7 +1612,7 @@
 
 <div class="viewcode-block" id="VIADownloads.update">
 <a class="viewcode-back" href="../../../../CveXplore/core/VIADownloads.update.html#CveXplore.core.database_maintenance.sources_process.VIADownloads.update">[docs]</a>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;VIA4 database update started&quot;</span><span class="p">)</span>
 
         <span class="c1"># if collection is non-existent; assume it&#39;s not an update</span>
@@ -1575,7 +1630,7 @@
 
 <div class="viewcode-block" id="VIADownloads.populate">
 <a class="viewcode-back" href="../../../../CveXplore/core/VIADownloads.populate.html#CveXplore.core.database_maintenance.sources_process.VIADownloads.populate">[docs]</a>
-    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
@@ -1590,14 +1645,14 @@
 
 <div class="viewcode-block" id="CAPECDownloads">
 <a class="viewcode-back" href="../../../../CveXplore/core/CAPECDownloads.html#CveXplore.core.database_maintenance.sources_process.CAPECDownloads">[docs]</a>
-<span class="k">class</span> <span class="nc">CAPECDownloads</span><span class="p">(</span><span class="n">XMLFileHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CAPECDownloads</span><span class="p">(</span><span class="n">XMLFileHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class processing CAPEC source files</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CAPECDownloads.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/CAPECDownloads.__init__.html#CveXplore.core.database_maintenance.sources_process.CAPECDownloads.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span> <span class="o">=</span> <span class="s2">&quot;CAPEC&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">feed_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">,</span> <span class="n">logger_name</span><span class="o">=</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -1611,7 +1666,7 @@
 
 <div class="viewcode-block" id="CAPECDownloads.file_to_queue">
 <a class="viewcode-back" href="../../../../CveXplore/core/CAPECDownloads.file_to_queue.html#CveXplore.core.database_maintenance.sources_process.CAPECDownloads.file_to_queue">[docs]</a>
-    <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_tuple</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_tuple</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
         <span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">file_tuple</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -1631,7 +1686,7 @@
 
 <div class="viewcode-block" id="CAPECDownloads.update">
 <a class="viewcode-back" href="../../../../CveXplore/core/CAPECDownloads.update.html#CveXplore.core.database_maintenance.sources_process.CAPECDownloads.update">[docs]</a>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CAPEC database update started&quot;</span><span class="p">)</span>
 
         <span class="c1"># if collection is non-existent; assume it&#39;s not an update</span>
@@ -1649,7 +1704,7 @@
 
 <div class="viewcode-block" id="CAPECDownloads.populate">
 <a class="viewcode-back" href="../../../../CveXplore/core/CAPECDownloads.populate.html#CveXplore.core.database_maintenance.sources_process.CAPECDownloads.populate">[docs]</a>
-    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
@@ -1664,14 +1719,14 @@
 
 <div class="viewcode-block" id="CWEDownloads">
 <a class="viewcode-back" href="../../../../CveXplore/core/CWEDownloads.html#CveXplore.core.database_maintenance.sources_process.CWEDownloads">[docs]</a>
-<span class="k">class</span> <span class="nc">CWEDownloads</span><span class="p">(</span><span class="n">XMLFileHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CWEDownloads</span><span class="p">(</span><span class="n">XMLFileHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class processing CWE source files</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CWEDownloads.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/CWEDownloads.__init__.html#CveXplore.core.database_maintenance.sources_process.CWEDownloads.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span> <span class="o">=</span> <span class="s2">&quot;CWE&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">feed_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span><span class="p">,</span> <span class="n">logger_name</span><span class="o">=</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -1685,7 +1740,7 @@
 
 <div class="viewcode-block" id="CWEDownloads.file_to_queue">
 <a class="viewcode-back" href="../../../../CveXplore/core/CWEDownloads.file_to_queue.html#CveXplore.core.database_maintenance.sources_process.CWEDownloads.file_to_queue">[docs]</a>
-    <span class="k">def</span> <span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_tuple</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_tuple</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
         <span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">file_tuple</span>
 
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">working_dir</span><span class="si">}</span><span class="s2">/*.xml&quot;</span><span class="p">):</span>
@@ -1712,7 +1767,7 @@
 
 <div class="viewcode-block" id="CWEDownloads.update">
 <a class="viewcode-back" href="../../../../CveXplore/core/CWEDownloads.update.html#CveXplore.core.database_maintenance.sources_process.CWEDownloads.update">[docs]</a>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CWE database update started&quot;</span><span class="p">)</span>
 
         <span class="c1"># if collection is non-existent; assume it&#39;s not an update</span>
@@ -1730,7 +1785,7 @@
 
 <div class="viewcode-block" id="CWEDownloads.populate">
 <a class="viewcode-back" href="../../../../CveXplore/core/CWEDownloads.populate.html#CveXplore.core.database_maintenance.sources_process.CWEDownloads.populate">[docs]</a>
-    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_update</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
@@ -1745,10 +1800,10 @@
 
 <div class="viewcode-block" id="EPSSDownloads">
 <a class="viewcode-back" href="../../../../CveXplore/core/EPSSDownloads.html#CveXplore.core.database_maintenance.sources_process.EPSSDownloads">[docs]</a>
-<span class="k">class</span> <span class="nc">EPSSDownloads</span><span class="p">(</span><span class="n">CSVFileHandler</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EPSSDownloads</span><span class="p">(</span><span class="n">CSVFileHandler</span><span class="p">):</span>
 <div class="viewcode-block" id="EPSSDownloads.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/EPSSDownloads.__init__.html#CveXplore.core.database_maintenance.sources_process.EPSSDownloads.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feed_type</span> <span class="o">=</span> <span class="s2">&quot;EPSS&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delimiter</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -1762,7 +1817,7 @@
 
 <div class="viewcode-block" id="EPSSDownloads.process_epss_item">
 <a class="viewcode-back" href="../../../../CveXplore/core/EPSSDownloads.process_epss_item.html#CveXplore.core.database_maintenance.sources_process.EPSSDownloads.process_epss_item">[docs]</a>
-    <span class="k">def</span> <span class="nf">process_epss_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_epss_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
@@ -1777,7 +1832,7 @@
 
 <div class="viewcode-block" id="EPSSDownloads.process_item">
 <a class="viewcode-back" href="../../../../CveXplore/core/EPSSDownloads.process_item.html#CveXplore.core.database_maintenance.sources_process.EPSSDownloads.process_item">[docs]</a>
-    <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="n">epss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_epss_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">epss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1790,7 +1845,7 @@
 
 <div class="viewcode-block" id="EPSSDownloads.update">
 <a class="viewcode-back" href="../../../../CveXplore/core/EPSSDownloads.update.html#CveXplore.core.database_maintenance.sources_process.EPSSDownloads.update">[docs]</a>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EPSS database update started&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
@@ -1804,7 +1859,7 @@
 
 <div class="viewcode-block" id="EPSSDownloads.populate">
 <a class="viewcode-back" href="../../../../CveXplore/core/EPSSDownloads.populate.html#CveXplore.core.database_maintenance.sources_process.EPSSDownloads.populate">[docs]</a>
-    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EPSS Database population started&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
@@ -1823,7 +1878,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

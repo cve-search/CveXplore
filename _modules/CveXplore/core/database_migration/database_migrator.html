@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,24 +595,24 @@
   </a>
 
 <h1>Source code for CveXplore.core.database_migration.database_migrator</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">run</span><span class="p">,</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">STDOUT</span><span class="p">,</span> <span class="n">CompletedProcess</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">run</span><span class="p">,</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">STDOUT</span><span class="p">,</span> <span class="n">CompletedProcess</span>
 
-<span class="kn">from</span> <span class="nn">CveXplore.core.logging.logger_class</span> <span class="kn">import</span> <span class="n">AppLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.core.logging.logger_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppLogger</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">setLoggerClass</span><span class="p">(</span><span class="n">AppLogger</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="DatabaseMigrator">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseMigrator.html#CveXplore.core.database_migration.database_migrator.DatabaseMigrator">[docs]</a>
-<span class="k">class</span> <span class="nc">DatabaseMigrator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DatabaseMigrator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <div class="viewcode-block" id="DatabaseMigrator.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseMigrator.__init__.html#CveXplore.core.database_migration.database_migrator.DatabaseMigrator.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwd</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwd</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">current_dir</span> <span class="o">=</span> <span class="p">(</span>
@@ -629,59 +629,59 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">commands</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">namedtuple</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">commands</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">namedtuple</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span>
 
 <div class="viewcode-block" id="DatabaseMigrator.db_init">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseMigrator.db_init.html#CveXplore.core.database_migration.database_migrator.DatabaseMigrator.db_init">[docs]</a>
-    <span class="k">def</span> <span class="nf">db_init</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">db_init</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cli_runner</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">INIT</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__parse_command_output</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DatabaseMigrator.db_revision">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseMigrator.db_revision.html#CveXplore.core.database_migration.database_migrator.DatabaseMigrator.db_revision">[docs]</a>
-    <span class="k">def</span> <span class="nf">db_revision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">db_revision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cli_runner</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">REVISION</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__parse_command_output</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DatabaseMigrator.db_upgrade">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseMigrator.db_upgrade.html#CveXplore.core.database_migration.database_migrator.DatabaseMigrator.db_upgrade">[docs]</a>
-    <span class="k">def</span> <span class="nf">db_upgrade</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">db_upgrade</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cli_runner</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">UPGRADE</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__parse_command_output</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DatabaseMigrator.db_current">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseMigrator.db_current.html#CveXplore.core.database_migration.database_migrator.DatabaseMigrator.db_current">[docs]</a>
-    <span class="k">def</span> <span class="nf">db_current</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">db_current</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cli_runner</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">CURRENT</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__parse_command_output</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DatabaseMigrator.db_history">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseMigrator.db_history.html#CveXplore.core.database_migration.database_migrator.DatabaseMigrator.db_history">[docs]</a>
-    <span class="k">def</span> <span class="nf">db_history</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">db_history</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cli_runner</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">HISTORY</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__parse_command_output</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DatabaseMigrator.db_up">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseMigrator.db_up.html#CveXplore.core.database_migration.database_migrator.DatabaseMigrator.db_up">[docs]</a>
-    <span class="k">def</span> <span class="nf">db_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">db_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cli_runner</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">REV_UP</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">count</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__parse_command_output</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DatabaseMigrator.db_down">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseMigrator.db_down.html#CveXplore.core.database_migration.database_migrator.DatabaseMigrator.db_down">[docs]</a>
-    <span class="k">def</span> <span class="nf">db_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">db_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cli_runner</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">REV_DOWN</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">count</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__parse_command_output</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">__parse_command_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd_output</span><span class="p">:</span> <span class="n">CompletedProcess</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__parse_command_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd_output</span><span class="p">:</span> <span class="n">CompletedProcess</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">cmd_output</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">cmd_output</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -691,7 +691,7 @@
                 <span class="k">if</span> <span class="n">m</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__cli_runner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompletedProcess</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__cli_runner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompletedProcess</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">message</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Missing message for revision command&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="mi">6</span> <span class="ow">and</span> <span class="n">message</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -727,7 +727,7 @@
 
 <div class="viewcode-block" id="DatabaseMigrator.__repr__">
 <a class="viewcode-back" href="../../../../CveXplore/core/DatabaseMigrator.__repr__.html#CveXplore.core.database_migration.database_migrator.DatabaseMigrator.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
 </div>
 
@@ -799,7 +799,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

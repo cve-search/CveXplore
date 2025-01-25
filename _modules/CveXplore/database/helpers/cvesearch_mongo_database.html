@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,13 +595,13 @@
   </a>
 
 <h1>Source code for CveXplore.database.helpers.cvesearch_mongo_database</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">from</span> <span class="nn">pymongo.collection</span> <span class="kn">import</span> <span class="n">Collection</span>
-<span class="kn">from</span> <span class="nn">pymongo.cursor</span> <span class="kn">import</span> <span class="n">Cursor</span>
+<span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.cursor</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cursor</span>
 
 
 <div class="viewcode-block" id="CveSearchCollection">
 <a class="viewcode-back" href="../../../../CveXplore/database/CveSearchCollection.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection">[docs]</a>
-<span class="k">class</span> <span class="nc">CveSearchCollection</span><span class="p">(</span><span class="n">Collection</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CveSearchCollection</span><span class="p">(</span><span class="n">Collection</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The CveSearchCollection is a custom Collection based on the pymongo Collection class which has been altered to</span>
 <span class="sd">    return a CveSearchCursor reference on the find method.</span>
@@ -609,7 +609,7 @@
 
 <div class="viewcode-block" id="CveSearchCollection.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/database/CveSearchCollection.__init__.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get / create a custon cve-search Mongo collection.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -619,14 +619,14 @@
 
 <div class="viewcode-block" id="CveSearchCollection.__repr__">
 <a class="viewcode-back" href="../../../../CveXplore/database/CveSearchCollection.__repr__.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return string representation of this class&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; CveSearchCollection:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
 
 
 <div class="viewcode-block" id="CveSearchCollection.find">
 <a class="viewcode-back" href="../../../../CveXplore/database/CveSearchCollection.find.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCollection.find">[docs]</a>
-    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Query the database as you would do so with a pymongo Collection.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -637,7 +637,7 @@
 
 <div class="viewcode-block" id="CveSearchCursor">
 <a class="viewcode-back" href="../../../../CveXplore/database/CveSearchCursor.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor">[docs]</a>
-<span class="k">class</span> <span class="nc">CveSearchCursor</span><span class="p">(</span><span class="n">Cursor</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CveSearchCursor</span><span class="p">(</span><span class="n">Cursor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The CveSearchCursor is a custom cursor based on the pymongo cursor which will return database objects instead of</span>
 <span class="sd">    the raw data from the mongodb database.</span>
@@ -645,17 +645,17 @@
 
 <div class="viewcode-block" id="CveSearchCursor.__init__">
 <a class="viewcode-back" href="../../../../CveXplore/database/CveSearchCursor.__init__.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="n">CveSearchCollection</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="n">CveSearchCollection</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new cve-search cursor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="kn">from</span> <span class="nn">CveXplore.objects.capec</span> <span class="kn">import</span> <span class="n">Capec</span>
-        <span class="kn">from</span> <span class="nn">CveXplore.objects.cpe</span> <span class="kn">import</span> <span class="n">Cpe</span>
-        <span class="kn">from</span> <span class="nn">CveXplore.objects.cves</span> <span class="kn">import</span> <span class="n">Cves</span>
-        <span class="kn">from</span> <span class="nn">CveXplore.objects.cwe</span> <span class="kn">import</span> <span class="n">Cwe</span>
-        <span class="kn">from</span> <span class="nn">CveXplore.objects.via4</span> <span class="kn">import</span> <span class="n">Via4</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.objects.capec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Capec</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.objects.cpe</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cpe</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.objects.cves</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cves</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.objects.cwe</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cwe</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">CveXplore.objects.via4</span><span class="w"> </span><span class="kn">import</span> <span class="n">Via4</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">database_objects_mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;capec&quot;</span><span class="p">:</span> <span class="n">Capec</span><span class="p">,</span>
@@ -667,28 +667,28 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">__empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Cursor__empty</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">__data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Cursor__data</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">__manipulate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__manipulate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Cursor__manipulate</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">__collection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__collection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Cursor__collection</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">__collname</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__collname</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Cursor__collname</span>
 
 <div class="viewcode-block" id="CveSearchCursor.next">
 <a class="viewcode-back" href="../../../../CveXplore/database/CveSearchCursor.next.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.next">[docs]</a>
-    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Advance the cursor and return CveXplore objects</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -709,7 +709,7 @@
 
 <div class="viewcode-block" id="CveSearchCursor.__repr__">
 <a class="viewcode-back" href="../../../../CveXplore/database/CveSearchCursor.__repr__.html#CveXplore.database.helpers.cvesearch_mongo_database.CveSearchCursor.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return string representation of this class&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;&lt; CveSearchCursor:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="si">}</span><span class="s2"> &gt;&gt;&quot;</span></div>
 </div>
@@ -721,7 +721,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>

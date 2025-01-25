@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,16 +595,16 @@
   </a>
 
 <h1>Source code for CveXplore.core.general.utils</h1><div class="highlight"><pre>
-<span></span><code><span class="kn">import</span> <span class="nn">calendar</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">calendar</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 
-<span class="kn">import</span> <span class="nn">colors</span>
-<span class="kn">import</span> <span class="nn">pymongo</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">colors</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymongo</span>
 
 
 <div class="viewcode-block" id="sanitize">
 <a class="viewcode-back" href="../../../../CveXplore/core/sanitize.html#CveXplore.core.general.utils.sanitize">[docs]</a>
-<span class="k">def</span> <span class="nf">sanitize</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">Cursor</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sanitize</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">Cursor</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">Cursor</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
@@ -618,7 +618,7 @@
 
 <div class="viewcode-block" id="timestampTOdatetime">
 <a class="viewcode-back" href="../../../../CveXplore/core/timestampTOdatetime.html#CveXplore.core.general.utils.timestampTOdatetime">[docs]</a>
-<span class="k">def</span> <span class="nf">timestampTOdatetime</span><span class="p">(</span><span class="n">timestamp</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">timestampTOdatetime</span><span class="p">(</span><span class="n">timestamp</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Method that will take the provided timestamp and converts it into a date time object</span>
 
@@ -635,21 +635,21 @@
 
 <div class="viewcode-block" id="datetimeTOtimestamp">
 <a class="viewcode-back" href="../../../../CveXplore/core/datetimeTOtimestamp.html#CveXplore.core.general.utils.datetimeTOtimestamp">[docs]</a>
-<span class="k">def</span> <span class="nf">datetimeTOtimestamp</span><span class="p">(</span><span class="n">date_time_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">datetimeTOtimestamp</span><span class="p">(</span><span class="n">date_time_object</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">date_time_object</span><span class="o">.</span><span class="n">utctimetuple</span><span class="p">())</span></div>
 
 
 
 <div class="viewcode-block" id="datetimeToTimestring">
 <a class="viewcode-back" href="../../../../CveXplore/core/datetimeToTimestring.html#CveXplore.core.general.utils.datetimeToTimestring">[docs]</a>
-<span class="k">def</span> <span class="nf">datetimeToTimestring</span><span class="p">(</span><span class="n">datetime_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">datetimeToTimestring</span><span class="p">(</span><span class="n">datetime_object</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">timestampTOdatetimestring</span><span class="p">(</span><span class="n">datetimeTOtimestamp</span><span class="p">(</span><span class="n">datetime_object</span><span class="p">))</span></div>
 
 
 
 <div class="viewcode-block" id="timestampTOdatetimestring">
 <a class="viewcode-back" href="../../../../CveXplore/core/timestampTOdatetimestring.html#CveXplore.core.general.utils.timestampTOdatetimestring">[docs]</a>
-<span class="k">def</span> <span class="nf">timestampTOdatetimestring</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">vis</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">timestampTOdatetimestring</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">vis</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Method that will take the provided timestamp and converts it into a RFC3339 date time string</span>
 
@@ -669,28 +669,28 @@
 
 <div class="viewcode-block" id="set_ansi_color_red">
 <a class="viewcode-back" href="../../../../CveXplore/core/set_ansi_color_red.html#CveXplore.core.general.utils.set_ansi_color_red">[docs]</a>
-<span class="k">def</span> <span class="nf">set_ansi_color_red</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_ansi_color_red</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">fg</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="set_ansi_color_green">
 <a class="viewcode-back" href="../../../../CveXplore/core/set_ansi_color_green.html#CveXplore.core.general.utils.set_ansi_color_green">[docs]</a>
-<span class="k">def</span> <span class="nf">set_ansi_color_green</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_ansi_color_green</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">fg</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="set_ansi_color_magenta">
 <a class="viewcode-back" href="../../../../CveXplore/core/set_ansi_color_magenta.html#CveXplore.core.general.utils.set_ansi_color_magenta">[docs]</a>
-<span class="k">def</span> <span class="nf">set_ansi_color_magenta</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_ansi_color_magenta</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">fg</span><span class="o">=</span><span class="s2">&quot;magenta&quot;</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="set_ansi_color_yellow">
 <a class="viewcode-back" href="../../../../CveXplore/core/set_ansi_color_yellow.html#CveXplore.core.general.utils.set_ansi_color_yellow">[docs]</a>
-<span class="k">def</span> <span class="nf">set_ansi_color_yellow</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_ansi_color_yellow</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">fg</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">)</span></div>
 
 </code></pre></div>
@@ -700,7 +700,7 @@
   <small>
     
       Last update:
-      Aug 11, 2024
+      Jan 25, 2025
     
   </small>
 </div>
