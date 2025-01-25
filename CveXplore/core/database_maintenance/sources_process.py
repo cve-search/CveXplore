@@ -403,6 +403,61 @@ class CVEDownloads(NVDApiHandler):
         if "metrics" in item["cve"]:
             cve["access"] = {}
             cve["impact"] = {}
+            if "cvssMetricV40" in item["cve"]["metrics"]:
+                cve["impact4"] = {}
+                cve["exploitability4"] = {}
+                cve["impact4"]["vulnerable_system_confidentiality"] = item["cve"][
+                    "metrics"
+                ]["cvssMetricV40"][0]["cvssData"]["vulnerableSystemConfidentiality"]
+                cve["impact4"]["vulnerable_system_integrity"] = item["cve"]["metrics"][
+                    "cvssMetricV40"
+                ][0]["cvssData"]["vulnerableSystemIntegrity"]
+                cve["impact4"]["vulnerable_system_availability"] = item["cve"][
+                    "metrics"
+                ]["cvssMetricV40"][0]["cvssData"]["vulnerableSystemAvailability"]
+                cve["impact4"]["subsequent_system_confidentiality"] = item["cve"][
+                    "metrics"
+                ]["cvssMetricV40"][0]["cvssData"]["subsequentSystemConfidentiality"]
+                cve["impact4"]["subsequent_system_integrity"] = item["cve"]["metrics"][
+                    "cvssMetricV40"
+                ][0]["cvssData"]["subsequentSystemIntegrity"]
+                cve["impact4"]["subsequent_system_availability"] = item["cve"][
+                    "metrics"
+                ]["cvssMetricV40"][0]["cvssData"]["subsequentSystemAvailability"]
+                cve["exploitability4"]["attackvector"] = item["cve"]["metrics"][
+                    "cvssMetricV40"
+                ][0]["cvssData"]["attackVector"]
+                cve["exploitability4"]["attackcomplexity"] = item["cve"]["metrics"][
+                    "cvssMetricV40"
+                ][0]["cvssData"]["attackComplexity"]
+                cve["exploitability4"]["attackrequirements"] = item["cve"]["metrics"][
+                    "cvssMetricV40"
+                ][0]["cvssData"]["attackRequirements"]
+                cve["exploitability4"]["privilegesrequired"] = item["cve"]["metrics"][
+                    "cvssMetricV40"
+                ][0]["cvssData"]["privilegesRequired"]
+                cve["exploitability4"]["userinteraction"] = item["cve"]["metrics"][
+                    "cvssMetricV40"
+                ][0]["cvssData"]["userInteraction"]
+                cve["exploitability4"]["exploitmaturity"] = item["cve"]["metrics"][
+                    "cvssMetricV40"
+                ][0]["cvssData"]["exploitMaturity"]
+                cve["cvss4"] = float(
+                    item["cve"]["metrics"]["cvssMetricV40"][0]["cvssData"]["baseScore"]
+                )
+                cve["cvss4Vector"] = item["cve"]["metrics"]["cvssMetricV40"][0][
+                    "cvssData"
+                ]["vectorString"]
+                cve["cvss4Time"] = parse_datetime(
+                    item["cve"]["lastModified"], ignoretz=True
+                )
+                cve["cvss4Type"] = item["cve"]["metrics"]["cvssMetricV40"][0]["type"]
+                cve["cvss4Source"] = item["cve"]["metrics"]["cvssMetricV40"][0][
+                    "source"
+                ]
+            else:
+                cve["cvss4"] = None
+
             if "cvssMetricV31" in item["cve"]["metrics"]:
                 cve["impact3"] = {}
                 cve["exploitability3"] = {}

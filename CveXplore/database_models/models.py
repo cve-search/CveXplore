@@ -121,6 +121,7 @@ class Cves(CveXploreBase):
     )
     cvss = Column(Float, index=True, doc="CVSS of the CVE")
     cvss3 = Column(Float, index=True, doc="CVSS3 of the CVE")
+    cvss4 = Column(Float, index=True, doc="CVSS4 of the CVE")
     cvssSource = Column(String(50), doc="Source of the CVSS of the CVE")
     cvssTime = Column(DateTime, doc="Time of the CVSS of the CVE")
     cvssVector = Column(String(100), doc="Vector of the CVSS of the CVE")
