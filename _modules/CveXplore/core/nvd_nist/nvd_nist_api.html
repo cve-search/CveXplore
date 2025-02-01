@@ -1187,7 +1187,10 @@
                 <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">,</span>
                 <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api_data</span><span class="o">.</span><span class="n">api_handle</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
                 <span class="n">timeout</span><span class="o">=</span><span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientTimeout</span><span class="p">(</span>
-                    <span class="n">total</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">sock_connect</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">sock_read</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">connect</span><span class="o">=</span><span class="mf">30.0</span>
+                    <span class="n">total</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">NVD_NIST_TIMEOUT</span><span class="p">,</span>
+                    <span class="n">sock_connect</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">NVD_NIST_TIMEOUT</span><span class="p">,</span>
+                    <span class="n">sock_read</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">NVD_NIST_TIMEOUT</span><span class="p">,</span>
+                    <span class="n">connect</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">NVD_NIST_TIMEOUT</span><span class="p">,</span>
                 <span class="p">),</span>
             <span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
                 <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
@@ -1210,7 +1213,7 @@
   <small>
     
       Last update:
-      Jan 25, 2025
+      Feb 01, 2025
     
   </small>
 </div>

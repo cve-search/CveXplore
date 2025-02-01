@@ -730,6 +730,8 @@
 
     <span class="n">NVD_NIST_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;NVD_NIST_API_KEY&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">NVD_NIST_NO_REJECTED</span> <span class="o">=</span> <span class="n">getenv_bool</span><span class="p">(</span><span class="s2">&quot;NVD_NIST_NO_REJECTED&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span>
+    <span class="n">NVD_NIST_TIMEOUT</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;NVD_NIST_TIMEOUT&quot;</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">))</span>
+
     <span class="n">HTTP_PROXY_DICT</span> <span class="o">=</span> <span class="n">getenv_dict</span><span class="p">(</span><span class="s2">&quot;HTTP_PROXY_DICT&quot;</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">HTTP_PROXY_STRING</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;HTTP_PROXY_STRING&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
@@ -804,7 +806,7 @@
   <small>
     
       Last update:
-      Jan 25, 2025
+      Feb 01, 2025
     
   </small>
 </div>

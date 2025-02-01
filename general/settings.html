@@ -368,6 +368,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#confval-NVD_NIST_TIMEOUT" class="md-nav__link">
+    <span aria-label="configuration value" class="objinfo-icon objinfo-icon__data" title="configuration value">C</span><span title="NVD_NIST_TIMEOUT (configuration value) — Request timeout in seconds." class="md-ellipsis">NVD_<wbr>NIST_<wbr>TIMEOUT</span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -948,6 +955,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#confval-NVD_NIST_TIMEOUT" class="md-nav__link">
+    <span aria-label="configuration value" class="objinfo-icon objinfo-icon__data" title="configuration value">C</span><span title="NVD_NIST_TIMEOUT (configuration value) — Request timeout in seconds." class="md-ellipsis">NVD_<wbr>NIST_<wbr>TIMEOUT</span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1210,6 +1224,15 @@ There are more environment variable available for configuring database &amp; bac
 <dd><p>Do not import rejected CVEs from the NIST NVD API.</p>
 </dd></dl>
 
+<dl class="std confval objdesc">
+<dt class="sig sig-object highlight std" id="confval-NVD_NIST_TIMEOUT">
+<span class="sig-name descname"><span class="pre">NVD_NIST_TIMEOUT</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mf">30.0</span></code><a class="headerlink" href="#confval-NVD_NIST_TIMEOUT" title="Link to this definition">¶</a></dt>
+<dd><p>Request timeout in seconds.</p>
+<p>This value is used by aiohttp to set time limits for asynchronous requests to the NVD API,
+including connection timeout and read timeout.</p>
+<p>E.g., <code class="docutils literal notranslate"><span class="pre">30.0</span></code></p>
+</dd></dl>
+
 <h2 id="downloads">Downloads<a class="headerlink" href="#downloads" title="Link to this heading">¶</a></h2>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-MAX_DOWNLOAD_WORKERS">
@@ -1357,7 +1380,7 @@ start with underscores; e.g. {“_environment”: “SPECIAL”} would append an
   <small>
     
       Last update:
-      Jan 25, 2025
+      Feb 01, 2025
     
   </small>
 </div>
