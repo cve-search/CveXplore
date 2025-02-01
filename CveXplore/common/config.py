@@ -122,6 +122,8 @@ class Configuration(object):
 
     NVD_NIST_API_KEY = os.getenv("NVD_NIST_API_KEY", None)
     NVD_NIST_NO_REJECTED = getenv_bool("NVD_NIST_NO_REJECTED", "True")
+    NVD_NIST_TIMEOUT = float(os.getenv("NVD_NIST_TIMEOUT", 30.0))
+
     HTTP_PROXY_DICT = getenv_dict("HTTP_PROXY_DICT", {})
     HTTP_PROXY_STRING = os.getenv("HTTP_PROXY_STRING", "")
 
