@@ -42,6 +42,15 @@ NIST NVD API
 
    Do not import rejected CVEs from the NIST NVD API.
 
+.. confval:: NVD_NIST_TIMEOUT
+
+   Request timeout in seconds.
+
+   This value is used by aiohttp to set time limits for asynchronous requests to the NVD API,
+   including connection timeout and read timeout.
+
+   E.g., ``30.0``
+
 Downloads
 *********
 

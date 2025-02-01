@@ -544,7 +544,10 @@ class ApiDataIterator(object):
                 loop=loop,
                 headers=self.api_data.api_handle.headers,
                 timeout=aiohttp.ClientTimeout(
-                    total=30.0, sock_connect=30.0, sock_read=30.0, connect=30.0
+                    total=self.config.NVD_NIST_TIMEOUT,
+                    sock_connect=self.config.NVD_NIST_TIMEOUT,
+                    sock_read=self.config.NVD_NIST_TIMEOUT,
+                    connect=self.config.NVD_NIST_TIMEOUT,
                 ),
             ) as session:
                 results = await asyncio.gather(
