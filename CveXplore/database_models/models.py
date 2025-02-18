@@ -126,6 +126,7 @@ class Cves(CveXploreBase):
     cvssTime = Column(DateTime, doc="Time of the CVSS of the CVE")
     cvssVector = Column(String(100), doc="Vector of the CVSS of the CVE")
     configurations = Column(JSON, doc="Vulnerable configurations of the CVE")
+    cvss_data = Column(JSON, doc="Raw cvss data")
     cwe = Column(JSON, default=[], doc="Related CWEs to the CVE")
     epss = Column(Float, index=True, doc="Epss of the CVE")
     epssMetric = Column(JSON, doc="Epss metric of the CVE")
