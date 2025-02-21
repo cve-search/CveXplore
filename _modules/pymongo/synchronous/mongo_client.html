@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.02cb18745d09eea51.min.css?v=ff456132" />
         <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -629,6 +629,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
@@ -655,7 +656,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">bson.codec_options</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_CODEC_OPTIONS</span><span class="p">,</span> <span class="n">CodecOptions</span><span class="p">,</span> <span class="n">TypeRegistry</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">bson.timestamp</span><span class="w"> </span><span class="kn">import</span> <span class="n">Timestamp</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo</span><span class="w"> </span><span class="kn">import</span> <span class="n">_csot</span><span class="p">,</span> <span class="n">common</span><span class="p">,</span> <span class="n">helpers_shared</span><span class="p">,</span> <span class="n">uri_parser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo</span><span class="w"> </span><span class="kn">import</span> <span class="n">_csot</span><span class="p">,</span> <span class="n">common</span><span class="p">,</span> <span class="n">helpers_shared</span><span class="p">,</span> <span class="n">periodic_executor</span><span class="p">,</span> <span class="n">uri_parser</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.client_options</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientOptions</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.errors</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AutoReconnect</span><span class="p">,</span>
@@ -671,7 +672,11 @@
     <span class="n">WaitQueueTimeoutError</span><span class="p">,</span>
     <span class="n">WriteConcernError</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.lock</span><span class="w"> </span><span class="kn">import</span> <span class="n">_HAS_REGISTER_AT_FORK</span><span class="p">,</span> <span class="n">_create_lock</span><span class="p">,</span> <span class="n">_release_locks</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.lock</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_HAS_REGISTER_AT_FORK</span><span class="p">,</span>
+    <span class="n">_create_lock</span><span class="p">,</span>
+    <span class="n">_release_locks</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">_CLIENT_LOGGER</span><span class="p">,</span> <span class="n">_log_or_warn</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">_CursorAddress</span><span class="p">,</span> <span class="n">_GetMore</span><span class="p">,</span> <span class="n">_Query</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.monitoring</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConnectionClosedReason</span>
@@ -688,7 +693,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.results</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientBulkWriteResult</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.server_selectors</span><span class="w"> </span><span class="kn">import</span> <span class="n">writable_server_selector</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.server_type</span><span class="w"> </span><span class="kn">import</span> <span class="n">SERVER_TYPE</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous</span><span class="w"> </span><span class="kn">import</span> <span class="n">client_session</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">periodic_executor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous</span><span class="w"> </span><span class="kn">import</span> <span class="n">client_session</span><span class="p">,</span> <span class="n">database</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.change_stream</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChangeStream</span><span class="p">,</span> <span class="n">ClusterChangeStream</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.client_bulk</span><span class="w"> </span><span class="kn">import</span> <span class="n">_ClientBulk</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.client_session</span><span class="w"> </span><span class="kn">import</span> <span class="n">_EmptyServerSession</span>
@@ -817,7 +822,7 @@
 <span class="sd">        &lt;https://en.wikipedia.org/wiki/TXT_record&gt;`_. See the</span>
 <span class="sd">        `Initial DNS Seedlist Discovery spec</span>
 <span class="sd">        &lt;https://github.com/mongodb/specifications/blob/master/source/</span>
-<span class="sd">        initial-dns-seedlist-discovery/initial-dns-seedlist-discovery.rst&gt;`_</span>
+<span class="sd">        initial-dns-seedlist-discovery/initial-dns-seedlist-discovery.md&gt;`_</span>
 <span class="sd">        for more details. Note that the use of SRV URIs implicitly enables</span>
 <span class="sd">        TLS support. Pass tls=false in the URI to override.</span>
 
@@ -966,7 +971,7 @@
 <span class="sd">            :meth:`~pymongo.collection.Collection.aggregate` using the ``$out``</span>
 <span class="sd">            pipeline operator and any operation with an unacknowledged write</span>
 <span class="sd">            concern (e.g. {w: 0})). See</span>
-<span class="sd">            https://github.com/mongodb/specifications/blob/master/source/retryable-writes/retryable-writes.rst</span>
+<span class="sd">            https://github.com/mongodb/specifications/blob/master/source/retryable-writes/retryable-writes.md</span>
 <span class="sd">          - `retryReads`: (boolean) Whether supported read operations</span>
 <span class="sd">            executed within this MongoClient will be retried once after a</span>
 <span class="sd">            network error. Defaults to ``True``.</span>
@@ -993,7 +998,7 @@
 <span class="sd">            transient errors such as network failures, database upgrades, and</span>
 <span class="sd">            replica set failovers. For an exact definition of which errors</span>
 <span class="sd">            trigger a retry, see the `retryable reads specification</span>
-<span class="sd">            &lt;https://github.com/mongodb/specifications/blob/master/source/retryable-reads/retryable-reads.rst&gt;`_.</span>
+<span class="sd">            &lt;https://github.com/mongodb/specifications/blob/master/source/retryable-reads/retryable-reads.md&gt;`_.</span>
 
 <span class="sd">          - `compressors`: Comma separated list of compressors for wire</span>
 <span class="sd">            protocol compression. The list is used to negotiate a compressor</span>
@@ -1097,9 +1102,8 @@
 <span class="sd">          - `authSource`: The database to authenticate on. Defaults to the</span>
 <span class="sd">            database specified in the URI, if provided, or to &quot;admin&quot;.</span>
 <span class="sd">          - `authMechanism`: See :data:`~pymongo.auth.MECHANISMS` for options.</span>
-<span class="sd">            If no mechanism is specified, PyMongo automatically SCRAM-SHA-1</span>
-<span class="sd">            when connected to MongoDB 3.6 and negotiates the mechanism to use</span>
-<span class="sd">            (SCRAM-SHA-1 or SCRAM-SHA-256) when connected to MongoDB 4.0+.</span>
+<span class="sd">            If no mechanism is specified, PyMongo automatically negotiates the</span>
+<span class="sd">            mechanism to use (SCRAM-SHA-1 or SCRAM-SHA-256) with the MongoDB server.</span>
 <span class="sd">          - `authMechanismProperties`: Used to specify authentication mechanism</span>
 <span class="sd">            specific options. To specify the service name for GSSAPI</span>
 <span class="sd">            authentication pass authMechanismProperties=&#39;SERVICE_NAME:&lt;service</span>
@@ -1819,7 +1823,8 @@
                     <span class="ne">ResourceWarning</span><span class="p">,</span>
                     <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                 <span class="p">)</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="c1"># Ignore errors at interpreter exit.</span>
             <span class="k">pass</span></div>
 
 
@@ -2083,13 +2088,6 @@
                 <span class="s1">&#39;Cannot use &quot;address&quot; property when load balancing among&#39;</span>
                 <span class="s1">&#39; mongoses, use &quot;nodes&quot; instead.&#39;</span>
             <span class="p">)</span>
-        <span class="k">if</span> <span class="n">topology_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span>
-            <span class="n">TOPOLOGY_TYPE</span><span class="o">.</span><span class="n">ReplicaSetWithPrimary</span><span class="p">,</span>
-            <span class="n">TOPOLOGY_TYPE</span><span class="o">.</span><span class="n">Single</span><span class="p">,</span>
-            <span class="n">TOPOLOGY_TYPE</span><span class="o">.</span><span class="n">LoadBalanced</span><span class="p">,</span>
-            <span class="n">TOPOLOGY_TYPE</span><span class="o">.</span><span class="n">Sharded</span><span class="p">,</span>
-        <span class="p">):</span>
-            <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server_property</span><span class="p">(</span><span class="s2">&quot;address&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -2361,7 +2359,7 @@
                 <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">,</span>
             <span class="p">)</span>
 
-            <span class="k">with</span> <span class="n">operation</span><span class="o">.</span><span class="n">conn_mgr</span><span class="o">.</span><span class="n">_alock</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">operation</span><span class="o">.</span><span class="n">conn_mgr</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
                 <span class="k">with</span> <span class="n">_MongoClientErrorHandler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">err_handler</span><span class="p">:</span>  <span class="c1"># type: ignore[arg-type]</span>
                     <span class="n">err_handler</span><span class="o">.</span><span class="n">contribute_socket</span><span class="p">(</span><span class="n">operation</span><span class="o">.</span><span class="n">conn_mgr</span><span class="o">.</span><span class="n">conn</span><span class="p">)</span>
                     <span class="k">return</span> <span class="n">server</span><span class="o">.</span><span class="n">run_operation</span><span class="p">(</span>
@@ -2609,7 +2607,7 @@
 
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">conn_mgr</span><span class="p">:</span>
-                <span class="k">with</span> <span class="n">conn_mgr</span><span class="o">.</span><span class="n">_alock</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">conn_mgr</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
                     <span class="c1"># Cursor is pinned to LB outside of a transaction.</span>
                     <span class="k">assert</span> <span class="n">address</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                     <span class="k">assert</span> <span class="n">conn_mgr</span><span class="o">.</span><span class="n">conn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -2672,6 +2670,8 @@
         <span class="k">for</span> <span class="n">address</span><span class="p">,</span> <span class="n">cursor_id</span><span class="p">,</span> <span class="n">conn_mgr</span> <span class="ow">in</span> <span class="n">pinned_cursors</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_cleanup_cursor_lock</span><span class="p">(</span><span class="n">cursor_id</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">conn_mgr</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
+                <span class="k">raise</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">InvalidOperation</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
                     <span class="c1"># Raise the exception when client is closed so that it</span>
@@ -2686,6 +2686,8 @@
             <span class="k">for</span> <span class="n">address</span><span class="p">,</span> <span class="n">cursor_ids</span> <span class="ow">in</span> <span class="n">address_to_cursor_ids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_kill_cursors</span><span class="p">(</span><span class="n">cursor_ids</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">topology</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
+                    <span class="k">raise</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">InvalidOperation</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
                         <span class="k">raise</span>
@@ -2700,6 +2702,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_process_kill_cursors</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">update_pool</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
+            <span class="k">raise</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">InvalidOperation</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
                 <span class="k">return</span>
@@ -3001,6 +3005,13 @@
             <span class="c1"># Inherit the client&#39;s write concern if none is provided.</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">write_concern</span><span class="p">:</span>
                 <span class="n">write_concern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_concern</span>
+
+        <span class="k">if</span> <span class="n">write_concern</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">write_concern</span><span class="o">.</span><span class="n">acknowledged</span> <span class="ow">and</span> <span class="n">verbose_results</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidOperation</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot request unacknowledged write concern and verbose results&quot;</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">write_concern</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">write_concern</span><span class="o">.</span><span class="n">acknowledged</span> <span class="ow">and</span> <span class="n">ordered</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidOperation</span><span class="p">(</span><span class="s2">&quot;Cannot request unacknowledged write concern and ordered writes&quot;</span><span class="p">)</span>
 
         <span class="n">common</span><span class="o">.</span><span class="n">validate_list</span><span class="p">(</span><span class="s2">&quot;models&quot;</span><span class="p">,</span> <span class="n">models</span><span class="p">)</span>
 
@@ -3400,7 +3411,7 @@
   <small>
     
       Last update:
-      Feb 01, 2025
+      Feb 21, 2025
     
   </small>
 </div>

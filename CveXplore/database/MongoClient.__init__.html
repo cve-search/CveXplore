@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.02cb18745d09eea51.min.css?v=ff456132" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -636,7 +636,7 @@ resolved to one or more DNS <a class="reference external" href="https://en.wikip
 as the seed list for connecting to the MongoDB deployment. When using
 SRV URIs, the <code class="xref py py-obj docutils literal notranslate"><span class="pre">authSource</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">replicaSet</span></code> configuration options can
 be specified using <a class="reference external" href="https://en.wikipedia.org/wiki/TXT_record">TXT records</a>. See the
-<a class="reference external" href="https://github.com/mongodb/specifications/blob/master/source/initial-dns-seedlist-discovery/initial-dns-seedlist-discovery.rst">Initial DNS Seedlist Discovery spec</a>
+<a class="reference external" href="https://github.com/mongodb/specifications/blob/master/source/initial-dns-seedlist-discovery/initial-dns-seedlist-discovery.md">Initial DNS Seedlist Discovery spec</a>
 for more details. Note that the use of SRV URIs implicitly enables
 TLS support. Pass tls=false in the URI to override.</p>
 <div class="note admonition">
@@ -810,7 +810,7 @@ The supported write operations are:</p>
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">aggregate()</span></code> using the <code class="code highlight python docutils literal highlight-python"><span class="err">$</span><span class="n">out</span></code>
 pipeline operator and any operation with an unacknowledged write
 concern (e.g. {w: 0})). See
-<a class="reference external" href="https://github.com/mongodb/specifications/blob/master/source/retryable-writes/retryable-writes.rst">https://github.com/mongodb/specifications/blob/master/source/retryable-writes/retryable-writes.rst</a></p>
+<a class="reference external" href="https://github.com/mongodb/specifications/blob/master/source/retryable-writes/retryable-writes.md">https://github.com/mongodb/specifications/blob/master/source/retryable-writes/retryable-writes.md</a></p>
 </li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">retryReads</span></code>: (boolean) Whether supported read operations
 executed within this MongoClient will be retried once after a
@@ -835,7 +835,7 @@ operation on a cursor.</p>
 <p>Enabling retryable reads makes applications more resilient to
 transient errors such as network failures, database upgrades, and
 replica set failovers. For an exact definition of which errors
-trigger a retry, see the <a class="reference external" href="https://github.com/mongodb/specifications/blob/master/source/retryable-reads/retryable-reads.rst">retryable reads specification</a>.</p>
+trigger a retry, see the <a class="reference external" href="https://github.com/mongodb/specifications/blob/master/source/retryable-reads/retryable-reads.md">retryable reads specification</a>.</p>
 </li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compressors</span></code>: Comma separated list of compressors for wire
 protocol compression. The list is used to negotiate a compressor
@@ -950,9 +950,8 @@ as-is:</p>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">authSource</span></code>: The database to authenticate on. Defaults to the
 database specified in the URI, if provided, or to “admin”.</p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">authMechanism</span></code>: See <code class="xref py py-data docutils literal notranslate"><span class="pre">MECHANISMS</span></code> for options.
-If no mechanism is specified, PyMongo automatically SCRAM-SHA-1
-when connected to MongoDB 3.6 and negotiates the mechanism to use
-(SCRAM-SHA-1 or SCRAM-SHA-256) when connected to MongoDB 4.0+.</p></li>
+If no mechanism is specified, PyMongo automatically negotiates the
+mechanism to use (SCRAM-SHA-1 or SCRAM-SHA-256) with the MongoDB server.</p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">authMechanismProperties</span></code>: Used to specify authentication mechanism
 specific options. To specify the service name for GSSAPI
 authentication pass authMechanismProperties=’SERVICE_NAME:&lt;service
@@ -1213,7 +1212,7 @@ Function-as-a-service environment.</p>
   <small>
     
       Last update:
-      Feb 01, 2025
+      Feb 21, 2025
     
   </small>
 </div>

@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.02cb18745d09eea51.min.css?v=ff456132" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -599,6 +599,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">Any</span><span class="p">,</span>
     <span class="n">Union</span><span class="p">,</span>
     <span class="n">Callable</span><span class="p">,</span>
     <span class="n">Awaitable</span><span class="p">,</span>
@@ -753,20 +754,39 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_method</span><span class="p">(</span>
     <span class="n">target</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
-    <span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">host</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="c1"># mypy is sooooo stupid, we should never assign this to a variable,</span>
+    <span class="c1"># or the type inference will be wrong</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">host</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;[aioretry] decorator should be used for instance method if </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> as a str &quot;</span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s1">&quot;, which should be fixed&#39;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="k">if</span> <span class="n">host</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">target</span>
 
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;[aioretry] decorator should be used for instance method if </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> as a str &quot;</span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s1">&quot;, which should be fixed&#39;</span>
-        <span class="p">)</span>
+    <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
 
-    <span class="bp">self</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="c1"># `target` could be a wrapped classmethod even without</span>
+        <span class="c1"># attaching to the class of the current instance (host)</span>
+        <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="nb">classmethod</span><span class="p">)</span>
+        <span class="c1"># similar to classmethod</span>
+        <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="nb">staticmethod</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="c1"># Make sure the method is defined in the class</span>
+        <span class="ow">or</span> <span class="n">target</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="c1"># Bind the target to the host and its class, which allows that</span>
+        <span class="c1"># the `target` could be executed in the current class context</span>
+        <span class="k">return</span> <span class="n">target</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+
+    <span class="k">return</span> <span class="n">target</span>
 
 
 <div class="viewcode-block" id="retry">
@@ -792,11 +812,13 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">TargetFunction</span><span class="p">[</span><span class="n">PS</span><span class="p">,</span> <span class="n">RT</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TargetFunction</span><span class="p">[</span><span class="n">PS</span><span class="p">,</span> <span class="n">RT</span><span class="p">]:</span>
         <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">PS</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">PS</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RT</span><span class="p">:</span>
+            <span class="n">host</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+
             <span class="k">return</span> <span class="k">await</span> <span class="n">perform</span><span class="p">(</span>
                 <span class="n">fn</span><span class="p">,</span>
-                <span class="n">get_method</span><span class="p">(</span><span class="n">retry_policy</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="s1">&#39;retry_policy&#39;</span><span class="p">),</span>
+                <span class="n">get_method</span><span class="p">(</span><span class="n">retry_policy</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="s1">&#39;retry_policy&#39;</span><span class="p">),</span>
                 <span class="p">(</span>
-                    <span class="n">get_method</span><span class="p">(</span><span class="n">before_retry</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="s1">&#39;before_retry&#39;</span><span class="p">)</span>
+                    <span class="n">get_method</span><span class="p">(</span><span class="n">before_retry</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="s1">&#39;before_retry&#39;</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">before_retry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                     <span class="k">else</span> <span class="kc">None</span>
                 <span class="p">),</span>
@@ -815,7 +837,7 @@
   <small>
     
       Last update:
-      Feb 01, 2025
+      Feb 21, 2025
     
   </small>
 </div>

@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.02cb18745d09eea51.min.css?v=ff456132" />
         <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1630,6 +1630,7 @@
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">retryable_write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">let</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">sort</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal update / replace helper.&quot;&quot;&quot;</span>
@@ -1661,6 +1662,14 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">hint</span> <span class="o">=</span> <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
             <span class="n">update_doc</span><span class="p">[</span><span class="s2">&quot;hint&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hint</span>
+        <span class="k">if</span> <span class="n">sort</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">acknowledged</span> <span class="ow">and</span> <span class="n">conn</span><span class="o">.</span><span class="n">max_wire_version</span> <span class="o">&lt;</span> <span class="mi">25</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                    <span class="s2">&quot;Must be connected to MongoDB 8.0+ to use sort on unacknowledged update commands.&quot;</span>
+                <span class="p">)</span>
+            <span class="n">common</span><span class="o">.</span><span class="n">validate_is_mapping</span><span class="p">(</span><span class="s2">&quot;sort&quot;</span><span class="p">,</span> <span class="n">sort</span><span class="p">)</span>
+            <span class="n">update_doc</span><span class="p">[</span><span class="s2">&quot;sort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sort</span>
+
         <span class="n">command</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;ordered&quot;</span><span class="p">:</span> <span class="n">ordered</span><span class="p">,</span> <span class="s2">&quot;updates&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">update_doc</span><span class="p">]}</span>
         <span class="k">if</span> <span class="n">let</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">common</span><span class="o">.</span><span class="n">validate_is_mapping</span><span class="p">(</span><span class="s2">&quot;let&quot;</span><span class="p">,</span> <span class="n">let</span><span class="p">)</span>
@@ -1716,6 +1725,7 @@
         <span class="n">hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_IndexKeyHint</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">let</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">sort</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal update / replace helper.&quot;&quot;&quot;</span>
@@ -1739,6 +1749,7 @@
                 <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
                 <span class="n">retryable_write</span><span class="o">=</span><span class="n">retryable_write</span><span class="p">,</span>
                 <span class="n">let</span><span class="o">=</span><span class="n">let</span><span class="p">,</span>
+                <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="p">,</span>
                 <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">,</span>
             <span class="p">)</span>
 
@@ -1761,6 +1772,7 @@
         <span class="n">hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_IndexKeyHint</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">let</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">sort</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UpdateResult</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace a single document matching the filter.</span>
@@ -1815,8 +1827,13 @@
 <span class="sd">            aggregate expression context (e.g. &quot;$$var&quot;).</span>
 <span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
+<span class="sd">        :param sort: Specify which document the operation updates if the query matches</span>
+<span class="sd">            multiple documents. The first document matched by the sort order will be updated.</span>
+<span class="sd">            This option is only supported on MongoDB 8.0 and above.</span>
 <span class="sd">        :return: - An instance of :class:`~pymongo.results.UpdateResult`.</span>
 
+<span class="sd">        .. versionchanged:: 4.11</span>
+<span class="sd">           Added ``sort`` parameter.</span>
 <span class="sd">        .. versionchanged:: 4.1</span>
 <span class="sd">           Added ``let`` parameter.</span>
 <span class="sd">           Added ``comment`` parameter.</span>
@@ -1848,6 +1865,7 @@
                 <span class="n">hint</span><span class="o">=</span><span class="n">hint</span><span class="p">,</span>
                 <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
                 <span class="n">let</span><span class="o">=</span><span class="n">let</span><span class="p">,</span>
+                <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="p">,</span>
                 <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="n">write_concern</span><span class="o">.</span><span class="n">acknowledged</span><span class="p">,</span>
@@ -1867,6 +1885,7 @@
         <span class="n">hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_IndexKeyHint</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">let</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">sort</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UpdateResult</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update a single document matching the filter.</span>
@@ -1925,11 +1944,16 @@
 <span class="sd">            constant or closed expressions that do not reference document</span>
 <span class="sd">            fields. Parameters can then be accessed as variables in an</span>
 <span class="sd">            aggregate expression context (e.g. &quot;$$var&quot;).</span>
+<span class="sd">        :param sort: Specify which document the operation updates if the query matches</span>
+<span class="sd">            multiple documents. The first document matched by the sort order will be updated.</span>
+<span class="sd">            This option is only supported on MongoDB 8.0 and above.</span>
 <span class="sd">        :param comment: A user-provided comment to attach to this</span>
 <span class="sd">            command.</span>
 
 <span class="sd">        :return: - An instance of :class:`~pymongo.results.UpdateResult`.</span>
 
+<span class="sd">        .. versionchanged:: 4.11</span>
+<span class="sd">           Added ``sort`` parameter.</span>
 <span class="sd">        .. versionchanged:: 4.1</span>
 <span class="sd">           Added ``let`` parameter.</span>
 <span class="sd">           Added ``comment`` parameter.</span>
@@ -1964,6 +1988,7 @@
                 <span class="n">hint</span><span class="o">=</span><span class="n">hint</span><span class="p">,</span>
                 <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
                 <span class="n">let</span><span class="o">=</span><span class="n">let</span><span class="p">,</span>
+                <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="p">,</span>
                 <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="n">write_concern</span><span class="o">.</span><span class="n">acknowledged</span><span class="p">,</span>
@@ -2624,20 +2649,15 @@
         <span class="n">collation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Collation</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal count command helper.&quot;&quot;&quot;</span>
-        <span class="c1"># XXX: &quot;ns missing&quot; checks can be removed when we drop support for</span>
-        <span class="c1"># MongoDB 3.0, see SERVER-17051.</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
             <span class="n">conn</span><span class="p">,</span>
             <span class="n">cmd</span><span class="p">,</span>
             <span class="n">read_preference</span><span class="o">=</span><span class="n">read_preference</span><span class="p">,</span>
-            <span class="n">allowable_errors</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ns missing&quot;</span><span class="p">],</span>
             <span class="n">codec_options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_write_response_codec_options</span><span class="p">,</span>
             <span class="n">read_concern</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">read_concern</span><span class="p">,</span>
             <span class="n">collation</span><span class="o">=</span><span class="n">collation</span><span class="p">,</span>
             <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;errmsg&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;ns missing&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">0</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">])</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_aggregate_one_result</span><span class="p">(</span>
@@ -4311,7 +4331,7 @@
   <small>
     
       Last update:
-      Feb 01, 2025
+      Feb 21, 2025
     
   </small>
 </div>

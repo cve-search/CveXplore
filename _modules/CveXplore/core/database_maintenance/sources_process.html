@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.b83f2e057cd610c26.min.css?v=71bc7cdb" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.02cb18745d09eea51.min.css?v=ff456132" />
         <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -599,6 +599,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span>
@@ -1334,17 +1335,27 @@
                                     <span class="bp">self</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">cpeuri</span><span class="p">[</span><span class="s2">&quot;criteria&quot;</span><span class="p">]),</span>
                                 <span class="p">)</span>
         <span class="k">if</span> <span class="s2">&quot;weaknesses&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">]:</span>
+            <span class="n">cwe_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
             <span class="k">for</span> <span class="n">problem</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;weaknesses&quot;</span><span class="p">]:</span>
-                <span class="k">for</span> <span class="n">cwe</span> <span class="ow">in</span> <span class="n">problem</span><span class="p">[</span>
-                    <span class="s2">&quot;description&quot;</span>
-                <span class="p">]:</span>  <span class="c1"># NVD JSON not clear if we can get more than one CWE per CVE (until we take the last one) -</span>
-                    <span class="c1"># NVD-CWE-Other??? list?</span>
+                <span class="k">for</span> <span class="n">cwe</span> <span class="ow">in</span> <span class="n">problem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="p">[]):</span>
                     <span class="k">if</span> <span class="n">cwe</span><span class="p">[</span><span class="s2">&quot;lang&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;en&quot;</span><span class="p">:</span>
-                        <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cwe</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="s2">&quot;cwe&quot;</span> <span class="ow">in</span> <span class="n">cve</span><span class="p">):</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultvalue</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span>
+                        <span class="n">cwe_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cwe</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
+
+            <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">cwe_set</span><span class="p">)</span>
+
+            <span class="c1"># If at least one valid CWE exists, remove all &quot;NVD-CWE-*&quot; entries</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^NVD-CWE-&quot;</span><span class="p">,</span> <span class="n">cwe</span><span class="p">)</span> <span class="k">for</span> <span class="n">cwe</span> <span class="ow">in</span> <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]):</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">cwe</span> <span class="k">for</span> <span class="n">cwe</span> <span class="ow">in</span> <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^NVD-CWE-&quot;</span><span class="p">,</span> <span class="n">cwe</span><span class="p">)</span>
+                <span class="p">]</span>
+
+            <span class="c1"># If the list is empty after filtering, assign the default value</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]:</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">defaultvalue</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultvalue</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span>
+            <span class="c1"># Assign the default value if &quot;weaknesses&quot; is not present</span>
+            <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">defaultvalue</span><span class="p">[</span><span class="s2">&quot;cwe&quot;</span><span class="p">]]</span>
 
         <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;vulnerable_configuration_cpe_2_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -1878,7 +1889,7 @@
   <small>
     
       Last update:
-      Feb 01, 2025
+      Feb 21, 2025
     
   </small>
 </div>
