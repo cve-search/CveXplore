@@ -593,6 +593,123 @@ class CVEDownloads(NVDApiHandler):
             else:
                 cve["cvss"] = None
 
+        cve["cvss_data"] = {"cvss2": {}, "cvss3": {}, "cvss4": {}}
+
+        for version in [
+            "cvssMetricV40",
+            "cvssMetricV31",
+            "cvssMetricV30",
+            "cvssMetricV2",
+        ]:
+            if version in item["cve"]["metrics"]:
+                for metric in item["cve"]["metrics"][version]:
+                    cvss_key = (
+                        "cvss4"
+                        if version == "cvssMetricV40"
+                        else (
+                            "cvss3"
+                            if version in ["cvssMetricV31", "cvssMetricV30"]
+                            else "cvss2"
+                        )
+                    )
+                    source = metric["source"]
+
+                    entry = {
+                        "type": metric["type"],
+                        "vectorString": metric["cvssData"]["vectorString"],
+                        "baseScore": metric["cvssData"]["baseScore"],
+                    }
+
+                    if cvss_key == "cvss4":
+                        entry.update(
+                            {
+                                "vulnerable_system_confidentiality": metric[
+                                    "cvssData"
+                                ].get("vulnerableSystemConfidentiality"),
+                                "vulnerable_system_integrity": metric["cvssData"].get(
+                                    "vulnerableSystemIntegrity"
+                                ),
+                                "vulnerable_system_availability": metric[
+                                    "cvssData"
+                                ].get("vulnerableSystemAvailability"),
+                                "subsequent_system_confidentiality": metric[
+                                    "cvssData"
+                                ].get("subsequentSystemConfidentiality"),
+                                "subsequent_system_integrity": metric["cvssData"].get(
+                                    "subsequentSystemIntegrity"
+                                ),
+                                "subsequent_system_availability": metric[
+                                    "cvssData"
+                                ].get("subsequentSystemAvailability"),
+                                "attackVector": metric["cvssData"].get("attackVector"),
+                                "attackComplexity": metric["cvssData"].get(
+                                    "attackComplexity"
+                                ),
+                                "attackRequirements": metric["cvssData"].get(
+                                    "attackRequirements"
+                                ),
+                                "privilegesRequired": metric["cvssData"].get(
+                                    "privilegesRequired"
+                                ),
+                                "userInteraction": metric["cvssData"].get(
+                                    "userInteraction"
+                                ),
+                                "exploitMaturity": metric["cvssData"].get(
+                                    "exploitMaturity"
+                                ),
+                            }
+                        )
+                    elif cvss_key == "cvss3":
+                        entry.update(
+                            {
+                                "confidentialityImpact": metric["cvssData"].get(
+                                    "confidentialityImpact"
+                                ),
+                                "integrityImpact": metric["cvssData"].get(
+                                    "integrityImpact"
+                                ),
+                                "availabilityImpact": metric["cvssData"].get(
+                                    "availabilityImpact"
+                                ),
+                                "attackVector": metric["cvssData"].get("attackVector"),
+                                "attackComplexity": metric["cvssData"].get(
+                                    "attackComplexity"
+                                ),
+                                "privilegesRequired": metric["cvssData"].get(
+                                    "privilegesRequired"
+                                ),
+                                "userInteraction": metric["cvssData"].get(
+                                    "userInteraction"
+                                ),
+                                "scope": metric["cvssData"].get("scope"),
+                            }
+                        )
+                    elif cvss_key == "cvss2":
+                        entry.update(
+                            {
+                                "authentication": metric["cvssData"].get(
+                                    "authentication"
+                                ),
+                                "accessComplexity": metric["cvssData"].get(
+                                    "accessComplexity"
+                                ),
+                                "accessVector": metric["cvssData"].get("accessVector"),
+                                "confidentialityImpact": metric["cvssData"].get(
+                                    "confidentialityImpact"
+                                ),
+                                "integrityImpact": metric["cvssData"].get(
+                                    "integrityImpact"
+                                ),
+                                "availabilityImpact": metric["cvssData"].get(
+                                    "availabilityImpact"
+                                ),
+                            }
+                        )
+
+                    if source not in cve["cvss_data"][cvss_key]:
+                        cve["cvss_data"][cvss_key][source] = []
+                    cve["cvss_data"][cvss_key][source].append(entry)
+
         if "references" in item["cve"]:
             cve["references"] = []
             for ref in item["cve"]["references"]:
