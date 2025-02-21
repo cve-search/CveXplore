@@ -2,6 +2,7 @@ import datetime
 import glob
 import hashlib
 import json
+import re
 import shutil
 import time
 from typing import Any, Tuple
@@ -694,17 +695,27 @@ class CVEDownloads(NVDApiHandler):
                                     self.stem(cpeuri["criteria"]),
                                 )
         if "weaknesses" in item["cve"]:
+            cwe_set = set()
+
             for problem in item["cve"]["weaknesses"]:
-                for cwe in problem[
-                    "description"
-                ]:  # NVD JSON not clear if we can get more than one CWE per CVE (until we take the last one) -
-                    # NVD-CWE-Other??? list?
+                for cwe in problem.get("description", []):
                     if cwe["lang"] == "en":
-                        cve["cwe"] = cwe["value"]
-            if not ("cwe" in cve):
-                cve["cwe"] = defaultvalue["cwe"]
+                        cwe_set.add(cwe["value"])
+
+            cve["cwe"] = sorted(cwe_set)
+
+            # If at least one valid CWE exists, remove all "NVD-CWE-*" entries
+            if any(not re.match(r"^NVD-CWE-", cwe) for cwe in cve["cwe"]):
+                cve["cwe"] = [
+                    cwe for cwe in cve["cwe"] if not re.match(r"^NVD-CWE-", cwe)
+                ]
+
+            # If the list is empty after filtering, assign the default value
+            if not cve["cwe"]:
+                cve["cwe"] = [defaultvalue["cwe"]]
         else:
-            cve["cwe"] = defaultvalue["cwe"]
+            # Assign the default value if "weaknesses" is not present
+            cve["cwe"] = [defaultvalue["cwe"]]
 
         cve["vulnerable_configuration_cpe_2_2"] = []
 
