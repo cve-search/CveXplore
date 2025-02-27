@@ -1,3 +1,5 @@
+import re
+from typing import Union
 from abc import abstractmethod
 
 from CveXplore.common.cpe_converters import split_cpe_name
@@ -19,6 +21,8 @@ class NVDApiHandler(DownloadHandler):
 
         self.api_handler = NvdNistApi(proxies=self.config.HTTP_PROXY_DICT)
 
+        self.missing_key_statistics = {}
+
     def process_item(self, item: dict):
         item = self.process_the_item(item)
 
@@ -34,6 +38,56 @@ class NVDApiHandler(DownloadHandler):
                 #     doc=item,
                 # ).entry
                 return item
+
+    def safe_get(
+        self, item: dict, dict_path: Union[list, str]
+    ) -> Union[None, dict, list, str]:
+        """Safely retrieve a value from a nested dictionary or list and track missing keys."""
+        # Ensure dict_path is a list of keys (or indices)
+        if isinstance(dict_path, str):
+            keys = re.split(r"\.|\[|\]", dict_path)  # Split by '.' or '[' or ']'
+            keys = [key for key in keys if key]
+        else:
+            keys = dict_path
+
+        current_data = item
+
+        for key in keys:
+            if isinstance(current_data, list):
+                # Handle list indices (e.g., [0]) by converting them to integers
+                try:
+                    key = int(key)
+                    current_data = current_data[key]
+                except (ValueError, IndexError):
+                    self._record_missing_key(dict_path)
+                    return None
+            elif isinstance(current_data, dict):
+                if key not in current_data:
+                    self._record_missing_key(dict_path)
+                    return None
+                current_data = current_data[key]
+            else:
+                self._record_missing_key(dict_path)
+                return None
+        return current_data
+
+    def _record_missing_key(self, dict_path: Union[list, str]) -> None:
+        """Track missing keys with their path in the missing_key_statistics."""
+        path_str = (
+            ".".join(map(str, dict_path)) if isinstance(dict_path, list) else dict_path
+        )
+        self.missing_key_statistics[path_str] = (
+            self.missing_key_statistics.get(path_str, 0) + 1
+        )
+
+    def log_statistics(self) -> None:
+        """Log statistics for missing keys."""
+        if self.missing_key_statistics:
+            for path, count in self.missing_key_statistics.items():
+                self.logger.warning(
+                    f"Missing keys in processed data: {path} missing from {count} items"
+                )
+            self.missing_key_statistics.clear()
 
     @staticmethod
     def split_cpe_name(cpename: str) -> list[str]:
