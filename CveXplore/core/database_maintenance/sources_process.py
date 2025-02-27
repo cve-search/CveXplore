@@ -409,27 +409,24 @@ class CVEDownloads(NVDApiHandler):
                 cve["exploitability4"] = {}
                 cve["impact4"]["vulnerable_system_confidentiality"] = self.safe_get(
                     item,
-                    "cve.metrics.cvssMetricV40.[0].cvssData.vulnerableSystemConfidentiality",
+                    "cve.metrics.cvssMetricV40.[0].cvssData.vulnConfidentialityImpact",
                 )
                 cve["impact4"]["vulnerable_system_integrity"] = self.safe_get(
-                    item,
-                    "cve.metrics.cvssMetricV40.[0].cvssData.vulnerableSystemIntegrity",
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.vulnIntegrityImpact"
                 )
                 cve["impact4"]["vulnerable_system_availability"] = self.safe_get(
                     item,
-                    "cve.metrics.cvssMetricV40.[0].cvssData.vulnerableSystemAvailability",
+                    "cve.metrics.cvssMetricV40.[0].cvssData.vulnAvailabilityImpact",
                 )
                 cve["impact4"]["subsequent_system_confidentiality"] = self.safe_get(
                     item,
-                    "cve.metrics.cvssMetricV40.[0].cvssData.subsequentSystemConfidentiality",
+                    "cve.metrics.cvssMetricV40.[0].cvssData.subConfidentialityImpact",
                 )
                 cve["impact4"]["subsequent_system_integrity"] = self.safe_get(
-                    item,
-                    "cve.metrics.cvssMetricV40.[0].cvssData.subsequentSystemIntegrity",
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.subIntegrityImpact"
                 )
                 cve["impact4"]["subsequent_system_availability"] = self.safe_get(
-                    item,
-                    "cve.metrics.cvssMetricV40.[0].cvssData.subsequentSystemAvailability",
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.subAvailabilityImpact"
                 )
                 cve["impact4"]["attackvector"] = self.safe_get(
                     item, "cve.metrics.cvssMetricV40.[0].cvssData.attackVector"
