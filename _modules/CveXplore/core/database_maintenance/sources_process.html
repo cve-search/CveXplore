@@ -1026,25 +1026,37 @@
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="n">cve</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;assigner&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;sourceIdentifier&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;vulnStatus&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;published&quot;</span><span class="p">:</span> <span class="n">parse_datetime</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;published&quot;</span><span class="p">],</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-            <span class="s2">&quot;modified&quot;</span><span class="p">:</span> <span class="n">parse_datetime</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;lastModified&quot;</span><span class="p">],</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-            <span class="s2">&quot;lastModified&quot;</span><span class="p">:</span> <span class="n">parse_datetime</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;lastModified&quot;</span><span class="p">],</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.id&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;assigner&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.sourceIdentifier&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.vulnStatus&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;published&quot;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="n">parse_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.published&quot;</span><span class="p">),</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.published&quot;</span><span class="p">)</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;modified&quot;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="n">parse_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.lastModified&quot;</span><span class="p">),</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.lastModified&quot;</span><span class="p">)</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;lastModified&quot;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="n">parse_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.lastModified&quot;</span><span class="p">),</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.lastModified&quot;</span><span class="p">)</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
         <span class="p">}</span>
 
-        <span class="k">for</span> <span class="n">description</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;descriptions&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">description</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.descriptions&quot;</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">description</span><span class="p">[</span><span class="s2">&quot;lang&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;en&quot;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="s2">&quot;summary&quot;</span> <span class="ow">in</span> <span class="n">cve</span><span class="p">:</span>
                     <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">description</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="s2">&quot;metrics&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="s2">&quot;metrics&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve&quot;</span><span class="p">):</span>
             <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;access&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">if</span> <span class="s2">&quot;cvssMetricV40&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="s2">&quot;cvssMetricV40&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics&quot;</span><span class="p">):</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact4&quot;</span><span class="p">][</span><span class="s2">&quot;vulnerable_system_confidentiality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
@@ -1086,21 +1098,26 @@
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability4&quot;</span><span class="p">][</span><span class="s2">&quot;exploitmaturity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
                     <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV40.[0].cvssData.exploitMaturity&quot;</span>
                 <span class="p">)</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
-                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV40.[0].cvssData.baseScore&quot;</span>
-                <span class="p">):</span>
-                    <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">float</span><span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
                             <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV40.[0].cvssData.baseScore&quot;</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                        <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV40.[0].cvssData.baseScore&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4Vector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
                     <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV40.[0].cvssData.vectorString&quot;</span>
                 <span class="p">)</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parse_datetime</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.lastModified&quot;</span><span class="p">),</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">parse_datetime</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.lastModified&quot;</span><span class="p">),</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.lastModified&quot;</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
                 <span class="p">)</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
                     <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV40.[0].type&quot;</span>
@@ -1111,137 +1128,214 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="k">if</span> <span class="s2">&quot;cvssMetricV31&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="s2">&quot;cvssMetricV31&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics&quot;</span><span class="p">):</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;availability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV31&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;availabilityImpact&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;confidentiality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV31&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;confidentialityImpact&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;integrity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV31&quot;</span><span class="p">][</span>
-                    <span class="mi">0</span>
-                <span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;integrityImpact&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;attackvector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV31&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;attackVector&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;attackcomplexity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV31&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;attackComplexity&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;privilegesrequired&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV31&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;privilegesRequired&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;userinteraction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV31&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;userInteraction&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;scope&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV31&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;scope&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV31&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;baseScore&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;availability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].cvssData.availabilityImpact&quot;</span>
                 <span class="p">)</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Vector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV31&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssData&quot;</span>
-                <span class="p">][</span><span class="s2">&quot;vectorString&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impactScore3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV31&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;impactScore&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;confidentiality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].cvssData.confidentialityImpact&quot;</span>
                 <span class="p">)</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitabilityScore3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV31&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;exploitabilityScore&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;integrity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].cvssData.integrityImpact&quot;</span>
                 <span class="p">)</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parse_datetime</span><span class="p">(</span>
-                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;lastModified&quot;</span><span class="p">],</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;attackvector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].cvssData.attackVector&quot;</span>
                 <span class="p">)</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV31&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV31&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span>
-                    <span class="s2">&quot;source&quot;</span>
-                <span class="p">]</span>
-            <span class="k">elif</span> <span class="s2">&quot;cvssMetricV30&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">]:</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;attackcomplexity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].cvssData.attackComplexity&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;privilegesrequired&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].cvssData.privilegesRequired&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;userinteraction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].cvssData.userInteraction&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;scope&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].cvssData.scope&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                            <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].cvssData.baseScore&quot;</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                        <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].cvssData.baseScore&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Vector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].cvssData.vectorString&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impactScore3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].impactScore&quot;</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].impactScore&quot;</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitabilityScore3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                            <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].exploitabilityScore&quot;</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                        <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].exploitabilityScore&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">parse_datetime</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.lastModified&quot;</span><span class="p">),</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.lastModified&quot;</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].type&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV31.[0].source&quot;</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="s2">&quot;cvssMetricV30&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics&quot;</span><span class="p">):</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;availability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV30&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;availabilityImpact&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;confidentiality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV30&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;confidentialityImpact&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;integrity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV30&quot;</span><span class="p">][</span>
-                    <span class="mi">0</span>
-                <span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;integrityImpact&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;attackvector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV30&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;attackVector&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;attackcomplexity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV30&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;attackComplexity&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;privilegesrequired&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV30&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;privilegesRequired&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;userinteraction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV30&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;userInteraction&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;scope&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV30&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;scope&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV30&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;baseScore&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;availability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].cvssData.availabilityImpact&quot;</span>
                 <span class="p">)</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Vector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV30&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssData&quot;</span>
-                <span class="p">][</span><span class="s2">&quot;vectorString&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impactScore3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV30&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;impactScore&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;confidentiality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].cvssData.confidentialityImpact&quot;</span>
                 <span class="p">)</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitabilityScore3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV30&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;exploitabilityScore&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact3&quot;</span><span class="p">][</span><span class="s2">&quot;integrity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].cvssData.integrityImpact&quot;</span>
                 <span class="p">)</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parse_datetime</span><span class="p">(</span>
-                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;lastModified&quot;</span><span class="p">],</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;attackvector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].cvssData.attackVector&quot;</span>
                 <span class="p">)</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV30&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV30&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span>
-                    <span class="s2">&quot;source&quot;</span>
-                <span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;attackcomplexity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].cvssData.attackComplexity&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;privilegesrequired&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].cvssData.privilegesRequired&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;userinteraction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].cvssData.userInteraction&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitability3&quot;</span><span class="p">][</span><span class="s2">&quot;scope&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].cvssData.scope&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                            <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].cvssData.baseScore&quot;</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                        <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].cvssData.baseScore&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impactScore3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].impactScore&quot;</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].impactScore&quot;</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitabilityScore3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                            <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].exploitabilityScore&quot;</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                        <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].exploitabilityScore&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">parse_datetime</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.lastModified&quot;</span><span class="p">),</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.lastModified&quot;</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].type&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3Source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV30.[0].source&quot;</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="k">if</span> <span class="s2">&quot;cvssMetricV2&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">]:</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;access&quot;</span><span class="p">][</span><span class="s2">&quot;authentication&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV2&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;authentication&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;access&quot;</span><span class="p">][</span><span class="s2">&quot;complexity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV2&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssData&quot;</span>
-                <span class="p">][</span><span class="s2">&quot;accessComplexity&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;access&quot;</span><span class="p">][</span><span class="s2">&quot;vector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV2&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssData&quot;</span>
-                <span class="p">][</span><span class="s2">&quot;accessVector&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;availability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV2&quot;</span><span class="p">][</span>
-                    <span class="mi">0</span>
-                <span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;availabilityImpact&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;confidentiality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssMetricV2&quot;</span>
-                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;confidentialityImpact&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;integrity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV2&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssData&quot;</span>
-                <span class="p">][</span><span class="s2">&quot;integrityImpact&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV2&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;baseScore&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;cvssMetricV2&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics&quot;</span><span class="p">):</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;access&quot;</span><span class="p">][</span><span class="s2">&quot;authentication&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].cvssData.authentication&quot;</span>
                 <span class="p">)</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitabilityScore&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV2&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;exploitabilityScore&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;access&quot;</span><span class="p">][</span><span class="s2">&quot;complexity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].cvssData.accessComplexity&quot;</span>
                 <span class="p">)</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impactScore&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV2&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;impactScore&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;access&quot;</span><span class="p">][</span><span class="s2">&quot;vector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].cvssData.accessVector&quot;</span>
                 <span class="p">)</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvssTime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parse_datetime</span><span class="p">(</span>
-                    <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;lastModified&quot;</span><span class="p">],</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;availability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].cvssData.availabilityImpact&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;confidentiality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].cvssData.confidentialityImpact&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impact&quot;</span><span class="p">][</span><span class="s2">&quot;integrity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].cvssData.integrityImpact&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                            <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].cvssData.baseScore&quot;</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                        <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].cvssData.baseScore&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;exploitabilityScore&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                            <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].exploitabilityScore&quot;</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                        <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].exploitabilityScore&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;impactScore&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].impactScore&quot;</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].impactScore&quot;</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvssTime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">parse_datetime</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.lastModified&quot;</span><span class="p">),</span> <span class="n">ignoretz</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.lastModified&quot;</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
                 <span class="p">)</span>  <span class="c1"># NVD JSON lacks the CVSS time which was present in the original XML format</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvssVector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV2&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span>
-                    <span class="s2">&quot;cvssData&quot;</span>
-                <span class="p">][</span><span class="s2">&quot;vectorString&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvssType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV2&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvssSource&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;cvssMetricV2&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;source&quot;</span><span class="p">]</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvssVector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].cvssData.vectorString&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvssType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].type&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvssSource&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics.cvssMetricV2.[0].source&quot;</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">cve</span><span class="p">[</span><span class="s2">&quot;cvss&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -1253,7 +1347,7 @@
             <span class="s2">&quot;cvssMetricV30&quot;</span><span class="p">,</span>
             <span class="s2">&quot;cvssMetricV2&quot;</span><span class="p">,</span>
         <span class="p">]:</span>
-            <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;cve.metrics&quot;</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;cve&quot;</span><span class="p">][</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="n">version</span><span class="p">]:</span>
                     <span class="n">cvss_key</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="s2">&quot;cvss4&quot;</span>
@@ -1264,96 +1358,102 @@
                             <span class="k">else</span> <span class="s2">&quot;cvss2&quot;</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
-                    <span class="n">source</span> <span class="o">=</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span>
+                    <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">)</span>
 
                     <span class="n">entry</span> <span class="o">=</span> <span class="p">{</span>
-                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">],</span>
-                        <span class="s2">&quot;vectorString&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;vectorString&quot;</span><span class="p">],</span>
-                        <span class="s2">&quot;baseScore&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">][</span><span class="s2">&quot;baseScore&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">),</span>
+                        <span class="s2">&quot;vectorString&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.vectorString&quot;</span><span class="p">),</span>
+                        <span class="s2">&quot;baseScore&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.baseScore&quot;</span><span class="p">),</span>
                     <span class="p">}</span>
 
                     <span class="k">if</span> <span class="n">cvss_key</span> <span class="o">==</span> <span class="s2">&quot;cvss4&quot;</span><span class="p">:</span>
                         <span class="n">entry</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                             <span class="p">{</span>
-                                <span class="s2">&quot;vulnerable_system_confidentiality&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span>
-                                    <span class="s2">&quot;cvssData&quot;</span>
-                                <span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;vulnerableSystemConfidentiality&quot;</span><span class="p">),</span>
-                                <span class="s2">&quot;vulnerable_system_integrity&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;vulnerableSystemIntegrity&quot;</span>
+                                <span class="s2">&quot;vulnerable_system_confidentiality&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.vulnConfidentialityImpact&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;vulnerable_system_availability&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span>
-                                    <span class="s2">&quot;cvssData&quot;</span>
-                                <span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;vulnerableSystemAvailability&quot;</span><span class="p">),</span>
-                                <span class="s2">&quot;subsequent_system_confidentiality&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span>
-                                    <span class="s2">&quot;cvssData&quot;</span>
-                                <span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;subsequentSystemConfidentiality&quot;</span><span class="p">),</span>
-                                <span class="s2">&quot;subsequent_system_integrity&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;subsequentSystemIntegrity&quot;</span>
+                                <span class="s2">&quot;vulnerable_system_integrity&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.vulnIntegrityImpact&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;subsequent_system_availability&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span>
-                                    <span class="s2">&quot;cvssData&quot;</span>
-                                <span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;subsequentSystemAvailability&quot;</span><span class="p">),</span>
-                                <span class="s2">&quot;attackVector&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attackVector&quot;</span><span class="p">),</span>
-                                <span class="s2">&quot;attackComplexity&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;attackComplexity&quot;</span>
+                                <span class="s2">&quot;vulnerable_system_availability&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.vulnAvailabilityImpact&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;attackRequirements&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;attackRequirements&quot;</span>
+                                <span class="s2">&quot;subsequent_system_confidentiality&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.subConfidentialityImpact&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;privilegesRequired&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;privilegesRequired&quot;</span>
+                                <span class="s2">&quot;subsequent_system_integrity&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.subIntegrityImpact&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;userInteraction&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;userInteraction&quot;</span>
+                                <span class="s2">&quot;subsequent_system_availability&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.subAvailabilityImpact&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;exploitMaturity&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;exploitMaturity&quot;</span>
+                                <span class="s2">&quot;attackVector&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.attackVector&quot;</span>
+                                <span class="p">),</span>
+                                <span class="s2">&quot;attackComplexity&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.attackComplexity&quot;</span>
+                                <span class="p">),</span>
+                                <span class="s2">&quot;attackRequirements&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.attackRequirements&quot;</span>
+                                <span class="p">),</span>
+                                <span class="s2">&quot;privilegesRequired&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.privilegesRequired&quot;</span>
+                                <span class="p">),</span>
+                                <span class="s2">&quot;userInteraction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.userInteraction&quot;</span>
+                                <span class="p">),</span>
+                                <span class="s2">&quot;exploitMaturity&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.exploitMaturity&quot;</span>
                                 <span class="p">),</span>
                             <span class="p">}</span>
                         <span class="p">)</span>
                     <span class="k">elif</span> <span class="n">cvss_key</span> <span class="o">==</span> <span class="s2">&quot;cvss3&quot;</span><span class="p">:</span>
                         <span class="n">entry</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                             <span class="p">{</span>
-                                <span class="s2">&quot;confidentialityImpact&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;confidentialityImpact&quot;</span>
+                                <span class="s2">&quot;confidentialityImpact&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.confidentialityImpact&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;integrityImpact&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;integrityImpact&quot;</span>
+                                <span class="s2">&quot;integrityImpact&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.integrityImpact&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;availabilityImpact&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;availabilityImpact&quot;</span>
+                                <span class="s2">&quot;availabilityImpact&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.availabilityImpact&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;attackVector&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attackVector&quot;</span><span class="p">),</span>
-                                <span class="s2">&quot;attackComplexity&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;attackComplexity&quot;</span>
+                                <span class="s2">&quot;attackVector&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.attackVector&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;privilegesRequired&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;privilegesRequired&quot;</span>
+                                <span class="s2">&quot;attackComplexity&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.attackComplexity&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;userInteraction&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;userInteraction&quot;</span>
+                                <span class="s2">&quot;privilegesRequired&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.privilegesRequired&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;scope&quot;</span><span class="p">),</span>
+                                <span class="s2">&quot;userInteraction&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.userInteraction&quot;</span>
+                                <span class="p">),</span>
+                                <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.scope&quot;</span><span class="p">),</span>
                             <span class="p">}</span>
                         <span class="p">)</span>
                     <span class="k">elif</span> <span class="n">cvss_key</span> <span class="o">==</span> <span class="s2">&quot;cvss2&quot;</span><span class="p">:</span>
                         <span class="n">entry</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                             <span class="p">{</span>
-                                <span class="s2">&quot;authentication&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;authentication&quot;</span>
+                                <span class="s2">&quot;authentication&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.authentication&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;accessComplexity&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;accessComplexity&quot;</span>
+                                <span class="s2">&quot;accessComplexity&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.accessComplexity&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;accessVector&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;accessVector&quot;</span><span class="p">),</span>
-                                <span class="s2">&quot;confidentialityImpact&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;confidentialityImpact&quot;</span>
+                                <span class="s2">&quot;accessVector&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.accessVector&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;integrityImpact&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;integrityImpact&quot;</span>
+                                <span class="s2">&quot;confidentialityImpact&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.confidentialityImpact&quot;</span>
                                 <span class="p">),</span>
-                                <span class="s2">&quot;availabilityImpact&quot;</span><span class="p">:</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;cvssData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                    <span class="s2">&quot;availabilityImpact&quot;</span>
+                                <span class="s2">&quot;integrityImpact&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.integrityImpact&quot;</span>
+                                <span class="p">),</span>
+                                <span class="s2">&quot;availabilityImpact&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safe_get</span><span class="p">(</span>
+                                    <span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;cvssData.availabilityImpact&quot;</span>
                                 <span class="p">),</span>
                             <span class="p">}</span>
                         <span class="p">)</span>
