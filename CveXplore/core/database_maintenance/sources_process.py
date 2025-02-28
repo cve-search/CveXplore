@@ -730,22 +730,22 @@ class CVEDownloads(NVDApiHandler):
                         entry.update(
                             {
                                 "vulnerable_system_confidentiality": self.safe_get(
-                                    metric, "cvssData.vulnerableSystemConfidentiality"
+                                    metric, "cvssData.vulnConfidentialityImpact"
                                 ),
                                 "vulnerable_system_integrity": self.safe_get(
-                                    metric, "cvssData.vulnerableSystemIntegrity"
+                                    metric, "cvssData.vulnIntegrityImpact"
                                 ),
                                 "vulnerable_system_availability": self.safe_get(
-                                    metric, "cvssData.vulnerableSystemAvailability"
+                                    metric, "cvssData.vulnAvailabilityImpact"
                                 ),
                                 "subsequent_system_confidentiality": self.safe_get(
-                                    metric, "cvssData.subsequentSystemConfidentiality"
+                                    metric, "cvssData.subConfidentialityImpact"
                                 ),
                                 "subsequent_system_integrity": self.safe_get(
-                                    metric, "cvssData.subsequentSystemIntegrity"
+                                    metric, "cvssData.subIntegrityImpact"
                                 ),
                                 "subsequent_system_availability": self.safe_get(
-                                    metric, "cvssData.subsequentSystemAvailability"
+                                    metric, "cvssData.subAvailabilityImpact"
                                 ),
                                 "attackVector": self.safe_get(
                                     metric, "cvssData.attackVector"
