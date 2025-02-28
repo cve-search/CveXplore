@@ -407,55 +407,67 @@ class CVEDownloads(NVDApiHandler):
             if "cvssMetricV40" in item["cve"]["metrics"]:
                 cve["impact4"] = {}
                 cve["exploitability4"] = {}
-                cve["impact4"]["vulnerable_system_confidentiality"] = item["cve"][
-                    "metrics"
-                ]["cvssMetricV40"][0]["cvssData"]["vulnerableSystemConfidentiality"]
-                cve["impact4"]["vulnerable_system_integrity"] = item["cve"]["metrics"][
-                    "cvssMetricV40"
-                ][0]["cvssData"]["vulnerableSystemIntegrity"]
-                cve["impact4"]["vulnerable_system_availability"] = item["cve"][
-                    "metrics"
-                ]["cvssMetricV40"][0]["cvssData"]["vulnerableSystemAvailability"]
-                cve["impact4"]["subsequent_system_confidentiality"] = item["cve"][
-                    "metrics"
-                ]["cvssMetricV40"][0]["cvssData"]["subsequentSystemConfidentiality"]
-                cve["impact4"]["subsequent_system_integrity"] = item["cve"]["metrics"][
-                    "cvssMetricV40"
-                ][0]["cvssData"]["subsequentSystemIntegrity"]
-                cve["impact4"]["subsequent_system_availability"] = item["cve"][
-                    "metrics"
-                ]["cvssMetricV40"][0]["cvssData"]["subsequentSystemAvailability"]
-                cve["exploitability4"]["attackvector"] = item["cve"]["metrics"][
-                    "cvssMetricV40"
-                ][0]["cvssData"]["attackVector"]
-                cve["exploitability4"]["attackcomplexity"] = item["cve"]["metrics"][
-                    "cvssMetricV40"
-                ][0]["cvssData"]["attackComplexity"]
-                cve["exploitability4"]["attackrequirements"] = item["cve"]["metrics"][
-                    "cvssMetricV40"
-                ][0]["cvssData"]["attackRequirements"]
-                cve["exploitability4"]["privilegesrequired"] = item["cve"]["metrics"][
-                    "cvssMetricV40"
-                ][0]["cvssData"]["privilegesRequired"]
-                cve["exploitability4"]["userinteraction"] = item["cve"]["metrics"][
-                    "cvssMetricV40"
-                ][0]["cvssData"]["userInteraction"]
-                cve["exploitability4"]["exploitmaturity"] = item["cve"]["metrics"][
-                    "cvssMetricV40"
-                ][0]["cvssData"]["exploitMaturity"]
-                cve["cvss4"] = float(
-                    item["cve"]["metrics"]["cvssMetricV40"][0]["cvssData"]["baseScore"]
+                cve["impact4"]["vulnerable_system_confidentiality"] = self.safe_get(
+                    item,
+                    "cve.metrics.cvssMetricV40.[0].cvssData.vulnConfidentialityImpact",
                 )
-                cve["cvss4Vector"] = item["cve"]["metrics"]["cvssMetricV40"][0][
-                    "cvssData"
-                ]["vectorString"]
+                cve["impact4"]["vulnerable_system_integrity"] = self.safe_get(
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.vulnIntegrityImpact"
+                )
+                cve["impact4"]["vulnerable_system_availability"] = self.safe_get(
+                    item,
+                    "cve.metrics.cvssMetricV40.[0].cvssData.vulnAvailabilityImpact",
+                )
+                cve["impact4"]["subsequent_system_confidentiality"] = self.safe_get(
+                    item,
+                    "cve.metrics.cvssMetricV40.[0].cvssData.subConfidentialityImpact",
+                )
+                cve["impact4"]["subsequent_system_integrity"] = self.safe_get(
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.subIntegrityImpact"
+                )
+                cve["impact4"]["subsequent_system_availability"] = self.safe_get(
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.subAvailabilityImpact"
+                )
+                cve["impact4"]["attackvector"] = self.safe_get(
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.attackVector"
+                )
+                cve["exploitability4"]["attackcomplexity"] = self.safe_get(
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.attackComplexity"
+                )
+                cve["exploitability4"]["attackrequirements"] = self.safe_get(
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.attackRequirements"
+                )
+                cve["exploitability4"]["privilegesrequired"] = self.safe_get(
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.privilegesRequired"
+                )
+                cve["exploitability4"]["userinteraction"] = self.safe_get(
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.userInteraction"
+                )
+                cve["exploitability4"]["exploitmaturity"] = self.safe_get(
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.exploitMaturity"
+                )
+                if self.safe_get(
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.baseScore"
+                ):
+                    cve["cvss4"] = float(
+                        self.safe_get(
+                            item, "cve.metrics.cvssMetricV40.[0].cvssData.baseScore"
+                        )
+                    )
+                else:
+                    cve["cvss4"] = None
+                cve["cvss4Vector"] = self.safe_get(
+                    item, "cve.metrics.cvssMetricV40.[0].cvssData.vectorString"
+                )
                 cve["cvss4Time"] = parse_datetime(
-                    item["cve"]["lastModified"], ignoretz=True
+                    self.safe_get(item, "cve.lastModified"), ignoretz=True
                 )
-                cve["cvss4Type"] = item["cve"]["metrics"]["cvssMetricV40"][0]["type"]
-                cve["cvss4Source"] = item["cve"]["metrics"]["cvssMetricV40"][0][
-                    "source"
-                ]
+                cve["cvss4Type"] = self.safe_get(
+                    item, "cve.metrics.cvssMetricV40.[0].type"
+                )
+                cve["cvss4Source"] = self.safe_get(
+                    item, "cve.metrics.cvssMetricV40.[0].source"
+                )
             else:
                 cve["cvss4"] = None
 
@@ -976,6 +988,8 @@ class CVEDownloads(NVDApiHandler):
 
             # Set the last update time in the info collection
             self.setColUpdate(self.feed_type.lower(), self.last_modified)
+
+        self.log_statistics()
 
         self.logger.info(
             f"Duration: {datetime.timedelta(seconds=time.time() - start_time)}"
