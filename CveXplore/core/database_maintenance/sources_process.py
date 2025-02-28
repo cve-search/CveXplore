@@ -707,7 +707,7 @@ class CVEDownloads(NVDApiHandler):
             "cvssMetricV30",
             "cvssMetricV2",
         ]:
-            if version in item["cve"]["metrics"]:
+            if version in self.safe_get(item, "cve.metrics"):
                 for metric in item["cve"]["metrics"][version]:
                     cvss_key = (
                         "cvss4"
@@ -718,96 +718,102 @@ class CVEDownloads(NVDApiHandler):
                             else "cvss2"
                         )
                     )
-                    source = metric["source"]
+                    source = self.safe_get(metric, "source")
 
                     entry = {
-                        "type": metric["type"],
-                        "vectorString": metric["cvssData"]["vectorString"],
-                        "baseScore": metric["cvssData"]["baseScore"],
+                        "type": self.safe_get(metric, "type"),
+                        "vectorString": self.safe_get(metric, "cvssData.vectorString"),
+                        "baseScore": self.safe_get(metric, "cvssData.baseScore"),
                     }
 
                     if cvss_key == "cvss4":
                         entry.update(
                             {
-                                "vulnerable_system_confidentiality": metric[
-                                    "cvssData"
-                                ].get("vulnerableSystemConfidentiality"),
-                                "vulnerable_system_integrity": metric["cvssData"].get(
-                                    "vulnerableSystemIntegrity"
+                                "vulnerable_system_confidentiality": self.safe_get(
+                                    metric, "cvssData.vulnerableSystemConfidentiality"
                                 ),
-                                "vulnerable_system_availability": metric[
-                                    "cvssData"
-                                ].get("vulnerableSystemAvailability"),
-                                "subsequent_system_confidentiality": metric[
-                                    "cvssData"
-                                ].get("subsequentSystemConfidentiality"),
-                                "subsequent_system_integrity": metric["cvssData"].get(
-                                    "subsequentSystemIntegrity"
+                                "vulnerable_system_integrity": self.safe_get(
+                                    metric, "cvssData.vulnerableSystemIntegrity"
                                 ),
-                                "subsequent_system_availability": metric[
-                                    "cvssData"
-                                ].get("subsequentSystemAvailability"),
-                                "attackVector": metric["cvssData"].get("attackVector"),
-                                "attackComplexity": metric["cvssData"].get(
-                                    "attackComplexity"
+                                "vulnerable_system_availability": self.safe_get(
+                                    metric, "cvssData.vulnerableSystemAvailability"
                                 ),
-                                "attackRequirements": metric["cvssData"].get(
-                                    "attackRequirements"
+                                "subsequent_system_confidentiality": self.safe_get(
+                                    metric, "cvssData.subsequentSystemConfidentiality"
                                 ),
-                                "privilegesRequired": metric["cvssData"].get(
-                                    "privilegesRequired"
+                                "subsequent_system_integrity": self.safe_get(
+                                    metric, "cvssData.subsequentSystemIntegrity"
                                 ),
-                                "userInteraction": metric["cvssData"].get(
-                                    "userInteraction"
+                                "subsequent_system_availability": self.safe_get(
+                                    metric, "cvssData.subsequentSystemAvailability"
                                 ),
-                                "exploitMaturity": metric["cvssData"].get(
-                                    "exploitMaturity"
+                                "attackVector": self.safe_get(
+                                    metric, "cvssData.attackVector"
+                                ),
+                                "attackComplexity": self.safe_get(
+                                    metric, "cvssData.attackComplexity"
+                                ),
+                                "attackRequirements": self.safe_get(
+                                    metric, "cvssData.attackRequirements"
+                                ),
+                                "privilegesRequired": self.safe_get(
+                                    metric, "cvssData.privilegesRequired"
+                                ),
+                                "userInteraction": self.safe_get(
+                                    metric, "cvssData.userInteraction"
+                                ),
+                                "exploitMaturity": self.safe_get(
+                                    metric, "cvssData.exploitMaturity"
                                 ),
                             }
                         )
                     elif cvss_key == "cvss3":
                         entry.update(
                             {
-                                "confidentialityImpact": metric["cvssData"].get(
-                                    "confidentialityImpact"
+                                "confidentialityImpact": self.safe_get(
+                                    metric, "cvssData.confidentialityImpact"
                                 ),
-                                "integrityImpact": metric["cvssData"].get(
-                                    "integrityImpact"
+                                "integrityImpact": self.safe_get(
+                                    metric, "cvssData.integrityImpact"
                                 ),
-                                "availabilityImpact": metric["cvssData"].get(
-                                    "availabilityImpact"
+                                "availabilityImpact": self.safe_get(
+                                    metric, "cvssData.availabilityImpact"
                                 ),
-                                "attackVector": metric["cvssData"].get("attackVector"),
-                                "attackComplexity": metric["cvssData"].get(
-                                    "attackComplexity"
+                                "attackVector": self.safe_get(
+                                    metric, "cvssData.attackVector"
                                 ),
-                                "privilegesRequired": metric["cvssData"].get(
-                                    "privilegesRequired"
+                                "attackComplexity": self.safe_get(
+                                    metric, "cvssData.attackComplexity"
                                 ),
-                                "userInteraction": metric["cvssData"].get(
-                                    "userInteraction"
+                                "privilegesRequired": self.safe_get(
+                                    metric, "cvssData.privilegesRequired"
                                 ),
-                                "scope": metric["cvssData"].get("scope"),
+                                "userInteraction": self.safe_get(
+                                    metric, "cvssData.userInteraction"
+                                ),
+                                "scope": self.safe_get(metric, "cvssData.scope"),
                             }
                         )
                     elif cvss_key == "cvss2":
                         entry.update(
                             {
-                                "authentication": metric["cvssData"].get(
-                                    "authentication"
+                                "authentication": self.safe_get(
+                                    metric, "cvssData.authentication"
                                 ),
-                                "accessComplexity": metric["cvssData"].get(
-                                    "accessComplexity"
+                                "accessComplexity": self.safe_get(
+                                    metric, "cvssData.accessComplexity"
                                 ),
-                                "accessVector": metric["cvssData"].get("accessVector"),
-                                "confidentialityImpact": metric["cvssData"].get(
-                                    "confidentialityImpact"
+                                "accessVector": self.safe_get(
+                                    metric, "cvssData.accessVector"
                                 ),
-                                "integrityImpact": metric["cvssData"].get(
-                                    "integrityImpact"
+                                "confidentialityImpact": self.safe_get(
+                                    metric, "cvssData.confidentialityImpact"
                                 ),
-                                "availabilityImpact": metric["cvssData"].get(
-                                    "availabilityImpact"
+                                "integrityImpact": self.safe_get(
+                                    metric, "cvssData.integrityImpact"
+                                ),
+                                "availabilityImpact": self.safe_get(
+                                    metric, "cvssData.availabilityImpact"
                                 ),
                             }
                         )
