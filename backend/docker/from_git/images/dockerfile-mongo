@@ -1,0 +1,4 @@
+#FROM mongo:4.4
+FROM mongo:6.0
+
+EXPOSE 27017

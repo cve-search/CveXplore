@@ -1,6 +1,18 @@
-version: '3.5'
+name: "CveXplore"
 
 services:
+
+  mongo:
+    image: cvexplore-mongo
+    hostname: mongo
+    restart: always
+    build:
+      context: .
+      dockerfile: backend/docker/from_git/images/dockerfile-mongo
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "127.0.0.1:27017:27017"
 
   redis:
     image: cvexplore-redis
@@ -58,4 +70,6 @@ volumes:
   celery_data:
     driver: local
   redis_data:
+    driver: local
+  mongodb_data:
     driver: local
