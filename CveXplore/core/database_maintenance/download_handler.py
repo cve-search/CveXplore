@@ -239,11 +239,24 @@ class DownloadHandler(ABC):
         wd = tempfile.mkdtemp()
         filename = None
 
+        # If the content type is generic and, therefore, cannot be used for determining
+        # the file type, extract the file extension from the url, instead.
+        if (
+            content_type == "application/octet-stream"
+            or content_type == "binary/octet-stream"
+            or content_type == "text/plain"
+        ):
+            extension = url.rsplit(".", 1)[1]
+            self.logger.debug(
+                f"Content-Type generic '{content_type}'; determining file type based on extension '.{extension}'"
+            )
+
         if (
             content_type == "application/zip"
             or content_type == "application/x-zip"
             or content_type == "application/x-zip-compressed"
             or content_type == "application/zip-compressed"
+            or extension == "zip"
         ):
             filename = os.path.join(wd, url.split("/")[-1][:-4])
             self.logger.debug(f"Saving file to: {filename}")
@@ -256,6 +269,7 @@ class DownloadHandler(ABC):
             or content_type == "application/gzip"
             or content_type == "application/x-gzip-compressed"
             or content_type == "application/gzip-compressed"
+            or extension == "gz"
         ):
             filename = os.path.join(wd, url.split("/")[-1][:-3])
             self.logger.debug(f"Saving file to: {filename}")
@@ -268,6 +282,8 @@ class DownloadHandler(ABC):
             content_type == "application/json"
             or content_type == "application/xml"
             or content_type == "text/xml"
+            or extension == "json"
+            or extension == "xml"
         ):
             filename = os.path.join(wd, url.split("/")[-1])
             self.logger.debug(f"Saving file to: {filename}")
