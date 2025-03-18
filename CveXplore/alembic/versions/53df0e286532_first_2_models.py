@@ -1,7 +1,7 @@
 """First 2 models
 
 Revision ID: 53df0e286532
-Revises: 
+Revises:
 Create Date: 2023-12-20 16:18:04.244419
 
 """
