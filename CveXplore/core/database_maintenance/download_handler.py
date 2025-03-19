@@ -2,6 +2,7 @@ import datetime
 import gzip
 import logging
 import os
+import re
 import sys
 import tempfile
 import threading
@@ -201,6 +202,22 @@ class DownloadHandler(ABC):
         for i in range(0, len(lst), number):
             yield lst[i : i + number]
 
+    def clean_keys(self, data):
+        """
+        Recursively clean dictionary keys for MongoDB by replacing illegal characters with hyphens
+        """
+        if isinstance(data, dict):
+            # Only clean dictionary keys and recurse for the values
+            return {
+                re.sub(r"[.$\s\+\!\*\&\?]", "-", key): self.clean_keys(value)
+                for key, value in data.items()
+            }
+        elif isinstance(data, list):
+            # For lists, just apply clean_keys on items
+            return [self.clean_keys(item) for item in data]
+        else:
+            return data
+
     def _db_bulk_writer(self, batch: list, initialization_run: bool = False):
         """
         Method to act as worker for writing queued entries into the database
@@ -214,11 +231,11 @@ class DownloadHandler(ABC):
             ):
                 # cves or cpe process item could yield None; so filter None from batch list
                 self.database[self.feed_type.lower()].insert_many(
-                    [x for x in batch if x is not None], ordered=False
+                    [self.clean_keys(x) for x in batch if x is not None], ordered=False
                 )
             else:
                 self.database[self.feed_type.lower()].bulk_write(
-                    [x for x in batch if x is not None], ordered=False
+                    [self.clean_keys(x) for x in batch if x is not None], ordered=False
                 )
         except BulkWriteError as err:
             self.logger.debug(f"Error during bulk write: {err}")
