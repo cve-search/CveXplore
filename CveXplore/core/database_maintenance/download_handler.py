@@ -255,6 +255,7 @@ class DownloadHandler(ABC):
         """
         wd = tempfile.mkdtemp()
         filename = None
+        extension = None
 
         # If the content type is generic and, therefore, cannot be used for determining
         # the file type, extract the file extension from the url, instead.
