@@ -83,6 +83,13 @@ class CPEDownloads(NVDApiHandler):
             "vendor": split_cpe_name[3],
             "product": split_cpe_name[4],
             "version": version,
+            "update": split_cpe_name[6],
+            "edition": split_cpe_name[7],
+            "language": split_cpe_name[8],
+            "sw_edition": split_cpe_name[9],
+            "target_sw": split_cpe_name[10],
+            "target_hw": split_cpe_name[11],
+            "other": split_cpe_name[12],
             "padded_version": self.padded_version(version),
             "stem": self.stem(item["cpeName"]),
             "cpeNameId": item["cpeNameId"],
@@ -364,6 +371,15 @@ class CVEDownloads(NVDApiHandler):
                 },
             }
 
+        elif self.is_global_cpe_2_3_version(cpeuri['criteria']):
+            query = {
+                "deprecated": False,
+                "stem": self.stem(cpeuri["criteria"]),
+            }
+
+        additional_fields = self.get_additional_fields(cpeuri["criteria"])
+        if query and additional_fields:
+            query.update(additional_fields)
         return query
 
     @staticmethod

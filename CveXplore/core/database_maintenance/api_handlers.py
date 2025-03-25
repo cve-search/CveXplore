@@ -98,6 +98,30 @@ class NVDApiHandler(DownloadHandler):
         return ":".join(cpe_stem[:5])
 
     @staticmethod
+    def is_global_cpe_2_3_version(cpe: str) -> bool:
+        splited_cpe = split_cpe_name(cpe)
+        if len(splited_cpe) != 13 or splited_cpe[0] != "cpe" or splited_cpe[1] != "2.3":
+            return False
+        return all(part == "*" for part in splited_cpe[5:])
+
+    @staticmethod
+    def get_additional_fields(cpe: str) -> dict[str, str]:
+        additional_fields = {}
+        splited_cpe = split_cpe_name(cpe)
+        mapping = {
+            "update": splited_cpe[6],
+            "edition": splited_cpe[7],
+            "language": splited_cpe[8],
+            "sw_edition": splited_cpe[9],
+            "target_sw": splited_cpe[10],
+            "target_hw": splited_cpe[11]
+        }
+        for key, value in mapping.items():
+            if value != '*':
+                additional_fields[key] = value
+        return additional_fields
+
+    @staticmethod
     def padded_version(version: str):
         if version == "-" or version == "":
             return version
