@@ -843,51 +843,52 @@ class CVEDownloads(NVDApiHandler):
                         for cpeuri in cpe["cpeMatch"]:
                             if "criteria" not in cpeuri:
                                 continue
+                            cpe_info = None
+                            query = self.get_cpe_info(cpeuri)
+                            if query != {}:
+                                cpe_info = sorted(
+                                    self.getCPEVersionInformation(query),
+                                    key=lambda x: x["padded_version"],
+                                )
+                                if cpe_info:
+                                    if not isinstance(cpe_info, list):
+                                        cpe_info = [cpe_info]
                             if cpeuri["vulnerable"]:
-                                query = self.get_cpe_info(cpeuri)
-                                if query != {}:
-                                    cpe_info = sorted(
-                                        self.getCPEVersionInformation(query),
-                                        key=lambda x: x["padded_version"],
-                                    )
-                                    if cpe_info:
-                                        if not isinstance(cpe_info, list):
-                                            cpe_info = [cpe_info]
+                                if cpe_info:
+                                    for vulnerable_version in cpe_info:
+                                        cve = self.add_if_missing(
+                                            cve,
+                                            "vulnerable_product",
+                                            vulnerable_version["cpeName"],
+                                        )
+                                        cve = self.add_if_missing(
+                                            cve,
+                                            "vulnerable_configuration",
+                                            vulnerable_version["cpeName"],
+                                        )
+                                        cve = self.add_if_missing(
+                                            cve,
+                                            "vulnerable_configuration_stems",
+                                            vulnerable_version["stem"],
+                                        )
 
-                                        for vulnerable_version in cpe_info:
-                                            cve = self.add_if_missing(
-                                                cve,
-                                                "vulnerable_product",
-                                                vulnerable_version["cpeName"],
-                                            )
-                                            cve = self.add_if_missing(
-                                                cve,
-                                                "vulnerable_configuration",
-                                                vulnerable_version["cpeName"],
-                                            )
-                                            cve = self.add_if_missing(
-                                                cve,
-                                                "vulnerable_configuration_stems",
-                                                vulnerable_version["stem"],
-                                            )
+                                        cve = self.add_if_missing(
+                                            cve,
+                                            "vendors",
+                                            vulnerable_version["vendor"],
+                                        )
 
-                                            cve = self.add_if_missing(
-                                                cve,
-                                                "vendors",
-                                                vulnerable_version["vendor"],
-                                            )
+                                        cve = self.add_if_missing(
+                                            cve,
+                                            "products",
+                                            vulnerable_version["product"],
+                                        )
 
-                                            cve = self.add_if_missing(
-                                                cve,
-                                                "products",
-                                                vulnerable_version["product"],
-                                            )
-
-                                            cve = self.add_if_missing(
-                                                cve,
-                                                "vulnerable_product_stems",
-                                                vulnerable_version["stem"],
-                                            )
+                                        cve = self.add_if_missing(
+                                            cve,
+                                            "vulnerable_product_stems",
+                                            vulnerable_version["stem"],
+                                        )
                                 else:
                                     # If the cpeMatch did not have any of the version start/end modifiers,
                                     # add the CPE string as it is.
@@ -913,6 +914,18 @@ class CVEDownloads(NVDApiHandler):
                                         cve,
                                         "vulnerable_product_stems",
                                         self.stem(cpeuri["criteria"]),
+                                    )
+                            elif cpe_info:
+                                for vulnerable_version in cpe_info:
+                                    cve = self.add_if_missing(
+                                        cve,
+                                        "vulnerable_configuration",
+                                        vulnerable_version["cpeName"],
+                                    )
+                                    cve = self.add_if_missing(
+                                        cve,
+                                        "vulnerable_product_stems",
+                                        vulnerable_version["stem"],
                                     )
                             else:
                                 cve = self.add_if_missing(
