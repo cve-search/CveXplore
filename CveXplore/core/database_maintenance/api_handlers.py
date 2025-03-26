@@ -114,10 +114,10 @@ class NVDApiHandler(DownloadHandler):
             "language": splited_cpe[8],
             "sw_edition": splited_cpe[9],
             "target_sw": splited_cpe[10],
-            "target_hw": splited_cpe[11]
+            "target_hw": splited_cpe[11],
         }
         for key, value in mapping.items():
-            if value != '*':
+            if value != "*":
                 additional_fields[key] = value
         return additional_fields
 
