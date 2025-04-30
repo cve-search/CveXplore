@@ -371,7 +371,7 @@ class CVEDownloads(NVDApiHandler):
                 },
             }
 
-        elif self.is_global_cpe_2_3_version(cpeuri["criteria"]):
+        elif self.config.EXPAND_WILDCARD_CPE and self.is_global_cpe_2_3_version(cpeuri["criteria"]):
             query = {
                 "deprecated": False,
                 "stem": self.stem(cpeuri["criteria"]),
