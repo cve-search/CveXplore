@@ -52,9 +52,12 @@ NIST NVD API
    E.g., ``30.0``
 
 .. confval:: EXPAND_WILDCARD_CPE
-    EXPAND_WILDCARD_CPE is an option that controls the behavior when processing CPE entries containing wildcards (*) in version or other attribute fields.
-    When the environment variable EXPAND_WILDCARD_CPE=true is set, entries like cpe:2.3:a:proftpd:proftpd:*:*:*:*:*:*:*:* will be automatically expanded into all matching concrete CPEs from the cpe MongoDB collection. This enables the system to resolve wildcard definitions into a full list of applicable CPEs.
-    If the variable is set to false or unset, wildcard CPEs remain unchanged and no expansion is performed.
+
+   EXPAND_WILDCARD_CPE is an option that controls the behavior when processing CPE entries containing wildcards (*) in
+   version or other attribute fields.  When the environment variable EXPAND_WILDCARD_CPE=True is set, entries like
+   cpe:2.3:a:proftpd:proftpd:*:*:*:*:*:*:*:* will be automatically expanded into all matching concrete CPEs from the cpe
+   MongoDB collection. This enables the system to resolve wildcard definitions into a full list of applicable CPEs.
+   If the variable is set to False (default), wildcard CPEs remain unchanged and no expansion is performed.
 
 Downloads
 *********
