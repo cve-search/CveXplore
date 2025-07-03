@@ -38,7 +38,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.96fe8683ff2bd71e9.min.css?v=13adf062" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.6ec1c446c2c357833.min.css?v=e2e8fea8" />
         <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -794,7 +794,7 @@
 <span class="c1"># may not use this file except in compliance with the License.  You</span>
 <span class="c1"># may obtain a copy of the License at</span>
 <span class="c1">#</span>
-<span class="c1"># http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1"># https://www.apache.org/licenses/LICENSE-2.0</span>
 <span class="c1">#</span>
 <span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
 <span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
@@ -832,6 +832,7 @@
     <span class="n">TYPE_CHECKING</span><span class="p">,</span>
     <span class="n">Any</span><span class="p">,</span>
     <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Collection</span><span class="p">,</span>
     <span class="n">ContextManager</span><span class="p">,</span>
     <span class="n">FrozenSet</span><span class="p">,</span>
     <span class="n">Generator</span><span class="p">,</span>
@@ -849,7 +850,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">bson.codec_options</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_CODEC_OPTIONS</span><span class="p">,</span> <span class="n">CodecOptions</span><span class="p">,</span> <span class="n">TypeRegistry</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">bson.timestamp</span><span class="w"> </span><span class="kn">import</span> <span class="n">Timestamp</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo</span><span class="w"> </span><span class="kn">import</span> <span class="n">_csot</span><span class="p">,</span> <span class="n">common</span><span class="p">,</span> <span class="n">helpers_shared</span><span class="p">,</span> <span class="n">periodic_executor</span><span class="p">,</span> <span class="n">uri_parser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo</span><span class="w"> </span><span class="kn">import</span> <span class="n">_csot</span><span class="p">,</span> <span class="n">common</span><span class="p">,</span> <span class="n">helpers_shared</span><span class="p">,</span> <span class="n">periodic_executor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.client_options</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientOptions</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.errors</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AutoReconnect</span><span class="p">,</span>
@@ -870,9 +871,15 @@
     <span class="n">_create_lock</span><span class="p">,</span>
     <span class="n">_release_locks</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">_CLIENT_LOGGER</span><span class="p">,</span> <span class="n">_log_or_warn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.logger</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_CLIENT_LOGGER</span><span class="p">,</span>
+    <span class="n">_COMMAND_LOGGER</span><span class="p">,</span>
+    <span class="n">_debug_log</span><span class="p">,</span>
+    <span class="n">_log_client_error</span><span class="p">,</span>
+    <span class="n">_log_or_warn</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">_CursorAddress</span><span class="p">,</span> <span class="n">_GetMore</span><span class="p">,</span> <span class="n">_Query</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.monitoring</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConnectionClosedReason</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.monitoring</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConnectionClosedReason</span><span class="p">,</span> <span class="n">_EventListeners</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.operations</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">DeleteMany</span><span class="p">,</span>
     <span class="n">DeleteOne</span><span class="p">,</span>
@@ -884,9 +891,10 @@
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.read_preferences</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReadPreference</span><span class="p">,</span> <span class="n">_ServerMode</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.results</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientBulkWriteResult</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.server_description</span><span class="w"> </span><span class="kn">import</span> <span class="n">ServerDescription</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.server_selectors</span><span class="w"> </span><span class="kn">import</span> <span class="n">writable_server_selector</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.server_type</span><span class="w"> </span><span class="kn">import</span> <span class="n">SERVER_TYPE</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous</span><span class="w"> </span><span class="kn">import</span> <span class="n">client_session</span><span class="p">,</span> <span class="n">database</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous</span><span class="w"> </span><span class="kn">import</span> <span class="n">client_session</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">uri_parser</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.change_stream</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChangeStream</span><span class="p">,</span> <span class="n">ClusterChangeStream</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.client_bulk</span><span class="w"> </span><span class="kn">import</span> <span class="n">_ClientBulk</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.client_session</span><span class="w"> </span><span class="kn">import</span> <span class="n">_EmptyServerSession</span>
@@ -902,11 +910,14 @@
     <span class="n">_DocumentTypeArg</span><span class="p">,</span>
     <span class="n">_Pipeline</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.uri_parser</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.uri_parser_shared</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SRV_SCHEME</span><span class="p">,</span>
     <span class="n">_check_options</span><span class="p">,</span>
     <span class="n">_handle_option_deprecations</span><span class="p">,</span>
     <span class="n">_handle_security_options</span><span class="p">,</span>
     <span class="n">_normalize_options</span><span class="p">,</span>
+    <span class="n">_validate_uri</span><span class="p">,</span>
+    <span class="n">split_hosts</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.write_concern</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_WRITE_CONCERN</span><span class="p">,</span> <span class="n">WriteConcern</span>
 
@@ -920,6 +931,7 @@
     <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.bulk</span><span class="w"> </span><span class="kn">import</span> <span class="n">_Bulk</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.client_session</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientSession</span><span class="p">,</span> <span class="n">_ServerSession</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.cursor</span><span class="w"> </span><span class="kn">import</span> <span class="n">_ConnectionManager</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.encryption</span><span class="w"> </span><span class="kn">import</span> <span class="n">_Encrypter</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">Connection</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">Server</span>
 
@@ -981,7 +993,7 @@
 <span class="sd">        execute.</span>
 
 <span class="sd">        The `host` parameter can be a full `mongodb URI</span>
-<span class="sd">        &lt;http://dochub.mongodb.org/core/connections&gt;`_, in addition to</span>
+<span class="sd">        &lt;https://dochub.mongodb.org/core/connections&gt;`_, in addition to</span>
 <span class="sd">        a simple hostname. It can also be a list of hostnames but no more</span>
 <span class="sd">        than one URI. Any port specified in the host string(s) will override</span>
 <span class="sd">        the `port` parameter. For username and</span>
@@ -1068,7 +1080,9 @@
 <span class="sd">        :param type_registry: instance of</span>
 <span class="sd">            :class:`~bson.codec_options.TypeRegistry` to enable encoding</span>
 <span class="sd">            and decoding of custom types.</span>
-<span class="sd">        :param datetime_conversion: Specifies how UTC datetimes should be decoded</span>
+<span class="sd">        :param kwargs: **Additional optional parameters available as keyword arguments:**</span>
+
+<span class="sd">          - `datetime_conversion` (optional): Specifies how UTC datetimes should be decoded</span>
 <span class="sd">            within BSON. Valid options include &#39;datetime_ms&#39; to return as a</span>
 <span class="sd">            DatetimeMS, &#39;datetime&#39; to return as a datetime.datetime and</span>
 <span class="sd">            raising a ValueError for out-of-range values, &#39;datetime_auto&#39; to</span>
@@ -1076,9 +1090,6 @@
 <span class="sd">            out-of-range and &#39;datetime_clamp&#39; to clamp to the minimum and</span>
 <span class="sd">            maximum possible datetimes. Defaults to &#39;datetime&#39;. See</span>
 <span class="sd">            :ref:`handling-out-of-range-datetimes` for details.</span>
-
-<span class="sd">          | **Other optional parameters can be passed as keyword arguments:**</span>
-
 <span class="sd">          - `directConnection` (optional): if ``True``, forces this client to</span>
 <span class="sd">             connect directly to the specified MongoDB host as a standalone.</span>
 <span class="sd">             If ``false``, the client connects to the entire replica set of</span>
@@ -1542,7 +1553,13 @@
         <span class="k">if</span> <span class="n">port</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PORT</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;port must be an instance of int&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;port must be an instance of int, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">port</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_host</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_port</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="p">:</span> <span class="n">Topology</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore[assignment]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_topology_settings</span><span class="p">:</span> <span class="n">TopologySettings</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore[assignment]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_listeners</span><span class="p">:</span> <span class="n">_EventListeners</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># _pool_class, _monitor_class, and _condition_class are for deep</span>
         <span class="c1"># customization of PyMongo, e.g. Motor.</span>
@@ -1553,8 +1570,10 @@
         <span class="c1"># Parse options passed as kwargs.</span>
         <span class="n">keyword_opts</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">_CaseInsensitiveDictionary</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">keyword_opts</span><span class="p">[</span><span class="s2">&quot;document_class&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;keyword_opts&quot;</span><span class="p">:</span> <span class="n">keyword_opts</span><span class="p">}</span>
 
-        <span class="n">seeds</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_seeds</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">is_srv</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">username</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">password</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">dbase</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1562,41 +1581,34 @@
         <span class="n">fqdn</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">srv_service_name</span> <span class="o">=</span> <span class="n">keyword_opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;srvservicename&quot;</span><span class="p">)</span>
         <span class="n">srv_max_hosts</span> <span class="o">=</span> <span class="n">keyword_opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;srvmaxhosts&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">([</span><span class="n">h</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">host</span> <span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">h</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">([</span><span class="n">h</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host</span> <span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">h</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span><span class="s2">&quot;host must not contain multiple MongoDB URIs&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">host</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host</span><span class="p">:</span>
             <span class="c1"># A hostname can only include a-z, 0-9, &#39;-&#39; and &#39;.&#39;. If we find a &#39;/&#39;</span>
             <span class="c1"># it must be a URI,</span>
             <span class="c1"># https://en.wikipedia.org/wiki/Hostname#Restrictions_on_valid_host_names</span>
             <span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">entity</span><span class="p">:</span>
-                <span class="c1"># Determine connection timeout from kwargs.</span>
-                <span class="n">timeout</span> <span class="o">=</span> <span class="n">keyword_opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;connecttimeoutms&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">timeout</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">validate_timeout_or_none_or_zero</span><span class="p">(</span>
-                        <span class="n">keyword_opts</span><span class="o">.</span><span class="n">cased_key</span><span class="p">(</span><span class="s2">&quot;connecttimeoutms&quot;</span><span class="p">),</span> <span class="n">timeout</span>
-                    <span class="p">)</span>
-                <span class="n">res</span> <span class="o">=</span> <span class="n">uri_parser</span><span class="o">.</span><span class="n">parse_uri</span><span class="p">(</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">_validate_uri</span><span class="p">(</span>
                     <span class="n">entity</span><span class="p">,</span>
                     <span class="n">port</span><span class="p">,</span>
                     <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">warn</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                    <span class="n">connect_timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
-                    <span class="n">srv_service_name</span><span class="o">=</span><span class="n">srv_service_name</span><span class="p">,</span>
                     <span class="n">srv_max_hosts</span><span class="o">=</span><span class="n">srv_max_hosts</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="n">seeds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;nodelist&quot;</span><span class="p">])</span>
+                <span class="n">is_srv</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">SRV_SCHEME</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_seeds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;nodelist&quot;</span><span class="p">])</span>
                 <span class="n">username</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">username</span>
                 <span class="n">password</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">password</span>
                 <span class="n">dbase</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">dbase</span>
                 <span class="n">opts</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;options&quot;</span><span class="p">]</span>
                 <span class="n">fqdn</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;fqdn&quot;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">seeds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">split_hosts</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">seeds</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_seeds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">split_hosts</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_port</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seeds</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span><span class="s2">&quot;need to specify at least one host&quot;</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">hostname</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">seeds</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">hostname</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seeds</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">_detect_external_db</span><span class="p">(</span><span class="n">hostname</span><span class="p">):</span>
                 <span class="k">break</span>
 
@@ -1613,81 +1625,181 @@
         <span class="n">keyword_opts</span><span class="p">[</span><span class="s2">&quot;tz_aware&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tz_aware</span>
         <span class="n">keyword_opts</span><span class="p">[</span><span class="s2">&quot;connect&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">connect</span>
 
-        <span class="c1"># Handle deprecated options in kwarg options.</span>
-        <span class="n">keyword_opts</span> <span class="o">=</span> <span class="n">_handle_option_deprecations</span><span class="p">(</span><span class="n">keyword_opts</span><span class="p">)</span>
-        <span class="c1"># Validate kwarg options.</span>
-        <span class="n">keyword_opts</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">_CaseInsensitiveDictionary</span><span class="p">(</span>
-            <span class="nb">dict</span><span class="p">(</span><span class="n">common</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">keyword_opts</span><span class="o">.</span><span class="n">cased_key</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">keyword_opts</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-        <span class="p">)</span>
-
-        <span class="c1"># Override connection string options with kwarg options.</span>
-        <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">keyword_opts</span><span class="p">)</span>
+        <span class="n">opts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_kwargs_and_update_opts</span><span class="p">(</span><span class="n">keyword_opts</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">srv_service_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">srv_service_name</span> <span class="o">=</span> <span class="n">opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;srvServiceName&quot;</span><span class="p">,</span> <span class="n">common</span><span class="o">.</span><span class="n">SRV_SERVICE_NAME</span><span class="p">)</span>
 
         <span class="n">srv_max_hosts</span> <span class="o">=</span> <span class="n">srv_max_hosts</span> <span class="ow">or</span> <span class="n">opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;srvmaxhosts&quot;</span><span class="p">)</span>
-        <span class="c1"># Handle security-option conflicts in combined options.</span>
-        <span class="n">opts</span> <span class="o">=</span> <span class="n">_handle_security_options</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>
-        <span class="c1"># Normalize combined options.</span>
-        <span class="n">opts</span> <span class="o">=</span> <span class="n">_normalize_options</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>
-        <span class="n">_check_options</span><span class="p">(</span><span class="n">seeds</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+        <span class="n">opts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_and_validate_options</span><span class="p">(</span><span class="n">opts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seeds</span><span class="p">)</span>
 
         <span class="c1"># Username and password passed as kwargs override user info in URI.</span>
         <span class="n">username</span> <span class="o">=</span> <span class="n">opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
         <span class="n">password</span> <span class="o">=</span> <span class="n">opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">options</span> <span class="o">=</span> <span class="n">ClientOptions</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">dbase</span><span class="p">,</span> <span class="n">opts</span><span class="p">,</span> <span class="n">_IS_SYNC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">ClientOptions</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">dbase</span><span class="p">,</span> <span class="n">opts</span><span class="p">,</span> <span class="n">_IS_SYNC</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_default_database_name</span> <span class="o">=</span> <span class="n">dbase</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">_create_lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_kill_cursors_queue</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_event_listeners</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">pool_options</span><span class="o">.</span><span class="n">_event_listeners</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">options</span><span class="o">.</span><span class="n">codec_options</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">.</span><span class="n">read_preference</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">.</span><span class="n">write_concern</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">.</span><span class="n">read_concern</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_encrypter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_Encrypter</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;is_srv&quot;</span><span class="p">:</span> <span class="n">is_srv</span><span class="p">,</span>
+                <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+                <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+                <span class="s2">&quot;dbase&quot;</span><span class="p">:</span> <span class="n">dbase</span><span class="p">,</span>
+                <span class="s2">&quot;seeds&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seeds</span><span class="p">,</span>
+                <span class="s2">&quot;fqdn&quot;</span><span class="p">:</span> <span class="n">fqdn</span><span class="p">,</span>
+                <span class="s2">&quot;srv_service_name&quot;</span><span class="p">:</span> <span class="n">srv_service_name</span><span class="p">,</span>
+                <span class="s2">&quot;pool_class&quot;</span><span class="p">:</span> <span class="n">pool_class</span><span class="p">,</span>
+                <span class="s2">&quot;monitor_class&quot;</span><span class="p">:</span> <span class="n">monitor_class</span><span class="p">,</span>
+                <span class="s2">&quot;condition_class&quot;</span><span class="p">:</span> <span class="n">condition_class</span><span class="p">,</span>
+            <span class="p">}</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_topology_settings</span> <span class="o">=</span> <span class="n">TopologySettings</span><span class="p">(</span>
-            <span class="n">seeds</span><span class="o">=</span><span class="n">seeds</span><span class="p">,</span>
-            <span class="n">replica_set_name</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">replica_set_name</span><span class="p">,</span>
-            <span class="n">pool_class</span><span class="o">=</span><span class="n">pool_class</span><span class="p">,</span>
-            <span class="n">pool_options</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">pool_options</span><span class="p">,</span>
-            <span class="n">monitor_class</span><span class="o">=</span><span class="n">monitor_class</span><span class="p">,</span>
-            <span class="n">condition_class</span><span class="o">=</span><span class="n">condition_class</span><span class="p">,</span>
-            <span class="n">local_threshold_ms</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">local_threshold_ms</span><span class="p">,</span>
-            <span class="n">server_selection_timeout</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">server_selection_timeout</span><span class="p">,</span>
-            <span class="n">server_selector</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">server_selector</span><span class="p">,</span>
-            <span class="n">heartbeat_frequency</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">heartbeat_frequency</span><span class="p">,</span>
-            <span class="n">fqdn</span><span class="o">=</span><span class="n">fqdn</span><span class="p">,</span>
-            <span class="n">direct_connection</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">direct_connection</span><span class="p">,</span>
-            <span class="n">load_balanced</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">load_balanced</span><span class="p">,</span>
-            <span class="n">srv_service_name</span><span class="o">=</span><span class="n">srv_service_name</span><span class="p">,</span>
-            <span class="n">srv_max_hosts</span><span class="o">=</span><span class="n">srv_max_hosts</span><span class="p">,</span>
-            <span class="n">server_monitoring_mode</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">server_monitoring_mode</span><span class="p">,</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">codec_options</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">read_preference</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">write_concern</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">read_concern</span><span class="p">,</span>
         <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_based_on_options</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_seeds</span><span class="p">,</span> <span class="n">srv_max_hosts</span><span class="p">,</span> <span class="n">srv_service_name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_opened</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init_background</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">AbstractEventLoop</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_srv</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_background</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">_IS_SYNC</span> <span class="ow">and</span> <span class="n">connect</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_get_topology</span><span class="p">()</span>  <span class="c1"># type: ignore[unused-coroutine]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_topology</span><span class="p">()</span>  <span class="c1"># type: ignore[unused-coroutine]</span></div>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_encrypter</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_srv</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">keyword_opts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">[</span><span class="s2">&quot;keyword_opts&quot;</span><span class="p">]</span>
+        <span class="n">seeds</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">opts</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">_CaseInsensitiveDictionary</span><span class="p">()</span>
+        <span class="n">srv_service_name</span> <span class="o">=</span> <span class="n">keyword_opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;srvservicename&quot;</span><span class="p">)</span>
+        <span class="n">srv_max_hosts</span> <span class="o">=</span> <span class="n">keyword_opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;srvmaxhosts&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host</span><span class="p">:</span>
+            <span class="c1"># A hostname can only include a-z, 0-9, &#39;-&#39; and &#39;.&#39;. If we find a &#39;/&#39;</span>
+            <span class="c1"># it must be a URI,</span>
+            <span class="c1"># https://en.wikipedia.org/wiki/Hostname#Restrictions_on_valid_host_names</span>
+            <span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">entity</span><span class="p">:</span>
+                <span class="c1"># Determine connection timeout from kwargs.</span>
+                <span class="n">timeout</span> <span class="o">=</span> <span class="n">keyword_opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;connecttimeoutms&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">timeout</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">validate_timeout_or_none_or_zero</span><span class="p">(</span>
+                        <span class="n">keyword_opts</span><span class="o">.</span><span class="n">cased_key</span><span class="p">(</span><span class="s2">&quot;connecttimeoutms&quot;</span><span class="p">),</span> <span class="n">timeout</span>
+                    <span class="p">)</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">uri_parser</span><span class="o">.</span><span class="n">_parse_srv</span><span class="p">(</span>
+                    <span class="n">entity</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_port</span><span class="p">,</span>
+                    <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">warn</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">connect_timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="n">srv_service_name</span><span class="o">=</span><span class="n">srv_service_name</span><span class="p">,</span>
+                    <span class="n">srv_max_hosts</span><span class="o">=</span><span class="n">srv_max_hosts</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">seeds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;nodelist&quot;</span><span class="p">])</span>
+                <span class="n">opts</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;options&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">seeds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">split_hosts</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_port</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">seeds</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span><span class="s2">&quot;need to specify at least one host&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">hostname</span> <span class="ow">in</span> <span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">seeds</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">_detect_external_db</span><span class="p">(</span><span class="n">hostname</span><span class="p">):</span>
+                    <span class="k">break</span>
+
+            <span class="c1"># Add options with named keyword arguments to the parsed kwarg options.</span>
+            <span class="n">tz_aware</span> <span class="o">=</span> <span class="n">keyword_opts</span><span class="p">[</span><span class="s2">&quot;tz_aware&quot;</span><span class="p">]</span>
+            <span class="n">connect</span> <span class="o">=</span> <span class="n">keyword_opts</span><span class="p">[</span><span class="s2">&quot;connect&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">tz_aware</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">tz_aware</span> <span class="o">=</span> <span class="n">opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tz_aware&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">connect</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Default to connect=True unless on a FaaS system, which might use fork.</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.pool_options</span><span class="w"> </span><span class="kn">import</span> <span class="n">_is_faas</span>
+
+                <span class="n">connect</span> <span class="o">=</span> <span class="n">opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;connect&quot;</span><span class="p">,</span> <span class="ow">not</span> <span class="n">_is_faas</span><span class="p">())</span>
+            <span class="n">keyword_opts</span><span class="p">[</span><span class="s2">&quot;tz_aware&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tz_aware</span>
+            <span class="n">keyword_opts</span><span class="p">[</span><span class="s2">&quot;connect&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">connect</span>
+
+            <span class="n">opts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_kwargs_and_update_opts</span><span class="p">(</span><span class="n">keyword_opts</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">srv_service_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">srv_service_name</span> <span class="o">=</span> <span class="n">opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;srvServiceName&quot;</span><span class="p">,</span> <span class="n">common</span><span class="o">.</span><span class="n">SRV_SERVICE_NAME</span><span class="p">)</span>
+
+            <span class="n">srv_max_hosts</span> <span class="o">=</span> <span class="n">srv_max_hosts</span> <span class="ow">or</span> <span class="n">opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;srvmaxhosts&quot;</span><span class="p">)</span>
+            <span class="n">opts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_and_validate_options</span><span class="p">(</span><span class="n">opts</span><span class="p">,</span> <span class="n">seeds</span><span class="p">)</span>
+
+            <span class="c1"># Username and password passed as kwargs override user info in URI.</span>
+            <span class="n">username</span> <span class="o">=</span> <span class="n">opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">])</span>
+            <span class="n">password</span> <span class="o">=</span> <span class="n">opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">ClientOptions</span><span class="p">(</span>
+                <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">[</span><span class="s2">&quot;dbase&quot;</span><span class="p">],</span> <span class="n">opts</span><span class="p">,</span> <span class="n">_IS_SYNC</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_based_on_options</span><span class="p">(</span><span class="n">seeds</span><span class="p">,</span> <span class="n">srv_max_hosts</span><span class="p">,</span> <span class="n">srv_service_name</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_init_based_on_options</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">seeds</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span> <span class="n">srv_max_hosts</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">srv_service_name</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_listeners</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">pool_options</span><span class="o">.</span><span class="n">_event_listeners</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_topology_settings</span> <span class="o">=</span> <span class="n">TopologySettings</span><span class="p">(</span>
+            <span class="n">seeds</span><span class="o">=</span><span class="n">seeds</span><span class="p">,</span>
+            <span class="n">replica_set_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">replica_set_name</span><span class="p">,</span>
+            <span class="n">pool_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">[</span><span class="s2">&quot;pool_class&quot;</span><span class="p">],</span>
+            <span class="n">pool_options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">pool_options</span><span class="p">,</span>
+            <span class="n">monitor_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">[</span><span class="s2">&quot;monitor_class&quot;</span><span class="p">],</span>
+            <span class="n">condition_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">[</span><span class="s2">&quot;condition_class&quot;</span><span class="p">],</span>
+            <span class="n">local_threshold_ms</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">local_threshold_ms</span><span class="p">,</span>
+            <span class="n">server_selection_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">server_selection_timeout</span><span class="p">,</span>
+            <span class="n">server_selector</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">server_selector</span><span class="p">,</span>
+            <span class="n">heartbeat_frequency</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">heartbeat_frequency</span><span class="p">,</span>
+            <span class="n">fqdn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">[</span><span class="s2">&quot;fqdn&quot;</span><span class="p">],</span>
+            <span class="n">direct_connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">direct_connection</span><span class="p">,</span>
+            <span class="n">load_balanced</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">load_balanced</span><span class="p">,</span>
+            <span class="n">srv_service_name</span><span class="o">=</span><span class="n">srv_service_name</span><span class="p">,</span>
+            <span class="n">srv_max_hosts</span><span class="o">=</span><span class="n">srv_max_hosts</span><span class="p">,</span>
+            <span class="n">server_monitoring_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">server_monitoring_mode</span><span class="p">,</span>
+            <span class="n">topology_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_topology_settings</span><span class="o">.</span><span class="n">_topology_id</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology_settings</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">auto_encryption_opts</span><span class="p">:</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.encryption</span><span class="w"> </span><span class="kn">import</span> <span class="n">_Encrypter</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_encrypter</span> <span class="o">=</span> <span class="n">_Encrypter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">auto_encryption_opts</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">timeout</span>
 
-        <span class="k">if</span> <span class="n">_HAS_REGISTER_AT_FORK</span><span class="p">:</span>
-            <span class="c1"># Add this client to the list of weakly referenced items.</span>
-            <span class="c1"># This will be used later if we fork.</span>
-            <span class="n">MongoClient</span><span class="o">.</span><span class="n">_clients</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_topology_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span></div>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_normalize_and_validate_options</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">opts</span><span class="p">:</span> <span class="n">common</span><span class="o">.</span><span class="n">_CaseInsensitiveDictionary</span><span class="p">,</span> <span class="n">seeds</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">common</span><span class="o">.</span><span class="n">_CaseInsensitiveDictionary</span><span class="p">:</span>
+        <span class="c1"># Handle security-option conflicts in combined options.</span>
+        <span class="n">opts</span> <span class="o">=</span> <span class="n">_handle_security_options</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>
+        <span class="c1"># Normalize combined options.</span>
+        <span class="n">opts</span> <span class="o">=</span> <span class="n">_normalize_options</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>
+        <span class="n">_check_options</span><span class="p">(</span><span class="n">seeds</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">opts</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_kwargs_and_update_opts</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">keyword_opts</span><span class="p">:</span> <span class="n">common</span><span class="o">.</span><span class="n">_CaseInsensitiveDictionary</span><span class="p">,</span>
+        <span class="n">opts</span><span class="p">:</span> <span class="n">common</span><span class="o">.</span><span class="n">_CaseInsensitiveDictionary</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">common</span><span class="o">.</span><span class="n">_CaseInsensitiveDictionary</span><span class="p">:</span>
+        <span class="c1"># Handle deprecated options in kwarg options.</span>
+        <span class="n">keyword_opts</span> <span class="o">=</span> <span class="n">_handle_option_deprecations</span><span class="p">(</span><span class="n">keyword_opts</span><span class="p">)</span>
+        <span class="c1"># Validate kwarg options.</span>
+        <span class="n">keyword_opts</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">_CaseInsensitiveDictionary</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">common</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">keyword_opts</span><span class="o">.</span><span class="n">cased_key</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">keyword_opts</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="p">)</span>
+        <span class="c1"># Override connection string options with kwarg options.</span>
+        <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">keyword_opts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">opts</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Explicitly connect to MongoDB synchronously instead of on the first operation.&quot;&quot;&quot;</span>
@@ -1695,6 +1807,10 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_init_background</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_pid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span> <span class="o">=</span> <span class="n">Topology</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_topology_settings</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_HAS_REGISTER_AT_FORK</span><span class="p">:</span>
+            <span class="c1"># Add this client to the list of weakly referenced items.</span>
+            <span class="c1"># This will be used later if we fork.</span>
+            <span class="n">MongoClient</span><span class="o">.</span><span class="n">_clients</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_topology_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="c1"># Seed the topology with the old one&#39;s pid so we can detect clients</span>
         <span class="c1"># that are opened before a fork and used after.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_pid</span> <span class="o">=</span> <span class="n">old_pid</span>
@@ -1886,6 +2002,16 @@
 
 <span class="sd">        .. versionadded:: 4.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">servers</span> <span class="o">=</span> <span class="p">{(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span> <span class="n">ServerDescription</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span> <span class="k">for</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seeds</span><span class="p">}</span>
+            <span class="k">return</span> <span class="n">TopologyDescription</span><span class="p">(</span>
+                <span class="n">TOPOLOGY_TYPE</span><span class="o">.</span><span class="n">Unknown</span><span class="p">,</span>
+                <span class="n">servers</span><span class="p">,</span>
+                <span class="kc">None</span><span class="p">,</span>
+                <span class="kc">None</span><span class="p">,</span>
+                <span class="kc">None</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_topology_settings</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">description</span>
 
     <span class="nd">@property</span>
@@ -1899,6 +2025,8 @@
 <span class="sd">          to any servers, or a network partition causes it to lose connection</span>
 <span class="sd">          to all servers.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">frozenset</span><span class="p">()</span>
         <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">description</span>
         <span class="k">return</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">address</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">description</span><span class="o">.</span><span class="n">known_servers</span><span class="p">)</span>
 
@@ -1912,11 +2040,22 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span>
 
+<div class="viewcode-block" id="MongoClient.eq_props">
+<a class="viewcode-back" href="../../../CveXplore/database/MongoClient.eq_props.html#CveXplore.database.connection.mongodb.mongo_db.MongoClient.eq_props">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eq_props</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">_Address</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">[</span><span class="s2">&quot;seeds&quot;</span><span class="p">])),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">replica_set_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">[</span><span class="s2">&quot;fqdn&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">[</span><span class="s2">&quot;srv_service_name&quot;</span><span class="p">],</span>
+        <span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="MongoClient.__eq__">
 <a class="viewcode-back" href="../../../CveXplore/database/MongoClient.__eq__.html#CveXplore.database.connection.mongodb.mongo_db.MongoClient.__eq__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_topology</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">eq_props</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">eq_props</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span></div>
 
 
@@ -1929,7 +2068,7 @@
 <div class="viewcode-block" id="MongoClient.__hash__">
 <a class="viewcode-back" href="../../../CveXplore/database/MongoClient.__hash__.html#CveXplore.database.connection.mongodb.mongo_db.MongoClient.__hash__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eq_props</span><span class="p">())</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_repr_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -1946,13 +2085,16 @@
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">option</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">&quot;</span>
 
         <span class="c1"># Host first...</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;host=</span><span class="si">%r</span><span class="s2">&quot;</span>
-            <span class="o">%</span> <span class="p">[</span>
-                <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span> <span class="k">if</span> <span class="n">port</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">host</span>
-                <span class="k">for</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology_settings</span><span class="o">.</span><span class="n">seeds</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;host=&#39;mongodb+srv://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">[</span><span class="s1">&#39;fqdn&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="s2">&quot;host=</span><span class="si">%r</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="p">[</span>
+                    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span> <span class="k">if</span> <span class="n">port</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">host</span>
+                    <span class="k">for</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology_settings</span><span class="o">.</span><span class="n">seeds</span>
+                <span class="p">]</span>
             <span class="p">]</span>
-        <span class="p">]</span>
         <span class="c1"># ... then everything in self._constructor_args...</span>
         <span class="n">options</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
             <span class="n">option_repr</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constructor_args</span>
@@ -2272,6 +2414,8 @@
 
 <span class="sd">        .. versionadded:: 3.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_topology</span><span class="p">()</span>
         <span class="n">topology_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_description</span><span class="o">.</span><span class="n">topology_type</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="n">topology_type</span> <span class="o">==</span> <span class="n">TOPOLOGY_TYPE</span><span class="o">.</span><span class="n">Sharded</span>
@@ -2294,6 +2438,8 @@
 <span class="sd">        .. versionadded:: 3.0</span>
 <span class="sd">           MongoClient gained this property in version 3.0.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_topology</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">get_primary</span><span class="p">()</span>  <span class="c1"># type: ignore[return-value]</span>
 
     <span class="nd">@property</span>
@@ -2307,6 +2453,8 @@
 <span class="sd">        .. versionadded:: 3.0</span>
 <span class="sd">           MongoClient gained this property in version 3.0.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_topology</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">get_secondaries</span><span class="p">()</span>
 
     <span class="nd">@property</span>
@@ -2317,6 +2465,8 @@
 <span class="sd">        connected to a replica set, there are no arbiters, or this client was</span>
 <span class="sd">        created without the `replicaSet` option.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_topology</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">get_arbiters</span><span class="p">()</span>
 
     <span class="nd">@property</span>
@@ -2377,6 +2527,8 @@
 <span class="sd">        .. versionchanged:: 3.6</span>
 <span class="sd">           End all server sessions created by this client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="n">session_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">pop_all_sessions</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">session_ids</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_end_sessions</span><span class="p">(</span><span class="n">session_ids</span><span class="p">)</span>
@@ -2388,7 +2540,13 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encrypter</span><span class="p">:</span>
             <span class="c1"># TODO: PYTHON-1921 Encrypted MongoClients cannot be re-opened.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_encrypter</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">True</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_IS_SYNC</span><span class="p">:</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">cleanup_monitors</span><span class="p">(),</span>  <span class="c1"># type: ignore[func-returns-value]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_kill_cursors_executor</span><span class="o">.</span><span class="n">join</span><span class="p">(),</span>  <span class="c1"># type: ignore[func-returns-value]</span>
+                <span class="n">return_exceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span></div>
 
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">_IS_SYNC</span><span class="p">:</span>
@@ -2401,7 +2559,17 @@
 <span class="sd">        If this client was created with &quot;connect=False&quot;, calling _get_topology</span>
 <span class="sd">        launches the connection process in the background.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_IS_SYNC</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span> <span class="o">!=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">&quot;Cannot use MongoClient in different event loop. MongoClient uses low-level asyncio APIs that bind it to the event loop it was created on.&quot;</span>
+                <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_opened</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv_info</span><span class="p">[</span><span class="s2">&quot;is_srv&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_srv</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_init_background</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_kill_cursors_executor</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
@@ -2796,7 +2964,7 @@
 <span class="sd">        The cursor is closed synchronously on the current thread.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cursor_id</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;cursor_id must be an instance of int&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cursor_id must be an instance of int, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">cursor_id</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">conn_mgr</span><span class="p">:</span>
@@ -2863,15 +3031,13 @@
         <span class="k">for</span> <span class="n">address</span><span class="p">,</span> <span class="n">cursor_id</span><span class="p">,</span> <span class="n">conn_mgr</span> <span class="ow">in</span> <span class="n">pinned_cursors</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_cleanup_cursor_lock</span><span class="p">(</span><span class="n">cursor_id</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">conn_mgr</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
-                <span class="k">raise</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">InvalidOperation</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
                     <span class="c1"># Raise the exception when client is closed so that it</span>
                     <span class="c1"># can be caught in _process_periodic_tasks</span>
                     <span class="k">raise</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_handle_exception</span><span class="p">()</span>
+                    <span class="n">_log_client_error</span><span class="p">()</span>
 
         <span class="c1"># Don&#39;t re-open topology if it&#39;s closed and there&#39;s no pending cursors.</span>
         <span class="k">if</span> <span class="n">address_to_cursor_ids</span><span class="p">:</span>
@@ -2879,13 +3045,11 @@
             <span class="k">for</span> <span class="n">address</span><span class="p">,</span> <span class="n">cursor_ids</span> <span class="ow">in</span> <span class="n">address_to_cursor_ids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_kill_cursors</span><span class="p">(</span><span class="n">cursor_ids</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">topology</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-                <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
-                    <span class="k">raise</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">InvalidOperation</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
                         <span class="k">raise</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_handle_exception</span><span class="p">()</span>
+                        <span class="n">_log_client_error</span><span class="p">()</span>
 
     <span class="c1"># This method is run periodically by a background thread.</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_process_periodic_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -2895,13 +3059,11 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_process_kill_cursors</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">update_pool</span><span class="p">()</span>
-        <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
-            <span class="k">raise</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">InvalidOperation</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
                 <span class="k">return</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_handle_exception</span><span class="p">()</span>
+                <span class="n">_log_client_error</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_return_server_session</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">server_session</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">_ServerSession</span><span class="p">,</span> <span class="n">_EmptyServerSession</span><span class="p">]</span>
@@ -2918,7 +3080,9 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;If provided session is None, lend a temporary session.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">client_session</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;session&#39; argument must be a ClientSession or None.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;&#39;session&#39; argument must be a ClientSession or None, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">session</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
             <span class="c1"># Don&#39;t call end_session.</span>
             <span class="k">yield</span> <span class="n">session</span>
             <span class="k">return</span>
@@ -3077,7 +3241,9 @@
             <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">name</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;name_or_database must be an instance of str or a Database&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;name_or_database must be an instance of str or a Database, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
 
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">DROP_DATABASE</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
@@ -3341,6 +3507,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">completed_handshake</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">service_id</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_topology</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">handle_error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_address</span><span class="p">,</span> <span class="n">err_ctx</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_MongoClientErrorHandler</span><span class="p">:</span>
@@ -3390,6 +3557,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_deprioritized_servers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Server</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span> <span class="o">=</span> <span class="n">operation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_operation_id</span> <span class="o">=</span> <span class="n">operation_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_attempt_number</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs the supplied func() and attempts a retry</span>
@@ -3432,6 +3600,7 @@
                             <span class="k">raise</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_retrying</span> <span class="o">=</span> <span class="kc">True</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span> <span class="o">=</span> <span class="n">exc</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_attempt_number</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">raise</span>
 
@@ -3453,6 +3622,7 @@
                             <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="k">raise</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_attempt_number</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bulk</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_bulk</span><span class="o">.</span><span class="n">retrying</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -3531,6 +3701,14 @@
                     <span class="c1"># not support sessions raise the last error.</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_check_last_error</span><span class="p">()</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_retryable</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retrying</span><span class="p">:</span>
+                    <span class="n">_debug_log</span><span class="p">(</span>
+                        <span class="n">_COMMAND_LOGGER</span><span class="p">,</span>
+                        <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Retrying write attempt number </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_attempt_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="n">clientId</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_topology_settings</span><span class="o">.</span><span class="n">_topology_id</span><span class="p">,</span>
+                        <span class="n">commandName</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="p">,</span>
+                        <span class="n">operationId</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation_id</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
         <span class="k">except</span> <span class="n">PyMongoError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable</span><span class="p">:</span>
@@ -3552,6 +3730,14 @@
         <span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retrying</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_check_last_error</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retrying</span><span class="p">:</span>
+                <span class="n">_debug_log</span><span class="p">(</span>
+                    <span class="n">_COMMAND_LOGGER</span><span class="p">,</span>
+                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Retrying read attempt number </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_attempt_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">clientId</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_topology_settings</span><span class="o">.</span><span class="n">_topology_id</span><span class="p">,</span>
+                    <span class="n">commandName</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="p">,</span>
+                    <span class="n">operationId</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation_id</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">read_pref</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
 
@@ -3618,7 +3804,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    Mar 29, 2025
+    Jul 03, 2025
   </span>
 
     
