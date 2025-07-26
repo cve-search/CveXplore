@@ -796,7 +796,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">json</span><span class="w"> </span><span class="kn">import</span> <span class="n">JSONDecodeError</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlencode</span>
 
@@ -995,6 +995,29 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">CVE</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="NvdNistApi.format_nvd_timestamp">
+<a class="viewcode-back" href="../../../../CveXplore/core/NvdNistApi.format_nvd_timestamp.html#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.format_nvd_timestamp">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_nvd_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format timestamps for NVD API queries in the required format.</span>
+
+<span class="sd">        Values must be entered in the extended ISO-8601 date/time format:</span>
+<span class="sd">        [YYYY]-[MM]-[DD]T[HH]:[MM]:[SS][Z]</span>
+
+<span class="sd">        Although the API documentation states the timezone is optional,</span>
+<span class="sd">        it appears to actually require it. Therefore, the timezone offset</span>
+<span class="sd">        is always included here.</span>
+
+<span class="sd">        See https://nvd.nist.gov/developers/vulnerabilities</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dt</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+        <span class="n">iso_str</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">)</span>  <span class="c1"># second precision only</span>
+        <span class="n">tz_str</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%z&quot;</span><span class="p">)</span>
+        <span class="n">iso_tz_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tz_str</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">tz_str</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># ISO 8601 timezone format</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">iso_str</span><span class="si">}{</span><span class="n">iso_tz_str</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
 <div class="viewcode-block" id="NvdNistApi.check_date_range">
 <a class="viewcode-back" href="../../../../CveXplore/core/NvdNistApi.check_date_range.html#CveXplore.core.nvd_nist.nvd_nist_api.NvdNistApi.check_date_range">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_date_range</span><span class="p">(</span>
@@ -1014,8 +1037,8 @@
                 <span class="sa">f</span><span class="s2">&quot;End date is now: </span><span class="si">{</span><span class="n">last_mod_end_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-        <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;lastModStartDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_mod_start_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
-        <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;lastModEndDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_mod_end_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;lastModStartDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_nvd_timestamp</span><span class="p">(</span><span class="n">last_mod_start_date</span><span class="p">)</span>
+        <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;lastModEndDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_nvd_timestamp</span><span class="p">(</span><span class="n">last_mod_end_date</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">resource</span></div>
 
@@ -1420,7 +1443,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    Jul 03, 2025
+    Jul 26, 2025
   </span>
 
     
