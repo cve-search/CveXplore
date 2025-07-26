@@ -6,7 +6,7 @@ import random
 import time
 import uuid
 from collections import namedtuple
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from json import JSONDecodeError
 from urllib.parse import urlencode
 
@@ -191,6 +191,26 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
 
         return self.call("GET", resource=resource, data=self.datasource.CVE)
 
+    def format_nvd_timestamp(self, dt):
+        """
+        Format timestamps for NVD API queries in the required format.
+
+        Values must be entered in the extended ISO-8601 date/time format:
+        [YYYY]-[MM]-[DD]T[HH]:[MM]:[SS][Z]
+
+        Although the API documentation states the timezone is optional,
+        it appears to actually require it. Therefore, the timezone offset
+        is always included here.
+
+        See https://nvd.nist.gov/developers/vulnerabilities
+        """
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        iso_str = dt.strftime("%Y-%m-%dT%H:%M:%S")  # second precision only
+        tz_str = dt.strftime("%z")
+        iso_tz_str = f"{tz_str[:3]}:{tz_str[3:]}"  # ISO 8601 timezone format
+        return f"{iso_str}{iso_tz_str}"
+
     def check_date_range(
         self,
         resource: dict = None,
@@ -208,8 +228,8 @@ class NvdNistApi(ApiBaseClass, UpdateBaseClass):
                 f"End date is now: {last_mod_end_date.isoformat()}"
             )
 
-        resource["lastModStartDate"] = last_mod_start_date.isoformat()
-        resource["lastModEndDate"] = last_mod_end_date.isoformat()
+        resource["lastModStartDate"] = self.format_nvd_timestamp(last_mod_start_date)
+        resource["lastModEndDate"] = self.format_nvd_timestamp(last_mod_end_date)
 
         return resource
 
