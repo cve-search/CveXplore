@@ -86,9 +86,13 @@ class Configuration(object):
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "SQLALCHEMY_DATABASE_URI",
         (
-            f"{DATASOURCE_PROTOCOL}://{DATASOURCE_USER}:{DATASOURCE_PASSWORD}@{DATASOURCE_HOST}:{DATASOURCE_PORT}/{DATASOURCE_DBNAME}"
-            if DATASOURCE_DBAPI is None
-            else f"{DATASOURCE_PROTOCOL}+{DATASOURCE_DBAPI}://{DATASOURCE_USER}:{DATASOURCE_PASSWORD}@{DATASOURCE_HOST}:{DATASOURCE_PORT}/{DATASOURCE_DBNAME}"
+            f"{DATASOURCE_PROTOCOL}"
+            f"{'' if DATASOURCE_DBAPI is None else f'+{DATASOURCE_DBAPI}'}"
+            f"://{DATASOURCE_USER}:{DATASOURCE_PASSWORD}@{DATASOURCE_HOST}"
+            # MongoDB SRV URIs (`mongodb+srv`) discover the port via DNS, so it
+            # must not be included here to avoid pymongo.errors.InvalidURI errors.
+            f"{'' if DATASOURCE_DBAPI == 'srv' else f':{DATASOURCE_PORT}'}"
+            f"/{DATASOURCE_DBNAME}"
         ),
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = getenv_bool(
