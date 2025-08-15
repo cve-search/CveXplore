@@ -262,7 +262,7 @@
   
   
   <span class="md-ellipsis">
-    General:<wbr>
+    <span>General:<wbr></span>
     
   </span>
   
@@ -273,7 +273,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_1">
             <span class="md-nav__icon md-icon"></span>
-            General:<wbr>
+            <span>General:<wbr></span>
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -290,7 +290,7 @@
   
   
   <span class="md-ellipsis">
-    Dependencies
+    <span>Dependencies</span>
     
   </span>
   
@@ -314,7 +314,7 @@
   
   
   <span class="md-ellipsis">
-    Settings
+    <span>Settings</span>
     
   </span>
   
@@ -361,7 +361,7 @@
   
   
   <span class="md-ellipsis">
-    Database:<wbr>
+    <span>Database:<wbr></span>
     
   </span>
   
@@ -372,7 +372,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
-            Database:<wbr>
+            <span>Database:<wbr></span>
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -389,7 +389,7 @@
   
   
   <span class="md-ellipsis">
-    Settings
+    <span>Settings</span>
     
   </span>
   
@@ -413,7 +413,7 @@
   
   
   <span class="md-ellipsis">
-    SQL Models
+    <span>SQL Models</span>
     
   </span>
   
@@ -460,7 +460,7 @@
   
   
   <span class="md-ellipsis">
-    Package:<wbr>
+    <span>Package:<wbr></span>
     
   </span>
   
@@ -471,7 +471,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            Package:<wbr>
+            <span>Package:<wbr></span>
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -488,7 +488,7 @@
   
   
   <span class="md-ellipsis">
-    Query for data
+    <span>Query for data</span>
     
   </span>
   
@@ -512,7 +512,7 @@
   
   
   <span class="md-ellipsis">
-    Code base
+    <span>Code base</span>
     
   </span>
   
@@ -559,7 +559,7 @@
   
   
   <span class="md-ellipsis">
-    Command line:<wbr>
+    <span>Command line:<wbr></span>
     
   </span>
   
@@ -570,7 +570,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
-            Command line:<wbr>
+            <span>Command line:<wbr></span>
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -587,7 +587,7 @@
   
   
   <span class="md-ellipsis">
-    General
+    <span>General</span>
     
   </span>
   
@@ -611,7 +611,7 @@
   
   
   <span class="md-ellipsis">
-    Command Line Interpreter
+    <span>Command Line Interpreter</span>
     
   </span>
   
@@ -658,7 +658,7 @@
   
   
   <span class="md-ellipsis">
-    Backend:<wbr>
+    <span>Backend:<wbr></span>
     
   </span>
   
@@ -669,7 +669,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Backend:<wbr>
+            <span>Backend:<wbr></span>
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -686,7 +686,7 @@
   
   
   <span class="md-ellipsis">
-    General
+    <span>General</span>
     
   </span>
   
@@ -710,7 +710,7 @@
   
   
   <span class="md-ellipsis">
-    Installation
+    <span>Installation</span>
     
   </span>
   
@@ -734,7 +734,7 @@
   
   
   <span class="md-ellipsis">
-    Settings
+    <span>Settings</span>
     
   </span>
   
@@ -798,6 +798,8 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>  <span class="c1"># noqa: F401</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">typing</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">urllib3.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClosedPoolError</span><span class="p">,</span> <span class="n">ConnectTimeoutError</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">urllib3.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPError</span> <span class="k">as</span> <span class="n">_HTTPError</span>
@@ -815,6 +817,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">urllib3.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">Timeout</span> <span class="k">as</span> <span class="n">TimeoutSauce</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">urllib3.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_url</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">urllib3.util.retry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Retry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib3.util.ssl_</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_urllib3_context</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">_basic_auth_str</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.compat</span><span class="w"> </span><span class="kn">import</span> <span class="n">basestring</span><span class="p">,</span> <span class="n">urlparse</span>
@@ -851,10 +854,74 @@
         <span class="k">raise</span> <span class="n">InvalidSchema</span><span class="p">(</span><span class="s2">&quot;Missing dependencies for SOCKS support.&quot;</span><span class="p">)</span>
 
 
+<span class="k">if</span> <span class="n">typing</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">PreparedRequest</span>
+
+
 <span class="n">DEFAULT_POOLBLOCK</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">DEFAULT_POOLSIZE</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">DEFAULT_RETRIES</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">DEFAULT_POOL_TIMEOUT</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">ssl</span>  <span class="c1"># noqa: F401</span>
+
+    <span class="n">_preloaded_ssl_context</span> <span class="o">=</span> <span class="n">create_urllib3_context</span><span class="p">()</span>
+    <span class="n">_preloaded_ssl_context</span><span class="o">.</span><span class="n">load_verify_locations</span><span class="p">(</span>
+        <span class="n">extract_zipped_paths</span><span class="p">(</span><span class="n">DEFAULT_CA_BUNDLE_PATH</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c1"># Bypass default SSLContext creation when Python</span>
+    <span class="c1"># interpreter isn&#39;t built with the ssl module.</span>
+    <span class="n">_preloaded_ssl_context</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_urllib3_request_context</span><span class="p">(</span>
+    <span class="n">request</span><span class="p">:</span> <span class="s2">&quot;PreparedRequest&quot;</span><span class="p">,</span>
+    <span class="n">verify</span><span class="p">:</span> <span class="s2">&quot;bool | str | None&quot;</span><span class="p">,</span>
+    <span class="n">client_cert</span><span class="p">:</span> <span class="s2">&quot;typing.Tuple[str, str] | str | None&quot;</span><span class="p">,</span>
+    <span class="n">poolmanager</span><span class="p">:</span> <span class="s2">&quot;PoolManager&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;(typing.Dict[str, typing.Any], typing.Dict[str, typing.Any])&quot;</span><span class="p">:</span>
+    <span class="n">host_params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">pool_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">parsed_request_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">scheme</span> <span class="o">=</span> <span class="n">parsed_request_url</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="n">parsed_request_url</span><span class="o">.</span><span class="n">port</span>
+
+    <span class="c1"># Determine if we have and should use our default SSLContext</span>
+    <span class="c1"># to optimize performance on standard requests.</span>
+    <span class="n">poolmanager_kwargs</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">poolmanager</span><span class="p">,</span> <span class="s2">&quot;connection_pool_kw&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">has_poolmanager_ssl_context</span> <span class="o">=</span> <span class="n">poolmanager_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ssl_context&quot;</span><span class="p">)</span>
+    <span class="n">should_use_default_ssl_context</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">_preloaded_ssl_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">has_poolmanager_ssl_context</span>
+    <span class="p">)</span>
+
+    <span class="n">cert_reqs</span> <span class="o">=</span> <span class="s2">&quot;CERT_REQUIRED&quot;</span>
+    <span class="k">if</span> <span class="n">verify</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">cert_reqs</span> <span class="o">=</span> <span class="s2">&quot;CERT_NONE&quot;</span>
+    <span class="k">elif</span> <span class="n">verify</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">should_use_default_ssl_context</span><span class="p">:</span>
+        <span class="n">pool_kwargs</span><span class="p">[</span><span class="s2">&quot;ssl_context&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_preloaded_ssl_context</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">verify</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">verify</span><span class="p">):</span>
+            <span class="n">pool_kwargs</span><span class="p">[</span><span class="s2">&quot;ca_certs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">verify</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pool_kwargs</span><span class="p">[</span><span class="s2">&quot;ca_cert_dir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">verify</span>
+    <span class="n">pool_kwargs</span><span class="p">[</span><span class="s2">&quot;cert_reqs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cert_reqs</span>
+    <span class="k">if</span> <span class="n">client_cert</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">client_cert</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">client_cert</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">pool_kwargs</span><span class="p">[</span><span class="s2">&quot;cert_file&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">client_cert</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">pool_kwargs</span><span class="p">[</span><span class="s2">&quot;key_file&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">client_cert</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># According to our docs, we allow users to specify just the client</span>
+            <span class="c1"># cert path</span>
+            <span class="n">pool_kwargs</span><span class="p">[</span><span class="s2">&quot;cert_file&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">client_cert</span>
+    <span class="n">host_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;scheme&quot;</span><span class="p">:</span> <span class="n">scheme</span><span class="p">,</span>
+        <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="n">parsed_request_url</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span>
+        <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="n">port</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">host_params</span><span class="p">,</span> <span class="n">pool_kwargs</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">BaseAdapter</span><span class="p">:</span>
@@ -1050,28 +1117,26 @@
 <span class="sd">        :param cert: The SSL certificate to verify.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;https&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">verify</span><span class="p">:</span>
-
-            <span class="n">cert_loc</span> <span class="o">=</span> <span class="kc">None</span>
-
-            <span class="c1"># Allow self-specified cert location.</span>
-            <span class="k">if</span> <span class="n">verify</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">cert_loc</span> <span class="o">=</span> <span class="n">verify</span>
-
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">cert_loc</span><span class="p">:</span>
-                <span class="n">cert_loc</span> <span class="o">=</span> <span class="n">extract_zipped_paths</span><span class="p">(</span><span class="n">DEFAULT_CA_BUNDLE_PATH</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">cert_loc</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cert_loc</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Could not find a suitable TLS CA certificate bundle, &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;invalid path: </span><span class="si">{</span><span class="n">cert_loc</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span>
-
             <span class="n">conn</span><span class="o">.</span><span class="n">cert_reqs</span> <span class="o">=</span> <span class="s2">&quot;CERT_REQUIRED&quot;</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">cert_loc</span><span class="p">):</span>
-                <span class="n">conn</span><span class="o">.</span><span class="n">ca_certs</span> <span class="o">=</span> <span class="n">cert_loc</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">conn</span><span class="o">.</span><span class="n">ca_cert_dir</span> <span class="o">=</span> <span class="n">cert_loc</span>
+            <span class="c1"># Only load the CA certificates if &#39;verify&#39; is a string indicating the CA bundle to use.</span>
+            <span class="c1"># Otherwise, if verify is a boolean, we don&#39;t load anything since</span>
+            <span class="c1"># the connection will be using a context with the default certificates already loaded,</span>
+            <span class="c1"># and this avoids a call to the slow load_verify_locations()</span>
+            <span class="k">if</span> <span class="n">verify</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="c1"># `verify` must be a str with a path then</span>
+                <span class="n">cert_loc</span> <span class="o">=</span> <span class="n">verify</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cert_loc</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Could not find a suitable TLS CA certificate bundle, &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;invalid path: </span><span class="si">{</span><span class="n">cert_loc</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">cert_loc</span><span class="p">):</span>
+                    <span class="n">conn</span><span class="o">.</span><span class="n">ca_certs</span> <span class="o">=</span> <span class="n">cert_loc</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">conn</span><span class="o">.</span><span class="n">ca_cert_dir</span> <span class="o">=</span> <span class="n">cert_loc</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">conn</span><span class="o">.</span><span class="n">cert_reqs</span> <span class="o">=</span> <span class="s2">&quot;CERT_NONE&quot;</span>
             <span class="n">conn</span><span class="o">.</span><span class="n">ca_certs</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1135,10 +1200,118 @@
         <span class="k">return</span> <span class="n">response</span></div>
 
 
+<div class="viewcode-block" id="HTTPAdapter.build_connection_pool_key_attributes">
+<a class="viewcode-back" href="../../CveXplore/core/HTTPAdapter.build_connection_pool_key_attributes.html#CveXplore.core.api_base_class.HTTPAdapter.build_connection_pool_key_attributes">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_connection_pool_key_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">verify</span><span class="p">,</span> <span class="n">cert</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build the PoolKey attributes used by urllib3 to return a connection.</span>
+
+<span class="sd">        This looks at the PreparedRequest, the user-specified verify value,</span>
+<span class="sd">        and the value of the cert parameter to determine what PoolKey values</span>
+<span class="sd">        to use to select a connection from a given urllib3 Connection Pool.</span>
+
+<span class="sd">        The SSL related pool key arguments are not consistently set. As of</span>
+<span class="sd">        this writing, use the following to determine what keys may be in that</span>
+<span class="sd">        dictionary:</span>
+
+<span class="sd">        * If ``verify`` is ``True``, ``&quot;ssl_context&quot;`` will be set and will be the</span>
+<span class="sd">          default Requests SSL Context</span>
+<span class="sd">        * If ``verify`` is ``False``, ``&quot;ssl_context&quot;`` will not be set but</span>
+<span class="sd">          ``&quot;cert_reqs&quot;`` will be set</span>
+<span class="sd">        * If ``verify`` is a string, (i.e., it is a user-specified trust bundle)</span>
+<span class="sd">          ``&quot;ca_certs&quot;`` will be set if the string is not a directory recognized</span>
+<span class="sd">          by :py:func:`os.path.isdir`, otherwise ``&quot;ca_certs_dir&quot;`` will be</span>
+<span class="sd">          set.</span>
+<span class="sd">        * If ``&quot;cert&quot;`` is specified, ``&quot;cert_file&quot;`` will always be set. If</span>
+<span class="sd">          ``&quot;cert&quot;`` is a tuple with a second item, ``&quot;key_file&quot;`` will also</span>
+<span class="sd">          be present</span>
+
+<span class="sd">        To override these settings, one may subclass this class, call this</span>
+<span class="sd">        method and use the above logic to change parameters as desired. For</span>
+<span class="sd">        example, if one wishes to use a custom :py:class:`ssl.SSLContext` one</span>
+<span class="sd">        must both set ``&quot;ssl_context&quot;`` and based on what else they require,</span>
+<span class="sd">        alter the other keys to ensure the desired behaviour.</span>
+
+<span class="sd">        :param request:</span>
+<span class="sd">            The PreparedReqest being sent over the connection.</span>
+<span class="sd">        :type request:</span>
+<span class="sd">            :class:`~requests.models.PreparedRequest`</span>
+<span class="sd">        :param verify:</span>
+<span class="sd">            Either a boolean, in which case it controls whether</span>
+<span class="sd">            we verify the server&#39;s TLS certificate, or a string, in which case it</span>
+<span class="sd">            must be a path to a CA bundle to use.</span>
+<span class="sd">        :param cert:</span>
+<span class="sd">            (optional) Any user-provided SSL certificate for client</span>
+<span class="sd">            authentication (a.k.a., mTLS). This may be a string (i.e., just</span>
+<span class="sd">            the path to a file which holds both certificate and key) or a</span>
+<span class="sd">            tuple of length 2 with the certificate file path and key file</span>
+<span class="sd">            path.</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            A tuple of two dictionaries. The first is the &quot;host parameters&quot;</span>
+<span class="sd">            portion of the Pool Key including scheme, hostname, and port. The</span>
+<span class="sd">            second is a dictionary of SSLContext related parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_urllib3_request_context</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">verify</span><span class="p">,</span> <span class="n">cert</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">poolmanager</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HTTPAdapter.get_connection_with_tls_context">
+<a class="viewcode-back" href="../../CveXplore/core/HTTPAdapter.get_connection_with_tls_context.html#CveXplore.core.api_base_class.HTTPAdapter.get_connection_with_tls_context">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_connection_with_tls_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">verify</span><span class="p">,</span> <span class="n">proxies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cert</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a urllib3 connection for the given request and TLS settings.</span>
+<span class="sd">        This should not be called from user code, and is only exposed for use</span>
+<span class="sd">        when subclassing the :class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.</span>
+
+<span class="sd">        :param request:</span>
+<span class="sd">            The :class:`PreparedRequest &lt;PreparedRequest&gt;` object to be sent</span>
+<span class="sd">            over the connection.</span>
+<span class="sd">        :param verify:</span>
+<span class="sd">            Either a boolean, in which case it controls whether we verify the</span>
+<span class="sd">            server&#39;s TLS certificate, or a string, in which case it must be a</span>
+<span class="sd">            path to a CA bundle to use.</span>
+<span class="sd">        :param proxies:</span>
+<span class="sd">            (optional) The proxies dictionary to apply to the request.</span>
+<span class="sd">        :param cert:</span>
+<span class="sd">            (optional) Any user-provided SSL certificate to be used for client</span>
+<span class="sd">            authentication (a.k.a., mTLS).</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            urllib3.ConnectionPool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">proxy</span> <span class="o">=</span> <span class="n">select_proxy</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">proxies</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">host_params</span><span class="p">,</span> <span class="n">pool_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_connection_pool_key_attributes</span><span class="p">(</span>
+                <span class="n">request</span><span class="p">,</span>
+                <span class="n">verify</span><span class="p">,</span>
+                <span class="n">cert</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidURL</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">proxy</span><span class="p">:</span>
+            <span class="n">proxy</span> <span class="o">=</span> <span class="n">prepend_scheme_if_needed</span><span class="p">(</span><span class="n">proxy</span><span class="p">,</span> <span class="s2">&quot;http&quot;</span><span class="p">)</span>
+            <span class="n">proxy_url</span> <span class="o">=</span> <span class="n">parse_url</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">proxy_url</span><span class="o">.</span><span class="n">host</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InvalidProxyURL</span><span class="p">(</span>
+                    <span class="s2">&quot;Please check proxy URL. It is malformed &quot;</span>
+                    <span class="s2">&quot;and could be missing the host.&quot;</span>
+                <span class="p">)</span>
+            <span class="n">proxy_manager</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxy_manager_for</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+            <span class="n">conn</span> <span class="o">=</span> <span class="n">proxy_manager</span><span class="o">.</span><span class="n">connection_from_host</span><span class="p">(</span>
+                <span class="o">**</span><span class="n">host_params</span><span class="p">,</span> <span class="n">pool_kwargs</span><span class="o">=</span><span class="n">pool_kwargs</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Only scheme should be lower case</span>
+            <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">poolmanager</span><span class="o">.</span><span class="n">connection_from_host</span><span class="p">(</span>
+                <span class="o">**</span><span class="n">host_params</span><span class="p">,</span> <span class="n">pool_kwargs</span><span class="o">=</span><span class="n">pool_kwargs</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">conn</span></div>
+
+
 <div class="viewcode-block" id="HTTPAdapter.get_connection">
 <a class="viewcode-back" href="../../CveXplore/core/HTTPAdapter.get_connection.html#CveXplore.core.api_base_class.HTTPAdapter.get_connection">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">proxies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a urllib3 connection for the given URL. This should not be</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;DEPRECATED: Users should move to `get_connection_with_tls_context`</span>
+<span class="sd">        for all subclasses of HTTPAdapter using Requests&gt;=2.32.2.</span>
+
+<span class="sd">        Returns a urllib3 connection for the given URL. This should not be</span>
 <span class="sd">        called from user code, and is only exposed for use when subclassing the</span>
 <span class="sd">        :class:`HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;`.</span>
 
@@ -1146,6 +1319,15 @@
 <span class="sd">        :param proxies: (optional) A Requests-style dictionary of proxies used on this request.</span>
 <span class="sd">        :rtype: urllib3.ConnectionPool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="s2">&quot;`get_connection` has been deprecated in favor of &quot;</span>
+                <span class="s2">&quot;`get_connection_with_tls_context`. Custom HTTPAdapter subclasses &quot;</span>
+                <span class="s2">&quot;will need to migrate for Requests&gt;=2.32.2. Please see &quot;</span>
+                <span class="s2">&quot;https://github.com/psf/requests/pull/6710 for more details.&quot;</span>
+            <span class="p">),</span>
+            <span class="ne">DeprecationWarning</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">proxy</span> <span class="o">=</span> <span class="n">select_proxy</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">proxies</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">proxy</span><span class="p">:</span>
@@ -1206,6 +1388,9 @@
             <span class="n">using_socks_proxy</span> <span class="o">=</span> <span class="n">proxy_scheme</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;socks&quot;</span><span class="p">)</span>
 
         <span class="n">url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_url</span>
+        <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;//&quot;</span><span class="p">):</span>  <span class="c1"># Don&#39;t confuse urllib3</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">url</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
         <span class="k">if</span> <span class="n">is_proxied_http_request</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">using_socks_proxy</span><span class="p">:</span>
             <span class="n">url</span> <span class="o">=</span> <span class="n">urldefragauth</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
 
@@ -1275,7 +1460,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">proxies</span><span class="p">)</span>
+            <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_connection_with_tls_context</span><span class="p">(</span>
+                <span class="n">request</span><span class="p">,</span> <span class="n">verify</span><span class="p">,</span> <span class="n">proxies</span><span class="o">=</span><span class="n">proxies</span><span class="p">,</span> <span class="n">cert</span><span class="o">=</span><span class="n">cert</span>
+            <span class="p">)</span>
         <span class="k">except</span> <span class="n">LocationValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InvalidURL</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">)</span>
 
@@ -1383,7 +1570,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    Jul 29, 2025
+    Aug 15, 2025
   </span>
 
     
