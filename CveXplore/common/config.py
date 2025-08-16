@@ -88,7 +88,9 @@ class Configuration(object):
         (
             f"{DATASOURCE_PROTOCOL}"
             f"{'' if DATASOURCE_DBAPI is None else f'+{DATASOURCE_DBAPI}'}"
-            f"://{DATASOURCE_USER}:{DATASOURCE_PASSWORD}@{DATASOURCE_HOST}"
+            f"://"
+            f"{f'{DATASOURCE_USER}:{DATASOURCE_PASSWORD}@' if DATASOURCE_USER and DATASOURCE_PASSWORD else ''}"
+            f"{DATASOURCE_HOST}"
             # MongoDB SRV URIs (`mongodb+srv`) discover the port via DNS, so it
             # must not be included here to avoid pymongo.errors.InvalidURI errors.
             f"{'' if DATASOURCE_DBAPI == 'srv' else f':{DATASOURCE_PORT}'}"
