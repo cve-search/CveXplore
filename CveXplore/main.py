@@ -115,10 +115,6 @@ class CveXplore(object):
 
         os.environ["DOC_BUILD"] = json.dumps({"DOC_BUILD": "NO"})
 
-        self.logger.info(
-            f"Using {self.datasource_type} as datasource, connection details: {self.datasource_connection_details}"
-        )
-
         if self.datasource_type not in supported_datasources:
             raise UnsupportedDatasourceException(
                 f"Unsupported datasource selected: '{self.datasource_type}'; currently supported: {supported_datasources}"
@@ -166,6 +162,23 @@ class CveXplore(object):
                     ),
                     "api_path": "api",
                 }
+
+        # Log resulting datasource_connection_details but redact datasource password.
+        logsafe_details = str(self.datasource_connection_details)
+        logsafe_details = re.sub(
+            r"(://[^:/@]+:)([^@]+)(@)", r"\1****\3", logsafe_details
+        )
+        if self.config.DATASOURCE_PASSWORD_URLSAFE:
+            logsafe_details = logsafe_details.replace(
+                self.config.DATASOURCE_PASSWORD_URLSAFE, "****"
+            )
+        if self.config.DATASOURCE_PASSWORD:
+            logsafe_details = logsafe_details.replace(
+                self.config.DATASOURCE_PASSWORD, "****"
+            )
+        self.logger.info(
+            f"Using {self.datasource_type} as datasource, connection details: {logsafe_details}"
+        )
 
         setattr(
             self.config,
