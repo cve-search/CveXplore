@@ -2,6 +2,7 @@ import ast
 import json
 import os
 from json import JSONDecodeError
+from urllib.parse import quote_plus
 
 
 def getenv_bool(name: str, default: str = "False"):
@@ -79,6 +80,9 @@ class Configuration(object):
 
     DATASOURCE_USER = os.getenv("DATASOURCE_USER", None)
     DATASOURCE_PASSWORD = os.getenv("DATASOURCE_PASSWORD", None)
+    DATASOURCE_PASSWORD_URLSAFE = (
+        quote_plus(DATASOURCE_PASSWORD) if DATASOURCE_PASSWORD else None
+    )
     DATASOURCE_DBNAME = os.getenv("DATASOURCE_DBNAME", "cvedb")
 
     DATASOURCE_CONNECTION_DETAILS = None
@@ -87,7 +91,7 @@ class Configuration(object):
         f"{DATASOURCE_PROTOCOL}"
         f"{'' if DATASOURCE_DBAPI is None else f'+{DATASOURCE_DBAPI}'}"
         f"://"
-        f"{f'{DATASOURCE_USER}:{DATASOURCE_PASSWORD}@' if DATASOURCE_USER and DATASOURCE_PASSWORD else ''}"
+        f"{f'{DATASOURCE_USER}:{DATASOURCE_PASSWORD_URLSAFE}@' if DATASOURCE_USER and DATASOURCE_PASSWORD else ''}"
         f"{DATASOURCE_HOST}"
         # MongoDB SRV URIs (`mongodb+srv`) discover the port via DNS, so it
         # must not be included here to avoid pymongo.errors.InvalidURI errors.
