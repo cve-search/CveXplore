@@ -1168,7 +1168,7 @@
 <span class="k">del</span> <span class="n">_fix_result_transcoding</span>
 
 <div class="viewcode-block" id="urlparse">
-<a class="viewcode-back" href="../../CveXplore/core/urlparse.html#CveXplore.core.nvd_nist.nvd_nist_api.urlparse">[docs]</a>
+<a class="viewcode-back" href="../../CveXplore/core/urlparse.html#CveXplore.common.config.urlparse">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">allow_fragments</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a URL into 6 components:</span>
 <span class="sd">    &lt;scheme&gt;://&lt;netloc&gt;/&lt;path&gt;;&lt;params&gt;?&lt;query&gt;#&lt;fragment&gt;</span>
@@ -1703,6 +1703,8 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;quote() doesn&#39;t support &#39;errors&#39; for bytes&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">quote_from_bytes</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">safe</span><span class="p">)</span>
 
+<div class="viewcode-block" id="quote_plus">
+<a class="viewcode-back" href="../../CveXplore/common/quote_plus.html#CveXplore.common.config.quote_plus">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">quote_plus</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Like quote(), but also replace &#39; &#39; with &#39;+&#39;, as required for quoting</span>
 <span class="sd">    HTML form values. Plus signs in the original string are escaped unless</span>
@@ -1718,7 +1720,8 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">space</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39; &#39;</span>
     <span class="n">string</span> <span class="o">=</span> <span class="n">quote</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">safe</span> <span class="o">+</span> <span class="n">space</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span></div>
+
 
 <span class="k">def</span><span class="w"> </span><span class="nf">quote_from_bytes</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Like quote(), but accepts a bytes object rather than a str, and does</span>
@@ -1743,7 +1746,7 @@
     <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">quoter</span><span class="p">(</span><span class="n">char</span><span class="p">)</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">bs</span><span class="p">])</span>
 
 <div class="viewcode-block" id="urlencode">
-<a class="viewcode-back" href="../../CveXplore/core/urlencode.html#CveXplore.core.nvd_nist.nvd_nist_api.urlencode">[docs]</a>
+<a class="viewcode-back" href="../../CveXplore/core/urlencode.html#CveXplore.common.config.urlencode">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">urlencode</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">doseq</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">quote_via</span><span class="o">=</span><span class="n">quote_plus</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode a dict or sequence of two-element tuples into a URL query string.</span>
@@ -2052,7 +2055,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    Aug 18, 2025
+    Aug 25, 2025
   </span>
 
     
