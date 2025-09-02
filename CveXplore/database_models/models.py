@@ -205,19 +205,3 @@ class Cpeother(CveXploreBase):
 
     def __repr__(self):
         return f"<< Cpeother: {self.id} >>"
-
-
-class MgmtBlacklist(CveXploreBase):
-    __tablename__ = "mgmt_blacklist"
-    id = Column(Integer, primary_key=True, unique=True, index=True)
-
-    def __repr__(self):
-        return f"<< MgmtBlacklist: {self.id} >>"
-
-
-class MgmtWhitelist(CveXploreBase):
-    __tablename__ = "mgmt_whitelist"
-    id = Column(Integer, primary_key=True, unique=True, index=True)
-
-    def __repr__(self):
-        return f"<< MgmtWhitelist: {self.id} >>"
