@@ -10,14 +10,17 @@ folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 sys.path.insert(0, folder)
 
 from CveXplore.common.config import Configuration
-from CveXplore.database_models import CveXploreBase
+from CveXplore.database_models.models import CveXploreBase
 
 app_config = Configuration
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-config.set_main_option("sqlalchemy.url", app_config.SQLALCHEMY_DATABASE_URI)
+if os.getenv("ALEMBIC_SQLITE_SHADOW", "0") == "1":
+    config.set_main_option("sqlalchemy.url", f"sqlite:///{folder}/shadow.db")
+else:
+    config.set_main_option("sqlalchemy.url", app_config.SQLALCHEMY_DATABASE_URI)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
