@@ -154,7 +154,6 @@ def upgrade() -> None:
         sa.Column("taxonomy", sa.JSON(), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
-
     op.create_index(
         op.f("ix_capec_typical_severity"), "capec", ["typical_severity"], unique=False
     )
@@ -162,6 +161,7 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     op.drop_index(op.f("ix_capec_typical_severity"), table_name="capec")
+    op.drop_table("capec")
     op.drop_index(op.f("ix_via4_id"), table_name="via4")
     op.drop_index(op.f("ix_via4__id"), table_name="via4")
     op.drop_table("via4")
