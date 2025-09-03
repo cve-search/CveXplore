@@ -306,3 +306,6 @@ cython_debug/
 /development/docker-compose.yml
 /docs/CveXplore/
 /docs/${HOME}/
+
+# Alembic shadow database
+shadow.db

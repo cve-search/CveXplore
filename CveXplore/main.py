@@ -673,13 +673,6 @@ class CveXplore(object):
                     ).count_documents({})
                     stats[db] = each
 
-                    for mgmtlist in ["mgmt_blacklist", "mgmt_whitelist"]:
-                        stats[mgmtlist] = {
-                            "document count": getattr(
-                                self.datasource, f"store_{mgmtlist}"
-                            ).count_documents({})
-                        }
-
                 return dict(stats)
 
             else:

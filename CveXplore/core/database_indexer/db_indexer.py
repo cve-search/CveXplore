@@ -71,8 +71,6 @@ class DatabaseIndexer(UpdateBaseClass):
                 MongoAddIndex(index=[("epss", ASCENDING)], name="epss"),
             ],
             "via4": [MongoAddIndex(index=[("id", ASCENDING)], name="id")],
-            "mgmt_whitelist": [MongoAddIndex(index=[("id", ASCENDING)], name="id")],
-            "mgmt_blacklist": [MongoAddIndex(index=[("id", ASCENDING)], name="id")],
             "capec": [
                 MongoAddIndex(index=[("id", ASCENDING)], name="id"),
                 MongoAddIndex(index=[("loa", ASCENDING)], name="loa"),
