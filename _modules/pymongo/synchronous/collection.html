@@ -38,7 +38,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.6ec1c446c2c357833.min.css?v=e2e8fea8" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.acf80fe7f4d9ef9e2.min.css?v=9e56d0d2" />
         <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1404,7 +1404,7 @@
         <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span>
         <span class="n">command</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">read_preference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">codec_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CodecOptions</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">codec_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CodecOptions</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">check</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">allowable_errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">read_concern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ReadConcern</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1527,7 +1527,7 @@
         <span class="n">bypass_document_validation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">let</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">let</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BulkWriteResult</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Send a batch of write operations to the server.</span>
 
@@ -1585,7 +1585,7 @@
 
 <span class="sd">        :return: An instance of :class:`~pymongo.results.BulkWriteResult`.</span>
 
-<span class="sd">        .. seealso:: :ref:`writes-and-ids`</span>
+<span class="sd">        .. seealso:: `Writes and ids &lt;https://www.mongodb.com/docs/languages/python/pymongo-driver/current/crud/insert/#overview&gt;`_</span>
 
 <span class="sd">        .. note:: `bypass_document_validation` requires server version</span>
 <span class="sd">          **&gt;= 3.2**</span>
@@ -1693,7 +1693,7 @@
 
 <span class="sd">        :return: - An instance of :class:`~pymongo.results.InsertOneResult`.</span>
 
-<span class="sd">        .. seealso:: :ref:`writes-and-ids`</span>
+<span class="sd">        .. seealso:: `Writes and ids &lt;https://www.mongodb.com/docs/languages/python/pymongo-driver/current/crud/insert/#overview&gt;`_</span>
 
 <span class="sd">        .. note:: `bypass_document_validation` requires server version</span>
 <span class="sd">          **&gt;= 3.2**</span>
@@ -1765,7 +1765,7 @@
 
 <span class="sd">        :return: An instance of :class:`~pymongo.results.InsertManyResult`.</span>
 
-<span class="sd">        .. seealso:: :ref:`writes-and-ids`</span>
+<span class="sd">        .. seealso:: `Writes and ids &lt;https://www.mongodb.com/docs/languages/python/pymongo-driver/current/crud/insert/#overview&gt;`_</span>
 
 <span class="sd">        .. note:: `bypass_document_validation` requires server version</span>
 <span class="sd">          **&gt;= 3.2**</span>
@@ -2629,6 +2629,15 @@
 <span class="sd">        improper type. Returns an instance of</span>
 <span class="sd">        :class:`~pymongo.cursor.Cursor` corresponding to this query.</span>
 
+<span class="sd">        Cursors are closed automatically when they are exhausted (the last batch of data is retrieved from the database).</span>
+<span class="sd">        If a cursor is not exhausted, it will be closed automatically upon garbage collection, which leaves resources open but unused for a potentially long period of time.</span>
+<span class="sd">        To avoid this, best practice is to call :meth:`Cursor.close` when the cursor is no longer needed,</span>
+<span class="sd">        or use the cursor in a with statement::</span>
+
+<span class="sd">            with collection.find() as cursor:</span>
+<span class="sd">                for doc in cursor:</span>
+<span class="sd">                    print(doc)</span>
+
 <span class="sd">        The :meth:`find` method obeys the :attr:`read_preference` of</span>
 <span class="sd">        this :class:`Collection`.</span>
 
@@ -2900,7 +2909,7 @@
 <span class="sd">        .. versionchanged:: 4.2</span>
 <span class="sd">           This method now always uses the `count`_ command. Due to an oversight in versions</span>
 <span class="sd">           5.0.0-5.0.8 of MongoDB, the count command was not included in V1 of the</span>
-<span class="sd">           :ref:`versioned-api-ref`. Users of the Stable API with estimated_document_count are</span>
+<span class="sd">           `versioned API &lt;https://www.mongodb.com/docs/manual/reference/stable-api/#what-is-the-stable-api--and-should-you-use-it-&gt;`_. Users of the Stable API with estimated_document_count are</span>
 <span class="sd">           recommended to upgrade their server version to 5.0.9+ or set</span>
 <span class="sd">           :attr:`pymongo.server_api.ServerApi.strict` to ``False`` to avoid encountering errors.</span>
 
@@ -3378,6 +3387,15 @@
 <span class="sd">          ...</span>
 <span class="sd">          SON([(&#39;v&#39;, 2), (&#39;key&#39;, SON([(&#39;_id&#39;, 1)])), (&#39;name&#39;, &#39;_id_&#39;)])</span>
 
+<span class="sd">        Cursors are closed automatically when they are exhausted (the last batch of data is retrieved from the database).</span>
+<span class="sd">        If a cursor is not exhausted, it will be closed automatically upon garbage collection, which leaves resources open but unused for a potentially long period of time.</span>
+<span class="sd">        To avoid this, best practice is to call :meth:`Cursor.close` when the cursor is no longer needed,</span>
+<span class="sd">        or use the cursor in a with statement::</span>
+
+<span class="sd">            with collection.list_indexes() as cursor:</span>
+<span class="sd">                for index in cursor:</span>
+<span class="sd">                    print(index)</span>
+
 <span class="sd">        :param session: a</span>
 <span class="sd">            :class:`~pymongo.client_session.ClientSession`.</span>
 <span class="sd">        :param comment: A user-provided comment to attach to this</span>
@@ -3401,7 +3419,7 @@
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CommandCursor</span><span class="p">[</span><span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-        <span class="n">codec_options</span><span class="p">:</span> <span class="n">CodecOptions</span> <span class="o">=</span> <span class="n">CodecOptions</span><span class="p">(</span><span class="n">SON</span><span class="p">)</span>
+        <span class="n">codec_options</span><span class="p">:</span> <span class="n">CodecOptions</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="n">CodecOptions</span><span class="p">(</span><span class="n">SON</span><span class="p">)</span>
         <span class="n">coll</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span>
             <span class="n">Collection</span><span class="p">[</span><span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">with_options</span><span class="p">(</span><span class="n">codec_options</span><span class="o">=</span><span class="n">codec_options</span><span class="p">,</span> <span class="n">read_preference</span><span class="o">=</span><span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">),</span>
@@ -3500,6 +3518,15 @@
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CommandCursor</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a cursor over search indexes for the current collection.</span>
+
+<span class="sd">        Cursors are closed automatically when they are exhausted (the last batch of data is retrieved from the database).</span>
+<span class="sd">        If a cursor is not exhausted, it will be closed automatically upon garbage collection, which leaves resources open but unused for a potentially long period of time.</span>
+<span class="sd">        To avoid this, best practice is to call :meth:`Cursor.close` when the cursor is no longer needed,</span>
+<span class="sd">        or use the cursor in a with statement::</span>
+
+<span class="sd">            with collection.list_search_indexes() as cursor:</span>
+<span class="sd">                for index in cursor:</span>
+<span class="sd">                    print(index)</span>
 
 <span class="sd">        :param name: If given, the name of the index to search</span>
 <span class="sd">            for.  Only indexes with matching index names will be returned.</span>
@@ -3764,7 +3791,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">aggregation_command</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_AggregationCommand</span><span class="p">],</span>
         <span class="n">pipeline</span><span class="p">:</span> <span class="n">_Pipeline</span><span class="p">,</span>
-        <span class="n">cursor_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">CommandCursor</span><span class="p">],</span>
+        <span class="n">cursor_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">CommandCursor</span><span class="p">],</span>  <span class="c1"># type: ignore[type-arg]</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
         <span class="n">explicit_session</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">let</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3811,11 +3838,20 @@
 
 <span class="sd">        .. note:: This method does not support the &#39;explain&#39; option. Please</span>
 <span class="sd">           use `PyMongoExplain &lt;https://pypi.org/project/pymongoexplain/&gt;`_</span>
-<span class="sd">           instead. An example is included in the :ref:`aggregate-examples`</span>
+<span class="sd">           instead. An example is included in the `aggregation example &lt;https://www.mongodb.com/docs/languages/python/pymongo-driver/current/aggregation/#aggregation-example&gt;`_</span>
 <span class="sd">           documentation.</span>
 
 <span class="sd">        .. note:: The :attr:`~pymongo.collection.Collection.write_concern` of</span>
 <span class="sd">           this collection is automatically applied to this operation.</span>
+
+<span class="sd">        Cursors are closed automatically when they are exhausted (the last batch of data is retrieved from the database).</span>
+<span class="sd">        If a cursor is not exhausted, it will be closed automatically upon garbage collection, which leaves resources open but unused for a potentially long period of time.</span>
+<span class="sd">        To avoid this, best practice is to call :meth:`Cursor.close` when the cursor is no longer needed,</span>
+<span class="sd">        or use the cursor in a with statement::</span>
+
+<span class="sd">            with collection.aggregate() as cursor:</span>
+<span class="sd">                for operation in cursor:</span>
+<span class="sd">                    print(operation)</span>
 
 <span class="sd">        :param pipeline: a list of aggregation pipeline stages</span>
 <span class="sd">        :param session: a</span>
@@ -3872,7 +3908,7 @@
 <span class="sd">           The :meth:`aggregate` method always returns a CommandCursor. The</span>
 <span class="sd">           pipeline argument must be a list.</span>
 
-<span class="sd">        .. seealso:: :doc:`/examples/aggregation`</span>
+<span class="sd">        .. seealso:: `Aggregation &lt;https://mongodb.com/docs/manual/applications/aggregation/&gt;`_</span>
 
 <span class="sd">        .. _aggregate command:</span>
 <span class="sd">            https://mongodb.com/docs/manual/reference/command/aggregate</span>
@@ -4018,7 +4054,7 @@
         <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_IndexKeyHint</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a list of distinct values for `key` among all documents</span>
 <span class="sd">        in this collection.</span>
 
@@ -4081,7 +4117,7 @@
             <span class="n">_server</span><span class="p">:</span> <span class="n">Server</span><span class="p">,</span>
             <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span>
             <span class="n">read_preference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">],</span>
-        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>  <span class="c1"># type: ignore[type-arg]</span>
             <span class="k">return</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
                     <span class="n">conn</span><span class="p">,</span>
@@ -4107,7 +4143,7 @@
         <span class="n">array_filters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_IndexKeyHint</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">let</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">let</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal findAndModify helper.&quot;&quot;&quot;</span>
@@ -4551,7 +4587,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    Aug 25, 2025
+    Sep 12, 2025
   </span>
 
     
