@@ -38,7 +38,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.acf80fe7f4d9ef9e2.min.css?v=9e56d0d2" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.74c816e3f9967dd6e.min.css?v=6cfe2491" />
         <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -792,9 +792,19 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TYPE_CHECKING</span><span class="p">,</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Mapping</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Set</span><span class="p">,</span>
+    <span class="n">Type</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">redis._parsers.encoders</span><span class="w"> </span><span class="kn">import</span> <span class="n">Encoder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">redis._parsers.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -803,6 +813,7 @@
     <span class="n">_RedisCallbacksRESP3</span><span class="p">,</span>
     <span class="n">bool_ok</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis.backoff</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExponentialWithJitterBackoff</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">redis.cache</span><span class="w"> </span><span class="kn">import</span> <span class="n">CacheConfig</span><span class="p">,</span> <span class="n">CacheInterface</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">redis.commands</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CoreCommands</span><span class="p">,</span>
@@ -810,31 +821,45 @@
     <span class="n">SentinelCommands</span><span class="p">,</span>
     <span class="n">list_or_args</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis.commands.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Script</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">redis.connection</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AbstractConnection</span><span class="p">,</span>
+    <span class="n">Connection</span><span class="p">,</span>
     <span class="n">ConnectionPool</span><span class="p">,</span>
     <span class="n">SSLConnection</span><span class="p">,</span>
     <span class="n">UnixDomainSocketConnection</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">redis.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">CredentialProvider</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">redis.event</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AfterPooledConnectionsInstantiationEvent</span><span class="p">,</span>
+    <span class="n">AfterPubSubConnectionInstantiationEvent</span><span class="p">,</span>
+    <span class="n">AfterSingleConnectionInstantiationEvent</span><span class="p">,</span>
+    <span class="n">ClientType</span><span class="p">,</span>
+    <span class="n">EventDispatcher</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">redis.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="ne">ConnectionError</span><span class="p">,</span>
     <span class="n">ExecAbortError</span><span class="p">,</span>
     <span class="n">PubSubError</span><span class="p">,</span>
     <span class="n">RedisError</span><span class="p">,</span>
     <span class="n">ResponseError</span><span class="p">,</span>
-    <span class="ne">TimeoutError</span><span class="p">,</span>
     <span class="n">WatchError</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">redis.lock</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lock</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">redis.retry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Retry</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">redis.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">HIREDIS_AVAILABLE</span><span class="p">,</span>
     <span class="n">_set_info_logger</span><span class="p">,</span>
+    <span class="n">deprecated_args</span><span class="p">,</span>
     <span class="n">get_lib_version</span><span class="p">,</span>
     <span class="n">safe_str</span><span class="p">,</span>
     <span class="n">str_if_bytes</span><span class="p">,</span>
+    <span class="n">truncate_text</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">ssl</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">OpenSSL</span>
 
 <span class="n">SYM_EMPTY</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
 <span class="n">EMPTY_RESPONSE</span> <span class="o">=</span> <span class="s2">&quot;EMPTY_RESPONSE&quot;</span>
@@ -966,60 +991,80 @@
 
 <div class="viewcode-block" id="Redis.__init__">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.__init__.html#CveXplore.core.celery_task_handler.task_handler.Redis.__init__">[docs]</a>
+    <span class="nd">@deprecated_args</span><span class="p">(</span>
+        <span class="n">args_to_warn</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;retry_on_timeout&quot;</span><span class="p">],</span>
+        <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;TimeoutError is included by default.&quot;</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="s2">&quot;6.0.0&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
-        <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">,</span>
-        <span class="n">db</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">socket_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">socket_connect_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">socket_keepalive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">socket_keepalive_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">connection_pool</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">unix_socket_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
-        <span class="n">encoding_errors</span><span class="o">=</span><span class="s2">&quot;strict&quot;</span><span class="p">,</span>
-        <span class="n">charset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">decode_responses</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">retry_on_timeout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">retry_on_error</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">ssl</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">ssl_keyfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">ssl_certfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">ssl_cert_reqs</span><span class="o">=</span><span class="s2">&quot;required&quot;</span><span class="p">,</span>
-        <span class="n">ssl_ca_certs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">ssl_ca_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">ssl_ca_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">ssl_check_hostname</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">ssl_password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">ssl_validate_ocsp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">ssl_validate_ocsp_stapled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">ssl_ocsp_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">ssl_ocsp_expected_cert</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">ssl_min_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">ssl_ciphers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">max_connections</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">single_connection_client</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">health_check_interval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">client_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">lib_name</span><span class="o">=</span><span class="s2">&quot;redis-py&quot;</span><span class="p">,</span>
-        <span class="n">lib_version</span><span class="o">=</span><span class="n">get_lib_version</span><span class="p">(),</span>
-        <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">retry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">redis_connect_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+        <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6379</span><span class="p">,</span>
+        <span class="n">db</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">socket_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">socket_connect_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">socket_keepalive</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">socket_keepalive_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">connection_pool</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ConnectionPool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">unix_socket_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+        <span class="n">encoding_errors</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;strict&quot;</span><span class="p">,</span>
+        <span class="n">decode_responses</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">retry_on_timeout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">retry</span><span class="p">:</span> <span class="n">Retry</span> <span class="o">=</span> <span class="n">Retry</span><span class="p">(</span>
+            <span class="n">backoff</span><span class="o">=</span><span class="n">ExponentialWithJitterBackoff</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cap</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span> <span class="n">retries</span><span class="o">=</span><span class="mi">3</span>
+        <span class="p">),</span>
+        <span class="n">retry_on_error</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ssl</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">ssl_keyfile</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ssl_certfile</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ssl_cert_reqs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;ssl.VerifyMode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;required&quot;</span><span class="p">,</span>
+        <span class="n">ssl_ca_certs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ssl_ca_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ssl_ca_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ssl_check_hostname</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">ssl_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ssl_validate_ocsp</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">ssl_validate_ocsp_stapled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">ssl_ocsp_context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;OpenSSL.SSL.Context&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ssl_ocsp_expected_cert</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ssl_min_version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ssl.TLSVersion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ssl_ciphers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_connections</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">single_connection_client</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">health_check_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">client_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">lib_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;redis-py&quot;</span><span class="p">,</span>
+        <span class="n">lib_version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_lib_version</span><span class="p">(),</span>
+        <span class="n">username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">redis_connect_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">credential_provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CredentialProvider</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">protocol</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
         <span class="n">cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CacheInterface</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">cache_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CacheConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_dispatcher</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EventDispatcher</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a new Redis client.</span>
-<span class="sd">        To specify a retry policy for specific errors, first set</span>
-<span class="sd">        `retry_on_error` to a list of the error/s to retry on, then set</span>
-<span class="sd">        `retry` to a valid `Retry` object.</span>
-<span class="sd">        To retry on TimeoutError, `retry_on_timeout` can also be set to `True`.</span>
+
+<span class="sd">        To specify a retry policy for specific errors, you have two options:</span>
+
+<span class="sd">        1. Set the `retry_on_error` to a list of the error/s to retry on, and</span>
+<span class="sd">        you can also set `retry` to a valid `Retry` object(in case the default</span>
+<span class="sd">        one is not appropriate) - with this approach the retries will be triggered</span>
+<span class="sd">        on the default errors specified in the Retry object enriched with the</span>
+<span class="sd">        errors specified in `retry_on_error`.</span>
+
+<span class="sd">        2. Define a `Retry` object with configured &#39;supported_errors&#39; and set</span>
+<span class="sd">        it to the `retry` parameter - with this approach you completely redefine</span>
+<span class="sd">        the errors on which retries will happen.</span>
+
+<span class="sd">        `retry_on_timeout` is deprecated - please include the TimeoutError</span>
+<span class="sd">        either in the Retry object or in the `retry_on_error` list.</span>
+
+<span class="sd">        When &#39;connection_pool&#39; is provided - the retry configuration of the</span>
+<span class="sd">        provided pool will be used.</span>
 
 <span class="sd">        Args:</span>
 
@@ -1027,25 +1072,13 @@
 <span class="sd">            if `True`, connection pool is not used. In that case `Redis`</span>
 <span class="sd">            instance use is not thread safe.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">event_dispatcher</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dispatcher</span> <span class="o">=</span> <span class="n">EventDispatcher</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dispatcher</span> <span class="o">=</span> <span class="n">event_dispatcher</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">connection_pool</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">charset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="ne">DeprecationWarning</span><span class="p">(</span>
-                        <span class="s1">&#39;&quot;charset&quot; is deprecated. Use &quot;encoding&quot; instead&#39;</span>
-                    <span class="p">)</span>
-                <span class="p">)</span>
-                <span class="n">encoding</span> <span class="o">=</span> <span class="n">charset</span>
-            <span class="k">if</span> <span class="n">errors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="ne">DeprecationWarning</span><span class="p">(</span>
-                        <span class="s1">&#39;&quot;errors&quot; is deprecated. Use &quot;encoding_errors&quot; instead&#39;</span>
-                    <span class="p">)</span>
-                <span class="p">)</span>
-                <span class="n">encoding_errors</span> <span class="o">=</span> <span class="n">errors</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">retry_on_error</span><span class="p">:</span>
                 <span class="n">retry_on_error</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">if</span> <span class="n">retry_on_timeout</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">retry_on_error</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="ne">TimeoutError</span><span class="p">)</span>
             <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s2">&quot;db&quot;</span><span class="p">:</span> <span class="n">db</span><span class="p">,</span>
                 <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
@@ -1113,9 +1146,19 @@
                         <span class="p">}</span>
                     <span class="p">)</span>
             <span class="n">connection_pool</span> <span class="o">=</span> <span class="n">ConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dispatcher</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span>
+                <span class="n">AfterPooledConnectionsInstantiationEvent</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">connection_pool</span><span class="p">],</span> <span class="n">ClientType</span><span class="o">.</span><span class="n">SYNC</span><span class="p">,</span> <span class="n">credential_provider</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">auto_close_connection_pool</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">auto_close_connection_pool</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dispatcher</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span>
+                <span class="n">AfterPooledConnectionsInstantiationEvent</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">connection_pool</span><span class="p">],</span> <span class="n">ClientType</span><span class="o">.</span><span class="n">SYNC</span><span class="p">,</span> <span class="n">credential_provider</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span> <span class="o">=</span> <span class="n">connection_pool</span>
 
@@ -1125,9 +1168,16 @@
         <span class="p">]:</span>
             <span class="k">raise</span> <span class="n">RedisError</span><span class="p">(</span><span class="s2">&quot;Client caching is only supported with RESP version 3&quot;</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">single_connection_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">RLock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">single_connection_client</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_single_connection_client</span> <span class="o">=</span> <span class="n">single_connection_client</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_single_connection_client</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dispatcher</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span>
+                <span class="n">AfterSingleConnectionInstantiationEvent</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span> <span class="n">ClientType</span><span class="o">.</span><span class="n">SYNC</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">single_connection_lock</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">response_callbacks</span> <span class="o">=</span> <span class="n">CaseInsensitiveDict</span><span class="p">(</span><span class="n">_RedisCallbacks</span><span class="p">)</span>
 
@@ -1162,13 +1212,13 @@
 
 <div class="viewcode-block" id="Redis.get_retry">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.get_retry.html#CveXplore.core.celery_task_handler.task_handler.Redis.get_retry">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Retry&quot;</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Retry</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_connection_kwargs</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retry&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Redis.set_retry">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.set_retry.html#CveXplore.core.celery_task_handler.task_handler.Redis.set_retry">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="s2">&quot;Retry&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="n">Retry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_connection_kwargs</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;retry&quot;</span><span class="p">:</span> <span class="n">retry</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">set_retry</span><span class="p">(</span><span class="n">retry</span><span class="p">)</span></div>
 
@@ -1225,7 +1275,7 @@
 <a class="viewcode-back" href="../../CveXplore/core/Redis.transaction.html#CveXplore.core.celery_task_handler.task_handler.Redis.transaction">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transaction</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s2">&quot;Pipeline&quot;</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span> <span class="o">*</span><span class="n">watches</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convenience method for executing the callable `func` as a transaction</span>
 <span class="sd">        while watching all keys specified in `watches`. The &#39;func&#39; callable</span>
@@ -1259,6 +1309,7 @@
         <span class="n">blocking_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">lock_class</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">thread_local</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">raise_on_release_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a new Lock object using key ``name`` that mimics</span>
@@ -1305,6 +1356,11 @@
 <span class="sd">                     thread-1 would see the token value as &quot;xyz&quot; and would be</span>
 <span class="sd">                     able to successfully release the thread-2&#39;s lock.</span>
 
+<span class="sd">        ``raise_on_release_error`` indicates whether to raise an exception when</span>
+<span class="sd">        the lock is no longer owned when exiting the context manager. By default,</span>
+<span class="sd">        this is True, meaning an exception will be raised. If False, the warning</span>
+<span class="sd">        will be logged and the exception will be suppressed.</span>
+
 <span class="sd">        In some use cases it&#39;s necessary to disable thread local storage. For</span>
 <span class="sd">        example, if you have code where one thread acquires a lock and passes</span>
 <span class="sd">        that lock instance to a worker thread to release later. If thread</span>
@@ -1322,6 +1378,7 @@
             <span class="n">blocking</span><span class="o">=</span><span class="n">blocking</span><span class="p">,</span>
             <span class="n">blocking_timeout</span><span class="o">=</span><span class="n">blocking_timeout</span><span class="p">,</span>
             <span class="n">thread_local</span><span class="o">=</span><span class="n">thread_local</span><span class="p">,</span>
+            <span class="n">raise_on_release_error</span><span class="o">=</span><span class="n">raise_on_release_error</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -1333,7 +1390,9 @@
 <span class="sd">        subscribe to channels and listen for messages that get published to</span>
 <span class="sd">        them.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">PubSub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">PubSub</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="p">,</span> <span class="n">event_dispatcher</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_event_dispatcher</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Redis.monitor">
@@ -1357,11 +1416,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
 
 <div class="viewcode-block" id="Redis.close">
 <a class="viewcode-back" href="../../CveXplore/core/Redis.close.html#CveXplore.core.celery_task_handler.task_handler.Redis.close">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># In case a connection property does not yet exist</span>
         <span class="c1"># (due to a crash earlier in the Redis() constructor), return</span>
         <span class="c1"># immediately as there is nothing to clean-up.</span>
@@ -1384,18 +1446,18 @@
         <span class="n">conn</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_response</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">command_name</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_disconnect_raise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_close_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Close the connection and raise an exception</span>
-<span class="sd">        if retry_on_error is not set or the error</span>
-<span class="sd">        is not one of the specified error types</span>
+<span class="sd">        Close the connection before retrying.</span>
+
+<span class="sd">        The supported exceptions are already checked in the</span>
+<span class="sd">        retry object so we don&#39;t need to do it here.</span>
+
+<span class="sd">        After we disconnect the connection, it will try to reconnect and</span>
+<span class="sd">        do a health check as part of the send_command logic(on connection level).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">conn</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">conn</span><span class="o">.</span><span class="n">retry_on_error</span> <span class="ow">is</span> <span class="kc">None</span>
-            <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">retry_on_error</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">False</span>
-        <span class="p">):</span>
-            <span class="k">raise</span> <span class="n">error</span>
 
     <span class="c1"># COMMAND EXECUTION AND PROTOCOL PARSING</span>
 <div class="viewcode-block" id="Redis.execute_command">
@@ -1408,15 +1470,20 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute a command and return a parsed response&quot;&quot;&quot;</span>
         <span class="n">pool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span>
         <span class="n">command_name</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="ow">or</span> <span class="n">pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">command_name</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="ow">or</span> <span class="n">pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_single_connection_client</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">single_connection_lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">retry</span><span class="o">.</span><span class="n">call_with_retry</span><span class="p">(</span>
                 <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_command_parse_response</span><span class="p">(</span>
                     <span class="n">conn</span><span class="p">,</span> <span class="n">command_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span>
                 <span class="p">),</span>
-                <span class="k">lambda</span> <span class="n">error</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_raise</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">),</span>
+                <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_close_connection</span><span class="p">(</span><span class="n">conn</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_single_connection_client</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">single_connection_lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">:</span>
                 <span class="n">pool</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
 
@@ -1469,7 +1536,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_pool</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span> <span class="o">=</span> <span class="n">connection_pool</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="s2">&quot;MONITOR&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s2">&quot;MONITOR&quot;</span><span class="p">)</span>
@@ -1544,6 +1611,7 @@
         <span class="n">ignore_subscribe_messages</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">encoder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Encoder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">push_handler_func</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">event_dispatcher</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;EventDispatcher&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span> <span class="o">=</span> <span class="n">connection_pool</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shard_hint</span> <span class="o">=</span> <span class="n">shard_hint</span>
@@ -1554,6 +1622,12 @@
         <span class="c1"># to lookup channel and pattern names for callback handlers.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">encoder</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">push_handler_func</span> <span class="o">=</span> <span class="n">push_handler_func</span>
+        <span class="k">if</span> <span class="n">event_dispatcher</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dispatcher</span> <span class="o">=</span> <span class="n">EventDispatcher</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dispatcher</span> <span class="o">=</span> <span class="n">event_dispatcher</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">RLock</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_encoder</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">health_check_response_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">HEALTH_CHECK_MESSAGE</span><span class="p">)</span>
@@ -1636,19 +1710,23 @@
         <span class="c1"># subscribed to one or more channels</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span>
-                <span class="s2">&quot;pubsub&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shard_hint</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
             <span class="c1"># register a callback that re-subscribes to any channels we</span>
             <span class="c1"># were listening to when we were disconnected</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">register_connect_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_handler_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">HIREDIS_AVAILABLE</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_handler_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">set_pubsub_push_handler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">push_handler_func</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dispatcher</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span>
+                <span class="n">AfterPubSubConnectionInstantiationEvent</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="p">,</span> <span class="n">ClientType</span><span class="o">.</span><span class="n">SYNC</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;check_health&quot;</span><span class="p">:</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribed</span><span class="p">}</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribed</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">clean_health_check_responses</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">connection</span><span class="p">,</span> <span class="n">connection</span><span class="o">.</span><span class="n">send_command</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">connection</span><span class="p">,</span> <span class="n">connection</span><span class="o">.</span><span class="n">send_command</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">clean_health_check_responses</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1668,19 +1746,14 @@
                     <span class="p">)</span>
             <span class="n">ttl</span> <span class="o">-=</span> <span class="mi">1</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_disconnect_raise_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_reconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Close the connection and raise an exception</span>
-<span class="sd">        if retry_on_error is not set or the error is not one</span>
-<span class="sd">        of the specified error types. Otherwise, try to</span>
-<span class="sd">        reconnect</span>
+<span class="sd">        The supported exceptions are already checked in the</span>
+<span class="sd">        retry object so we don&#39;t need to do it here.</span>
+
+<span class="sd">        In this error handler we are trying to reconnect to the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">conn</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">conn</span><span class="o">.</span><span class="n">retry_on_error</span> <span class="ow">is</span> <span class="kc">None</span>
-            <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">retry_on_error</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">False</span>
-        <span class="p">):</span>
-            <span class="k">raise</span> <span class="n">error</span>
         <span class="n">conn</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1693,7 +1766,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">retry</span><span class="o">.</span><span class="n">call_with_retry</span><span class="p">(</span>
             <span class="k">lambda</span><span class="p">:</span> <span class="n">command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
-            <span class="k">lambda</span> <span class="n">error</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_raise_connect</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reconnect</span><span class="p">(</span><span class="n">conn</span><span class="p">),</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">parse_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -1742,7 +1815,7 @@
                 <span class="s2">&quot;did you forget to call subscribe() or psubscribe()?&quot;</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">conn</span><span class="o">.</span><span class="n">health_check_interval</span> <span class="ow">and</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">conn</span><span class="o">.</span><span class="n">next_health_check</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">conn</span><span class="o">.</span><span class="n">health_check_interval</span> <span class="ow">and</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">conn</span><span class="o">.</span><span class="n">next_health_check</span><span class="p">:</span>
             <span class="n">conn</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s2">&quot;PING&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">HEALTH_CHECK_MESSAGE</span><span class="p">,</span> <span class="n">check_health</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">health_check_response_counter</span> <span class="o">+=</span> <span class="mi">1</span>
 
@@ -1892,12 +1965,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribed</span><span class="p">:</span>
             <span class="c1"># Wait for subscription</span>
-            <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribed_event</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="c1"># The connection was subscribed during the timeout time frame.</span>
                 <span class="c1"># The timeout should be adjusted based on the time spent</span>
                 <span class="c1"># waiting for the subscription</span>
-                <span class="n">time_spent</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+                <span class="n">time_spent</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
                 <span class="n">timeout</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">timeout</span> <span class="o">-</span> <span class="n">time_spent</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># The connection isn&#39;t subscribed to any channels or patterns,</span>
@@ -2062,7 +2135,8 @@
 <span class="sd">    in one transmission.  This is convenient for batch processing, such as</span>
 <span class="sd">    saving all the values in a list to Redis.</span>
 
-<span class="sd">    All commands executed within a pipeline are wrapped with MULTI and EXEC</span>
+<span class="sd">    All commands executed within a pipeline(when running in transactional mode,</span>
+<span class="sd">    which is the default behavior) are wrapped with MULTI and EXEC</span>
 <span class="sd">    calls. This guarantees all commands executed in the pipeline will be</span>
 <span class="sd">    executed atomically.</span>
 
@@ -2077,15 +2151,22 @@
 
     <span class="n">UNWATCH_COMMANDS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;DISCARD&quot;</span><span class="p">,</span> <span class="s2">&quot;EXEC&quot;</span><span class="p">,</span> <span class="s2">&quot;UNWATCH&quot;</span><span class="p">}</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_pool</span><span class="p">,</span> <span class="n">response_callbacks</span><span class="p">,</span> <span class="n">transaction</span><span class="p">,</span> <span class="n">shard_hint</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">connection_pool</span><span class="p">:</span> <span class="n">ConnectionPool</span><span class="p">,</span>
+        <span class="n">response_callbacks</span><span class="p">,</span>
+        <span class="n">transaction</span><span class="p">,</span>
+        <span class="n">shard_hint</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span> <span class="o">=</span> <span class="n">connection_pool</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Connection</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response_callbacks</span> <span class="o">=</span> <span class="n">response_callbacks</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="n">transaction</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shard_hint</span> <span class="o">=</span> <span class="n">shard_hint</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">watching</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command_stack</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scripts</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Script</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explicit_transaction</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Pipeline&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -2151,50 +2232,51 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">immediate_execute_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_execute_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_disconnect_reset_raise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_disconnect_reset_raise_on_watching</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">conn</span><span class="p">:</span> <span class="n">AbstractConnection</span><span class="p">,</span>
+        <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Close the connection, reset watching state and</span>
-<span class="sd">        raise an exception if we were watching,</span>
-<span class="sd">        if retry_on_error is not set or the error is not one</span>
-<span class="sd">        of the specified error types.</span>
+<span class="sd">        Close the connection reset watching state and</span>
+<span class="sd">        raise an exception if we were watching.</span>
+
+<span class="sd">        The supported exceptions are already checked in the</span>
+<span class="sd">        retry object so we don&#39;t need to do it here.</span>
+
+<span class="sd">        After we disconnect the connection, it will try to reconnect and</span>
+<span class="sd">        do a health check as part of the send_command logic(on connection level).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">conn</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
         <span class="c1"># if we were already watching a variable, the watch is no longer</span>
         <span class="c1"># valid since this connection has died. raise a WatchError, which</span>
         <span class="c1"># indicates the user should retry this transaction.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">watching</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
             <span class="k">raise</span> <span class="n">WatchError</span><span class="p">(</span>
-                <span class="s2">&quot;A ConnectionError occurred on while watching one or more keys&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;A </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> occurred while watching one or more keys&quot;</span>
             <span class="p">)</span>
-        <span class="c1"># if retry_on_error is not set or the error is not one</span>
-        <span class="c1"># of the specified error types, raise it</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">conn</span><span class="o">.</span><span class="n">retry_on_error</span> <span class="ow">is</span> <span class="kc">None</span>
-            <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">retry_on_error</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">False</span>
-        <span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-            <span class="k">raise</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">immediate_execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Execute a command immediately, but don&#39;t auto-retry on a</span>
-<span class="sd">        ConnectionError if we&#39;re already WATCHing a variable. Used when</span>
-<span class="sd">        issuing WATCH or subsequent commands retrieving their values but before</span>
+<span class="sd">        Execute a command immediately, but don&#39;t auto-retry on the supported</span>
+<span class="sd">        errors for retry if we&#39;re already WATCHing a variable.</span>
+<span class="sd">        Used when issuing WATCH or subsequent commands retrieving their values but before</span>
 <span class="sd">        MULTI is called.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">command_name</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>
         <span class="c1"># if this is the first call, we need a connection</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">conn</span><span class="p">:</span>
-            <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">command_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shard_hint</span><span class="p">)</span>
+            <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">conn</span>
 
         <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">retry</span><span class="o">.</span><span class="n">call_with_retry</span><span class="p">(</span>
             <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_command_parse_response</span><span class="p">(</span>
                 <span class="n">conn</span><span class="p">,</span> <span class="n">command_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span>
             <span class="p">),</span>
-            <span class="k">lambda</span> <span class="n">error</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_reset_raise</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">error</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_reset_raise_on_watching</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">),</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">pipeline_execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Pipeline&quot;</span><span class="p">:</span>
@@ -2212,7 +2294,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">command_stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">args</span><span class="p">,</span> <span class="n">options</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_execute_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">commands</span><span class="p">,</span> <span class="n">raise_on_error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_execute_transaction</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">commands</span><span class="p">,</span> <span class="n">raise_on_error</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
         <span class="n">cmds</span> <span class="o">=</span> <span class="n">chain</span><span class="p">([((</span><span class="s2">&quot;MULTI&quot;</span><span class="p">,),</span> <span class="p">{})],</span> <span class="n">commands</span><span class="p">,</span> <span class="p">[((</span><span class="s2">&quot;EXEC&quot;</span><span class="p">,),</span> <span class="p">{})])</span>
         <span class="n">all_cmds</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">pack_commands</span><span class="p">(</span>
             <span class="p">[</span><span class="n">args</span> <span class="k">for</span> <span class="n">args</span><span class="p">,</span> <span class="n">options</span> <span class="ow">in</span> <span class="n">cmds</span> <span class="k">if</span> <span class="n">EMPTY_RESPONSE</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">]</span>
@@ -2306,7 +2390,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">annotate_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">safe_str</span><span class="p">,</span> <span class="n">command</span><span class="p">))</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Command # </span><span class="si">{</span><span class="n">number</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">) of pipeline &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Command # </span><span class="si">{</span><span class="n">number</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">truncate_text</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span><span class="si">}</span><span class="s2">) of pipeline &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;caused error: </span><span class="si">{</span><span class="n">exception</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
         <span class="n">exception</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">msg</span><span class="p">,)</span> <span class="o">+</span> <span class="n">exception</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
@@ -2332,15 +2416,19 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">exist</span><span class="p">:</span>
                     <span class="n">s</span><span class="o">.</span><span class="n">sha</span> <span class="o">=</span> <span class="n">immediate</span><span class="p">(</span><span class="s2">&quot;SCRIPT LOAD&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">script</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_disconnect_raise_reset</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_disconnect_raise_on_watching</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">conn</span><span class="p">:</span> <span class="n">AbstractConnection</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Close the connection, raise an exception if we were watching,</span>
-<span class="sd">        and raise an exception if retry_on_error is not set or the</span>
-<span class="sd">        error is not one of the specified error types.</span>
+<span class="sd">        Close the connection, raise an exception if we were watching.</span>
+
+<span class="sd">        The supported exceptions are already checked in the</span>
+<span class="sd">        retry object so we don&#39;t need to do it here.</span>
+
+<span class="sd">        After we disconnect the connection, it will try to reconnect and</span>
+<span class="sd">        do a health check as part of the send_command logic(on connection level).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">conn</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
         <span class="c1"># if we were watching a variable, the watch is no longer valid</span>
@@ -2348,19 +2436,10 @@
         <span class="c1"># indicates the user should retry this transaction.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">watching</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">WatchError</span><span class="p">(</span>
-                <span class="s2">&quot;A ConnectionError occurred on while watching one or more keys&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;A </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> occurred while watching one or more keys&quot;</span>
             <span class="p">)</span>
-        <span class="c1"># if retry_on_error is not set or the error is not one</span>
-        <span class="c1"># of the specified error types, raise it</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">conn</span><span class="o">.</span><span class="n">retry_on_error</span> <span class="ow">is</span> <span class="kc">None</span>
-            <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">retry_on_error</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">False</span>
-        <span class="p">):</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-            <span class="k">raise</span> <span class="n">error</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_on_error</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_on_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute all the commands in the current pipeline&quot;&quot;&quot;</span>
         <span class="n">stack</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_stack</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">stack</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">watching</span><span class="p">:</span>
@@ -2374,7 +2453,7 @@
 
         <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">conn</span><span class="p">:</span>
-            <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="s2">&quot;MULTI&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shard_hint</span><span class="p">)</span>
+            <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
             <span class="c1"># assign to self.connection so reset() releases the connection</span>
             <span class="c1"># back to the pool after we&#39;re done</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">conn</span>
@@ -2382,7 +2461,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">retry</span><span class="o">.</span><span class="n">call_with_retry</span><span class="p">(</span>
                 <span class="k">lambda</span><span class="p">:</span> <span class="n">execute</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="n">raise_on_error</span><span class="p">),</span>
-                <span class="k">lambda</span> <span class="n">error</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_raise_reset</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">),</span>
+                <span class="k">lambda</span> <span class="n">error</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_raise_on_watching</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">error</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
@@ -2424,7 +2503,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    Sep 12, 2025
+    Apr 20, 2026
   </span>
 
     

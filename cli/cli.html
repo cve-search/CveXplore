@@ -42,7 +42,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.acf80fe7f4d9ef9e2.min.css?v=9e56d0d2" />
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.74c816e3f9967dd6e.min.css?v=6cfe2491" />
         <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -2769,6 +2769,7 @@
 
 <h1 id="command-line-interpreter">Command Line Interpreter<a class="headerlink" href="#command-line-interpreter" title="Link to this heading">¶</a></h1>
 <h2 id="cli">cli<a class="headerlink" href="#cli" title="Link to this heading">¶</a></h2>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
@@ -2787,11 +2788,13 @@
 
 <h3 id="cli-capec">capec<a class="headerlink" href="#cli-capec" title="Link to this heading">¶</a></h3>
 <p>Query for capec specific data</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>capec<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
 <h4 id="cli-capec-search">search<a class="headerlink" href="#cli-capec-search" title="Link to this heading">¶</a></h4>
 <p>Search for capec entries by id</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>capec<span class="w"> </span>search<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
@@ -2829,11 +2832,13 @@
 
 <h3 id="cli-cpe">cpe<a class="headerlink" href="#cli-cpe" title="Link to this heading">¶</a></h3>
 <p>Query for cpe specific data</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>cpe<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
 <h4 id="cli-cpe-search">search<a class="headerlink" href="#cli-cpe-search" title="Link to this heading">¶</a></h4>
 <p>Search for cpe entries by name, vendor or title. Results are sorted ASCENDING by default</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>cpe<span class="w"> </span>search<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
@@ -2937,11 +2942,13 @@
 
 <h3 id="cli-cve">cve<a class="headerlink" href="#cli-cve" title="Link to this heading">¶</a></h3>
 <p>Query for cve specific data</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>cve<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
 <h4 id="cli-cve-last">last<a class="headerlink" href="#cli-cve-last" title="Link to this heading">¶</a></h4>
 <p>Query the last L (-l) amount of cve entries</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>cve<span class="w"> </span>last<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
@@ -2965,6 +2972,7 @@
 
 <h4 id="cli-cve-search">search<a class="headerlink" href="#cli-cve-search" title="Link to this heading">¶</a></h4>
 <p>Search for cve entries by id</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>cve<span class="w"> </span>search<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
@@ -3002,11 +3010,13 @@
 
 <h3 id="cli-cwe">cwe<a class="headerlink" href="#cli-cwe" title="Link to this heading">¶</a></h3>
 <p>Query for cwe specific data</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>cwe<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
 <h4 id="cli-cwe-search">search<a class="headerlink" href="#cli-cwe-search" title="Link to this heading">¶</a></h4>
 <p>Search for cwe entries by id</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>cwe<span class="w"> </span>search<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
@@ -3044,26 +3054,31 @@
 
 <h3 id="cli-database">database<a class="headerlink" href="#cli-database" title="Link to this heading">¶</a></h3>
 <p>Database update / populate commands</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>database<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
 <h4 id="cli-database-initialize">initialize<a class="headerlink" href="#cli-database-initialize" title="Link to this heading">¶</a></h4>
 <p>Initialize the database</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>database<span class="w"> </span>initialize<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
 <h4 id="cli-database-sources">sources<a class="headerlink" href="#cli-database-sources" title="Link to this heading">¶</a></h4>
 <p>Database source management</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>database<span class="w"> </span>sources<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
 <h5 id="cli-database-sources-reset">reset<a class="headerlink" href="#cli-database-sources-reset" title="Link to this heading">¶</a></h5>
 <p>Set sources</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>database<span class="w"> </span>sources<span class="w"> </span>reset<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
 <h5 id="cli-database-sources-set">set<a class="headerlink" href="#cli-database-sources-set" title="Link to this heading">¶</a></h5>
 <p>Set sources</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>database<span class="w"> </span>sources<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
@@ -3087,16 +3102,19 @@
 
 <h5 id="cli-database-sources-show">show<a class="headerlink" href="#cli-database-sources-show" title="Link to this heading">¶</a></h5>
 <p>Show sources</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>database<span class="w"> </span>sources<span class="w"> </span>show<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
 <h4 id="cli-database-update">update<a class="headerlink" href="#cli-database-update" title="Link to this heading">¶</a></h4>
 <p>Update the database</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>database<span class="w"> </span>update<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
 <h3 id="cli-find">find<a class="headerlink" href="#cli-find" title="Link to this heading">¶</a></h3>
 <p>Perform find queries on a single collection</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>find<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
@@ -3169,16 +3187,19 @@
 
 <h3 id="cli-stats">stats<a class="headerlink" href="#cli-stats" title="Link to this heading">¶</a></h3>
 <p>Show datasource statistics</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>stats<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
 <h3 id="cli-tasks">tasks<a class="headerlink" href="#cli-tasks" title="Link to this heading">¶</a></h3>
 <p>Perform task related operations.</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>tasks<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
 <h4 id="cli-tasks-create">create<a class="headerlink" href="#cli-tasks-create" title="Link to this heading">¶</a></h4>
 <p>Perform action on tasks that are currently scheduled.</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>tasks<span class="w"> </span>create<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
@@ -3211,11 +3232,13 @@
 
 <h4 id="cli-tasks-list">list<a class="headerlink" href="#cli-tasks-list" title="Link to this heading">¶</a></h4>
 <p>List the available tasks that can be scheduled.</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>tasks<span class="w"> </span>list<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
 <h4 id="cli-tasks-scheduled">scheduled<a class="headerlink" href="#cli-tasks-scheduled" title="Link to this heading">¶</a></h4>
 <p>Perform action on tasks that are currently scheduled.</p>
+<p class="rubric">Usage</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><code>cli<span class="w"> </span>tasks<span class="w"> </span>scheduled<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
 </code></pre></div>
 </div>
@@ -3269,7 +3292,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    Sep 12, 2025
+    Apr 20, 2026
   </span>
 
     

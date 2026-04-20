@@ -38,7 +38,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.acf80fe7f4d9ef9e2.min.css?v=9e56d0d2" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.74c816e3f9967dd6e.min.css?v=6cfe2491" />
         <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df571175" />
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -3006,11 +3006,9 @@
         <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
         <span class="n">pipeline</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;$group&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}})</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;aggregate&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="s2">&quot;pipeline&quot;</span><span class="p">:</span> <span class="n">pipeline</span><span class="p">,</span> <span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="p">{}}</span>
         <span class="k">if</span> <span class="s2">&quot;hint&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;hint&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;hint&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;hint&quot;</span><span class="p">])</span>
         <span class="n">collation</span> <span class="o">=</span> <span class="n">validate_collation_or_none</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;collation&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-        <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_cmd</span><span class="p">(</span>
             <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
@@ -3018,6 +3016,8 @@
             <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span>
             <span class="n">read_preference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">],</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="n">cmd</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;aggregate&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="s2">&quot;pipeline&quot;</span><span class="p">:</span> <span class="n">pipeline</span><span class="p">,</span> <span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aggregate_one_result</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">read_preference</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">collation</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
                 <span class="k">return</span> <span class="mi">0</span>
@@ -3425,7 +3425,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">with_options</span><span class="p">(</span><span class="n">codec_options</span><span class="o">=</span><span class="n">codec_options</span><span class="p">,</span> <span class="n">read_preference</span><span class="o">=</span><span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="n">read_pref</span> <span class="o">=</span> <span class="p">(</span><span class="n">session</span> <span class="ow">and</span> <span class="n">session</span><span class="o">.</span><span class="n">_txn_read_preference</span><span class="p">())</span> <span class="ow">or</span> <span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY</span>
-        <span class="n">explicit_session</span> <span class="o">=</span> <span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_cmd</span><span class="p">(</span>
             <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
@@ -3452,13 +3451,12 @@
                 <span class="n">cursor</span><span class="p">,</span>
                 <span class="n">conn</span><span class="o">.</span><span class="n">address</span><span class="p">,</span>
                 <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
-                <span class="n">explicit_session</span><span class="o">=</span><span class="n">explicit_session</span><span class="p">,</span>
                 <span class="n">comment</span><span class="o">=</span><span class="n">cmd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="n">cmd_cursor</span><span class="o">.</span><span class="n">_maybe_pin_connection</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">cmd_cursor</span>
 
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_tmp_session</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_tmp_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_read</span><span class="p">(</span>
                 <span class="n">_cmd</span><span class="p">,</span> <span class="n">read_pref</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">LIST_INDEXES</span>
             <span class="p">)</span>
@@ -3559,7 +3557,6 @@
             <span class="n">CommandCursor</span><span class="p">,</span>
             <span class="n">pipeline</span><span class="p">,</span>
             <span class="n">kwargs</span><span class="p">,</span>
-            <span class="n">explicit_session</span><span class="o">=</span><span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">,</span>
             <span class="n">user_fields</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;firstBatch&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}},</span>
         <span class="p">)</span>
@@ -3793,7 +3790,6 @@
         <span class="n">pipeline</span><span class="p">:</span> <span class="n">_Pipeline</span><span class="p">,</span>
         <span class="n">cursor_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">CommandCursor</span><span class="p">],</span>  <span class="c1"># type: ignore[type-arg]</span>
         <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
-        <span class="n">explicit_session</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">let</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
@@ -3805,7 +3801,6 @@
             <span class="n">cursor_class</span><span class="p">,</span>
             <span class="n">pipeline</span><span class="p">,</span>
             <span class="n">kwargs</span><span class="p">,</span>
-            <span class="n">explicit_session</span><span class="p">,</span>
             <span class="n">let</span><span class="p">,</span>
             <span class="n">user_fields</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;firstBatch&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}},</span>
         <span class="p">)</span>
@@ -3913,13 +3908,12 @@
 <span class="sd">        .. _aggregate command:</span>
 <span class="sd">            https://mongodb.com/docs/manual/reference/command/aggregate</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_tmp_session</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">close</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_tmp_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aggregate</span><span class="p">(</span>
                 <span class="n">_CollectionAggregationCommand</span><span class="p">,</span>
                 <span class="n">pipeline</span><span class="p">,</span>
                 <span class="n">CommandCursor</span><span class="p">,</span>
                 <span class="n">session</span><span class="o">=</span><span class="n">s</span><span class="p">,</span>
-                <span class="n">explicit_session</span><span class="o">=</span><span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="n">let</span><span class="o">=</span><span class="n">let</span><span class="p">,</span>
                 <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">,</span>
                 <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
@@ -3963,7 +3957,7 @@
             <span class="k">raise</span> <span class="n">InvalidOperation</span><span class="p">(</span><span class="s2">&quot;aggregate_raw_batches does not support auto encryption&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_tmp_session</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">close</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_tmp_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">cast</span><span class="p">(</span>
                 <span class="n">RawBatchCursor</span><span class="p">[</span><span class="n">_DocumentType</span><span class="p">],</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_aggregate</span><span class="p">(</span>
@@ -3971,7 +3965,6 @@
                     <span class="n">pipeline</span><span class="p">,</span>
                     <span class="n">RawBatchCommandCursor</span><span class="p">,</span>
                     <span class="n">session</span><span class="o">=</span><span class="n">s</span><span class="p">,</span>
-                    <span class="n">explicit_session</span><span class="o">=</span><span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
                     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
                 <span class="p">),</span>
             <span class="p">)</span></div>
@@ -4054,7 +4047,7 @@
         <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_IndexKeyHint</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a list of distinct values for `key` among all documents</span>
 <span class="sd">        in this collection.</span>
 
@@ -4098,19 +4091,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;key must be an instance of str, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;distinct&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="n">key</span><span class="p">}</span>
         <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;query&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span><span class="s2">&quot;can&#39;t pass both filter and query&quot;</span><span class="p">)</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">filter</span>
         <span class="n">collation</span> <span class="o">=</span> <span class="n">validate_collation_or_none</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;collation&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-        <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
         <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">hint</span> <span class="o">=</span> <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
-            <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;hint&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hint</span>  <span class="c1"># type: ignore[assignment]</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_cmd</span><span class="p">(</span>
             <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span>
@@ -4118,6 +4106,12 @@
             <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span>
             <span class="n">read_preference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">],</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>  <span class="c1"># type: ignore[type-arg]</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;distinct&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="n">key</span><span class="p">}</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
+            <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;hint&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hint</span>  <span class="c1"># type: ignore[assignment]</span>
             <span class="k">return</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
                     <span class="n">conn</span><span class="p">,</span>
@@ -4153,27 +4147,26 @@
                 <span class="sa">f</span><span class="s2">&quot;return_document must be ReturnDocument.BEFORE or ReturnDocument.AFTER, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">return_document</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
         <span class="n">collation</span> <span class="o">=</span> <span class="n">validate_collation_or_none</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;collation&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;findAndModify&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="nb">filter</span><span class="p">,</span> <span class="s2">&quot;new&quot;</span><span class="p">:</span> <span class="n">return_document</span><span class="p">}</span>
-        <span class="k">if</span> <span class="n">let</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">common</span><span class="o">.</span><span class="n">validate_is_mapping</span><span class="p">(</span><span class="s2">&quot;let&quot;</span><span class="p">,</span> <span class="n">let</span><span class="p">)</span>
-            <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;let&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">let</span>
-        <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_fields_list_to_dict</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="s2">&quot;projection&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">sort</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;sort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">sort</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">upsert</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">validate_boolean</span><span class="p">(</span><span class="s2">&quot;upsert&quot;</span><span class="p">,</span> <span class="n">upsert</span><span class="p">)</span>
-            <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;upsert&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">upsert</span>
         <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">hint</span> <span class="o">=</span> <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
-
-        <span class="n">write_concern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_concern_for_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+        <span class="n">write_concern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_concern_for_cmd</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_find_and_modify_helper</span><span class="p">(</span>
             <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">retryable_write</span><span class="p">:</span> <span class="nb">bool</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;findAndModify&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="nb">filter</span><span class="p">,</span> <span class="s2">&quot;new&quot;</span><span class="p">:</span> <span class="n">return_document</span><span class="p">}</span>
+            <span class="k">if</span> <span class="n">let</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">common</span><span class="o">.</span><span class="n">validate_is_mapping</span><span class="p">(</span><span class="s2">&quot;let&quot;</span><span class="p">,</span> <span class="n">let</span><span class="p">)</span>
+                <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;let&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">let</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_fields_list_to_dict</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="s2">&quot;projection&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sort</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;sort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_index_document</span><span class="p">(</span><span class="n">sort</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">upsert</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">validate_boolean</span><span class="p">(</span><span class="s2">&quot;upsert&quot;</span><span class="p">,</span> <span class="n">upsert</span><span class="p">)</span>
+                <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;upsert&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">upsert</span>
             <span class="n">acknowledged</span> <span class="o">=</span> <span class="n">write_concern</span><span class="o">.</span><span class="n">acknowledged</span>
             <span class="k">if</span> <span class="n">array_filters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">acknowledged</span><span class="p">:</span>
@@ -4224,7 +4217,7 @@
         <span class="n">let</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_DocumentType</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_DocumentType</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Finds a single document and deletes it, returning the document.</span>
 
 <span class="sd">          &gt;&gt;&gt; db.test.count_documents({&#39;x&#39;: 1})</span>
@@ -4233,6 +4226,10 @@
 <span class="sd">          {&#39;x&#39;: 1, &#39;_id&#39;: ObjectId(&#39;54f4e12bfba5220aa4d6dee8&#39;)}</span>
 <span class="sd">          &gt;&gt;&gt; db.test.count_documents({&#39;x&#39;: 1})</span>
 <span class="sd">          1</span>
+
+<span class="sd">        Returns ``None`` if no document matches the filter.</span>
+
+<span class="sd">          &gt;&gt;&gt; db.test.find_one_and_delete({&#39;_exists&#39;: False})</span>
 
 <span class="sd">        If multiple documents match *filter*, a *sort* can be applied.</span>
 
@@ -4319,9 +4316,21 @@
         <span class="n">let</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_DocumentType</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_DocumentType</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Finds a single document and replaces it, returning either the</span>
 <span class="sd">        original or the replaced document.</span>
+
+<span class="sd">          &gt;&gt;&gt; db.test.find_one({&#39;x&#39;: 1})</span>
+<span class="sd">          {&#39;_id&#39;: 0, &#39;x&#39;: 1}</span>
+<span class="sd">          &gt;&gt;&gt; db.test.find_one_and_replace({&#39;x&#39;: 1}, {&#39;y&#39;: 2})</span>
+<span class="sd">          {&#39;_id&#39;: 0, &#39;x&#39;: 1}</span>
+<span class="sd">          &gt;&gt;&gt; db.test.find_one({&#39;x&#39;: 1})</span>
+<span class="sd">          &gt;&gt;&gt; db.test.find_one({&#39;y&#39;: 2})</span>
+<span class="sd">          {&#39;_id&#39;: 0, &#39;y&#39;: 2}</span>
+
+<span class="sd">        Returns ``None`` if no document matches the filter.</span>
+
+<span class="sd">          &gt;&gt;&gt; db.test.find_one_and_replace({&#39;_exists&#39;: False}, {&#39;x&#39;: 1})</span>
 
 <span class="sd">        The :meth:`find_one_and_replace` method differs from</span>
 <span class="sd">        :meth:`find_one_and_update` by replacing the document matched by</span>
@@ -4430,13 +4439,17 @@
         <span class="n">let</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_DocumentType</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_DocumentType</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Finds a single document and updates it, returning either the</span>
 <span class="sd">        original or the updated document.</span>
 
+<span class="sd">          &gt;&gt;&gt; db.test.find_one({&#39;_id&#39;: 665})</span>
+<span class="sd">          {&#39;_id&#39;: 665, &#39;done&#39;: False, &#39;count&#39;: 25}</span>
 <span class="sd">          &gt;&gt;&gt; db.test.find_one_and_update(</span>
 <span class="sd">          ...    {&#39;_id&#39;: 665}, {&#39;$inc&#39;: {&#39;count&#39;: 1}, &#39;$set&#39;: {&#39;done&#39;: True}})</span>
-<span class="sd">          {&#39;_id&#39;: 665, &#39;done&#39;: False, &#39;count&#39;: 25}}</span>
+<span class="sd">          {&#39;_id&#39;: 665, &#39;done&#39;: False, &#39;count&#39;: 25}</span>
+<span class="sd">          &gt;&gt;&gt; db.test.find_one({&#39;_id&#39;: 665})</span>
+<span class="sd">          {&#39;_id&#39;: 665, &#39;done&#39;: True, &#39;count&#39;: 26}</span>
 
 <span class="sd">        Returns ``None`` if no document matches the filter.</span>
 
@@ -4587,7 +4600,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    Sep 12, 2025
+    Apr 20, 2026
   </span>
 
     
