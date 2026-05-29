@@ -525,6 +525,16 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#confval-DATASOURCE_PARAMETERS" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>DATASOURCE_<wbr>PARAMETERS</span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#confval-DATASOURCE_CONNECTION_DETAILS" class="md-nav__link">
     
       <span aria-label="configuration value" class="objinfo-icon objinfo-icon__data" title="configuration value">C</span>
@@ -583,6 +593,18 @@
     
     <span class="md-ellipsis">
       <span title="MONGODB_PORT (configuration value) — MongoDB port number."><span>MONGODB_<wbr>PORT</span></span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confval-0" class="md-nav__link">
+    
+      <span aria-label="configuration value" class="objinfo-icon objinfo-icon__data" title="configuration value">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="DATASOURCE_PARAMETERS (configuration value) — Connection String Options (optional URI query string parameters) for the MongoDB data source."><span>DATASOURCE_<wbr>PARAMETERS</span></span>
     </span>
   </a>
   
@@ -1128,6 +1150,16 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#confval-DATASOURCE_PARAMETERS" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>DATASOURCE_<wbr>PARAMETERS</span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#confval-DATASOURCE_CONNECTION_DETAILS" class="md-nav__link">
     
       <span aria-label="configuration value" class="objinfo-icon objinfo-icon__data" title="configuration value">C</span>
@@ -1186,6 +1218,18 @@
     
     <span class="md-ellipsis">
       <span title="MONGODB_PORT (configuration value) — MongoDB port number."><span>MONGODB_<wbr>PORT</span></span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confval-0" class="md-nav__link">
+    
+      <span aria-label="configuration value" class="objinfo-icon objinfo-icon__data" title="configuration value">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="DATASOURCE_PARAMETERS (configuration value) — Connection String Options (optional URI query string parameters) for the MongoDB data source."><span>DATASOURCE_<wbr>PARAMETERS</span></span>
     </span>
   </a>
   
@@ -1324,6 +1368,15 @@ overwritten you can do it either there or pass them directly as environment vari
 </dd></dl>
 
 <dl class="std confval objdesc">
+<dt class="sig sig-object highlight std" id="confval-DATASOURCE_PARAMETERS">
+<span class="sig-name descname"><span class="pre">DATASOURCE_PARAMETERS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-DATASOURCE_PARAMETERS" title="Link to this definition">¶</a></dt>
+<dd><p>Optional URI query string parameters appended to the constructed data source connection URI.</p>
+<p>This value must be provided in <code class="docutils literal notranslate"><span class="pre">key=value&amp;key=value</span></code> format (without a leading <code class="docutils literal notranslate"><span class="pre">?</span></code>).</p>
+<p>It is used to pass additional connection options to the underlying database driver.
+See the database-specific documentation for supported parameters.</p>
+</dd></dl>
+
+<dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-DATASOURCE_CONNECTION_DETAILS">
 <span class="sig-name descname"><span class="pre">DATASOURCE_CONNECTION_DETAILS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-DATASOURCE_CONNECTION_DETAILS" title="Link to this definition">¶</a></dt>
 <dd><p><em>Not configurable via environment variables.</em></p>
@@ -1350,6 +1403,17 @@ which <strong>would cause many of these settings not to be honored</strong>.</p>
 <dt class="sig sig-object highlight std" id="confval-MONGODB_PORT">
 <span class="sig-name descname"><span class="pre">MONGODB_PORT</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="mi">27017</span></code><a class="headerlink" href="#confval-MONGODB_PORT" title="Link to this definition">¶</a></dt>
 <dd><p>MongoDB port number.</p>
+</dd></dl>
+
+<dl class="std confval objdesc">
+<dt class="sig sig-object highlight std" id="confval-0">
+<span class="sig-name descname"><span class="pre">DATASOURCE_PARAMETERS</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><span class="p"> <span class="pre">=</span> </span><code class="python code highlight docutils literal highlight-python"><span class="kc">None</span></code><a class="headerlink" href="#confval-0" title="Link to this definition">¶</a></dt>
+<dd><p>Connection String Options (optional URI query string parameters) for the MongoDB data source.</p>
+<p>Common options include <code class="docutils literal notranslate"><span class="pre">authSource</span></code> (authentication database),
+<code class="docutils literal notranslate"><span class="pre">replicaSet</span></code>, and <code class="docutils literal notranslate"><span class="pre">retryWrites</span></code>.</p>
+<p>Example:</p>
+<p><code class="docutils literal notranslate"><span class="pre">authSource=cvedb&amp;retryWrites=true</span></code></p>
+<p>See <a class="reference external" href="https://www.mongodb.com/docs/manual/reference/connection-string-options/">https://www.mongodb.com/docs/manual/reference/connection-string-options/</a></p>
 </dd></dl>
 
 <dl class="std confval objdesc">
@@ -1398,7 +1462,7 @@ which <strong>would cause many of these settings not to be honored</strong>.</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    Apr 20, 2026
+    May 29, 2026
   </span>
 
     

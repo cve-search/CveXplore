@@ -849,6 +849,53 @@
 
 
 
+<div class="viewcode-block" id="validate_datasource_parameters">
+<a class="viewcode-back" href="../../../CveXplore/common/validate_datasource_parameters.html#CveXplore.common.config.validate_datasource_parameters">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_datasource_parameters</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate DATASOURCE_PARAMETERS environment variable.</span>
+
+<span class="sd">    Ensures the value is a valid URI query string fragment used for</span>
+<span class="sd">    database connection configuration (e.g. authSource=cvedb).</span>
+
+<span class="sd">    Raises ValueError if invalid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Invalid DATASOURCE_PARAMETERS: must not start with &#39;?&#39;. &quot;</span>
+            <span class="s2">&quot;Expected format: key=value&amp;key=value&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">pairs</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Invalid DATASOURCE_PARAMETERS: each entry must be in key=value format &quot;</span>
+                <span class="s2">&quot;(e.g. authSource=cvedb)&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Invalid DATASOURCE_PARAMETERS: empty key detected &quot;</span>
+                <span class="s2">&quot;(expected key=value, e.g. authSource=cvedb)&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid DATASOURCE_PARAMETERS: &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; must have a value &quot;</span>
+                <span class="s2">&quot;(expected key=value, e.g. authSource=cvedb)&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">value</span></div>
+
+
+
 <div class="viewcode-block" id="Configuration">
 <a class="viewcode-back" href="../../../CveXplore/common/Configuration.html#CveXplore.common.config.Configuration">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Configuration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -885,10 +932,13 @@
         <span class="n">quote_plus</span><span class="p">(</span><span class="n">DATASOURCE_PASSWORD</span><span class="p">)</span> <span class="k">if</span> <span class="n">DATASOURCE_PASSWORD</span> <span class="k">else</span> <span class="kc">None</span>
     <span class="p">)</span>
     <span class="n">DATASOURCE_DBNAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DATASOURCE_DBNAME&quot;</span><span class="p">,</span> <span class="s2">&quot;cvedb&quot;</span><span class="p">)</span>
+    <span class="n">DATASOURCE_PARAMETERS</span> <span class="o">=</span> <span class="n">validate_datasource_parameters</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DATASOURCE_PARAMETERS&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="p">)</span>
 
     <span class="n">DATASOURCE_CONNECTION_DETAILS</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="n">DATASOURCE_HOST_URI</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">DATASOURCE_HOST_URI_BASE</span> <span class="o">=</span> <span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DATASOURCE_PROTOCOL</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">DATASOURCE_DBAPI</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="sa">f</span><span class="s1">&#39;+</span><span class="si">{</span><span class="n">DATASOURCE_DBAPI</span><span class="si">}</span><span class="s1">&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="sa">f</span><span class="s2">&quot;://&quot;</span>
@@ -898,10 +948,22 @@
         <span class="c1"># must not be included here to avoid pymongo.errors.InvalidURI errors.</span>
         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">DATASOURCE_DBAPI</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;srv&#39;</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="sa">f</span><span class="s1">&#39;:</span><span class="si">{</span><span class="n">DATASOURCE_PORT</span><span class="si">}</span><span class="s1">&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
+    <span class="n">DATASOURCE_HOST_URI_PARAMS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;?</span><span class="si">{</span><span class="n">DATASOURCE_PARAMETERS</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">DATASOURCE_PARAMETERS</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="c1"># allows passing the host URI without database for a driver that takes it separately</span>
+    <span class="n">DATASOURCE_HOST_URI</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DATASOURCE_HOST_URI_BASE</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">DATASOURCE_HOST_URI_PARAMS</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">DATASOURCE_HOST_URI_PARAMS</span>
+        <span class="k">else</span> <span class="n">DATASOURCE_HOST_URI_BASE</span>
+    <span class="p">)</span>
 
     <span class="n">SQLALCHEMY_DATABASE_URI</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span>
         <span class="s2">&quot;SQLALCHEMY_DATABASE_URI&quot;</span><span class="p">,</span>
-        <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DATASOURCE_HOST_URI</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">DATASOURCE_DBNAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+        <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DATASOURCE_HOST_URI_BASE</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">DATASOURCE_DBNAME</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DATASOURCE_HOST_URI_PARAMS</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">SQLALCHEMY_TRACK_MODIFICATIONS</span> <span class="o">=</span> <span class="n">getenv_bool</span><span class="p">(</span>
         <span class="s2">&quot;SQLALCHEMY_TRACK_MODIFICATIONS&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span>
@@ -1024,7 +1086,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    Apr 20, 2026
+    May 29, 2026
   </span>
 
     

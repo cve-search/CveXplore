@@ -39,6 +39,15 @@ Common
 
    Database name at the data source.
 
+.. confval:: DATASOURCE_PARAMETERS
+
+   Optional URI query string parameters appended to the constructed data source connection URI.
+
+   This value must be provided in ``key=value&key=value`` format (without a leading ``?``).
+
+   It is used to pass additional connection options to the underlying database driver.
+   See the database-specific documentation for supported parameters.
+
 .. confval:: DATASOURCE_CONNECTION_DETAILS
 
    *Not configurable via environment variables.*
@@ -63,6 +72,19 @@ MongoDB
 .. confval:: MONGODB_PORT
 
    MongoDB port number.
+
+.. confval:: DATASOURCE_PARAMETERS
+
+   Connection String Options (optional URI query string parameters) for the MongoDB data source.
+
+   Common options include ``authSource`` (authentication database),
+   ``replicaSet``, and ``retryWrites``.
+
+   Example:
+
+   ``authSource=cvedb&retryWrites=true``
+
+   See https://www.mongodb.com/docs/manual/reference/connection-string-options/
 
 .. confval:: MONGODB_CONNECTION_DETAILS
 

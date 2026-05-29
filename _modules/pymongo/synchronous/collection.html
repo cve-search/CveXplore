@@ -811,7 +811,6 @@
     <span class="n">TYPE_CHECKING</span><span class="p">,</span>
     <span class="n">Any</span><span class="p">,</span>
     <span class="n">Callable</span><span class="p">,</span>
-    <span class="n">ContextManager</span><span class="p">,</span>
     <span class="n">Generic</span><span class="p">,</span>
     <span class="n">Iterable</span><span class="p">,</span>
     <span class="n">Iterator</span><span class="p">,</span>
@@ -1394,11 +1393,6 @@
         <span class="k">return</span> <span class="n">change_stream</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_conn_for_writes</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContextManager</span><span class="p">[</span><span class="n">Connection</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span>
-
     <span class="k">def</span><span class="w"> </span><span class="nf">_command</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span>
@@ -1475,7 +1469,10 @@
             <span class="k">if</span> <span class="s2">&quot;size&quot;</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
                 <span class="n">options</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">])</span>
             <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">CREATE</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span>
+            <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">_retryable_write</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">qev2_required</span> <span class="ow">and</span> <span class="n">conn</span><span class="o">.</span><span class="n">max_wire_version</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
                     <span class="s2">&quot;Driver support of Queryable Encryption is incompatible with server. &quot;</span>
@@ -1491,6 +1488,8 @@
                 <span class="n">collation</span><span class="o">=</span><span class="n">collation</span><span class="p">,</span>
                 <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
             <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_write</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">inner</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">_Op</span><span class="o">.</span><span class="n">CREATE</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_create</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3104,7 +3103,10 @@
 <span class="sd">            command (like maxTimeMS) can be passed as keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">CREATE_INDEXES</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span>
+            <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">_retryable_write</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
             <span class="n">supports_quorum</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">max_wire_version</span> <span class="o">&gt;=</span> <span class="mi">9</span>
 
             <span class="k">def</span><span class="w"> </span><span class="nf">gen_indexes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -3133,7 +3135,9 @@
                 <span class="n">write_concern</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_write_concern_for</span><span class="p">(</span><span class="n">session</span><span class="p">),</span>
                 <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="n">names</span>
+            <span class="k">return</span> <span class="n">names</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_write</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">inner</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">_Op</span><span class="o">.</span><span class="n">CREATE_INDEXES</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Collection.create_index">
 <a class="viewcode-back" href="../../../CveXplore/database/CveSearchCollection.html#CveXplore.common.data_source_connection.Collection.create_index">[docs]</a>
@@ -3294,7 +3298,6 @@
 
 <div class="viewcode-block" id="Collection.drop_index">
 <a class="viewcode-back" href="../../../CveXplore/database/CveSearchCollection.html#CveXplore.common.data_source_connection.Collection.drop_index">[docs]</a>
-    <span class="nd">@_csot</span><span class="o">.</span><span class="n">apply</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">drop_index</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">index_or_name</span><span class="p">:</span> <span class="n">_IndexKeyHint</span><span class="p">,</span>
@@ -3363,7 +3366,10 @@
         <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">DROP_INDEXES</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span>
+            <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">_retryable_write</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
                 <span class="n">conn</span><span class="p">,</span>
                 <span class="n">cmd</span><span class="p">,</span>
@@ -3372,6 +3378,8 @@
                 <span class="n">write_concern</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_write_concern_for</span><span class="p">(</span><span class="n">session</span><span class="p">),</span>
                 <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
             <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_write</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">inner</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">_Op</span><span class="o">.</span><span class="n">DROP_INDEXES</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Collection.list_indexes">
 <a class="viewcode-back" href="../../../CveXplore/database/CveSearchCollection.html#CveXplore.common.data_source_connection.Collection.list_indexes">[docs]</a>
@@ -3651,14 +3659,21 @@
         <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;createSearchIndexes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;indexes&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">gen_indexes</span><span class="p">())}</span>
         <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">CREATE_SEARCH_INDEXES</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span>
+            <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">_retryable_write</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
             <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
                 <span class="n">conn</span><span class="p">,</span>
                 <span class="n">cmd</span><span class="p">,</span>
                 <span class="n">read_preference</span><span class="o">=</span><span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">,</span>
                 <span class="n">codec_options</span><span class="o">=</span><span class="n">_UNICODE_REPLACE_CODEC_OPTIONS</span><span class="p">,</span>
+                <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;indexesCreated&quot;</span><span class="p">]]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_write</span><span class="p">(</span>
+            <span class="kc">False</span><span class="p">,</span> <span class="n">inner</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">_Op</span><span class="o">.</span><span class="n">CREATE_SEARCH_INDEXES</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="Collection.drop_search_index">
 <a class="viewcode-back" href="../../../CveXplore/database/CveSearchCollection.html#CveXplore.common.data_source_connection.Collection.drop_search_index">[docs]</a>
@@ -3687,14 +3702,20 @@
         <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">DROP_SEARCH_INDEXES</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span>
+            <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">_retryable_write</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
                 <span class="n">conn</span><span class="p">,</span>
                 <span class="n">cmd</span><span class="p">,</span>
                 <span class="n">read_preference</span><span class="o">=</span><span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">,</span>
                 <span class="n">allowable_errors</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ns not found&quot;</span><span class="p">,</span> <span class="mi">26</span><span class="p">],</span>
                 <span class="n">codec_options</span><span class="o">=</span><span class="n">_UNICODE_REPLACE_CODEC_OPTIONS</span><span class="p">,</span>
-            <span class="p">)</span></div>
+                <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_write</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">inner</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">_Op</span><span class="o">.</span><span class="n">DROP_SEARCH_INDEXES</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Collection.update_search_index">
@@ -3726,14 +3747,20 @@
         <span class="n">cmd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">UPDATE_SEARCH_INDEX</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span>
+            <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">_retryable_write</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
                 <span class="n">conn</span><span class="p">,</span>
                 <span class="n">cmd</span><span class="p">,</span>
                 <span class="n">read_preference</span><span class="o">=</span><span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">,</span>
                 <span class="n">allowable_errors</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ns not found&quot;</span><span class="p">,</span> <span class="mi">26</span><span class="p">],</span>
                 <span class="n">codec_options</span><span class="o">=</span><span class="n">_UNICODE_REPLACE_CODEC_OPTIONS</span><span class="p">,</span>
-            <span class="p">)</span></div>
+                <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_retryable_write</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">inner</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">_Op</span><span class="o">.</span><span class="n">UPDATE_SEARCH_INDEX</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Collection.options">
@@ -3811,6 +3838,7 @@
             <span class="n">session</span><span class="p">,</span>
             <span class="n">retryable</span><span class="o">=</span><span class="ow">not</span> <span class="n">cmd</span><span class="o">.</span><span class="n">_performs_write</span><span class="p">,</span>
             <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">AGGREGATE</span><span class="p">,</span>
+            <span class="n">is_aggregate_write</span><span class="o">=</span><span class="n">cmd</span><span class="o">.</span><span class="n">_performs_write</span><span class="p">,</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Collection.aggregate">
@@ -4024,17 +4052,21 @@
         <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
         <span class="n">write_concern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_concern_for_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">client</span>
 
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">RENAME</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
-            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_tmp_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">command</span><span class="p">(</span>
-                    <span class="s2">&quot;admin&quot;</span><span class="p">,</span>
-                    <span class="n">cmd</span><span class="p">,</span>
-                    <span class="n">write_concern</span><span class="o">=</span><span class="n">write_concern</span><span class="p">,</span>
-                    <span class="n">parse_write_concern_error</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                    <span class="n">session</span><span class="o">=</span><span class="n">s</span><span class="p">,</span>
-                    <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">client</span><span class="p">,</span>
-                <span class="p">)</span></div>
+        <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span>
+            <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">],</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">_retryable_write</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">command</span><span class="p">(</span>
+                <span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+                <span class="n">cmd</span><span class="p">,</span>
+                <span class="n">write_concern</span><span class="o">=</span><span class="n">write_concern</span><span class="p">,</span>
+                <span class="n">parse_write_concern_error</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+                <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">_retryable_write</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">inner</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">_Op</span><span class="o">.</span><span class="n">RENAME</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Collection.distinct">
@@ -4600,7 +4632,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    Apr 20, 2026
+    May 29, 2026
   </span>
 
     

@@ -825,6 +825,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">time</span>  <span class="c1"># noqa: PLC0414 # needed in sync version</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">weakref</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
@@ -898,8 +899,11 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous</span><span class="w"> </span><span class="kn">import</span> <span class="n">client_session</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">uri_parser</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.change_stream</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChangeStream</span><span class="p">,</span> <span class="n">ClusterChangeStream</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.client_bulk</span><span class="w"> </span><span class="kn">import</span> <span class="n">_ClientBulk</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.client_session</span><span class="w"> </span><span class="kn">import</span> <span class="n">_EmptyServerSession</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.client_session</span><span class="w"> </span><span class="kn">import</span> <span class="n">_SESSION</span><span class="p">,</span> <span class="n">_EmptyServerSession</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.command_cursor</span><span class="w"> </span><span class="kn">import</span> <span class="n">CommandCursor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_RetryPolicy</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.settings</span><span class="w"> </span><span class="kn">import</span> <span class="n">TopologySettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.topology</span><span class="w"> </span><span class="kn">import</span> <span class="n">Topology</span><span class="p">,</span> <span class="n">_ErrorContext</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.topology_description</span><span class="w"> </span><span class="kn">import</span> <span class="n">TOPOLOGY_TYPE</span><span class="p">,</span> <span class="n">TopologyDescription</span>
@@ -931,7 +935,7 @@
     <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.server_selectors</span><span class="w"> </span><span class="kn">import</span> <span class="n">Selection</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.bulk</span><span class="w"> </span><span class="kn">import</span> <span class="n">_Bulk</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.client_session</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientSession</span><span class="p">,</span> <span class="n">_ServerSession</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.cursor</span><span class="w"> </span><span class="kn">import</span> <span class="n">_ConnectionManager</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.cursor_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">_ConnectionManager</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.encryption</span><span class="w"> </span><span class="kn">import</span> <span class="n">_Encrypter</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">Connection</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.synchronous.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">Server</span>
@@ -1404,7 +1408,17 @@
 <span class="sd">            client to use Stable API. See `versioned API &lt;https://www.mongodb.com/docs/manual/reference/stable-api/#what-is-the-stable-api--and-should-you-use-it-&gt;`_ for</span>
 <span class="sd">            details.</span>
 
+<span class="sd">          | **Overload retry options:**</span>
+
+<span class="sd">          - `max_adaptive_retries`: (int) How many retries to allow for overload errors. Defaults to ``2``.</span>
+<span class="sd">          - `enable_overload_retargeting`: (boolean) Whether overload retargeting is enabled for this client.</span>
+<span class="sd">            If enabled, server overload errors will cause retry attempts to select a server that has not yet returned an overload error, if possible.</span>
+<span class="sd">            Defaults to ``False``.</span>
+
 <span class="sd">        .. seealso:: The MongoDB documentation on `connections &lt;https://dochub.mongodb.org/core/connections&gt;`_.</span>
+
+<span class="sd">        .. versionchanged:: 4.17</span>
+<span class="sd">           Added the ``max_adaptive_retries`` and ``enable_overload_retargeting`` URI and keyword arguments.</span>
 
 <span class="sd">        .. versionchanged:: 4.5</span>
 <span class="sd">           Added the ``serverMonitoringMode`` keyword argument.</span>
@@ -1673,11 +1687,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">read_concern</span><span class="p">,</span>
         <span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retry_policy</span> <span class="o">=</span> <span class="n">_RetryPolicy</span><span class="p">(</span><span class="n">attempts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">max_adaptive_retries</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_based_on_options</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_seeds</span><span class="p">,</span> <span class="n">srv_max_hosts</span><span class="p">,</span> <span class="n">srv_service_name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_opened</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">AbstractEventLoop</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_srv</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_init_background</span><span class="p">()</span>
 
@@ -2234,7 +2251,8 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_ensure_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;If provided session is None, lend a temporary session.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If provided session and bound session are None, lend a temporary session.&quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">session</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_bound_session</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">session</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">session</span>
 
@@ -2823,6 +2841,8 @@
         <span class="n">read_pref</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ServerMode</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">retryable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">operation_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_run_command</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">is_aggregate_write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal retryable helper for all client transactions.</span>
 
@@ -2834,6 +2854,8 @@
 <span class="sd">        :param address: Server Address, defaults to None</span>
 <span class="sd">        :param read_pref: Topology of read operation, defaults to None</span>
 <span class="sd">        :param retryable: If the operation should be retried once, defaults to None</span>
+<span class="sd">        :param is_run_command: If this is a runCommand operation, defaults to False</span>
+<span class="sd">        :param is_aggregate_write: If this is a aggregate operation with a write, defaults to False.</span>
 
 <span class="sd">        :return: Output of the calling func()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2848,6 +2870,8 @@
             <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">,</span>
             <span class="n">retryable</span><span class="o">=</span><span class="n">retryable</span><span class="p">,</span>
             <span class="n">operation_id</span><span class="o">=</span><span class="n">operation_id</span><span class="p">,</span>
+            <span class="n">is_run_command</span><span class="o">=</span><span class="n">is_run_command</span><span class="p">,</span>
+            <span class="n">is_aggregate_write</span><span class="o">=</span><span class="n">is_aggregate_write</span><span class="p">,</span>
         <span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_retryable_read</span><span class="p">(</span>
@@ -2859,6 +2883,8 @@
         <span class="n">address</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_Address</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">retryable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">operation_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_run_command</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">is_aggregate_write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute an operation with consecutive retries if possible</span>
 
@@ -2874,6 +2900,8 @@
 <span class="sd">        :param address: Optional address when sending a message, defaults to None</span>
 <span class="sd">        :param retryable: if we should attempt retries</span>
 <span class="sd">            (may not always be supported even if supplied), defaults to False</span>
+<span class="sd">        :param is_run_command: If this is a runCommand operation, defaults to False.</span>
+<span class="sd">        :param is_aggregate_write: If this is a aggregate operation with a write, defaults to False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Ensure that the client supports retrying on reads and there is no session in</span>
@@ -2892,6 +2920,8 @@
                 <span class="n">read_pref</span><span class="o">=</span><span class="n">read_pref</span><span class="p">,</span>
                 <span class="n">retryable</span><span class="o">=</span><span class="n">retryable</span><span class="p">,</span>
                 <span class="n">operation_id</span><span class="o">=</span><span class="n">operation_id</span><span class="p">,</span>
+                <span class="n">is_run_command</span><span class="o">=</span><span class="n">is_run_command</span><span class="p">,</span>
+                <span class="n">is_aggregate_write</span><span class="o">=</span><span class="n">is_aggregate_write</span><span class="p">,</span>
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_retryable_write</span><span class="p">(</span>
@@ -3100,11 +3130,14 @@
         <span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">client_session</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">client_session</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;If provided session is None, lend a temporary session.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">client_session</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;&#39;session&#39; argument must be a ClientSession or None, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">session</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span>
+        <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">client_session</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&#39;session&#39; argument must be a ClientSession or None, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">session</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Check for a bound session. If one exists, treat it as an explicitly passed session.</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">session</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_bound_session</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">session</span><span class="p">:</span>
             <span class="c1"># Don&#39;t call end_session.</span>
             <span class="k">yield</span> <span class="n">session</span>
             <span class="k">return</span>
@@ -3131,6 +3164,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">receive_cluster_time</span><span class="p">(</span><span class="n">reply</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;$clusterTime&quot;</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">session</span><span class="o">.</span><span class="n">_process_response</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_bound_session</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClientSession</span><span class="p">]:</span>
+        <span class="n">bound_session</span> <span class="o">=</span> <span class="n">_SESSION</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">bound_session</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">bound_session</span><span class="o">.</span><span class="n">client</span> <span class="ow">is</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">bound_session</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InvalidOperation</span><span class="p">(</span>
+                    <span class="s2">&quot;Only the client that created the bound session can perform operations within its context block. See &lt;PLACEHOLDER&gt; for more information.&quot;</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="MongoClient.server_info">
 <a class="viewcode-back" href="../../../CveXplore/database/MongoClient.server_info.html#CveXplore.database.connection.mongodb.mongo_db.MongoClient.server_info">[docs]</a>
@@ -3276,15 +3321,13 @@
                 <span class="sa">f</span><span class="s2">&quot;name_or_database must be an instance of str or a Database, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_for_writes</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">_Op</span><span class="o">.</span><span class="n">DROP_DATABASE</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
-            <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_command</span><span class="p">(</span>
-                <span class="n">conn</span><span class="p">,</span>
-                <span class="p">{</span><span class="s2">&quot;dropDatabase&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="n">comment</span><span class="p">},</span>
-                <span class="n">read_preference</span><span class="o">=</span><span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">,</span>
-                <span class="n">write_concern</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_write_concern_for</span><span class="p">(</span><span class="n">session</span><span class="p">),</span>
-                <span class="n">parse_write_concern_error</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
-            <span class="p">)</span></div>
+        <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">command</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;dropDatabase&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="n">comment</span><span class="p">},</span>
+            <span class="n">read_preference</span><span class="o">=</span><span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">,</span>
+            <span class="n">write_concern</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_write_concern_for</span><span class="p">(</span><span class="n">session</span><span class="p">),</span>
+            <span class="n">parse_write_concern_error</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="MongoClient.bulk_write">
@@ -3573,12 +3616,15 @@
         <span class="n">address</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_Address</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">retryable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">operation_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_run_command</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">is_aggregate_write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_retrying</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_multiple_retries</span> <span class="o">=</span> <span class="n">_csot</span><span class="o">.</span><span class="n">get_timeout</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_always_retryable</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_retries</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">_csot</span><span class="o">.</span><span class="n">get_timeout</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">mongo_client</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retry_policy</span> <span class="o">=</span> <span class="n">mongo_client</span><span class="o">.</span><span class="n">_retry_policy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_func</span> <span class="o">=</span> <span class="n">func</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bulk</span> <span class="o">=</span> <span class="n">bulk</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">session</span>
@@ -3594,6 +3640,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span> <span class="o">=</span> <span class="n">operation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_operation_id</span> <span class="o">=</span> <span class="n">operation_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_attempt_number</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_run_command</span> <span class="o">=</span> <span class="n">is_run_command</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_aggregate_write</span> <span class="o">=</span> <span class="n">is_aggregate_write</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs the supplied func() and attempts a retry</span>
@@ -3613,7 +3661,13 @@
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_check_last_error</span><span class="p">(</span><span class="n">check_csot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_read</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">()</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_read</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">()</span>
+                <span class="c1"># Track whether the transaction has completed a command.</span>
+                <span class="c1"># If we need to apply backpressure to the first command,</span>
+                <span class="c1"># we will need to revert back to starting state.</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">in_transaction</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_transaction</span><span class="o">.</span><span class="n">has_completed_command</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">return</span> <span class="n">res</span>
             <span class="k">except</span> <span class="n">ServerSelectionTimeoutError</span><span class="p">:</span>
                 <span class="c1"># The application may think the write was never attempted</span>
                 <span class="c1"># if we raise ServerSelectionTimeoutError on the retry</span>
@@ -3624,37 +3678,80 @@
                 <span class="c1"># most likely be a waste of time.</span>
                 <span class="k">raise</span>
             <span class="k">except</span> <span class="n">PyMongoError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">always_retryable</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">overloaded</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">exc_to_check</span> <span class="o">=</span> <span class="n">exc</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_run_command</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">retry_reads</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">retry_writes</span>
+                <span class="p">):</span>
+                    <span class="k">raise</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_aggregate_write</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">retry_writes</span><span class="p">:</span>
+                    <span class="k">raise</span>
+
                 <span class="c1"># Execute specialized catch on read</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_read</span><span class="p">:</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="p">(</span><span class="n">ConnectionFailure</span><span class="p">,</span> <span class="n">OperationFailure</span><span class="p">)):</span>
                         <span class="c1"># ConnectionFailures do not supply a code property</span>
                         <span class="n">exc_code</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_not_eligible_for_retry</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span>
-                            <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">OperationFailure</span><span class="p">)</span>
-                            <span class="ow">and</span> <span class="n">exc_code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_RETRYABLE_ERROR_CODES</span>
+                        <span class="n">overloaded</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">has_error_label</span><span class="p">(</span><span class="s2">&quot;SystemOverloadedError&quot;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">overloaded</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_max_retries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">max_adaptive_retries</span>
+                        <span class="n">always_retryable</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">has_error_label</span><span class="p">(</span><span class="s2">&quot;RetryableError&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">overloaded</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">retry_reads</span> <span class="ow">or</span> <span class="p">(</span>
+                            <span class="ow">not</span> <span class="n">always_retryable</span>
+                            <span class="ow">and</span> <span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">_is_not_eligible_for_retry</span><span class="p">()</span>
+                                <span class="ow">or</span> <span class="p">(</span>
+                                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">OperationFailure</span><span class="p">)</span>
+                                    <span class="ow">and</span> <span class="n">exc_code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">helpers_shared</span><span class="o">.</span><span class="n">_RETRYABLE_ERROR_CODES</span>
+                                <span class="p">)</span>
+                            <span class="p">)</span>
                         <span class="p">):</span>
                             <span class="k">raise</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_retrying</span> <span class="o">=</span> <span class="kc">True</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span> <span class="o">=</span> <span class="n">exc</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_attempt_number</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                        <span class="c1"># Revert back to starting state if we&#39;re in a transaction but haven&#39;t completed the first</span>
+                        <span class="c1"># command.</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="n">overloaded</span>
+                            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">in_transaction</span>
+                        <span class="p">):</span>
+                            <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_transaction</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="n">transaction</span><span class="o">.</span><span class="n">has_completed_command</span><span class="p">:</span>
+                                <span class="n">transaction</span><span class="o">.</span><span class="n">set_starting</span><span class="p">()</span>
+                            <span class="n">transaction</span><span class="o">.</span><span class="n">attempt</span> <span class="o">=</span> <span class="mi">0</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">raise</span>
 
                 <span class="c1"># Specialized catch on write operation</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_read</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">ClientBulkWriteException</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                        <span class="n">exc</span><span class="o">.</span><span class="n">error</span><span class="p">,</span> <span class="n">PyMongoError</span>
+                    <span class="p">):</span>
+                        <span class="n">exc_to_check</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">error</span>
+                    <span class="n">retryable_write_label</span> <span class="o">=</span> <span class="n">exc_to_check</span><span class="o">.</span><span class="n">has_error_label</span><span class="p">(</span><span class="s2">&quot;RetryableWriteError&quot;</span><span class="p">)</span>
+                    <span class="n">overloaded</span> <span class="o">=</span> <span class="n">exc_to_check</span><span class="o">.</span><span class="n">has_error_label</span><span class="p">(</span><span class="s2">&quot;SystemOverloadedError&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">overloaded</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_max_retries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">max_adaptive_retries</span>
+                    <span class="n">always_retryable</span> <span class="o">=</span> <span class="n">exc_to_check</span><span class="o">.</span><span class="n">has_error_label</span><span class="p">(</span><span class="s2">&quot;RetryableError&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">overloaded</span>
+
+                    <span class="c1"># Always retry abortTransaction and commitTransaction up to once</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;abortTransaction&quot;</span><span class="p">,</span> <span class="s2">&quot;commitTransaction&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span>
+                        <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">retry_writes</span>
+                        <span class="ow">or</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_retryable</span> <span class="ow">or</span> <span class="n">always_retryable</span><span class="p">)</span>
+                    <span class="p">):</span>
                         <span class="k">raise</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">ClientBulkWriteException</span><span class="p">)</span> <span class="ow">and</span> <span class="n">exc</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
-                        <span class="n">retryable_write_error_exc</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span>
-                            <span class="n">exc</span><span class="o">.</span><span class="n">error</span><span class="p">,</span> <span class="n">PyMongoError</span>
-                        <span class="p">)</span> <span class="ow">and</span> <span class="n">exc</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">has_error_label</span><span class="p">(</span><span class="s2">&quot;RetryableWriteError&quot;</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">retryable_write_error_exc</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">has_error_label</span><span class="p">(</span><span class="s2">&quot;RetryableWriteError&quot;</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">retryable_write_error_exc</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">retryable_write_label</span> <span class="ow">or</span> <span class="n">always_retryable</span><span class="p">:</span>
                         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_unpin</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">retryable_write_error_exc</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_not_eligible_for_retry</span><span class="p">():</span>
-                        <span class="k">if</span> <span class="n">exc</span><span class="o">.</span><span class="n">has_error_label</span><span class="p">(</span><span class="s2">&quot;NoWritesPerformed&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">always_retryable</span> <span class="ow">and</span> <span class="p">(</span>
+                        <span class="ow">not</span> <span class="n">retryable_write_label</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_not_eligible_for_retry</span><span class="p">()</span>
+                    <span class="p">):</span>
+                        <span class="k">if</span> <span class="n">exc_to_check</span><span class="o">.</span><span class="n">has_error_label</span><span class="p">(</span><span class="s2">&quot;NoWritesPerformed&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span><span class="p">:</span>
                             <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="k">raise</span>
@@ -3663,17 +3760,39 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">_bulk</span><span class="o">.</span><span class="n">retrying</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_retrying</span> <span class="o">=</span> <span class="kc">True</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">exc</span><span class="o">.</span><span class="n">has_error_label</span><span class="p">(</span><span class="s2">&quot;NoWritesPerformed&quot;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">exc_to_check</span><span class="o">.</span><span class="n">has_error_label</span><span class="p">(</span><span class="s2">&quot;NoWritesPerformed&quot;</span><span class="p">):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span> <span class="o">=</span> <span class="n">exc</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span> <span class="o">=</span> <span class="n">exc</span>
+                    <span class="c1"># Revert back to starting state if we&#39;re in a transaction but haven&#39;t completed the first</span>
+                    <span class="c1"># command.</span>
+                    <span class="k">if</span> <span class="n">overloaded</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">in_transaction</span><span class="p">:</span>
+                        <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_transaction</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">transaction</span><span class="o">.</span><span class="n">has_completed_command</span><span class="p">:</span>
+                            <span class="n">transaction</span><span class="o">.</span><span class="n">set_starting</span><span class="p">()</span>
+                        <span class="n">transaction</span><span class="o">.</span><span class="n">attempt</span> <span class="o">=</span> <span class="mi">0</span>
 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">topology_description</span><span class="o">.</span><span class="n">topology_type_name</span> <span class="o">==</span> <span class="s2">&quot;Sharded&quot;</span>
+                    <span class="ow">or</span> <span class="p">(</span><span class="n">overloaded</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">enable_overload_retargeting</span><span class="p">)</span>
+                <span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_deprioritized_servers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_server</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_always_retryable</span> <span class="o">=</span> <span class="n">always_retryable</span>
+                <span class="k">if</span> <span class="n">overloaded</span><span class="p">:</span>
+                    <span class="n">delay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retry_policy</span><span class="o">.</span><span class="n">backoff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attempt_number</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retry_policy</span><span class="o">.</span><span class="n">should_retry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attempt_number</span><span class="p">,</span> <span class="n">delay</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">exc_to_check</span><span class="o">.</span><span class="n">has_error_label</span><span class="p">(</span><span class="s2">&quot;NoWritesPerformed&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_error</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">raise</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_is_not_eligible_for_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if the exchange is not eligible for retry&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_retrying</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multiple_retries</span><span class="p">)</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_retrying</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attempt_number</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_retries</span>
+        <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_is_retrying</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if the exchange is currently undergoing a retry&quot;&quot;&quot;</span>
@@ -3732,7 +3851,7 @@
                     <span class="ow">and</span> <span class="n">conn</span><span class="o">.</span><span class="n">supports_sessions</span>
                 <span class="p">)</span>
                 <span class="n">is_mongos</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">is_mongos</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">sessions_supported</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_always_retryable</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">sessions_supported</span><span class="p">:</span>
                     <span class="c1"># A retry is not possible because this server does</span>
                     <span class="c1"># not support sessions raise the last error.</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_check_last_error</span><span class="p">()</span>
@@ -3764,7 +3883,7 @@
             <span class="n">conn</span><span class="p">,</span>
             <span class="n">read_pref</span><span class="p">,</span>
         <span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retrying</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retrying</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retryable</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_always_retryable</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_check_last_error</span><span class="p">()</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retrying</span><span class="p">:</span>
                 <span class="n">_debug_log</span><span class="p">(</span>
@@ -3840,7 +3959,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    Apr 20, 2026
+    May 29, 2026
   </span>
 
     

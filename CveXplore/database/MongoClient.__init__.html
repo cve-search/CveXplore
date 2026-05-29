@@ -1252,6 +1252,15 @@ following are true:</p>
 client to use Stable API. See <a class="reference external" href="https://www.mongodb.com/docs/manual/reference/stable-api/#what-is-the-stable-api--and-should-you-use-it-">versioned API</a> for
 details.</p></li>
 </ul>
+<div class="line-block">
+<div class="line"><strong>Overload retry options:</strong></div>
+</div>
+<ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_adaptive_retries</span></code>: (int) How many retries to allow for overload errors. Defaults to <code class="code highlight python docutils literal highlight-python"><span class="mi">2</span></code>.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_overload_retargeting</span></code>: (boolean) Whether overload retargeting is enabled for this client.
+If enabled, server overload errors will cause retry attempts to select a server that has not yet returned an overload error, if possible.
+Defaults to <code class="code highlight python docutils literal highlight-python"><span class="kc">False</span></code>.</p></li>
+</ul>
 </p>
 </dd>
 </dl>
@@ -1260,6 +1269,9 @@ details.</p></li>
 <div class="seealso admonition">
 <p class="admonition-title">See also</p>
 <p>The MongoDB documentation on <a class="reference external" href="https://dochub.mongodb.org/core/connections">connections</a>.</p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title"><span class="versionmodified changed">Changed in version 4.17: </span>Added the <code class="code highlight python docutils literal highlight-python"><span class="n">max_adaptive_retries</span></code> and <code class="code highlight python docutils literal highlight-python"><span class="n">enable_overload_retargeting</span></code> URI and keyword arguments.</p>
 </div>
 <div class="admonition versionchanged">
 <p class="admonition-title"><span class="versionmodified changed">Changed in version 4.5: </span>Added the <code class="code highlight python docutils literal highlight-python"><span class="n">serverMonitoringMode</span></code> keyword argument.</p>
@@ -1421,7 +1433,7 @@ Function-as-a-service environment.</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    Apr 20, 2026
+    May 29, 2026
   </span>
 
     
